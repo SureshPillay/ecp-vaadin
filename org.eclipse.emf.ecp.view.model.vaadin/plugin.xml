@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension-point id="org.eclipse.emf.ecp.view.model.vaadin.renderer" name="ECP View Model Vaadin Renderer" schema="schema/org.eclipse.emf.ecp.ui.view.vaadin.renderer.exsd"/>
+   <extension
+         point="org.eclipse.emf.ecp.view.model.vaadin.renderer">
+      <renderer
+            renderable="org.eclipse.emf.ecp.view.spi.model.VControl"
+            renderer="org.eclipse.emf.ecp.view.model.internal.vaadin.ControlRendererVaadin">
+      </renderer>
+      <renderer
+            renderable="org.eclipse.emf.ecp.view.spi.model.VView"
+            renderer="org.eclipse.emf.ecp.view.model.internal.vaadin.ViewRendererVaadin">
+      </renderer>
+   </extension>
+</plugin>
