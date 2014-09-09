@@ -19,13 +19,12 @@ import org.eclipse.emf.ecp.view.spi.vertical.model.VVerticalLayout;
 
 import com.vaadin.server.Sizeable.Unit;
 import com.vaadin.ui.Component;
-import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.VerticalLayout;
 
 public class VerticalLayoutRendererVaadin extends RendererVaadin<VVerticalLayout> {
 
 	@Override
-	public ComponentContainer render(VVerticalLayout renderable, ViewModelContext viewContext) {
+	public Component render(VVerticalLayout renderable, ViewModelContext viewContext) {
 		VerticalLayout layout = new VerticalLayout();
 		for (VContainedElement composite : renderable.getChildren()) {
 			Component renderResult = VaadinRendererFactory.INSTANCE.render(composite, viewContext);

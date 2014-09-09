@@ -12,7 +12,6 @@
 package org.eclipse.emf.ecp.view.model.internal.vaadin;
 
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecp.ui.view.ECPRendererException;
 import org.eclipse.emf.ecp.view.model.vaadin.ECPFVaadinViewRenderer;
 import org.eclipse.emf.ecp.view.model.vaadin.ECPVaadinView;
 import org.eclipse.emf.ecp.view.model.vaadin.VaadinRendererFactory;
@@ -28,19 +27,19 @@ import com.vaadin.ui.VerticalLayout;
 public class ECPFVaadinViewRendererImpl implements ECPFVaadinViewRenderer {
 
 	@Override
-	public ECPVaadinView render(EObject domainObject) throws ECPRendererException {
+	public ECPVaadinView render(EObject domainObject) {
 		return render(domainObject, ViewProviderHelper.getView(domainObject));
 	}
 
 	@Override
-	public ECPVaadinView render(EObject domainObject, VView viewModel) throws ECPRendererException {
+	public ECPVaadinView render(EObject domainObject, VView viewModel) {
 		final ViewModelContext viewContext = ViewModelContextFactory.INSTANCE.createViewModelContext(viewModel,
 				domainObject);
 		return render(viewContext);
 	}
 
 	@Override
-	public ECPVaadinView render(ViewModelContext viewModelContext) throws ECPRendererException {
+	public ECPVaadinView render(ViewModelContext viewModelContext) {
 		Component resultSet = VaadinRendererFactory.INSTANCE.render(viewModelContext.getViewModel(), viewModelContext);
 		if (resultSet == null) {
 			Label label = new Label();

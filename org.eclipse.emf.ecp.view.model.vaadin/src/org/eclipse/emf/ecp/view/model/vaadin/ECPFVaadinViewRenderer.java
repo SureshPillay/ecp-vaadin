@@ -12,7 +12,6 @@
 package org.eclipse.emf.ecp.view.model.vaadin;
 
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecp.ui.view.ECPRendererException;
 import org.eclipse.emf.ecp.view.model.internal.vaadin.ECPFVaadinViewRendererImpl;
 import org.eclipse.emf.ecp.view.spi.context.ViewModelContext;
 import org.eclipse.emf.ecp.view.spi.model.VView;
@@ -21,10 +20,10 @@ public interface ECPFVaadinViewRenderer {
 
 	ECPFVaadinViewRenderer INSTANCE = new ECPFVaadinViewRendererImpl();
 
-	ECPVaadinView render(EObject domainObject) throws ECPRendererException;
+	ECPVaadinView render(EObject domainObject);
 
-	ECPVaadinView render(EObject domainObject, VView viewModel) throws ECPRendererException;
+	ECPVaadinView render(EObject domainObject, VView viewModel);
 
-	ECPVaadinView render(ViewModelContext viewModelContext) throws ECPRendererException;
+	ECPVaadinView render(ViewModelContext viewModelContext);
 
 }

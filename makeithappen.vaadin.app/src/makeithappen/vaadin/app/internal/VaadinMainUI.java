@@ -2,7 +2,6 @@ package makeithappen.vaadin.app.internal;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.util.EContentAdapter;
-import org.eclipse.emf.ecp.ui.view.ECPRendererException;
 import org.eclipse.emf.ecp.view.model.vaadin.ECPFVaadinViewRenderer;
 import org.eclipse.emf.ecp.view.model.vaadin.ECPVaadinView;
 
@@ -22,13 +21,8 @@ public class VaadinMainUI extends UI {
 	protected void init(VaadinRequest request) {
 		getPage().setTitle("Test Vaadin ECP");
 
-		try {
-			ECPVaadinView ecpVaadinView = ECPFVaadinViewRenderer.INSTANCE.render(user);
-			setContent(ecpVaadinView.getComponent());
-
-		} catch (ECPRendererException e) {
-			e.printStackTrace();
-		}
+		ECPVaadinView ecpVaadinView = ECPFVaadinViewRenderer.INSTANCE.render(user);
+		setContent(ecpVaadinView.getComponent());
 
 		EContentAdapter adapter = new EContentAdapter() {
 			@Override
