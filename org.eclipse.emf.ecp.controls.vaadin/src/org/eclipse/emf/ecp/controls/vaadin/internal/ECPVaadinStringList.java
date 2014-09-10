@@ -16,13 +16,13 @@ import java.util.List;
 import org.eclipse.core.databinding.observable.list.IObservableList;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.databinding.observable.value.IValueChangeListener;
-import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.databinding.EMFProperties;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EStructuralFeature.Setting;
 import org.eclipse.emf.ecp.controls.vaadin.ECPControlFactoryVaadin;
+import org.eclipse.emf.ecp.view.model.vaadin.ECPVaadinComponent;
+import org.eclipse.emf.ecp.view.model.vaadin.validator.ECPVaadinEmptyListSelectValidator;
 import org.eclipse.emf.ecp.view.spi.model.VControl;
-import org.eclipse.emf.ecp.view.spi.model.VViewPackage;
 import org.lunifera.runtime.web.vaadin.databinding.VaadinObservables;
 
 import com.vaadin.server.Sizeable.Unit;
@@ -45,36 +45,30 @@ public class ECPVaadinStringList extends ECPControlFactoryVaadin {
 	}
 
 	@Override
-	public Component render(final VControl control) {
+	public ECPVaadinComponent render(final VControl control) {
 		final Setting setting = control.getDomainModelReference().getIterator().next();
 		VerticalLayout layout = new VerticalLayout();
 		layout.setSizeFull();
 
 		final ListSelect listSelect = new ListSelect();
+		EStructuralFeature eStructuralFeature = setting.getEStructuralFeature();
+		if (!control.isReadonly()) {
+			componentValidator = new ECPVaadinEmptyListSelectValidator(listSelect, eStructuralFeature);
+			listSelect.addValidator(componentValidator);
+		}
 		listSelect.setSizeFull();
 		layout.addComponent(listSelect);
 		listSelect.setNullSelectionAllowed(true);
-		final List<Object> items = (List<Object>) setting.getEObject().eGet(setting.getEStructuralFeature());
+
+		final List<Object> items = (List<Object>) setting.getEObject().eGet(eStructuralFeature);
 		listSelect.addItems(items);
 
 		VaadinObservables.activateRealm(UI.getCurrent());
 		IObservableList targetValue = VaadinObservables.observeContainerItemSetContents(listSelect, setting
 				.getEObject().getClass());
 
-		IObservableList modelValue = EMFProperties.list(setting.getEStructuralFeature()).observe(setting.getEObject());
+		IObservableList modelValue = EMFProperties.list(eStructuralFeature).observe(setting.getEObject());
 		bindModelToTarget(targetValue, modelValue);
-
-		control.eAdapters().add(new AdapterImpl() {
-
-			@Override
-			public void notifyChanged(Notification msg) {
-				super.notifyChanged(msg);
-				if (msg.getFeature() == VViewPackage.eINSTANCE.getElement_Diagnostic()) {
-					applyValidation(control, listSelect);
-				}
-			}
-
-		});
 
 		final HorizontalLayout horizontalLayout = new HorizontalLayout();
 		horizontalLayout.setWidth(100, Unit.PERCENTAGE);
@@ -148,6 +142,6 @@ public class ECPVaadinStringList extends ECPControlFactoryVaadin {
 			}
 		});
 
-		return layout;
+		return new ECPVaadinComponent(layout, componentValidator);
 	}
 }

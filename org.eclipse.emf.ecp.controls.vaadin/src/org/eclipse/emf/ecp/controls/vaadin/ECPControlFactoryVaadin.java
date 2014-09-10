@@ -18,15 +18,13 @@ import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.databinding.observable.value.IValueChangeListener;
 import org.eclipse.core.databinding.observable.value.ValueChangeEvent;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.notify.impl.AdapterImpl;
-import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.databinding.EMFProperties;
 import org.eclipse.emf.databinding.EMFUpdateValueStrategy;
 import org.eclipse.emf.ecore.EStructuralFeature.Setting;
 import org.eclipse.emf.ecp.edit.spi.ECPAbstractControl;
+import org.eclipse.emf.ecp.view.model.vaadin.ECPVaadinComponent;
+import org.eclipse.emf.ecp.view.model.vaadin.validator.AbstractFieldValidator;
 import org.eclipse.emf.ecp.view.spi.model.VControl;
-import org.eclipse.emf.ecp.view.spi.model.VViewPackage;
 import org.lunifera.runtime.web.vaadin.databinding.VaadinObservables;
 
 import com.vaadin.data.Property.ValueChangeNotifier;
@@ -35,6 +33,8 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.UI;
 
 public abstract class ECPControlFactoryVaadin extends ECPAbstractControl {
+
+	protected AbstractFieldValidator<?> componentValidator;
 
 	public abstract Component createControl(VControl control, Setting setting);
 
@@ -72,25 +72,9 @@ public abstract class ECPControlFactoryVaadin extends ECPAbstractControl {
 		return binding;
 	}
 
-	protected void applyValidation(VControl control, Component component) {
-		if (control.getDiagnostic() == null) {
-			component.setId("ok");
-			return;
-		}
-		switch (control.getDiagnostic().getHighestSeverity()) {
-		case Diagnostic.ERROR:
-			component.setId("error");
-			break;
-		case Diagnostic.OK:
-			component.setId("ok");
-			break;
-		}
-	}
-
-	public Component render(final VControl control) {
+	public ECPVaadinComponent render(final VControl control) {
 		Setting setting = control.getDomainModelReference().getIterator().next();
 		final Component component = createControl(control, setting);
-
 		component.setEnabled(!control.isReadonly());
 
 		VaadinObservables.activateRealm(UI.getCurrent());
@@ -99,22 +83,8 @@ public abstract class ECPControlFactoryVaadin extends ECPAbstractControl {
 				.observe(setting.getEObject());
 		bindModelToTarget(targetValue, modelValue, getTargetToModelStrategy(control), getModelToTargetStrategy(control));
 
-		control.eAdapters().add(new AdapterImpl() {
-
-			@Override
-			public void notifyChanged(Notification msg) {
-				super.notifyChanged(msg);
-				if (msg.getFeature() == VViewPackage.eINSTANCE.getElement_Diagnostic()) {
-					applyValidation(control, component);
-				}
-			}
-
-		});
-
-		applyValidation(control, component);
 		component.setWidth(100, Unit.PERCENTAGE);
-
-		return component;
+		return new ECPVaadinComponent(component, componentValidator);
 	}
 
 	protected UpdateValueStrategy getModelToTargetStrategy(VControl control) {

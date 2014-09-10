@@ -9,19 +9,17 @@
  * Contributors:
  * Dennis - initial API and implementation
  ******************************************************************************/
-package org.eclipse.emf.ecp.controls.vaadin.internal;
+package org.eclipse.emf.ecp.controls.vaadin;
 
-import org.eclipse.emf.ecore.EStructuralFeature.Setting;
-import org.eclipse.emf.ecp.view.spi.model.VControl;
+import org.eclipse.emf.databinding.EMFUpdateValueStrategy;
 
-import com.vaadin.ui.AbstractField;
-import com.vaadin.ui.CheckBox;
-
-public class ECPVaadinBoolean extends ECPVaadinAbstractField {
+public class ECPTextFieldToTargetUpdateValueStrategy extends EMFUpdateValueStrategy {
 
 	@Override
-	public AbstractField<?> createFieldControl(VControl control, Setting setting) {
-		return new CheckBox();
+	public Object convert(Object value) {
+		if (value == null || "".equals(value)) {
+			return null;
+		}
+		return super.convert(value);
 	}
-
 }

@@ -30,7 +30,9 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature.Setting;
-import org.eclipse.emf.ecp.view.model.vaadin.RendererVaadin;
+import org.eclipse.emf.ecp.view.model.vaadin.AbstractControlRendererVaadin;
+import org.eclipse.emf.ecp.view.model.vaadin.ECPVaadinComponent;
+import org.eclipse.emf.ecp.view.model.vaadin.validator.ECPVaadinEmptyListSelectValidator;
 import org.eclipse.emf.ecp.view.spi.context.ViewModelContext;
 import org.eclipse.emf.ecp.view.spi.table.model.VTableControl;
 import org.lunifera.runtime.web.vaadin.databinding.VaadinObservables;
@@ -39,13 +41,12 @@ import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
-import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
-public class TableRendererVaadin extends RendererVaadin<VTableControl> {
+public class TableRendererVaadin extends AbstractControlRendererVaadin<VTableControl> {
 
 	private static class TableContentUpdateAdaper extends AdapterImpl {
 
@@ -68,14 +69,18 @@ public class TableRendererVaadin extends RendererVaadin<VTableControl> {
 	}
 
 	@Override
-	public Component render(VTableControl control, ViewModelContext viewContext) {
+	public ECPVaadinComponent renderComponent(VTableControl control, ViewModelContext viewContext) {
 		final Setting setting = control.getDomainModelReference().getIterator().next();
 
 		VerticalLayout layout = new VerticalLayout();
 		layout.setSizeFull();
 
 		final Table table = new Table();
-		setCaption(control, table);
+		ECPVaadinEmptyListSelectValidator componentValidator = null;
+		if (!control.isReadonly()) {
+			componentValidator = new ECPVaadinEmptyListSelectValidator(table, setting.getEStructuralFeature());
+			table.addValidator(componentValidator);
+		}
 		table.setSelectable(true);
 		table.setSizeFull();
 		layout.addComponent(table);
@@ -136,7 +141,7 @@ public class TableRendererVaadin extends RendererVaadin<VTableControl> {
 				items.remove(selectedValue);
 			}
 		});
-		return layout;
+		return new ECPVaadinComponent(layout, componentValidator);
 	}
 
 	protected Binding bindModelToTarget(DataBindingContext dataBindingContext, IObservableList target,

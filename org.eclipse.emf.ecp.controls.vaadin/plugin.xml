@@ -104,5 +104,12 @@
          </staticTest>
       </control>
    </extension>
+   <extension
+         point="org.eclipse.emf.ecp.view.model.vaadin.renderer">
+      <renderer
+            renderable="org.eclipse.emf.ecp.view.spi.model.VControl"
+            renderer="org.eclipse.emf.ecp.controls.vaadin.internal.ControlRendererVaadin">
+      </renderer>
+   </extension>
 
 </plugin>

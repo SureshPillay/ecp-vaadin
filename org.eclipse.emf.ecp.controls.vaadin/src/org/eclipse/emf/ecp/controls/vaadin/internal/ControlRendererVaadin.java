@@ -9,22 +9,21 @@
  * Contributors:
  * Dennis - initial API and implementation
  ******************************************************************************/
-package org.eclipse.emf.ecp.view.model.internal.vaadin;
+package org.eclipse.emf.ecp.controls.vaadin.internal;
 
 import org.eclipse.emf.ecp.controls.vaadin.ECPControlFactoryVaadin;
 import org.eclipse.emf.ecp.edit.spi.ECPControlFactory;
-import org.eclipse.emf.ecp.view.model.vaadin.RendererVaadin;
+import org.eclipse.emf.ecp.view.model.vaadin.AbstractControlRendererVaadin;
+import org.eclipse.emf.ecp.view.model.vaadin.ECPVaadinComponent;
 import org.eclipse.emf.ecp.view.spi.context.ViewModelContext;
 import org.eclipse.emf.ecp.view.spi.model.VControl;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.FrameworkUtil;
 
-import com.vaadin.ui.Component;
-
-public class ControlRendererVaadin extends RendererVaadin<VControl> {
+public class ControlRendererVaadin extends AbstractControlRendererVaadin<VControl> {
 
 	@Override
-	public Component render(VControl control, ViewModelContext viewContext) {
+	public ECPVaadinComponent renderComponent(VControl control, ViewModelContext viewContext) {
 		BundleContext bundle = FrameworkUtil.getBundle(getClass()).getBundleContext();
 
 		ECPControlFactory factory = bundle.getService(bundle.getServiceReference(ECPControlFactory.class));
@@ -32,8 +31,7 @@ public class ControlRendererVaadin extends RendererVaadin<VControl> {
 		ECPControlFactoryVaadin createControl = factory.createControl(ECPControlFactoryVaadin.class,
 				control.getDomainModelReference());
 		createControl.init(viewContext, control);
-		Component component = createControl.render(control);
-		setCaption(control, component);
-		return component;
+		return createControl.render(control);
 	}
+
 }

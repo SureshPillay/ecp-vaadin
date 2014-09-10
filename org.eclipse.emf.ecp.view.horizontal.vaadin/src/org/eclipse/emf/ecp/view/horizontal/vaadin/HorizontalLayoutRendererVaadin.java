@@ -12,7 +12,8 @@
 
 package org.eclipse.emf.ecp.view.horizontal.vaadin;
 
-import org.eclipse.emf.ecp.view.model.vaadin.RendererVaadin;
+import org.eclipse.emf.ecp.view.model.vaadin.ECPVaadinComponent;
+import org.eclipse.emf.ecp.view.model.vaadin.AbstractVaadinRenderer;
 import org.eclipse.emf.ecp.view.model.vaadin.VaadinRendererFactory;
 import org.eclipse.emf.ecp.view.spi.context.ViewModelContext;
 import org.eclipse.emf.ecp.view.spi.horizontal.model.VHorizontalLayout;
@@ -20,13 +21,12 @@ import org.eclipse.emf.ecp.view.spi.model.VContainedElement;
 
 import com.vaadin.server.Sizeable.Unit;
 import com.vaadin.ui.Component;
-import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.HorizontalLayout;
 
-public class HorizontalLayoutRendererVaadin extends RendererVaadin<VHorizontalLayout> {
+public class HorizontalLayoutRendererVaadin extends AbstractVaadinRenderer<VHorizontalLayout> {
 
 	@Override
-	public ComponentContainer render(VHorizontalLayout renderable, final ViewModelContext viewContext) {
+	public ECPVaadinComponent renderComponent(VHorizontalLayout renderable, final ViewModelContext viewContext) {
 		HorizontalLayout layout = new HorizontalLayout();
 		for (VContainedElement composite : renderable.getChildren()) {
 			Component renderResult = VaadinRendererFactory.INSTANCE.render(composite, viewContext);
@@ -35,7 +35,7 @@ public class HorizontalLayoutRendererVaadin extends RendererVaadin<VHorizontalLa
 		layout.setWidth(100, Unit.PERCENTAGE);
 		layout.setMargin(true);
 
-		return layout;
+		return new ECPVaadinComponent(layout);
 	}
 
 }

@@ -13,39 +13,34 @@ package org.eclipse.emf.ecp.controls.vaadin.internal;
 
 import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.emf.ecore.EStructuralFeature.Setting;
-import org.eclipse.emf.ecp.controls.vaadin.ECPControlFactoryVaadin;
 import org.eclipse.emf.ecp.controls.vaadin.ECPTextFieldToModelUpdateValueStrategy;
+import org.eclipse.emf.ecp.controls.vaadin.ECPTextFieldToTargetUpdateValueStrategy;
 import org.eclipse.emf.ecp.view.spi.model.VControl;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 
-import com.vaadin.data.validator.NullValidator;
-import com.vaadin.ui.AbstractTextField;
-import com.vaadin.ui.Component;
+import com.vaadin.ui.AbstractField;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 
-public class ECPVaadinText extends ECPControlFactoryVaadin {
+public class ECPVaadinText extends ECPVaadinAbstractField {
 
 	@Override
-	public Component createControl(VControl control, Setting setting) {
-		IItemPropertyDescriptor itemPropertyDescriptor = getItemPropertyDescriptor(setting);
-
-		AbstractTextField textfield = new TextField();
-
-		if (itemPropertyDescriptor.isMultiLine(null)) {
-			textfield = new TextArea();
-		}
-
-		if (setting.getEStructuralFeature().getLowerBound() > 0) {
-			textfield.addValidator(new NullValidator("Muss gesetzt sein", true));
-		}
-		textfield.setImmediate(true);
-		return textfield;
+	protected UpdateValueStrategy getTargetToModelStrategy(VControl control) {
+		return new ECPTextFieldToTargetUpdateValueStrategy();
 	}
 
 	@Override
 	protected UpdateValueStrategy getModelToTargetStrategy(VControl control) {
 		return new ECPTextFieldToModelUpdateValueStrategy();
+	}
+
+	@Override
+	public AbstractField<?> createFieldControl(VControl control, Setting setting) {
+		IItemPropertyDescriptor itemPropertyDescriptor = getItemPropertyDescriptor(setting);
+		if (itemPropertyDescriptor.isMultiLine(null)) {
+			return new TextArea();
+		}
+		return new TextField();
 	}
 
 }

@@ -11,26 +11,26 @@
  ******************************************************************************/
 package org.eclipse.emf.ecp.controls.vaadin.internal;
 
-import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.emf.ecore.EStructuralFeature.Setting;
-import org.eclipse.emf.ecp.controls.vaadin.ECPTextFieldToModelUpdateValueStrategy;
+import org.eclipse.emf.ecp.controls.vaadin.ECPControlFactoryVaadin;
+import org.eclipse.emf.ecp.view.model.vaadin.validator.ECPVaadinEmptyTextValidator;
 import org.eclipse.emf.ecp.view.spi.model.VControl;
 
 import com.vaadin.ui.AbstractField;
-import com.vaadin.ui.TextField;
+import com.vaadin.ui.Component;
 
-public class ECPVaadinNumber extends ECPVaadinAbstractField {
-
-	@Override
-	protected UpdateValueStrategy getModelToTargetStrategy(VControl control) {
-		return new ECPTextFieldToModelUpdateValueStrategy();
-	}
+public abstract class ECPVaadinAbstractField extends ECPControlFactoryVaadin {
 
 	@Override
-	public AbstractField<?> createFieldControl(VControl control, Setting setting) {
-		final TextField component = new TextField();
-		component.setConverter(setting.getEStructuralFeature().getEType().getInstanceClass());
-		return component;
+	public Component createControl(VControl control, Setting setting) {
+		AbstractField<?> abstractField = createFieldControl(control, setting);
+		if (setting.getEStructuralFeature().getLowerBound() > 0 && !control.isReadonly()) {
+			componentValidator = new ECPVaadinEmptyTextValidator(abstractField);
+			abstractField.addValidator(componentValidator);
+		}
+		return abstractField;
 	}
+
+	public abstract AbstractField<?> createFieldControl(VControl control, Setting setting);
 
 }

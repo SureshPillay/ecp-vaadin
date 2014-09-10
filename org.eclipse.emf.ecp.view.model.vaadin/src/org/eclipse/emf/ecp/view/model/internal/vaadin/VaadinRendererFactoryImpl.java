@@ -20,7 +20,7 @@ import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.InvalidRegistryObjectException;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.emf.ecp.view.model.vaadin.RendererVaadin;
+import org.eclipse.emf.ecp.view.model.vaadin.AbstractVaadinRenderer;
 import org.eclipse.emf.ecp.view.model.vaadin.VaadinRendererFactory;
 import org.eclipse.emf.ecp.view.spi.context.ViewModelContext;
 import org.eclipse.emf.ecp.view.spi.model.VElement;
@@ -30,7 +30,7 @@ import com.vaadin.ui.Component;
 
 public final class VaadinRendererFactoryImpl implements VaadinRendererFactory {
 	private static final String RENDER_EXTENSION = "org.eclipse.emf.ecp.view.model.vaadin.renderer"; //$NON-NLS-1$
-	private Map<Class<VElement>, RendererVaadin<VElement>> rendererMapping = new LinkedHashMap<>();
+	private Map<Class<VElement>, AbstractVaadinRenderer<VElement>> rendererMapping = new LinkedHashMap<>();
 
 	public VaadinRendererFactoryImpl() {
 		loadRenderer();
@@ -43,7 +43,7 @@ public final class VaadinRendererFactoryImpl implements VaadinRendererFactory {
 			for (IConfigurationElement configurationElement : extension.getConfigurationElements()) {
 				try {
 					@SuppressWarnings("unchecked")
-					final RendererVaadin<VElement> renderer = (RendererVaadin<VElement>) configurationElement
+					final AbstractVaadinRenderer<VElement> renderer = (AbstractVaadinRenderer<VElement>) configurationElement
 							.createExecutableExtension("renderer");
 					String clazz = configurationElement.getAttribute("renderable");
 
