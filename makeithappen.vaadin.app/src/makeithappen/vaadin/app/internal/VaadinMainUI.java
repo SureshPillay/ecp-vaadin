@@ -8,10 +8,12 @@ import org.eclipse.emf.ecp.view.model.vaadin.ECPVaadinView;
 import com.eclipsesource.makeithappen.model.task.TaskFactory;
 import com.eclipsesource.makeithappen.model.task.User;
 import com.vaadin.annotations.PreserveOnRefresh;
+import com.vaadin.annotations.Theme;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.ui.UI;
 
 @PreserveOnRefresh
+@Theme("reindeer")
 public class VaadinMainUI extends UI {
 
 	private static final long serialVersionUID = 1L;

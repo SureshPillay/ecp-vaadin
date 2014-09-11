@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.emf.ecp.view.model.vaadin.renderer">
+      <renderer
+            renderable="org.eclipse.emf.ecp.view.spi.label.model.VLabel"
+            renderer="org.eclipse.emf.ecp.view.label.vaadin.LabelRendererVaadin">
+      </renderer>
+   </extension>
+
+</plugin>
