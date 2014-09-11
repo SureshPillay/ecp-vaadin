@@ -9,20 +9,19 @@
  * Contributors:
  * Dennis - initial API and implementation
  ******************************************************************************/
-
-package org.eclipse.emf.ecp.view.horizontal.vaadin;
+package org.eclipse.emf.ecp.view.vertical.vaadin;
 
 import org.eclipse.emf.ecp.view.model.vaadin.AbstractContainerRendererVaadin;
-import org.eclipse.emf.ecp.view.spi.horizontal.model.VHorizontalLayout;
+import org.eclipse.emf.ecp.view.spi.vertical.model.VVerticalLayout;
 
 import com.vaadin.ui.AbstractOrderedLayout;
-import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.VerticalLayout;
 
-public class HorizontalLayoutRendererVaadin extends AbstractContainerRendererVaadin<VHorizontalLayout> {
+public class VerticalLayoutRendererVaadin extends AbstractContainerRendererVaadin<VVerticalLayout> {
 
 	@Override
-	protected AbstractOrderedLayout getComponentContainer(VHorizontalLayout renderable) {
-		return new HorizontalLayout();
+	protected AbstractOrderedLayout getComponentContainer(VVerticalLayout renderable) {
+		return new VerticalLayout();
 	}
 
 }
