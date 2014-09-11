@@ -18,11 +18,6 @@ import com.vaadin.ui.Component;
 
 public abstract class AbstractVaadinRenderer<T extends VElement> {
 
-	public Component render(T renderable, final ViewModelContext viewContext) {
-		ECPVaadinComponent vaadinComponent = renderComponent(renderable, viewContext);
-		return vaadinComponent.getComponent();
-	}
-
-	protected abstract ECPVaadinComponent renderComponent(T renderable, final ViewModelContext viewContext);
+	public abstract Component render(T renderable, final ViewModelContext viewContext);
 
 }

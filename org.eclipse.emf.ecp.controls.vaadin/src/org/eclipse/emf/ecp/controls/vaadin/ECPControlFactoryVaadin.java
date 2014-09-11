@@ -22,8 +22,6 @@ import org.eclipse.emf.databinding.EMFProperties;
 import org.eclipse.emf.databinding.EMFUpdateValueStrategy;
 import org.eclipse.emf.ecore.EStructuralFeature.Setting;
 import org.eclipse.emf.ecp.edit.spi.ECPAbstractControl;
-import org.eclipse.emf.ecp.view.model.vaadin.ECPVaadinComponent;
-import org.eclipse.emf.ecp.view.model.vaadin.validator.AbstractFieldValidator;
 import org.eclipse.emf.ecp.view.spi.model.VControl;
 import org.lunifera.runtime.web.vaadin.databinding.VaadinObservables;
 
@@ -33,8 +31,6 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.UI;
 
 public abstract class ECPControlFactoryVaadin extends ECPAbstractControl {
-
-	protected AbstractFieldValidator<?> componentValidator;
 
 	public abstract Component createControl(VControl control, Setting setting);
 
@@ -72,7 +68,7 @@ public abstract class ECPControlFactoryVaadin extends ECPAbstractControl {
 		return binding;
 	}
 
-	public ECPVaadinComponent render(final VControl control) {
+	public Component render(final VControl control) {
 		Setting setting = control.getDomainModelReference().getIterator().next();
 		final Component component = createControl(control, setting);
 		component.setEnabled(!control.isReadonly());
@@ -84,7 +80,7 @@ public abstract class ECPControlFactoryVaadin extends ECPAbstractControl {
 		bindModelToTarget(targetValue, modelValue, getTargetToModelStrategy(control), getModelToTargetStrategy(control));
 
 		component.setWidth(100, Unit.PERCENTAGE);
-		return new ECPVaadinComponent(component, componentValidator);
+		return component;
 	}
 
 	protected UpdateValueStrategy getModelToTargetStrategy(VControl control) {

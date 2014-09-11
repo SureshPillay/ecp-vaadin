@@ -12,7 +12,6 @@
 
 package org.eclipse.emf.ecp.view.model.internal.vaadin;
 
-import org.eclipse.emf.ecp.view.model.vaadin.ECPVaadinComponent;
 import org.eclipse.emf.ecp.view.model.vaadin.AbstractVaadinRenderer;
 import org.eclipse.emf.ecp.view.model.vaadin.VaadinRendererFactory;
 import org.eclipse.emf.ecp.view.spi.context.ViewModelContext;
@@ -20,21 +19,20 @@ import org.eclipse.emf.ecp.view.spi.model.VContainedElement;
 import org.eclipse.emf.ecp.view.spi.model.VView;
 
 import com.vaadin.ui.Component;
-import com.vaadin.ui.VerticalLayout;
 
 public class ViewRendererVaadin extends AbstractVaadinRenderer<VView> {
 
 	@Override
-	public ECPVaadinComponent renderComponent(VView renderable, ViewModelContext viewModelContext) {
-		VerticalLayout verticalLayout = new VerticalLayout();
-		verticalLayout.setSizeFull();
+	public Component render(VView renderable, ViewModelContext viewModelContext) {
+		ECPVaadinViewComponent customComponent = new ECPVaadinViewComponent();
+		customComponent.setSizeFull();
 		for (VContainedElement composite : renderable.getChildren()) {
 			Component renderResult = VaadinRendererFactory.INSTANCE.render(composite, viewModelContext);
-			verticalLayout.addComponent(renderResult);
+			customComponent.addComponent(renderResult);
 
 		}
 
-		return new ECPVaadinComponent(verticalLayout);
+		return customComponent;
 	}
 
 }

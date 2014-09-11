@@ -15,7 +15,6 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.ecore.EStructuralFeature.Setting;
-import org.eclipse.emf.ecp.view.model.vaadin.validator.AbstractFieldValidator;
 import org.eclipse.emf.ecp.view.spi.context.ViewModelContext;
 import org.eclipse.emf.ecp.view.spi.model.LabelAlignment;
 import org.eclipse.emf.ecp.view.spi.model.VControl;
@@ -24,7 +23,10 @@ import org.eclipse.emf.edit.provider.AdapterFactoryItemDelegator;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 
+import com.vaadin.server.UserError;
+import com.vaadin.ui.AbstractComponent;
 import com.vaadin.ui.Component;
+import com.vaadin.ui.ComponentContainer;
 
 public abstract class AbstractControlRendererVaadin<T extends VControl> extends AbstractVaadinRenderer<T> {
 
@@ -53,49 +55,45 @@ public abstract class AbstractControlRendererVaadin<T extends VControl> extends 
 		component.setCaption(itemPropertyDescriptor.getDisplayName(setting.getEObject()) + extra);
 	}
 
-	protected void applyValidation(T control, ECPVaadinComponent component) {
-		applyDiagnostic(control, component);
-	}
-
-	private void applyComponentValidation(T control, ECPVaadinComponent vaadinComponent) {
-		AbstractFieldValidator<?> componentValidator = vaadinComponent.getComponentValidator();
-		if (componentValidator == null) {
-			return;
+	private Component getControlComponent(Component component) {
+		if (component instanceof ComponentContainer) {
+			return getControlComponent(((ComponentContainer) component).iterator().next());
 		}
-		componentValidator.setErrorMessage(control.getDiagnostic().getMessage());
-		componentValidator.validateField();
+		return component;
 	}
 
-	private void applyDiagnostic(T control, ECPVaadinComponent component) {
+	protected void applyValidation(T control, Component component) {
+		AbstractComponent abstractComponent = (AbstractComponent) component;
+		abstractComponent.setComponentError(null);
+
 		if (control.getDiagnostic() == null) {
 			return;
 		}
 		if (Diagnostic.ERROR == control.getDiagnostic().getHighestSeverity()) {
-			component.getComponent().setId("error");
-			applyComponentValidation(control, component);
+			abstractComponent.setComponentError(new UserError(control.getDiagnostic().getMessage()));
 		}
 	}
 
 	@Override
 	public Component render(T renderable, final ViewModelContext viewContext) {
-		ECPVaadinComponent vaadinComponent = renderComponent(renderable, viewContext);
-		Component component = vaadinComponent.getComponent();
-		setCaption(renderable, component);
+		Component component = renderControl(renderable, viewContext);
+		Component controlComponent = getControlComponent(component);
+		setCaption(renderable, controlComponent);
 
 		renderable.eAdapters().add(new AdapterImpl() {
 
 			@Override
 			public void notifyChanged(Notification msg) {
-				super.notifyChanged(msg);
 				if (msg.getFeature() == VViewPackage.eINSTANCE.getElement_Diagnostic()) {
-					applyValidation(renderable, vaadinComponent);
+					applyValidation(renderable, controlComponent);
 				}
 			}
-
 		});
 
-		applyValidation(renderable, vaadinComponent);
+		applyValidation(renderable, controlComponent);
 
 		return component;
 	}
+
+	protected abstract Component renderControl(T renderable, ViewModelContext viewContext);
 }

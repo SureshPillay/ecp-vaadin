@@ -13,13 +13,14 @@ package org.eclipse.emf.ecp.controls.vaadin.internal;
 
 import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.emf.ecore.EStructuralFeature.Setting;
+import org.eclipse.emf.ecp.controls.vaadin.ECPControlFactoryVaadin;
 import org.eclipse.emf.ecp.controls.vaadin.ECPTextFieldToModelUpdateValueStrategy;
 import org.eclipse.emf.ecp.view.spi.model.VControl;
 
-import com.vaadin.ui.AbstractField;
+import com.vaadin.ui.Component;
 import com.vaadin.ui.TextField;
 
-public class ECPVaadinNumber extends ECPVaadinAbstractField {
+public class ECPVaadinNumber extends ECPControlFactoryVaadin {
 
 	@Override
 	protected UpdateValueStrategy getModelToTargetStrategy(VControl control) {
@@ -27,7 +28,7 @@ public class ECPVaadinNumber extends ECPVaadinAbstractField {
 	}
 
 	@Override
-	public AbstractField<?> createFieldControl(VControl control, Setting setting) {
+	public Component createControl(VControl control, Setting setting) {
 		final TextField component = new TextField();
 		component.setConverter(setting.getEStructuralFeature().getEType().getInstanceClass());
 		return component;

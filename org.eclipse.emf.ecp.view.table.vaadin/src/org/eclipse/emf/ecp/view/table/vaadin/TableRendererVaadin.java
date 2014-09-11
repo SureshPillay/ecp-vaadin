@@ -31,8 +31,6 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature.Setting;
 import org.eclipse.emf.ecp.view.model.vaadin.AbstractControlRendererVaadin;
-import org.eclipse.emf.ecp.view.model.vaadin.ECPVaadinComponent;
-import org.eclipse.emf.ecp.view.model.vaadin.validator.ECPVaadinEmptyListSelectValidator;
 import org.eclipse.emf.ecp.view.spi.context.ViewModelContext;
 import org.eclipse.emf.ecp.view.spi.table.model.VTableControl;
 import org.lunifera.runtime.web.vaadin.databinding.VaadinObservables;
@@ -41,6 +39,7 @@ import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
+import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.UI;
@@ -68,19 +67,31 @@ public class TableRendererVaadin extends AbstractControlRendererVaadin<VTableCon
 		return instance;
 	}
 
+	protected Binding bindModelToTarget(DataBindingContext dataBindingContext, IObservableList target,
+			IObservableList model) {
+		final Binding binding = dataBindingContext.bindList(target, model);
+		binding.getValidationStatus().addValueChangeListener(new IValueChangeListener() {
+
+			@Override
+			public void handleValueChange(ValueChangeEvent event) {
+				IStatus statusNew = (IStatus) event.diff.getNewValue();
+				if (IStatus.ERROR == statusNew.getSeverity()) {
+					binding.updateModelToTarget();
+				}
+			}
+		});
+
+		return binding;
+	}
+
 	@Override
-	public ECPVaadinComponent renderComponent(VTableControl control, ViewModelContext viewContext) {
+	protected Component renderControl(VTableControl control, ViewModelContext viewContext) {
 		final Setting setting = control.getDomainModelReference().getIterator().next();
 
 		VerticalLayout layout = new VerticalLayout();
 		layout.setSizeFull();
 
 		final Table table = new Table();
-		ECPVaadinEmptyListSelectValidator componentValidator = null;
-		if (!control.isReadonly()) {
-			componentValidator = new ECPVaadinEmptyListSelectValidator(table, setting.getEStructuralFeature());
-			table.addValidator(componentValidator);
-		}
 		table.setSelectable(true);
 		table.setSizeFull();
 		layout.addComponent(table);
@@ -141,24 +152,8 @@ public class TableRendererVaadin extends AbstractControlRendererVaadin<VTableCon
 				items.remove(selectedValue);
 			}
 		});
-		return new ECPVaadinComponent(layout, componentValidator);
-	}
+		return layout;
 
-	protected Binding bindModelToTarget(DataBindingContext dataBindingContext, IObservableList target,
-			IObservableList model) {
-		final Binding binding = dataBindingContext.bindList(target, model);
-		binding.getValidationStatus().addValueChangeListener(new IValueChangeListener() {
-
-			@Override
-			public void handleValueChange(ValueChangeEvent event) {
-				IStatus statusNew = (IStatus) event.diff.getNewValue();
-				if (IStatus.ERROR == statusNew.getSeverity()) {
-					binding.updateModelToTarget();
-				}
-			}
-		});
-
-		return binding;
 	}
 
 }

@@ -12,15 +12,16 @@
 package org.eclipse.emf.ecp.controls.vaadin.internal;
 
 import org.eclipse.emf.ecore.EStructuralFeature.Setting;
+import org.eclipse.emf.ecp.controls.vaadin.ECPControlFactoryVaadin;
 import org.eclipse.emf.ecp.view.spi.model.VControl;
 
-import com.vaadin.ui.AbstractField;
 import com.vaadin.ui.CheckBox;
+import com.vaadin.ui.Component;
 
-public class ECPVaadinBoolean extends ECPVaadinAbstractField {
+public class ECPVaadinBoolean extends ECPControlFactoryVaadin {
 
 	@Override
-	public AbstractField<?> createFieldControl(VControl control, Setting setting) {
+	public Component createControl(VControl control, Setting setting) {
 		return new CheckBox();
 	}
 

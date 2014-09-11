@@ -20,8 +20,6 @@ import org.eclipse.emf.databinding.EMFProperties;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EStructuralFeature.Setting;
 import org.eclipse.emf.ecp.controls.vaadin.ECPControlFactoryVaadin;
-import org.eclipse.emf.ecp.view.model.vaadin.ECPVaadinComponent;
-import org.eclipse.emf.ecp.view.model.vaadin.validator.ECPVaadinEmptyListSelectValidator;
 import org.eclipse.emf.ecp.view.spi.model.VControl;
 import org.lunifera.runtime.web.vaadin.databinding.VaadinObservables;
 
@@ -45,17 +43,13 @@ public class ECPVaadinStringList extends ECPControlFactoryVaadin {
 	}
 
 	@Override
-	public ECPVaadinComponent render(final VControl control) {
+	public Component render(final VControl control) {
 		final Setting setting = control.getDomainModelReference().getIterator().next();
 		VerticalLayout layout = new VerticalLayout();
 		layout.setSizeFull();
 
 		final ListSelect listSelect = new ListSelect();
 		EStructuralFeature eStructuralFeature = setting.getEStructuralFeature();
-		if (!control.isReadonly()) {
-			componentValidator = new ECPVaadinEmptyListSelectValidator(listSelect, eStructuralFeature);
-			listSelect.addValidator(componentValidator);
-		}
 		listSelect.setSizeFull();
 		layout.addComponent(listSelect);
 		listSelect.setNullSelectionAllowed(true);
@@ -142,6 +136,6 @@ public class ECPVaadinStringList extends ECPControlFactoryVaadin {
 			}
 		});
 
-		return new ECPVaadinComponent(layout, componentValidator);
+		return layout;
 	}
 }

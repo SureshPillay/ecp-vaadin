@@ -11,7 +11,6 @@
  ******************************************************************************/
 package org.eclipse.emf.ecp.view.horizontal.vaadin;
 
-import org.eclipse.emf.ecp.view.model.vaadin.ECPVaadinComponent;
 import org.eclipse.emf.ecp.view.model.vaadin.AbstractVaadinRenderer;
 import org.eclipse.emf.ecp.view.model.vaadin.VaadinRendererFactory;
 import org.eclipse.emf.ecp.view.spi.context.ViewModelContext;
@@ -25,7 +24,7 @@ import com.vaadin.ui.VerticalLayout;
 public class VerticalLayoutRendererVaadin extends AbstractVaadinRenderer<VVerticalLayout> {
 
 	@Override
-	public ECPVaadinComponent renderComponent(VVerticalLayout renderable, ViewModelContext viewContext) {
+	public Component render(VVerticalLayout renderable, ViewModelContext viewContext) {
 		VerticalLayout layout = new VerticalLayout();
 		for (VContainedElement composite : renderable.getChildren()) {
 			Component renderResult = VaadinRendererFactory.INSTANCE.render(composite, viewContext);
@@ -33,7 +32,7 @@ public class VerticalLayoutRendererVaadin extends AbstractVaadinRenderer<VVertic
 		}
 		layout.setHeight(100, Unit.PERCENTAGE);
 		layout.setMargin(true);
-		return new ECPVaadinComponent(layout);
+		return layout;
 	}
 
 }

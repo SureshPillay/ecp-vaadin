@@ -17,15 +17,16 @@ import java.util.List;
 import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EEnumLiteral;
 import org.eclipse.emf.ecore.EStructuralFeature.Setting;
+import org.eclipse.emf.ecp.controls.vaadin.ECPControlFactoryVaadin;
 import org.eclipse.emf.ecp.view.spi.model.VControl;
 
-import com.vaadin.ui.AbstractField;
 import com.vaadin.ui.ComboBox;
+import com.vaadin.ui.Component;
 
-public class ECPVaadinEnum extends ECPVaadinAbstractField {
+public class ECPVaadinEnum extends ECPControlFactoryVaadin {
 
 	@Override
-	public AbstractField<?> createFieldControl(VControl control, Setting setting) {
+	public Component createControl(VControl control, Setting setting) {
 		ComboBox combobox = new ComboBox();
 		final List<Object> inputValues = new ArrayList<Object>();
 		for (final EEnumLiteral literal : EEnum.class.cast(setting.getEStructuralFeature().getEType()).getELiterals()) {
