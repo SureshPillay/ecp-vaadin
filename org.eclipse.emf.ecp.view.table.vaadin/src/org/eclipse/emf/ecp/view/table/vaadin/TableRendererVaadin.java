@@ -241,6 +241,10 @@ public class TableRendererVaadin extends AbstractControlRendererVaadin<VTableCon
 		}
 	}
 
+	@Override
+	protected void applyEnable(VTableControl renderable, Component component) {
+	}
+
 	private void createAddRemoveButton(final Setting setting, final Table table, HorizontalLayout horizontalLayout) {
 		Button add = new Button("Add");
 		horizontalLayout.addComponent(add);

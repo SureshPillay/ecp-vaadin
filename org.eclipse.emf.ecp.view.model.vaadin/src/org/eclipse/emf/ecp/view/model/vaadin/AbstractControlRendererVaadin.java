@@ -11,8 +11,6 @@
  ******************************************************************************/
 package org.eclipse.emf.ecp.view.model.vaadin;
 
-import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
@@ -20,7 +18,6 @@ import org.eclipse.emf.ecore.EStructuralFeature.Setting;
 import org.eclipse.emf.ecp.view.spi.context.ViewModelContext;
 import org.eclipse.emf.ecp.view.spi.model.LabelAlignment;
 import org.eclipse.emf.ecp.view.spi.model.VControl;
-import org.eclipse.emf.ecp.view.spi.model.VViewPackage;
 import org.eclipse.emf.edit.provider.AdapterFactoryItemDelegator;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
@@ -70,13 +67,15 @@ public abstract class AbstractControlRendererVaadin<T extends VControl> extends 
 		return adapterFactoryItemDelegator;
 	}
 
-	private Component getControlComponent(Component component) {
+	@Override
+	protected Component getControlComponent(Component component) {
 		if (component instanceof ComponentContainer) {
 			return getControlComponent(((ComponentContainer) component).iterator().next());
 		}
 		return component;
 	}
 
+	@Override
 	protected void applyValidation(T control, Component component) {
 		AbstractComponent abstractComponent = (AbstractComponent) component;
 		abstractComponent.setComponentError(null);
@@ -90,23 +89,10 @@ public abstract class AbstractControlRendererVaadin<T extends VControl> extends 
 	}
 
 	@Override
-	public Component render(T renderable, final ViewModelContext viewContext) {
+	protected Component render(T renderable, final ViewModelContext viewContext) {
 		Component component = renderControl(renderable, viewContext);
 		Component controlComponent = getControlComponent(component);
 		setCaption(renderable, controlComponent);
-
-		renderable.eAdapters().add(new AdapterImpl() {
-
-			@Override
-			public void notifyChanged(Notification msg) {
-				if (msg.getFeature() == VViewPackage.eINSTANCE.getElement_Diagnostic()) {
-					applyValidation(renderable, controlComponent);
-				}
-			}
-		});
-
-		applyValidation(renderable, controlComponent);
-
 		return component;
 	}
 

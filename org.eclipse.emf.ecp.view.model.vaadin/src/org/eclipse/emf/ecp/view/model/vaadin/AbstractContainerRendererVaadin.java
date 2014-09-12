@@ -22,7 +22,7 @@ import com.vaadin.ui.Component;
 public abstract class AbstractContainerRendererVaadin<T extends VContainer> extends AbstractVaadinRenderer<T> {
 
 	@Override
-	public Component render(T renderable, final ViewModelContext viewContext) {
+	protected Component render(T renderable, final ViewModelContext viewContext) {
 		AbstractOrderedLayout layout = getComponentContainer(renderable);
 		for (VContainedElement composite : renderable.getChildren()) {
 			Component renderResult = VaadinRendererFactory.INSTANCE.render(composite, viewContext);
