@@ -29,9 +29,17 @@ public abstract class AbstractContainerRendererVaadin<T extends VContainer> exte
 			layout.addComponent(renderResult);
 		}
 		layout.setWidth(100, Unit.PERCENTAGE);
-		layout.setMargin(true);
-		layout.setSpacing(true);
+		layout.setMargin(isMargin(renderable));
+		layout.setSpacing(isSpacing(renderable));
 		return layout;
+	}
+
+	protected boolean isMargin(T renderable) {
+		return true;
+	}
+
+	protected boolean isSpacing(T renderable) {
+		return true;
 	}
 
 	protected abstract AbstractOrderedLayout getComponentContainer(T renderable);

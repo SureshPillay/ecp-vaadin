@@ -5,7 +5,7 @@
          point="org.eclipse.emf.ecp.view.model.vaadin.renderer">
       <renderer
             renderable="org.eclipse.emf.ecp.view.spi.group.model.VGroup"
-            renderer="org.eclipse.emf.ecp.view.group.vaadin.FormLayoutRendererVaadin">
+            renderer="org.eclipse.emf.ecp.view.group.vaadin.GroupLayoutRendererVaadin">
       </renderer>
    </extension>
 
