@@ -9,4 +9,15 @@ public interface VaadinCustomControl extends Component {
 
 	void renderCustomControl(VCustomControl customControl, ViewModelContext viewModelContext);
 
+	boolean showCaption();
+
+	boolean showValidation();
+
+	Component getControlComponent();
+
+	void applyValidation(VCustomControl control);
+
+	void applyEnable(VCustomControl renderable);
+
+	void applyVisible(VCustomControl renderable);
 }

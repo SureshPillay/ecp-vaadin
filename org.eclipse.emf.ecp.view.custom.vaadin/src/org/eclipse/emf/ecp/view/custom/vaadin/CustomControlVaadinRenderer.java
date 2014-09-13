@@ -62,4 +62,39 @@ public class CustomControlVaadinRenderer extends AbstractControlRendererVaadin<V
 		component.renderCustomControl(renderable, viewContext);
 		return component;
 	}
+
+	@Override
+	protected Component getControlComponent(Component component) {
+		return component;
+	}
+
+	@Override
+	protected void setCaption(VCustomControl control, Component component) {
+		VaadinCustomControl vaadinCustomControl = (VaadinCustomControl) component;
+		if (vaadinCustomControl.showCaption()) {
+			super.setCaption(control, vaadinCustomControl.getControlComponent());
+		}
+	}
+
+	@Override
+	protected void applyValidation(VCustomControl control, Component component) {
+		VaadinCustomControl vaadinCustomControl = (VaadinCustomControl) component;
+		if (vaadinCustomControl.showValidation()) {
+			super.applyValidation(control, vaadinCustomControl.getControlComponent());
+		}
+		vaadinCustomControl.applyValidation(control);
+	}
+
+	@Override
+	protected void applyEnable(VCustomControl renderable, Component component) {
+		VaadinCustomControl vaadinCustomControl = (VaadinCustomControl) component;
+		vaadinCustomControl.applyEnable(renderable);
+	}
+
+	@Override
+	protected void applyVisible(VCustomControl renderable, Component component) {
+		VaadinCustomControl vaadinCustomControl = (VaadinCustomControl) component;
+		vaadinCustomControl.applyVisible(renderable);
+	}
+
 }

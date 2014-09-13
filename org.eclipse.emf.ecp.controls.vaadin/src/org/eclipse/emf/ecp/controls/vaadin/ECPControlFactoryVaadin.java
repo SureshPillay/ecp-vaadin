@@ -15,9 +15,6 @@ import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.core.databinding.observable.list.IObservableList;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
-import org.eclipse.core.databinding.observable.value.IValueChangeListener;
-import org.eclipse.core.databinding.observable.value.ValueChangeEvent;
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.emf.databinding.EMFProperties;
 import org.eclipse.emf.databinding.EMFUpdateValueStrategy;
 import org.eclipse.emf.ecore.EStructuralFeature.Setting;
@@ -38,33 +35,11 @@ public abstract class ECPControlFactoryVaadin extends ECPAbstractControl {
 			UpdateValueStrategy targetToModelStrategy, UpdateValueStrategy modelToTargetStrategy) {
 		final Binding binding = getDataBindingContext().bindValue(target, model, targetToModelStrategy,
 				modelToTargetStrategy);
-		binding.getValidationStatus().addValueChangeListener(new IValueChangeListener() {
-
-			@Override
-			public void handleValueChange(ValueChangeEvent event) {
-				IStatus statusNew = (IStatus) event.diff.getNewValue();
-				if (IStatus.ERROR == statusNew.getSeverity()) {
-					binding.updateModelToTarget();
-				}
-			}
-		});
-
 		return binding;
 	}
 
 	protected Binding bindModelToTarget(IObservableList target, IObservableList model) {
 		final Binding binding = getDataBindingContext().bindList(target, model);
-		binding.getValidationStatus().addValueChangeListener(new IValueChangeListener() {
-
-			@Override
-			public void handleValueChange(ValueChangeEvent event) {
-				IStatus statusNew = (IStatus) event.diff.getNewValue();
-				if (IStatus.ERROR == statusNew.getSeverity()) {
-					binding.updateModelToTarget();
-				}
-			}
-		});
-
 		return binding;
 	}
 

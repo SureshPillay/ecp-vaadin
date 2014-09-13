@@ -14,25 +14,45 @@ package org.eclipse.emf.ecp.view.model.internal.vaadin;
 
 import org.eclipse.emf.ecp.view.model.vaadin.AbstractVaadinRenderer;
 import org.eclipse.emf.ecp.view.model.vaadin.VaadinRendererFactory;
+import org.eclipse.emf.ecp.view.model.vaadin.ViewLayoutProvider;
 import org.eclipse.emf.ecp.view.spi.context.ViewModelContext;
 import org.eclipse.emf.ecp.view.spi.model.VContainedElement;
 import org.eclipse.emf.ecp.view.spi.model.VView;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 import com.vaadin.ui.Component;
+import com.vaadin.ui.Layout;
+import com.vaadin.ui.VerticalLayout;
 
 public class ViewRendererVaadin extends AbstractVaadinRenderer<VView> {
 
 	@Override
 	public Component render(VView renderable, ViewModelContext viewModelContext) {
-		ECPVaadinViewComponent customComponent = new ECPVaadinViewComponent();
+		ECPVaadinViewComponent customComponent = new ECPVaadinViewComponent(getLayout());
 		customComponent.setSizeFull();
 		for (VContainedElement composite : renderable.getChildren()) {
 			Component renderResult = VaadinRendererFactory.INSTANCE.render(composite, viewModelContext);
-			customComponent.addComponent(renderResult);
+			customComponent.getCompositionRoot().addComponent(renderResult);
 
 		}
 
 		return customComponent;
 	}
 
+	private Layout getLayout() {
+		BundleContext bundleContext = FrameworkUtil.getBundle(getClass()).getBundleContext();
+		if (bundleContext == null) {
+			return new VerticalLayout();
+		}
+
+		ServiceReference<ViewLayoutProvider> reference = bundleContext.getServiceReference(ViewLayoutProvider.class);
+		if (reference == null) {
+			return new VerticalLayout();
+		}
+
+		ViewLayoutProvider service = bundleContext.getService(reference);
+		return service == null ? new VerticalLayout() : service.getViewLayout();
+	}
 }

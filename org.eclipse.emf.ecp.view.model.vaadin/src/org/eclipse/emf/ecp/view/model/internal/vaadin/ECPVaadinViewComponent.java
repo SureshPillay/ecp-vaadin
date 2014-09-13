@@ -12,9 +12,18 @@
 package org.eclipse.emf.ecp.view.model.internal.vaadin;
 
 import com.vaadin.annotations.StyleSheet;
-import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.CustomComponent;
+import com.vaadin.ui.Layout;
 
 @StyleSheet({ "default.css" })
-public class ECPVaadinViewComponent extends VerticalLayout {
+public class ECPVaadinViewComponent extends CustomComponent {
 
+	public ECPVaadinViewComponent(Layout layout) {
+		setCompositionRoot(layout);
+	}
+
+	@Override
+	public Layout getCompositionRoot() {
+		return (Layout) super.getCompositionRoot();
+	}
 }
