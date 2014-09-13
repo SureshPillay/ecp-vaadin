@@ -12,14 +12,11 @@
 package org.eclipse.emf.ecp.view.model.vaadin;
 
 import org.eclipse.emf.common.util.Diagnostic;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EStructuralFeature.Setting;
+import org.eclipse.emf.ecp.view.core.vaadin.VaadinRendererUtil;
 import org.eclipse.emf.ecp.view.spi.context.ViewModelContext;
 import org.eclipse.emf.ecp.view.spi.model.LabelAlignment;
 import org.eclipse.emf.ecp.view.spi.model.VControl;
-import org.eclipse.emf.edit.provider.AdapterFactoryItemDelegator;
-import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 
 import com.vaadin.server.UserError;
@@ -35,7 +32,7 @@ public abstract class AbstractControlRendererVaadin<T extends VControl> extends 
 		}
 
 		Setting setting = control.getDomainModelReference().getIterator().next();
-		final IItemPropertyDescriptor itemPropertyDescriptor = getItemPropertyDescriptor(setting);
+		final IItemPropertyDescriptor itemPropertyDescriptor = VaadinRendererUtil.getItemPropertyDescriptor(setting);
 
 		if (itemPropertyDescriptor == null) {
 			return;
@@ -46,25 +43,6 @@ public abstract class AbstractControlRendererVaadin<T extends VControl> extends 
 			extra = "*"; //$NON-NLS-1$
 		}
 		component.setCaption(itemPropertyDescriptor.getDisplayName(setting.getEObject()) + extra);
-	}
-
-	protected IItemPropertyDescriptor getItemPropertyDescriptor(Setting setting) {
-		return getItemPropertyDescriptor(setting.getEObject(), setting.getEStructuralFeature());
-	}
-
-	protected IItemPropertyDescriptor getItemPropertyDescriptor(EObject object, EStructuralFeature structuralFeature) {
-		final AdapterFactoryItemDelegator adapterFactoryItemDelegator = getAdapterFactory();
-		final IItemPropertyDescriptor itemPropertyDescriptor = adapterFactoryItemDelegator.getPropertyDescriptor(
-				object, structuralFeature);
-		return itemPropertyDescriptor;
-	}
-
-	private AdapterFactoryItemDelegator getAdapterFactory() {
-		final ComposedAdapterFactory composedAdapterFactory = new ComposedAdapterFactory(
-				ComposedAdapterFactory.Descriptor.Registry.INSTANCE);
-		final AdapterFactoryItemDelegator adapterFactoryItemDelegator = new AdapterFactoryItemDelegator(
-				composedAdapterFactory);
-		return adapterFactoryItemDelegator;
 	}
 
 	@Override

@@ -16,19 +16,13 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.core.databinding.Binding;
-import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.observable.list.IListChangeListener;
 import org.eclipse.core.databinding.observable.list.IObservableList;
 import org.eclipse.core.databinding.observable.list.ListChangeEvent;
 import org.eclipse.core.databinding.observable.list.ListDiffVisitor;
-import org.eclipse.core.databinding.observable.value.IValueChangeListener;
-import org.eclipse.core.databinding.observable.value.ValueChangeEvent;
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.databinding.EMFDataBindingContext;
 import org.eclipse.emf.databinding.EMFProperties;
 import org.eclipse.emf.ecore.EClass;
@@ -37,11 +31,10 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EStructuralFeature.Setting;
 import org.eclipse.emf.ecore.InternalEObject;
+import org.eclipse.emf.ecp.view.core.vaadin.VaadinRendererUtil;
 import org.eclipse.emf.ecp.view.model.vaadin.AbstractControlRendererVaadin;
 import org.eclipse.emf.ecp.view.spi.context.ViewModelContext;
-import org.eclipse.emf.ecp.view.spi.model.VDomainModelReference;
 import org.eclipse.emf.ecp.view.spi.table.model.VTableControl;
-import org.eclipse.emf.ecp.view.spi.table.model.VTableDomainModelReference;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.lunifera.runtime.web.vaadin.databinding.VaadinObservables;
 
@@ -97,23 +90,6 @@ public class TableRendererVaadin extends AbstractControlRendererVaadin<VTableCon
 		return instance;
 	}
 
-	protected Binding bindModelToTarget(DataBindingContext dataBindingContext, IObservableList target,
-			IObservableList model) {
-		final Binding binding = dataBindingContext.bindList(target, model);
-		binding.getValidationStatus().addValueChangeListener(new IValueChangeListener() {
-
-			@Override
-			public void handleValueChange(ValueChangeEvent event) {
-				IStatus statusNew = (IStatus) event.diff.getNewValue();
-				if (IStatus.ERROR == statusNew.getSeverity()) {
-					binding.updateModelToTarget();
-				}
-			}
-		});
-
-		return binding;
-	}
-
 	private InternalEObject getInstanceOf(EClass clazz) {
 		return InternalEObject.class.cast(clazz.getEPackage().getEFactoryInstance().create(clazz));
 	}
@@ -151,7 +127,7 @@ public class TableRendererVaadin extends AbstractControlRendererVaadin<VTableCon
 
 		IObservableList modelValue = EMFProperties.list(setting.getEStructuralFeature()).observe(setting.getEObject());
 		EMFDataBindingContext dataBindingContext = new EMFDataBindingContext();
-		bindModelToTarget(dataBindingContext, targetValue, modelValue);
+		dataBindingContext.bindList(targetValue, modelValue);
 
 		if (control.isReadonly()) {
 			return layout;
@@ -173,12 +149,13 @@ public class TableRendererVaadin extends AbstractControlRendererVaadin<VTableCon
 
 	private void setVisibleColumns(VTableControl control, final Table table, final EClass clazz,
 			BeanItemContainer<Object> indexedContainer) {
-		List<EStructuralFeature> listFeatures = getColumnFeatures(control);
+		List<EStructuralFeature> listFeatures = VaadinRendererUtil.getColumnFeatures(control);
 		final InternalEObject tempInstance = getInstanceOf(clazz);
 		List<String> visibleColumnsNames = new ArrayList<String>();
 		List<String> visibleColumnsId = new ArrayList<String>();
 		for (EStructuralFeature eStructuralFeature : listFeatures) {
-			IItemPropertyDescriptor itemPropertyDescriptor = getItemPropertyDescriptor(tempInstance, eStructuralFeature);
+			IItemPropertyDescriptor itemPropertyDescriptor = VaadinRendererUtil.getItemPropertyDescriptor(tempInstance,
+					eStructuralFeature);
 			String displayName = itemPropertyDescriptor.getDisplayName(null);
 			visibleColumnsNames.add(displayName);
 			visibleColumnsId.add(eStructuralFeature.getName());
@@ -186,34 +163,6 @@ public class TableRendererVaadin extends AbstractControlRendererVaadin<VTableCon
 		table.setContainerDataSource(indexedContainer);
 		table.setVisibleColumns(visibleColumnsId.toArray(new Object[visibleColumnsId.size()]));
 		table.setColumnHeaders(visibleColumnsNames.toArray(new String[visibleColumnsNames.size()]));
-	}
-
-	private List<EStructuralFeature> getColumnFeatures(VTableControl control) {
-		VTableDomainModelReference domainModelReference = getTableDomainModelReference(control);
-		List<EStructuralFeature> listFeatures = new ArrayList<EStructuralFeature>();
-		// TODO FIXME: NPE
-		for (final VDomainModelReference column : domainModelReference.getColumnDomainModelReferences()) {
-			for (Iterator<EStructuralFeature> iterator = column.getEStructuralFeatureIterator(); iterator.hasNext();) {
-				listFeatures.add(iterator.next());
-			}
-
-		}
-		return listFeatures;
-	}
-
-	private VTableDomainModelReference getTableDomainModelReference(VTableControl control) {
-		final VDomainModelReference vdmr = control.getDomainModelReference();
-		if (VTableDomainModelReference.class.isInstance(vdmr)) {
-			return VTableDomainModelReference.class.cast(vdmr);
-		}
-
-		final EList<EObject> contents = vdmr.eContents();
-		for (final EObject eObject : contents) {
-			if (VTableDomainModelReference.class.isInstance(eObject)) {
-				return VTableDomainModelReference.class.cast(eObject);
-			}
-		}
-		return null;
 	}
 
 	private void createEditButton(HorizontalLayout horizontalLayout, final VTableControl control, final Table table) {
