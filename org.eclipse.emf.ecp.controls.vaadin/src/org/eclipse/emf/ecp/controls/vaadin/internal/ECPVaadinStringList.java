@@ -32,7 +32,6 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.ListSelect;
 import com.vaadin.ui.TextField;
-import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
 public class ECPVaadinStringList extends ECPControlFactoryVaadin {
@@ -57,7 +56,6 @@ public class ECPVaadinStringList extends ECPControlFactoryVaadin {
 		final List<Object> items = (List<Object>) setting.getEObject().eGet(eStructuralFeature);
 		listSelect.addItems(items);
 
-		VaadinObservables.activateRealm(UI.getCurrent());
 		IObservableList targetValue = VaadinObservables.observeContainerItemSetContents(listSelect, setting
 				.getEObject().getClass());
 

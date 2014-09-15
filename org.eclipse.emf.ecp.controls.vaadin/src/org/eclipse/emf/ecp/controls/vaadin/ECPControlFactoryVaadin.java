@@ -25,7 +25,6 @@ import org.lunifera.runtime.web.vaadin.databinding.VaadinObservables;
 import com.vaadin.data.Property.ValueChangeNotifier;
 import com.vaadin.server.Sizeable.Unit;
 import com.vaadin.ui.Component;
-import com.vaadin.ui.UI;
 
 public abstract class ECPControlFactoryVaadin extends ECPAbstractControl {
 
@@ -48,7 +47,6 @@ public abstract class ECPControlFactoryVaadin extends ECPAbstractControl {
 		final Component component = createControl(control, setting);
 		component.setEnabled(!control.isReadonly());
 
-		VaadinObservables.activateRealm(UI.getCurrent());
 		IObservableValue targetValue = VaadinObservables.observeValue((ValueChangeNotifier) component);
 		IObservableValue modelValue = EMFProperties.value(setting.getEStructuralFeature())
 				.observe(setting.getEObject());

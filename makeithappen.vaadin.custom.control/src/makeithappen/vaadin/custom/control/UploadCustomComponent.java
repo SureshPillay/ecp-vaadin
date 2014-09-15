@@ -23,7 +23,6 @@ import org.lunifera.runtime.web.vaadin.databinding.VaadinObservables;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
-import com.vaadin.ui.UI;
 import com.vaadin.ui.Upload;
 
 public class UploadCustomComponent extends HorizontalLayout implements VaadinCustomControl {
@@ -39,7 +38,6 @@ public class UploadCustomComponent extends HorizontalLayout implements VaadinCus
 
 		EMFDataBindingContext bindingContext = new EMFDataBindingContext();
 		Setting setting = customControl.getDomainModelReference().getIterator().next();
-		VaadinObservables.activateRealm(UI.getCurrent());
 		IObservableValue targetValue = VaadinObservables.observeCaption(label);
 		IObservableValue modelValue = EMFProperties.value(setting.getEStructuralFeature())
 				.observe(setting.getEObject());

@@ -50,6 +50,7 @@ public abstract class AbstractVaadinRenderer<T extends VElement> {
 		applyVisible(renderable, getControlComponent(component));
 		applyEnable(renderable, getControlComponent(component));
 		applyValidation(renderable, getControlComponent(component));
+		applyReadonly(renderable, getControlComponent(component));
 		return component;
 	}
 
@@ -58,7 +59,11 @@ public abstract class AbstractVaadinRenderer<T extends VElement> {
 	}
 
 	protected void applyEnable(T renderable, Component component) {
-		component.setEnabled(!renderable.isReadonly() && renderable.isEnabled());
+		component.setEnabled(renderable.isEnabled());
+	}
+
+	protected void applyReadonly(T renderable, Component component) {
+		component.setReadOnly(renderable.isReadonly());
 	}
 
 	protected void applyVisible(T renderable, Component component) {
