@@ -13,6 +13,7 @@ package org.eclipse.emf.ecp.view.model.vaadin;
 
 import java.util.Locale;
 
+import org.apache.commons.lang.StringUtils;
 import org.eclipse.emf.ecp.edit.spi.ViewLocaleService;
 import org.eclipse.emf.ecp.translation.service.TranslationService;
 import org.eclipse.emf.ecp.view.spi.context.ViewModelContext;
@@ -60,7 +61,16 @@ public abstract class AbstractVaadinRenderer<T extends VElement> {
 		applyEnable(renderable, controlComponent);
 		applyValidation(renderable, controlComponent);
 		applyReadonly(renderable, controlComponent);
+		applyCaption(renderable, controlComponent);
 		return component;
+	}
+
+	protected void applyCaption(T renderable, Component controlComponent) {
+		String caption = getTranslation(renderable);
+		if (StringUtils.isEmpty(caption)) {
+			return;
+		}
+		controlComponent.setCaption(caption);
 	}
 
 	protected void applyValidation(T renderable, Component component) {
@@ -93,7 +103,8 @@ public abstract class AbstractVaadinRenderer<T extends VElement> {
 		}
 	}
 
-	protected String getTranslation(String keyName) {
+	protected String getTranslation(T renderable) {
+		String keyName = renderable.getName();
 		if (translationService == null) {
 			return keyName;
 		}

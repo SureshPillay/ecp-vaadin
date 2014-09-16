@@ -51,6 +51,10 @@ public abstract class AbstractControlRendererVaadin<T extends VControl> extends 
 	}
 
 	@Override
+	protected void applyCaption(T renderable, Component controlComponent) {
+	}
+
+	@Override
 	protected Component getControlComponent(Component component) {
 		if (component instanceof ComponentContainer) {
 			return getControlComponent(((ComponentContainer) component).iterator().next());

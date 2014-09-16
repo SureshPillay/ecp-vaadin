@@ -130,14 +130,14 @@ public class TableRendererVaadin extends AbstractControlRendererVaadin<VTableCon
 		dataBindingContext.bindList(targetValue, modelValue);
 
 		if (control.isReadonly()) {
-			layout.addComponent(table);
+			layout.addComponent(table, 1);
 			return layout;
 		}
 		EMFUpdateValueStrategy emfUpdateValueStrategy = new EMFUpdateValueStrategy();
 		emfUpdateValueStrategy.setConverter(new EObjectToBooleanConverter());
 
 		HorizontalLayout horizontalLayout = new HorizontalLayout();
-		layout.addComponent(horizontalLayout);
+
 		IObservableValue observeSingleSelection = VaadinObservables.observeSingleSelection(table,
 				clazz.getInstanceClass());
 		if (!control.isAddRemoveDisabled()) {
@@ -155,8 +155,9 @@ public class TableRendererVaadin extends AbstractControlRendererVaadin<VTableCon
 			dataBindingContext.bindValue(VaadinObservables.observeEnabled(edit), observeSingleSelection, null,
 					emfUpdateValueStrategy);
 		}
+		layout.addComponent(horizontalLayout, 0);
 		layout.setComponentAlignment(horizontalLayout, Alignment.TOP_RIGHT);
-		layout.addComponent(table);
+		layout.addComponent(table, 1);
 		return layout;
 
 	}
