@@ -28,11 +28,13 @@ import org.eclipse.emf.ecp.view.spi.table.model.VTableDomainModelReference;
 import org.eclipse.emf.edit.provider.AdapterFactoryItemDelegator;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.edit.provider.ReflectiveItemProviderAdapterFactory;
+import org.lunifera.runtime.web.vaadin.databinding.VaadinObservables;
 
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Component;
+import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 
@@ -72,6 +74,7 @@ public class EditDialog extends Window {
 
 	private void initUi() {
 		final VView view = getView();
+		VaadinObservables.activateRealm(UI.getCurrent());
 		ECPVaadinView ecpVaadinView = ECPFVaadinViewRenderer.INSTANCE.render(selection, view);
 		VerticalLayout layout = new VerticalLayout();
 		layout.setMargin(true);
