@@ -230,7 +230,8 @@ public class TableRendererVaadin extends AbstractControlRendererVaadin<VTableCon
 	@Override
 	protected Component getControlComponent(Component component) {
 		VerticalLayout layout = (VerticalLayout) component;
-		return layout.getComponent(1);
+		Component table = layout.getComponent(1);
+		return table == null ? layout.getComponent(0) : table;
 	}
 
 	private Button createAddButton(final Setting setting, final Table table) {
