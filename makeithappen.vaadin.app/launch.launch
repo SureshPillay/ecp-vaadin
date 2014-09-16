@@ -1,11 +1,11 @@
-!SESSION 2014-09-16 13:56:49.737 -----------------------------------------------
+!SESSION 2014-09-16 14:42:47.833 -----------------------------------------------
 eclipse.buildId=unknown
 java.version=1.8.0_11
 java.vendor=Oracle Corporation
 BootLoader constants: OS=macosx, ARCH=x86_64, WS=cocoa, NL=en
 Command-line arguments:  -dev file:/Users/dme/Documents/workspace_ecp_vaadin/.metadata/.plugins/org.eclipse.pde.core/OSGi Framework/dev.properties -os macosx -ws cocoa -arch x86_64 -consoleLog -console
 
-!ENTRY org.eclipse.equinox.registry 2 0 2014-09-16 13:56:50.347
+!ENTRY org.eclipse.equinox.registry 2 0 2014-09-16 14:42:48.476
 !MESSAGE The extensions and extension-points from the bundle "com.vaadin.client-compiler" are ignored. The bundle is not marked as singleton. 
  ____                    ____                   __                            
 /\  _`\                 /\  _`\          __    /\ \                           
@@ -29,5 +29,7 @@ Command-line arguments:  -dev file:/Users/dme/Documents/workspace_ecp_vaadin/.me
   \ \_\\ \_\ \__/.\_\/\____/ \ \__\ \____\\ \_\                               
    \/_/ \/_/\/__/\/_/\/___/   \/__/\/____/ \/_/                               
                                                                          2.2.0
-dbmillserver> com.eclipsesource.makeithappen.model.task.impl.UserImpl@2385ba8 (firstName: null, lastName: null, gender: Male, active: false, timeOfRegistration: null, weight: 0.0, heigth: 0, nationality: German, dateOfBirth: null, eMails: [])
-com.eclipsesource.makeithappen.model.task.impl.UserImpl@2385ba8 (firstName: null, lastName: null, gender: Male, active: false, timeOfRegistration: null, weight: 0.0, heigth: 0, nationality: German, dateOfBirth: null, eMails: [])
+dbmillserver> com.eclipsesource.makeithappen.model.task.impl.UserImpl@14173631 (firstName: null, lastName: null, gender: Male, active: false, timeOfRegistration: null, weight: 0.0, heigth: 0, nationality: German, dateOfBirth: null, eMails: [])
+com.eclipsesource.makeithappen.model.task.impl.UserImpl@14173631 (firstName: null, lastName: null, gender: Male, active: false, timeOfRegistration: null, weight: 0.0, heigth: 0, nationality: German, dateOfBirth: null, eMails: [])
+Unable to invoke method click in com.vaadin.shared.ui.button.ButtonServerRpc
+Unable to invoke method click in com.vaadin.shared.ui.button.ButtonServerRpc

@@ -105,6 +105,10 @@ public abstract class AbstractVaadinRenderer<T extends VElement> {
 
 	protected String getTranslation(T renderable) {
 		String keyName = renderable.getName();
+		if (StringUtils.isEmpty(keyName)) {
+			return keyName;
+		}
+
 		if (translationService == null) {
 			return keyName;
 		}
