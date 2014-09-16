@@ -17,9 +17,11 @@ import org.eclipse.core.databinding.observable.list.IObservableList;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.databinding.observable.value.IValueChangeListener;
 import org.eclipse.emf.databinding.EMFProperties;
+import org.eclipse.emf.databinding.EMFUpdateValueStrategy;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EStructuralFeature.Setting;
 import org.eclipse.emf.ecp.controls.vaadin.ECPControlFactoryVaadin;
+import org.eclipse.emf.ecp.view.core.vaadin.converter.SelectionConverter;
 import org.eclipse.emf.ecp.view.spi.model.VControl;
 import org.lunifera.runtime.web.vaadin.databinding.VaadinObservables;
 
@@ -69,15 +71,22 @@ public class ECPVaadinStringList extends ECPControlFactoryVaadin {
 		final TextField textField = new TextField();
 		horizontalLayout.addComponent(textField);
 		textField.setWidth(100, Unit.PERCENTAGE);
-		final Button add = new Button("Add");
+		final Button add = new Button();
+		add.addStyleName("list-add");
 		horizontalLayout.addComponent(add);
-		final Button remove = new Button("Remove");
+		horizontalLayout.setComponentAlignment(add, Alignment.TOP_RIGHT);
+		final Button remove = new Button();
+		remove.addStyleName("list-remove");
+		remove.setVisible(false);
+		horizontalLayout.addComponent(remove);
+		horizontalLayout.setComponentAlignment(remove, Alignment.TOP_RIGHT);
 		horizontalLayout.setExpandRatio(textField, 1.0f);
 
 		add.addClickListener(new ClickListener() {
 
 			@Override
 			public void buttonClick(ClickEvent event) {
+				System.out.println(textField.getValue());
 				((List<Object>) setting.get(true)).add(textField.getValue());
 				textField.setValue("");
 				textField.focus();
@@ -89,7 +98,7 @@ public class ECPVaadinStringList extends ECPControlFactoryVaadin {
 			@Override
 			public void buttonClick(ClickEvent event) {
 				items.remove(listSelect.getValue());
-				listSelect.select(listSelect.getNullSelectionItemId());
+				listSelect.select(0);
 			}
 		});
 
@@ -114,25 +123,20 @@ public class ECPVaadinStringList extends ECPControlFactoryVaadin {
 
 		IObservableValue modelValueList = VaadinObservables.observeValue(listSelect);
 		bindModelToTarget(targetValueList, modelValueList, null, null);
-		modelValueList.addValueChangeListener(new IValueChangeListener() {
+		IObservableValue observeSingleSelection = VaadinObservables.observeSingleSelection(listSelect, setting
+				.getEObject().getClass());
 
-			@Override
-			public void handleValueChange(org.eclipse.core.databinding.observable.value.ValueChangeEvent event) {
-				horizontalLayout.removeComponent(add);
-				horizontalLayout.removeComponent(remove);
-				if (listSelect.getValue() == null) {
-					horizontalLayout.addComponent(add);
-					horizontalLayout.setComponentAlignment(add, Alignment.TOP_RIGHT);
-					textField.setValue("");
-					textField.focus();
-				} else {
-					horizontalLayout.addComponent(remove);
-					horizontalLayout.setComponentAlignment(remove, Alignment.TOP_RIGHT);
-					textField.focus();
-				}
+		EMFUpdateValueStrategy emfUpdateValueStrategy = new EMFUpdateValueStrategy();
+		emfUpdateValueStrategy.setConverter(new SelectionConverter());
+		getDataBindingContext().bindValue(VaadinObservables.observeVisible(remove), observeSingleSelection, null,
+				emfUpdateValueStrategy);
+		getDataBindingContext().bindValue(VaadinObservables.observeFocus(textField), observeSingleSelection, null,
+				emfUpdateValueStrategy);
 
-			}
-		});
+		emfUpdateValueStrategy = new EMFUpdateValueStrategy();
+		emfUpdateValueStrategy.setConverter(new SelectionConverter(false));
+		getDataBindingContext().bindValue(VaadinObservables.observeVisible(add), observeSingleSelection, null,
+				emfUpdateValueStrategy);
 
 		return layout;
 	}

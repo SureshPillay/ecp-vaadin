@@ -34,7 +34,7 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EStructuralFeature.Setting;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecp.view.core.vaadin.VaadinRendererUtil;
-import org.eclipse.emf.ecp.view.core.vaadin.converter.EObjectToBooleanConverter;
+import org.eclipse.emf.ecp.view.core.vaadin.converter.SelectionConverter;
 import org.eclipse.emf.ecp.view.model.vaadin.AbstractControlRendererVaadin;
 import org.eclipse.emf.ecp.view.spi.context.ViewModelContext;
 import org.eclipse.emf.ecp.view.spi.table.model.VTableControl;
@@ -103,8 +103,6 @@ public class TableRendererVaadin extends AbstractControlRendererVaadin<VTableCon
 		final Setting setting = control.getDomainModelReference().getIterator().next();
 
 		VerticalLayout layout = new VerticalLayout();
-		layout.setSizeFull();
-
 		final Table table = new Table();
 		table.setSelectable(true);
 		table.setSizeFull();
@@ -134,7 +132,7 @@ public class TableRendererVaadin extends AbstractControlRendererVaadin<VTableCon
 			return layout;
 		}
 		EMFUpdateValueStrategy emfUpdateValueStrategy = new EMFUpdateValueStrategy();
-		emfUpdateValueStrategy.setConverter(new EObjectToBooleanConverter());
+		emfUpdateValueStrategy.setConverter(new SelectionConverter());
 
 		HorizontalLayout horizontalLayout = new HorizontalLayout();
 		layout.addComponent(horizontalLayout);

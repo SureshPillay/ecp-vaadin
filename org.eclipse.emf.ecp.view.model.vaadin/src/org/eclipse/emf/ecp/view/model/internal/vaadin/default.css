@@ -28,3 +28,11 @@
 .table-edit{
 	background: url("/VAADIN/icons/edit-table.png") 5px 2px no-repeat !important;
 }
+
+.list-add{
+	background: url("/VAADIN/icons/add-list.png") 2.5px 5px no-repeat !important;
+}
+
+.list-remove{
+	background: url("/VAADIN/icons/remove-list.png") 2.5px 5px no-repeat !important;
+}

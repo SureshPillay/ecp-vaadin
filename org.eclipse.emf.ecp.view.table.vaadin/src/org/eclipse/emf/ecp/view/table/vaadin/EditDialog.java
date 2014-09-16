@@ -78,9 +78,10 @@ public class EditDialog extends Window {
 		ECPVaadinView ecpVaadinView = ECPFVaadinViewRenderer.INSTANCE.render(selection, view);
 		VerticalLayout layout = new VerticalLayout();
 		layout.setMargin(true);
+		layout.setSpacing(true);
 		Component component = ecpVaadinView.getComponent();
 		layout.addComponent(component);
-		okButton = new Button("Ok", new Button.ClickListener() {
+		okButton = new Button(Messages.ok, new Button.ClickListener() {
 
 			@Override
 			public void buttonClick(ClickEvent event) {
