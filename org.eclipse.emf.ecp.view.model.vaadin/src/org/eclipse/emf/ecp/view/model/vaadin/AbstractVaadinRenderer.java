@@ -11,6 +11,10 @@
  ******************************************************************************/
 package org.eclipse.emf.ecp.view.model.vaadin;
 
+import java.util.Locale;
+
+import org.eclipse.emf.ecp.edit.spi.ViewLocaleService;
+import org.eclipse.emf.ecp.translation.service.TranslationService;
 import org.eclipse.emf.ecp.view.spi.context.ViewModelContext;
 import org.eclipse.emf.ecp.view.spi.model.ModelChangeListener;
 import org.eclipse.emf.ecp.view.spi.model.ModelChangeNotification;
@@ -21,8 +25,13 @@ import com.vaadin.ui.Component;
 
 public abstract class AbstractVaadinRenderer<T extends VElement> {
 
+	private ViewLocaleService viewLocaleService;
+	private TranslationService translationService;
+
 	public Component renderComponent(final T renderable, final ViewModelContext viewContext) {
+		initServices(viewContext);
 		final Component component = render(renderable, viewContext);
+		final Component controlComponent = getControlComponent(component);
 		ModelChangeListener listener = new ModelChangeListener() {
 
 			@Override
@@ -34,23 +43,23 @@ public abstract class AbstractVaadinRenderer<T extends VElement> {
 					return;
 				}
 				if (notification.getStructuralFeature() == VViewPackage.eINSTANCE.getElement_Visible()) {
-					applyVisible(renderable, getControlComponent(component));
+					applyVisible(renderable, controlComponent);
 				}
 				if (notification.getStructuralFeature() == VViewPackage.eINSTANCE.getElement_Enabled()
 						&& !renderable.isReadonly()) {
-					applyEnable(renderable, getControlComponent(component));
+					applyEnable(renderable, controlComponent);
 				}
 				if (notification.getStructuralFeature() == VViewPackage.eINSTANCE.getElement_Diagnostic()) {
-					applyValidation(renderable, getControlComponent(component));
+					applyValidation(renderable, controlComponent);
 				}
 			}
 
 		};
 		viewContext.registerViewChangeListener(listener);
-		applyVisible(renderable, getControlComponent(component));
-		applyEnable(renderable, getControlComponent(component));
-		applyValidation(renderable, getControlComponent(component));
-		applyReadonly(renderable, getControlComponent(component));
+		applyVisible(renderable, controlComponent);
+		applyEnable(renderable, controlComponent);
+		applyValidation(renderable, controlComponent);
+		applyReadonly(renderable, controlComponent);
 		return component;
 	}
 
@@ -72,6 +81,28 @@ public abstract class AbstractVaadinRenderer<T extends VElement> {
 
 	protected Component getControlComponent(Component component) {
 		return component;
+	}
+
+	private void initServices(ViewModelContext viewContext) {
+		if (viewLocaleService == null) {
+			viewLocaleService = viewContext.getService(ViewLocaleService.class);
+		}
+
+		if (translationService == null) {
+			translationService = viewContext.getService(TranslationService.class);
+		}
+	}
+
+	protected String getTranslation(String keyName) {
+		if (translationService == null) {
+			return keyName;
+		}
+		Locale locale = Locale.getDefault();
+		if (viewLocaleService != null) {
+			locale = viewLocaleService.getLocale();
+		}
+
+		return translationService.getTranslation(keyName, locale);
 	}
 
 	protected abstract Component render(T renderable, final ViewModelContext viewContext);

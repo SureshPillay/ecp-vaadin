@@ -26,17 +26,19 @@ public class LabelRendererVaadin extends AbstractVaadinRenderer<VLabel> {
 	@Override
 	public Component render(VLabel renderable, final ViewModelContext viewContext) {
 		Label label;
-
 		if (renderable.getStyle() == VLabelStyle.SEPARATOR) {
 			label = new Label("<hr/>", ContentMode.HTML);
 		} else {
+			// TODO FIXME: Übersetzung
+			// String message = Messages.getString(renderable.getName());
+			// System.out.println(message);
+
 			label = new Label(renderable.getName());
 			label.addStyleName(renderable.getStyle().getName().toLowerCase());
 			if (renderable.getStyle().getValue() > 6) {
 				label.addStyleName("small");
 			}
 		}
-
 		return label;
 	}
 
