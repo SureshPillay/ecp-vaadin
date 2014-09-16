@@ -138,8 +138,6 @@ public class TableRendererVaadin extends AbstractControlRendererVaadin<VTableCon
 
 		HorizontalLayout horizontalLayout = new HorizontalLayout();
 		layout.addComponent(horizontalLayout);
-		// Label label = new Label();
-		// horizontalLayout.addComponent(label);
 
 		IObservableValue observeSingleSelection = VaadinObservables.observeSingleSelection(table,
 				clazz.getInstanceClass());

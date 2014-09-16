@@ -12,19 +12,19 @@
 }
 
 .table-add, .table-remove,.table-edit{
-	height: 28px !important;
-	width: 24px !important;
+	height: 26px !important;
+	top:22px;
 }
 
 
 .table-add{
-	background: url("/VAADIN/icons/add-table.png") 1px 2px no-repeat !important;
+	background: url("/VAADIN/icons/add-table.png") 5px 2px no-repeat !important;
 }
 
 .table-remove{
-	background: url("/VAADIN/icons/remove-table.png") 1px 2px no-repeat !important;
+	background: url("/VAADIN/icons/remove-table.png") 5px 2px no-repeat !important;
 }
 
 .table-edit{
-	background: url("/VAADIN/icons/edit-table.png") no-repeat !important;
+	background: url("/VAADIN/icons/edit-table.png") 5px 2px no-repeat !important;
 }

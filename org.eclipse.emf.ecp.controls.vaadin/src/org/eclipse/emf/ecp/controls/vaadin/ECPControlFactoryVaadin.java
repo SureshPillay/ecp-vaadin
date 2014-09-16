@@ -45,7 +45,6 @@ public abstract class ECPControlFactoryVaadin extends ECPAbstractControl {
 	public Component render(final VControl control) {
 		Setting setting = control.getDomainModelReference().getIterator().next();
 		final Component component = createControl(control, setting);
-		component.setEnabled(!control.isReadonly());
 
 		IObservableValue targetValue = VaadinObservables.observeValue((ValueChangeNotifier) component);
 		IObservableValue modelValue = EMFProperties.value(setting.getEStructuralFeature())
