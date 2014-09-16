@@ -86,7 +86,6 @@ public class ECPVaadinStringList extends ECPControlFactoryVaadin {
 
 			@Override
 			public void buttonClick(ClickEvent event) {
-				System.out.println(textField.getValue());
 				((List<Object>) setting.get(true)).add(textField.getValue());
 				textField.setValue("");
 				textField.focus();
@@ -108,6 +107,7 @@ public class ECPVaadinStringList extends ECPControlFactoryVaadin {
 
 			@Override
 			public void handleValueChange(org.eclipse.core.databinding.observable.value.ValueChangeEvent event) {
+				// TODO FIXME: Better solution for changing String in List?
 				if (listSelect.getValue() != null && !listSelect.getValue().equals(textField.getValue())
 						&& event.diff.getOldValue() != event.diff.getNewValue()) {
 					int index = items.indexOf(event.diff.getOldValue());
