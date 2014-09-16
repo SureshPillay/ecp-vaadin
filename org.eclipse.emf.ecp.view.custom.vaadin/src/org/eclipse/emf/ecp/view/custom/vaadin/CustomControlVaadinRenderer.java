@@ -69,10 +69,10 @@ public class CustomControlVaadinRenderer extends AbstractControlRendererVaadin<V
 	}
 
 	@Override
-	protected void setCaption(VCustomControl control, Component component) {
+	protected void applyCaption(VCustomControl control, Component component) {
 		VaadinCustomControl vaadinCustomControl = (VaadinCustomControl) component;
 		if (vaadinCustomControl.showCaption()) {
-			super.setCaption(control, vaadinCustomControl.getControlComponent());
+			super.applyCaption(control, vaadinCustomControl.getControlComponent());
 		}
 	}
 

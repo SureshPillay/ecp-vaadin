@@ -27,7 +27,8 @@ import com.vaadin.ui.ComponentContainer;
 
 public abstract class AbstractControlRendererVaadin<T extends VControl> extends AbstractVaadinRenderer<T> {
 
-	protected void setCaption(T control, Component component) {
+	@Override
+	protected void applyCaption(T control, Component component) {
 		if (component == null || LabelAlignment.NONE == control.getLabelAlignment()) {
 			return;
 		}
@@ -48,10 +49,6 @@ public abstract class AbstractControlRendererVaadin<T extends VControl> extends 
 		if (component instanceof AbstractComponent && !StringUtils.isEmpty(description)) {
 			((AbstractComponent) component).setDescription(description);
 		}
-	}
-	
-	@Override
-	protected void applyCaption(T renderable, Component controlComponent) {
 	}
 
 	@Override
@@ -76,11 +73,8 @@ public abstract class AbstractControlRendererVaadin<T extends VControl> extends 
 	}
 
 	@Override
-	protected Component render(T renderable, final ViewModelContext viewContext) {
-		Component component = renderControl(renderable, viewContext);
-		Component controlComponent = getControlComponent(component);
-		setCaption(renderable, controlComponent);
-		return component;
+	protected Component render(T renderable, ViewModelContext viewContext) {
+		return renderControl(renderable, viewContext);
 	}
 
 	protected abstract Component renderControl(T renderable, ViewModelContext viewContext);

@@ -48,7 +48,6 @@ import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Label;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
@@ -139,8 +138,8 @@ public class TableRendererVaadin extends AbstractControlRendererVaadin<VTableCon
 
 		HorizontalLayout horizontalLayout = new HorizontalLayout();
 		layout.addComponent(horizontalLayout);
-		Label label = new Label();
-		horizontalLayout.addComponent(label);
+		// Label label = new Label();
+		// horizontalLayout.addComponent(label);
 
 		IObservableValue observeSingleSelection = VaadinObservables.observeSingleSelection(table,
 				clazz.getInstanceClass());
@@ -159,8 +158,9 @@ public class TableRendererVaadin extends AbstractControlRendererVaadin<VTableCon
 			dataBindingContext.bindValue(VaadinObservables.observeEnabled(edit), observeSingleSelection, null,
 					emfUpdateValueStrategy);
 		}
+		layout.addComponent(horizontalLayout, 0);
 		layout.setComponentAlignment(horizontalLayout, Alignment.TOP_RIGHT);
-		layout.addComponent(table);
+		layout.addComponent(table, 1);
 		return layout;
 
 	}
@@ -228,11 +228,6 @@ public class TableRendererVaadin extends AbstractControlRendererVaadin<VTableCon
 		});
 
 		return remove;
-	}
-
-	@Override
-	protected void setCaption(VTableControl control, Component component) {
-		super.setCaption(control, component);
 	}
 
 	@Override

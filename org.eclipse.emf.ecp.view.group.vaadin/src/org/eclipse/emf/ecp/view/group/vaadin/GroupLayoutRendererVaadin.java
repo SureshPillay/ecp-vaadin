@@ -11,7 +11,6 @@
  ******************************************************************************/
 package org.eclipse.emf.ecp.view.group.vaadin;
 
-import org.apache.commons.lang.StringUtils;
 import org.eclipse.emf.ecp.view.model.vaadin.AbstractContainerRendererVaadin;
 import org.eclipse.emf.ecp.view.spi.group.model.VGroup;
 
@@ -25,10 +24,6 @@ public class GroupLayoutRendererVaadin extends AbstractContainerRendererVaadin<V
 		VerticalLayout formLayout = new VerticalLayout();
 		if (!renderable.isContainerLayoutEmbedding()) {
 			formLayout.addStyleName("group");
-		}
-		String name = renderable.getName();
-		if (!StringUtils.isEmpty(name)) {
-			formLayout.setCaption(name);
 		}
 		return formLayout;
 	}
