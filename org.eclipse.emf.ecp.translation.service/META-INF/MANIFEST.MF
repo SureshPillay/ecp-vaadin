@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: TranslationService
+Bundle-SymbolicName: org.eclipse.emf.ecp.translation.service;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-ActivationPolicy: lazy
+Import-Package: org.eclipse.emf.ecp.view.spi.context;version="1.3.0",
+ org.osgi.framework;version="1.8.0"
+Export-Package: org.eclipse.emf.ecp.translation.service;version="1.0.0"
