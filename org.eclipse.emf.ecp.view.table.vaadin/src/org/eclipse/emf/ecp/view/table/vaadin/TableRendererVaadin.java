@@ -130,7 +130,7 @@ public class TableRendererVaadin extends AbstractControlRendererVaadin<VTableCon
 		dataBindingContext.bindList(targetValue, modelValue);
 
 		if (control.isReadonly()) {
-			layout.addComponent(table, 1);
+			layout.addComponent(table);
 			return layout;
 		}
 		EMFUpdateValueStrategy emfUpdateValueStrategy = new EMFUpdateValueStrategy();
@@ -230,8 +230,11 @@ public class TableRendererVaadin extends AbstractControlRendererVaadin<VTableCon
 	@Override
 	protected Component getControlComponent(Component component) {
 		VerticalLayout layout = (VerticalLayout) component;
-		Component table = layout.getComponent(1);
-		return table == null ? layout.getComponent(0) : table;
+		if (layout.getComponentCount() > 1) {
+
+			return layout.getComponent(1);
+		}
+		return layout.getComponent(0);
 	}
 
 	private Button createAddButton(final Setting setting, final Table table) {
