@@ -42,6 +42,7 @@ import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.lunifera.runtime.web.vaadin.databinding.VaadinObservables;
 
 import com.vaadin.data.util.BeanItemContainer;
+import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
@@ -107,7 +108,6 @@ public class TableRendererVaadin extends AbstractControlRendererVaadin<VTableCon
 		final Table table = new Table();
 		table.setSelectable(true);
 		table.setSizeFull();
-		layout.addComponent(table);
 
 		final EClass clazz = ((EReference) setting.getEStructuralFeature()).getEReferenceType();
 		BeanItemContainer<Object> indexedContainer = new BeanItemContainer(clazz.getInstanceClass());
@@ -130,6 +130,7 @@ public class TableRendererVaadin extends AbstractControlRendererVaadin<VTableCon
 		dataBindingContext.bindList(targetValue, modelValue);
 
 		if (control.isReadonly()) {
+			layout.addComponent(table);
 			return layout;
 		}
 		EMFUpdateValueStrategy emfUpdateValueStrategy = new EMFUpdateValueStrategy();
@@ -140,18 +141,22 @@ public class TableRendererVaadin extends AbstractControlRendererVaadin<VTableCon
 		IObservableValue observeSingleSelection = VaadinObservables.observeSingleSelection(table,
 				clazz.getInstanceClass());
 		if (!control.isAddRemoveDisabled()) {
-			createAddButton(setting, table, horizontalLayout);
-			Button remove = createRemoveButton(setting, table, horizontalLayout);
+			Button add = createAddButton(setting, table);
+			horizontalLayout.addComponent(add);
+			Button remove = createRemoveButton(setting, table);
+			horizontalLayout.addComponent(remove);
 			dataBindingContext.bindValue(VaadinObservables.observeEnabled(remove), observeSingleSelection, null,
 					emfUpdateValueStrategy);
 		}
 
 		if (control.isEnableDetailEditingDialog()) {
-			Button edit = createEditButton(horizontalLayout, control, table);
+			Button edit = createEditButton(control, table);
+			horizontalLayout.addComponent(edit);
 			dataBindingContext.bindValue(VaadinObservables.observeEnabled(edit), observeSingleSelection, null,
 					emfUpdateValueStrategy);
 		}
-
+		layout.setComponentAlignment(horizontalLayout, Alignment.TOP_RIGHT);
+		layout.addComponent(table);
 		return layout;
 
 	}
@@ -174,9 +179,9 @@ public class TableRendererVaadin extends AbstractControlRendererVaadin<VTableCon
 		table.setColumnHeaders(visibleColumnsNames.toArray(new String[visibleColumnsNames.size()]));
 	}
 
-	private Button createEditButton(HorizontalLayout horizontalLayout, final VTableControl control, final Table table) {
-		Button edit = new Button("Edit");
-		horizontalLayout.addComponent(edit);
+	private Button createEditButton(final VTableControl control, final Table table) {
+		Button edit = new Button();
+		edit.addStyleName("table-edit");
 		edit.addClickListener(new ClickListener() {
 
 			@Override
@@ -200,9 +205,9 @@ public class TableRendererVaadin extends AbstractControlRendererVaadin<VTableCon
 		}
 	}
 
-	private Button createRemoveButton(final Setting setting, final Table table, HorizontalLayout horizontalLayout) {
-		Button remove = new Button("Remove");
-		horizontalLayout.addComponent(remove);
+	private Button createRemoveButton(final Setting setting, final Table table) {
+		Button remove = new Button();
+		remove.addStyleName("table-remove");
 		final List<Object> items = getItems(setting);
 		remove.addClickListener(new ClickListener() {
 
@@ -221,10 +226,15 @@ public class TableRendererVaadin extends AbstractControlRendererVaadin<VTableCon
 		return remove;
 	}
 
-	private void createAddButton(final Setting setting, final Table table, HorizontalLayout horizontalLayout) {
-		Button add = new Button("Add");
-		horizontalLayout.addComponent(add);
+	@Override
+	protected Component getControlComponent(Component component) {
+		VerticalLayout layout = (VerticalLayout) component;
+		return layout.getComponent(1);
+	}
 
+	private Button createAddButton(final Setting setting, final Table table) {
+		Button add = new Button();
+		add.addStyleName("table-add");
 		final List<Object> items = getItems(setting);
 		add.addClickListener(new ClickListener() {
 
@@ -235,6 +245,7 @@ public class TableRendererVaadin extends AbstractControlRendererVaadin<VTableCon
 				table.select(addItem);
 			}
 		});
+		return add;
 	}
 
 }

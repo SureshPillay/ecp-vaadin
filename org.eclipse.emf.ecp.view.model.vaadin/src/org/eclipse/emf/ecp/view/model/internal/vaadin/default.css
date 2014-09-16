@@ -10,3 +10,22 @@
 	box-shadow: 0 0 5px rgba(51,51,51,0.5);
 	border-radius: 3px;
 }
+
+.table-add{
+	background: url("/VAADIN/icons/add-table.png") 0px 2px no-repeat !important;
+	background-position: center; 
+}
+
+.table-remove{
+	
+	background: url("/VAADIN/icons/remove-table.png") 0px 2px no-repeat !important;
+	background-position: center; 
+	
+}
+
+.table-edit{
+	
+	background: url("/VAADIN/icons/edit-table.png") no-repeat !important;
+	background-position: center; 
+	
+}
