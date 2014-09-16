@@ -28,7 +28,7 @@ public class ECPFVaadinViewRendererImpl implements ECPFVaadinViewRenderer {
 
 	@Override
 	public ECPVaadinView render(EObject domainObject) {
-		return render(domainObject, ViewProviderHelper.getView(domainObject));
+		return render(domainObject, ViewProviderHelper.getView(domainObject, null));
 	}
 
 	@Override

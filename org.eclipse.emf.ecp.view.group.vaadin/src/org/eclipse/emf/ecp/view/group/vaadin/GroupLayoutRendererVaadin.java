@@ -22,14 +22,8 @@ public class GroupLayoutRendererVaadin extends AbstractContainerRendererVaadin<V
 	@Override
 	protected AbstractOrderedLayout getComponentContainer(VGroup renderable) {
 		VerticalLayout formLayout = new VerticalLayout();
-		if (!renderable.isContainerLayoutEmbedding()) {
-			formLayout.addStyleName("group");
-		}
+		formLayout.addStyleName("group");
 		return formLayout;
 	}
 
-	@Override
-	protected boolean isMargin(VGroup renderable) {
-		return !renderable.isContainerLayoutEmbedding();
-	}
 }

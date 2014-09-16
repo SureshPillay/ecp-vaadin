@@ -98,6 +98,7 @@ public class ECPVaadinStringList extends ECPControlFactoryVaadin {
 			public void buttonClick(ClickEvent event) {
 				items.remove(listSelect.getValue());
 				listSelect.select(0);
+				textField.focus();
 			}
 		});
 
