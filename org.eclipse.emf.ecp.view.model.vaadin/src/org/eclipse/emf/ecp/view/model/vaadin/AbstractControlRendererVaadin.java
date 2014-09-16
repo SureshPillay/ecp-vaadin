@@ -11,6 +11,7 @@
  ******************************************************************************/
 package org.eclipse.emf.ecp.view.model.vaadin;
 
+import org.apache.commons.lang.StringUtils;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.ecore.EStructuralFeature.Setting;
 import org.eclipse.emf.ecp.view.core.vaadin.VaadinRendererUtil;
@@ -43,6 +44,14 @@ public abstract class AbstractControlRendererVaadin<T extends VControl> extends 
 			extra = "*"; //$NON-NLS-1$
 		}
 		component.setCaption(itemPropertyDescriptor.getDisplayName(setting.getEObject()) + extra);
+		String description = itemPropertyDescriptor.getDescription(setting.getEObject());
+		if (component instanceof AbstractComponent && !StringUtils.isEmpty(description)) {
+			((AbstractComponent) component).setDescription(description);
+		}
+	}
+	
+	@Override
+	protected void applyCaption(T renderable, Component controlComponent) {
 	}
 
 	@Override

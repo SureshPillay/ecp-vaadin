@@ -48,6 +48,7 @@ import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Label;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
@@ -138,6 +139,9 @@ public class TableRendererVaadin extends AbstractControlRendererVaadin<VTableCon
 
 		HorizontalLayout horizontalLayout = new HorizontalLayout();
 		layout.addComponent(horizontalLayout);
+		Label label = new Label();
+		horizontalLayout.addComponent(label);
+
 		IObservableValue observeSingleSelection = VaadinObservables.observeSingleSelection(table,
 				clazz.getInstanceClass());
 		if (!control.isAddRemoveDisabled()) {
@@ -224,6 +228,11 @@ public class TableRendererVaadin extends AbstractControlRendererVaadin<VTableCon
 		});
 
 		return remove;
+	}
+
+	@Override
+	protected void setCaption(VTableControl control, Component component) {
+		super.setCaption(control, component);
 	}
 
 	@Override

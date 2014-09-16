@@ -11,21 +11,20 @@
 	border-radius: 3px;
 }
 
+.table-add, .table-remove,.table-edit{
+	height: 28px !important;
+	width: 24px !important;
+}
+
+
 .table-add{
-	background: url("/VAADIN/icons/add-table.png") 0px 2px no-repeat !important;
-	background-position: center; 
+	background: url("/VAADIN/icons/add-table.png") 1px 2px no-repeat !important;
 }
 
 .table-remove{
-	
-	background: url("/VAADIN/icons/remove-table.png") 0px 2px no-repeat !important;
-	background-position: center; 
-	
+	background: url("/VAADIN/icons/remove-table.png") 1px 2px no-repeat !important;
 }
 
 .table-edit{
-	
 	background: url("/VAADIN/icons/edit-table.png") no-repeat !important;
-	background-position: center; 
-	
 }

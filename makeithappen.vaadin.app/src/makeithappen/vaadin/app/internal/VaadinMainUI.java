@@ -9,11 +9,13 @@ import org.lunifera.runtime.web.vaadin.databinding.VaadinObservables;
 import com.eclipsesource.makeithappen.model.task.TaskFactory;
 import com.eclipsesource.makeithappen.model.task.User;
 import com.vaadin.annotations.PreserveOnRefresh;
+import com.vaadin.annotations.Theme;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.ui.UI;
+import com.vaadin.ui.themes.ValoTheme;
 
 @PreserveOnRefresh
-// @Theme("valo")
+@Theme(ValoTheme.THEME_NAME)
 public class VaadinMainUI extends UI {
 
 	private static final long serialVersionUID = 1L;
