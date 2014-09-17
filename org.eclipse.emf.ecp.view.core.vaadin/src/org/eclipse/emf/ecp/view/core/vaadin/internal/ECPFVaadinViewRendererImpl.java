@@ -9,12 +9,12 @@
  * Contributors:
  * Dennis - initial API and implementation
  ******************************************************************************/
-package org.eclipse.emf.ecp.view.model.internal.vaadin;
+package org.eclipse.emf.ecp.view.core.vaadin.internal;
 
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecp.view.model.vaadin.ECPFVaadinViewRenderer;
-import org.eclipse.emf.ecp.view.model.vaadin.ECPVaadinView;
-import org.eclipse.emf.ecp.view.model.vaadin.VaadinRendererFactory;
+import org.eclipse.emf.ecp.view.core.vaadin.ECPFVaadinViewRenderer;
+import org.eclipse.emf.ecp.view.core.vaadin.ECPVaadinView;
+import org.eclipse.emf.ecp.view.core.vaadin.VaadinRendererFactory;
 import org.eclipse.emf.ecp.view.spi.context.ViewModelContext;
 import org.eclipse.emf.ecp.view.spi.context.ViewModelContextFactory;
 import org.eclipse.emf.ecp.view.spi.model.VView;

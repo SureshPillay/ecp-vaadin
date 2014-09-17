@@ -23,8 +23,10 @@ import org.eclipse.emf.ecp.controls.vaadin.ECPControlFactoryVaadin;
 import org.eclipse.emf.ecp.view.core.vaadin.VaadinWidgetFactory;
 import org.eclipse.emf.ecp.view.core.vaadin.converter.SelectionConverter;
 import org.eclipse.emf.ecp.view.spi.model.VControl;
+import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.lunifera.runtime.web.vaadin.databinding.VaadinObservables;
 
+import com.vaadin.ui.AbstractSelect.ItemCaptionMode;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
@@ -43,11 +45,12 @@ public class ECPVaadinReferenceList extends ECPControlFactoryVaadin {
 	public Component render(final VControl control) {
 		final Setting setting = control.getDomainModelReference().getIterator().next();
 		final EClass clazz = ((EReference) setting.getEStructuralFeature()).getEReferenceType();
-
+		IItemPropertyDescriptor itemPropertyDescriptor = getItemPropertyDescriptor(setting);
 		VerticalLayout layout = new VerticalLayout();
 		final ListSelect listSelect = new ListSelect();
 		listSelect.setSizeFull();
 		listSelect.setNullSelectionAllowed(true);
+		listSelect.setItemCaptionMode(ItemCaptionMode.EXPLICIT);
 
 		listSelect.addItems(setting.getEObject().eGet(setting.getEStructuralFeature()));
 
@@ -65,7 +68,7 @@ public class ECPVaadinReferenceList extends ECPControlFactoryVaadin {
 
 		IObservableValue observeSingleSelection = VaadinObservables.observeSingleSelection(listSelect,
 				clazz.getInstanceClass());
-		Button add = VaadinWidgetFactory.createTableAddButton(setting, listSelect);
+		Button add = VaadinWidgetFactory.createTableAddButton(setting, listSelect, itemPropertyDescriptor);
 		horizontalLayout.addComponent(add);
 		Button remove = VaadinWidgetFactory.createTableRemoveButton(setting, listSelect);
 		horizontalLayout.addComponent(remove);

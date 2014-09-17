@@ -9,9 +9,9 @@
  * Contributors:
  * Dennis - initial API and implementation
  ******************************************************************************/
-package org.eclipse.emf.ecp.view.model.internal.vaadin;
+package org.eclipse.emf.ecp.view.core.vaadin.internal;
 
-import org.eclipse.emf.ecp.view.model.vaadin.ECPVaadinView;
+import org.eclipse.emf.ecp.view.core.vaadin.ECPVaadinView;
 import org.eclipse.emf.ecp.view.spi.context.ViewModelContext;
 
 import com.vaadin.ui.Component;
@@ -28,7 +28,7 @@ public class ECPVaadinViewImpl implements ECPVaadinView {
 
 	@Override
 	public Component getComponent() {
-		return component;
+		return this.component;
 	}
 
 	@Override
@@ -39,7 +39,7 @@ public class ECPVaadinViewImpl implements ECPVaadinView {
 
 	@Override
 	public ViewModelContext getViewModelContext() {
-		return viewModelContext;
+		return this.viewModelContext;
 	}
 
 }

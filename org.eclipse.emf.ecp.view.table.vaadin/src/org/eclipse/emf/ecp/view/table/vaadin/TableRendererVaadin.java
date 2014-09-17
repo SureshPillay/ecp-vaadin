@@ -61,7 +61,7 @@ public class TableRendererVaadin extends AbstractControlRendererVaadin<VTableCon
 
 		@Override
 		public void notifyChanged(Notification msg) {
-			table.refreshRowCache();
+			this.table.refreshRowCache();
 		}
 	}
 
@@ -75,7 +75,7 @@ public class TableRendererVaadin extends AbstractControlRendererVaadin<VTableCon
 
 		@Override
 		public void handleAdd(int index, Object element) {
-			((EObject) element).eAdapters().add(new TableContentUpdateAdaper(table));
+			((EObject) element).eAdapters().add(new TableContentUpdateAdaper(this.table));
 		}
 
 		@Override
@@ -149,10 +149,8 @@ public class TableRendererVaadin extends AbstractControlRendererVaadin<VTableCon
 
 		switch (control.getDetailEditing()) {
 		case WITH_DIALOG:
-
-			EditDialog editDialog = new EditDialog((EObject) table.getValue(), control);
-
-			Button edit = VaadinWidgetFactory.createTableEditButton(editDialog);
+			Button edit = VaadinWidgetFactory
+					.createTableEditButton((EObject) table.getValue(), control.getDetailView());
 			edit.setEnabled(control.getDetailView() != null);
 			horizontalLayout.addComponent(edit);
 			dataBindingContext.bindValue(VaadinObservables.observeEnabled(edit), observeSingleSelection, null,

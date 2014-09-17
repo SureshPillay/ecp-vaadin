@@ -9,7 +9,7 @@
  * Contributors:
  * Dennis - initial API and implementation
  ******************************************************************************/
-package org.eclipse.emf.ecp.view.model.internal.vaadin;
+package org.eclipse.emf.ecp.view.core.vaadin.internal;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -20,8 +20,8 @@ import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.InvalidRegistryObjectException;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.emf.ecp.view.model.vaadin.AbstractVaadinRenderer;
-import org.eclipse.emf.ecp.view.model.vaadin.VaadinRendererFactory;
+import org.eclipse.emf.ecp.view.core.vaadin.AbstractVaadinRenderer;
+import org.eclipse.emf.ecp.view.core.vaadin.VaadinRendererFactory;
 import org.eclipse.emf.ecp.view.spi.context.ViewModelContext;
 import org.eclipse.emf.ecp.view.spi.model.VElement;
 import org.osgi.framework.Bundle;
@@ -49,7 +49,7 @@ public final class VaadinRendererFactoryImpl implements VaadinRendererFactory {
 
 					final Class<VElement> renderable = loadClass(extension.getContributor().getName(), clazz);
 
-					rendererMapping.put(renderable, renderer);
+					this.rendererMapping.put(renderable, renderer);
 				} catch (final CoreException ex) {
 					ex.printStackTrace();
 				} catch (ClassNotFoundException e) {
@@ -73,7 +73,8 @@ public final class VaadinRendererFactoryImpl implements VaadinRendererFactory {
 
 	@Override
 	public <T extends VElement> Component render(T renderable, ViewModelContext viewContext) {
-		return rendererMapping.get(renderable.getClass().getInterfaces()[0]).renderComponent(renderable, viewContext);
+		return this.rendererMapping.get(renderable.getClass().getInterfaces()[0]).renderComponent(renderable,
+				viewContext);
 	}
 
 }

@@ -12,7 +12,7 @@
 
 package org.eclipse.emf.ecp.view.label.vaadin;
 
-import org.eclipse.emf.ecp.view.model.vaadin.AbstractVaadinRenderer;
+import org.eclipse.emf.ecp.view.core.vaadin.AbstractVaadinRenderer;
 import org.eclipse.emf.ecp.view.spi.context.ViewModelContext;
 import org.eclipse.emf.ecp.view.spi.label.model.VLabel;
 import org.eclipse.emf.ecp.view.spi.label.model.VLabelStyle;

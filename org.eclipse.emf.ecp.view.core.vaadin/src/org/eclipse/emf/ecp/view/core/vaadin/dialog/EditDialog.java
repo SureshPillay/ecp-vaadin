@@ -9,16 +9,17 @@
  * Contributors:
  * Dennis - initial API and implementation
  ******************************************************************************/
-package org.eclipse.emf.ecp.view.table.vaadin;
+package org.eclipse.emf.ecp.view.core.vaadin.dialog;
 
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecp.view.model.vaadin.ECPFVaadinViewRenderer;
-import org.eclipse.emf.ecp.view.model.vaadin.ECPVaadinView;
-import org.eclipse.emf.ecp.view.spi.table.model.VTableControl;
+import org.eclipse.emf.ecp.view.core.vaadin.ECPFVaadinViewRenderer;
+import org.eclipse.emf.ecp.view.core.vaadin.ECPVaadinView;
+import org.eclipse.emf.ecp.view.core.vaadin.internal.Messages;
+import org.eclipse.emf.ecp.view.spi.model.VView;
 import org.eclipse.emf.edit.provider.AdapterFactoryItemDelegator;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.edit.provider.ReflectiveItemProviderAdapterFactory;
@@ -38,61 +39,70 @@ public class EditDialog extends Window {
 	private Adapter objectChangeAdapter;
 	private ComposedAdapterFactory composedAdapterFactory;
 	private AdapterFactoryItemDelegator adapterFactoryItemDelegator;
-	private final VTableControl tableControl;
+	private final VView view;
 	private Button okButton;
 
-	public EditDialog(final EObject selection, VTableControl tableControl) {
+	public EditDialog(final EObject selection, VView view) {
 		this.selection = selection;
-		this.tableControl = tableControl;
-		composedAdapterFactory = new ComposedAdapterFactory(new AdapterFactory[] {
+		this.view = view;
+		this.composedAdapterFactory = new ComposedAdapterFactory(new AdapterFactory[] {
 				new ReflectiveItemProviderAdapterFactory(),
 				new ComposedAdapterFactory(ComposedAdapterFactory.Descriptor.Registry.INSTANCE) });
-		adapterFactoryItemDelegator = new AdapterFactoryItemDelegator(composedAdapterFactory);
+		this.adapterFactoryItemDelegator = new AdapterFactoryItemDelegator(this.composedAdapterFactory);
 
-		setCaption(adapterFactoryItemDelegator.getText(selection));
+		setCaption(this.adapterFactoryItemDelegator.getText(selection));
 
-		objectChangeAdapter = new AdapterImpl() {
+		this.objectChangeAdapter = new AdapterImpl() {
 
 			@Override
 			public void notifyChanged(Notification msg) {
-				setCaption(adapterFactoryItemDelegator.getText(selection));
+				setCaption(EditDialog.this.adapterFactoryItemDelegator.getText(selection));
 			}
 
 		};
-		selection.eAdapters().add(objectChangeAdapter);
+		selection.eAdapters().add(this.objectChangeAdapter);
 		initUi();
 		setResizable(true);
 		setWidth(40, Unit.PERCENTAGE);
 		center();
 	}
 
+	public EditDialog(final EObject selection) {
+		this(selection, null);
+	}
+
 	private void initUi() {
 		VaadinObservables.activateRealm(UI.getCurrent());
-		ECPVaadinView ecpVaadinView = ECPFVaadinViewRenderer.INSTANCE.render(selection, tableControl.getDetailView());
+		ECPVaadinView ecpVaadinView = null;
+		if (this.view == null) {
+			ecpVaadinView = ECPFVaadinViewRenderer.INSTANCE.render(this.selection, this.view);
+		} else {
+			ecpVaadinView = ECPFVaadinViewRenderer.INSTANCE.render(this.selection);
+		}
 		VerticalLayout layout = new VerticalLayout();
 		layout.setMargin(true);
 		layout.setSpacing(true);
 		Component component = ecpVaadinView.getComponent();
 		layout.addComponent(component);
-		okButton = new Button(Messages.ok, new Button.ClickListener() {
+		this.okButton = new Button(Messages.ok, new Button.ClickListener() {
 
 			@Override
 			public void buttonClick(ClickEvent event) {
 				close();
 			}
 		});
-		layout.addComponent(okButton);
-		layout.setComponentAlignment(okButton, Alignment.TOP_RIGHT);
+		layout.addComponent(this.okButton);
+		layout.setComponentAlignment(this.okButton, Alignment.TOP_RIGHT);
 		setContent(layout);
 	}
 
 	@Override
 	public void close() {
-		if (objectChangeAdapter != null) {
-			selection.eAdapters().remove(objectChangeAdapter);
+		if (this.objectChangeAdapter != null) {
+			this.selection.eAdapters().remove(this.objectChangeAdapter);
 		}
-		if (composedAdapterFactory != null) {
-			composedAdapterFactory.dispose();
+		if (this.composedAdapterFactory != null) {
+			this.composedAdapterFactory.dispose();
 		}
 		super.close();
 	}

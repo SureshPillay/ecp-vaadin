@@ -18,14 +18,17 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature.Setting;
+import org.eclipse.emf.ecp.view.core.vaadin.dialog.EditDialog;
+import org.eclipse.emf.ecp.view.spi.model.VView;
+import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 
 import com.vaadin.ui.AbstractSelect;
+import com.vaadin.ui.AbstractSelect.ItemCaptionMode;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
-import com.vaadin.ui.Window;
 
 public final class VaadinWidgetFactory {
 
@@ -34,6 +37,11 @@ public final class VaadinWidgetFactory {
 	}
 
 	public static Button createTableAddButton(final Setting setting, final AbstractSelect abstractSelect) {
+		return createTableAddButton(setting, abstractSelect, null);
+	}
+
+	public static Button createTableAddButton(final Setting setting, final AbstractSelect abstractSelect,
+			final IItemPropertyDescriptor itemPropertyDescriptor) {
 		Button add = new Button();
 		add.addStyleName("table-add");
 		add.addClickListener(new ClickListener() {
@@ -43,6 +51,9 @@ public final class VaadinWidgetFactory {
 				EObject addItem = createItem(setting);
 				getItems(setting).add(addItem);
 				abstractSelect.select(addItem);
+				if (ItemCaptionMode.EXPLICIT == abstractSelect.getItemCaptionMode() && itemPropertyDescriptor != null) {
+					abstractSelect.setItemCaption(addItem, itemPropertyDescriptor.getDisplayName(setting.getEObject()));
+				}
 			}
 		});
 		return add;
@@ -62,13 +73,14 @@ public final class VaadinWidgetFactory {
 		return remove;
 	}
 
-	public static Button createTableEditButton(final Window editDialog) {
+	public static Button createTableEditButton(final EObject selection, final VView view) {
 		Button edit = new Button();
 		edit.addStyleName("table-edit");
 		edit.addClickListener(new ClickListener() {
 
 			@Override
 			public void buttonClick(ClickEvent event) {
+				EditDialog editDialog = new EditDialog(selection, view);
 				UI.getCurrent().addWindow(editDialog);
 			}
 		});

@@ -9,17 +9,15 @@
  * Contributors:
  * Dennis - initial API and implementation
  ******************************************************************************/
-package org.eclipse.emf.ecp.view.model.vaadin;
+package org.eclipse.emf.ecp.view.core.vaadin.internal;
 
-import org.eclipse.emf.ecp.view.model.internal.vaadin.VaadinRendererFactoryImpl;
-import org.eclipse.emf.ecp.view.spi.context.ViewModelContext;
-import org.eclipse.emf.ecp.view.spi.model.VElement;
+import org.eclipse.osgi.util.NLS;
 
-import com.vaadin.ui.Component;
+public class Messages {
+	private static final String BUNDLE_NAME = "OSGI-INF.l10n.messages"; //$NON-NLS-1$
 
-public interface VaadinRendererFactory {
-
-	VaadinRendererFactory INSTANCE = new VaadinRendererFactoryImpl();
-
-	<T extends VElement> Component render(T renderable, final ViewModelContext viewContext);
+	public static String ok;
+	static {
+		NLS.initializeMessages(BUNDLE_NAME, Messages.class);
+	}
 }
