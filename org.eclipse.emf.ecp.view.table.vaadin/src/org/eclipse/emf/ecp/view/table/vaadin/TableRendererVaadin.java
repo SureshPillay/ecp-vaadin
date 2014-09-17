@@ -135,6 +135,7 @@ public class TableRendererVaadin extends AbstractControlRendererVaadin<VTableCon
 		emfUpdateValueStrategy.setConverter(new SelectionConverter());
 
 		HorizontalLayout horizontalLayout = new HorizontalLayout();
+		horizontalLayout.addStyleName("table-button-toolbar");
 		layout.addComponent(horizontalLayout);
 
 		IObservableValue observeSingleSelection = VaadinObservables.observeSingleSelection(table,
@@ -148,12 +149,21 @@ public class TableRendererVaadin extends AbstractControlRendererVaadin<VTableCon
 					emfUpdateValueStrategy);
 		}
 
-		if (control.isEnableDetailEditingDialog()) {
+		switch (control.getDetailEditing()) {
+		case WITH_DIALOG:
 			Button edit = createEditButton(control, table);
+			edit.setEnabled(control.getDetailView() != null);
 			horizontalLayout.addComponent(edit);
 			dataBindingContext.bindValue(VaadinObservables.observeEnabled(edit), observeSingleSelection, null,
 					emfUpdateValueStrategy);
+			break;
+		case WITH_PANEL:
+			// TODO Master/Detail Panel
+			break;
+		default:
+			break;
 		}
+
 		layout.addComponent(horizontalLayout, 0);
 		layout.setComponentAlignment(horizontalLayout, Alignment.TOP_RIGHT);
 		layout.addComponent(table, 1);

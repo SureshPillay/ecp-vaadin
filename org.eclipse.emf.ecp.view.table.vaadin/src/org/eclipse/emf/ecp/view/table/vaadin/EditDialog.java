@@ -16,15 +16,9 @@ import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecp.view.model.vaadin.ECPFVaadinViewRenderer;
 import org.eclipse.emf.ecp.view.model.vaadin.ECPVaadinView;
-import org.eclipse.emf.ecp.view.spi.model.VControl;
-import org.eclipse.emf.ecp.view.spi.model.VDomainModelReference;
-import org.eclipse.emf.ecp.view.spi.model.VView;
-import org.eclipse.emf.ecp.view.spi.model.VViewFactory;
 import org.eclipse.emf.ecp.view.spi.table.model.VTableControl;
-import org.eclipse.emf.ecp.view.spi.table.model.VTableDomainModelReference;
 import org.eclipse.emf.edit.provider.AdapterFactoryItemDelegator;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.edit.provider.ReflectiveItemProviderAdapterFactory;
@@ -73,9 +67,8 @@ public class EditDialog extends Window {
 	}
 
 	private void initUi() {
-		final VView view = getView();
 		VaadinObservables.activateRealm(UI.getCurrent());
-		ECPVaadinView ecpVaadinView = ECPFVaadinViewRenderer.INSTANCE.render(selection, view);
+		ECPVaadinView ecpVaadinView = ECPFVaadinViewRenderer.INSTANCE.render(selection, tableControl.getDetailView());
 		VerticalLayout layout = new VerticalLayout();
 		layout.setMargin(true);
 		layout.setSpacing(true);
@@ -91,20 +84,6 @@ public class EditDialog extends Window {
 		layout.addComponent(okButton);
 		layout.setComponentAlignment(okButton, Alignment.TOP_RIGHT);
 		setContent(layout);
-	}
-
-	private VView getView() {
-		final VView vView = VViewFactory.eINSTANCE.createView();
-		for (final VDomainModelReference column : VTableDomainModelReference.class.cast(
-				tableControl.getDomainModelReference()).getColumnDomainModelReferences()) {
-			final VControl vControl = VViewFactory.eINSTANCE.createControl();
-			vControl.setDomainModelReference(EcoreUtil.copy(column));
-			boolean controlReadOnly = tableControl.isReadonly() || !tableControl.isEnabled();
-			// controlReadOnly = TableConfigurationHelper.isReadOnly(tableControl, column);
-			vControl.setReadonly(controlReadOnly);
-			vView.getChildren().add(vControl);
-		}
-		return vView;
 	}
 
 	@Override

@@ -11,28 +11,35 @@
 	border-radius: 3px;
 }
 
-.table-add, .table-remove,.table-edit{
-	height: 26px !important;
-	top:22px;
+.table-button-toolbar, .v-slot-table-button-toolbar{
+	height: 0px;
+}
+
+.table-button-toolbar > .v-slot{
+	margin-top: -2px;
+}
+
+.table-add.v-button, .table-remove.v-button,.table-edit.v-button{
+	height: 26px;
 }
 
 
-.table-add{
-	background: url("/VAADIN/icons/add-table.png") 5px 2px no-repeat !important;
+.table-add.v-button{
+	background: url("/VAADIN/icons/add-table.png") center center no-repeat;
 }
 
-.table-remove{
-	background: url("/VAADIN/icons/remove-table.png") 5px 2px no-repeat !important;
+.table-remove.v-button{
+	background: url("/VAADIN/icons/remove-table.png") center center no-repeat;
 }
 
-.table-edit{
-	background: url("/VAADIN/icons/edit-table.png") 5px 2px no-repeat !important;
+.table-edit.v-button{
+	background: url("/VAADIN/icons/edit-table.png") center center no-repeat;
 }
 
-.list-add{
-	background: url("/VAADIN/icons/add-list.png") 2.5px 5px no-repeat !important;
+.list-add.v-button{
+	background: url("/VAADIN/icons/add-list.png") center center no-repeat;
 }
 
-.list-remove{
-	background: url("/VAADIN/icons/remove-list.png") 2.5px 5px no-repeat !important;
+.list-remove.v-button{
+	background: url("/VAADIN/icons/remove-list.png") center center no-repeat;
 }
