@@ -12,7 +12,6 @@
 package org.eclipse.emf.ecp.view.table.vaadin;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
@@ -34,6 +33,7 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EStructuralFeature.Setting;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecp.view.core.vaadin.VaadinRendererUtil;
+import org.eclipse.emf.ecp.view.core.vaadin.VaadinWidgetFactory;
 import org.eclipse.emf.ecp.view.core.vaadin.converter.SelectionConverter;
 import org.eclipse.emf.ecp.view.model.vaadin.AbstractControlRendererVaadin;
 import org.eclipse.emf.ecp.view.spi.context.ViewModelContext;
@@ -44,12 +44,9 @@ import org.lunifera.runtime.web.vaadin.databinding.VaadinObservables;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
-import com.vaadin.ui.Button.ClickEvent;
-import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Table;
-import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
 public class TableRendererVaadin extends AbstractControlRendererVaadin<VTableControl> {
@@ -104,6 +101,7 @@ public class TableRendererVaadin extends AbstractControlRendererVaadin<VTableCon
 
 		VerticalLayout layout = new VerticalLayout();
 		final Table table = new Table();
+		layout.setData(table);
 		table.setSelectable(true);
 		table.setSizeFull();
 
@@ -141,9 +139,9 @@ public class TableRendererVaadin extends AbstractControlRendererVaadin<VTableCon
 		IObservableValue observeSingleSelection = VaadinObservables.observeSingleSelection(table,
 				clazz.getInstanceClass());
 		if (!control.isAddRemoveDisabled()) {
-			Button add = createAddButton(setting, table);
+			Button add = VaadinWidgetFactory.createTableAddButton(setting, table);
 			horizontalLayout.addComponent(add);
-			Button remove = createRemoveButton(setting, table);
+			Button remove = VaadinWidgetFactory.createTableRemoveButton(setting, table);
 			horizontalLayout.addComponent(remove);
 			dataBindingContext.bindValue(VaadinObservables.observeEnabled(remove), observeSingleSelection, null,
 					emfUpdateValueStrategy);
@@ -151,7 +149,10 @@ public class TableRendererVaadin extends AbstractControlRendererVaadin<VTableCon
 
 		switch (control.getDetailEditing()) {
 		case WITH_DIALOG:
-			Button edit = createEditButton(control, table);
+
+			EditDialog editDialog = new EditDialog((EObject) table.getValue(), control);
+
+			Button edit = VaadinWidgetFactory.createTableEditButton(editDialog);
 			edit.setEnabled(control.getDetailView() != null);
 			horizontalLayout.addComponent(edit);
 			dataBindingContext.bindValue(VaadinObservables.observeEnabled(edit), observeSingleSelection, null,
@@ -159,14 +160,14 @@ public class TableRendererVaadin extends AbstractControlRendererVaadin<VTableCon
 			break;
 		case WITH_PANEL:
 			// TODO Master/Detail Panel
-			break;
+			throw new UnsupportedOperationException("WITH_PANEL is not implmented yet");
 		default:
 			break;
 		}
 
-		layout.addComponent(horizontalLayout, 0);
+		layout.addComponent(horizontalLayout);
 		layout.setComponentAlignment(horizontalLayout, Alignment.TOP_RIGHT);
-		layout.addComponent(table, 1);
+		layout.addComponent(table);
 		return layout;
 
 	}
@@ -189,20 +190,6 @@ public class TableRendererVaadin extends AbstractControlRendererVaadin<VTableCon
 		table.setColumnHeaders(visibleColumnsNames.toArray(new String[visibleColumnsNames.size()]));
 	}
 
-	private Button createEditButton(final VTableControl control, final Table table) {
-		Button edit = new Button();
-		edit.addStyleName("table-edit");
-		edit.addClickListener(new ClickListener() {
-
-			@Override
-			public void buttonClick(ClickEvent event) {
-				EditDialog editDialog = new EditDialog((EObject) table.getValue(), control);
-				UI.getCurrent().addWindow(editDialog);
-			}
-		});
-		return edit;
-	}
-
 	private List<Object> getItems(final Setting setting) {
 		return (List<Object>) setting.getEObject().eGet(setting.getEStructuralFeature());
 	}
@@ -213,53 +200,6 @@ public class TableRendererVaadin extends AbstractControlRendererVaadin<VTableCon
 				iterator.remove();
 			}
 		}
-	}
-
-	private Button createRemoveButton(final Setting setting, final Table table) {
-		Button remove = new Button();
-		remove.addStyleName("table-remove");
-		final List<Object> items = getItems(setting);
-		remove.addClickListener(new ClickListener() {
-
-			@Override
-			public void buttonClick(ClickEvent event) {
-				EObject selectedValue = (EObject) table.getValue();
-				if (selectedValue instanceof Collection) {
-					items.removeAll((Collection<?>) selectedValue);
-					return;
-				}
-				items.remove(selectedValue);
-			}
-
-		});
-
-		return remove;
-	}
-
-	@Override
-	protected Component getControlComponent(Component component) {
-		VerticalLayout layout = (VerticalLayout) component;
-		if (layout.getComponentCount() > 1) {
-
-			return layout.getComponent(1);
-		}
-		return layout.getComponent(0);
-	}
-
-	private Button createAddButton(final Setting setting, final Table table) {
-		Button add = new Button();
-		add.addStyleName("table-add");
-		final List<Object> items = getItems(setting);
-		add.addClickListener(new ClickListener() {
-
-			@Override
-			public void buttonClick(ClickEvent event) {
-				EObject addItem = addItem(setting);
-				items.add(addItem);
-				table.select(addItem);
-			}
-		});
-		return add;
 	}
 
 }

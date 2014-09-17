@@ -22,6 +22,7 @@ import org.eclipse.emf.ecp.view.spi.model.ModelChangeNotification;
 import org.eclipse.emf.ecp.view.spi.model.VElement;
 import org.eclipse.emf.ecp.view.spi.model.VViewPackage;
 
+import com.vaadin.ui.AbstractComponent;
 import com.vaadin.ui.Component;
 
 public abstract class AbstractVaadinRenderer<T extends VElement> {
@@ -32,7 +33,7 @@ public abstract class AbstractVaadinRenderer<T extends VElement> {
 	public Component renderComponent(final T renderable, final ViewModelContext viewContext) {
 		initServices(viewContext);
 		final Component component = render(renderable, viewContext);
-		final Component controlComponent = getControlComponent(component);
+		final Component controlComponent = getCaptionControlComponent(component);
 		ModelChangeListener listener = new ModelChangeListener() {
 
 			@Override
@@ -89,7 +90,14 @@ public abstract class AbstractVaadinRenderer<T extends VElement> {
 		component.setVisible(renderable.isVisible());
 	}
 
-	protected Component getControlComponent(Component component) {
+	protected Component getCaptionControlComponent(Component component) {
+		if (!(component instanceof AbstractComponent)) {
+			return component;
+		}
+		AbstractComponent abstractComponent = (AbstractComponent) component;
+		if (abstractComponent.getData() instanceof Component) {
+			return (Component) abstractComponent.getData();
+		}
 		return component;
 	}
 

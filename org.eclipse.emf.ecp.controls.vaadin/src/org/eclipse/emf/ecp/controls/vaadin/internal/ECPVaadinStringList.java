@@ -21,6 +21,7 @@ import org.eclipse.emf.databinding.EMFUpdateValueStrategy;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EStructuralFeature.Setting;
 import org.eclipse.emf.ecp.controls.vaadin.ECPControlFactoryVaadin;
+import org.eclipse.emf.ecp.view.core.vaadin.VaadinWidgetFactory;
 import org.eclipse.emf.ecp.view.core.vaadin.converter.SelectionConverter;
 import org.eclipse.emf.ecp.view.spi.model.VControl;
 import org.lunifera.runtime.web.vaadin.databinding.VaadinObservables;
@@ -28,8 +29,6 @@ import org.lunifera.runtime.web.vaadin.databinding.VaadinObservables;
 import com.vaadin.server.Sizeable.Unit;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
-import com.vaadin.ui.Button.ClickEvent;
-import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.ListSelect;
@@ -55,8 +54,7 @@ public class ECPVaadinStringList extends ECPControlFactoryVaadin {
 		layout.addComponent(listSelect);
 		listSelect.setNullSelectionAllowed(true);
 
-		final List<Object> items = (List<Object>) setting.getEObject().eGet(eStructuralFeature);
-		listSelect.addItems(items);
+		listSelect.addItems(setting.getEObject().eGet(eStructuralFeature));
 
 		IObservableList targetValue = VaadinObservables.observeContainerItemSetContents(listSelect, setting
 				.getEObject().getClass());
@@ -71,36 +69,13 @@ public class ECPVaadinStringList extends ECPControlFactoryVaadin {
 		final TextField textField = new TextField();
 		horizontalLayout.addComponent(textField);
 		textField.setWidth(100, Unit.PERCENTAGE);
-		final Button add = new Button();
-		add.addStyleName("list-add");
+		final Button add = VaadinWidgetFactory.createListAddButton(setting, textField);
 		horizontalLayout.addComponent(add);
 		horizontalLayout.setComponentAlignment(add, Alignment.TOP_RIGHT);
-		final Button remove = new Button();
-		remove.addStyleName("list-remove");
-		remove.setVisible(false);
+		final Button remove = VaadinWidgetFactory.createListRemoveButton(setting, listSelect, textField);
 		horizontalLayout.addComponent(remove);
 		horizontalLayout.setComponentAlignment(remove, Alignment.TOP_RIGHT);
 		horizontalLayout.setExpandRatio(textField, 1.0f);
-
-		add.addClickListener(new ClickListener() {
-
-			@Override
-			public void buttonClick(ClickEvent event) {
-				((List<Object>) setting.get(true)).add(textField.getValue());
-				textField.setValue("");
-				textField.focus();
-			}
-		});
-
-		remove.addClickListener(new ClickListener() {
-
-			@Override
-			public void buttonClick(ClickEvent event) {
-				items.remove(listSelect.getValue());
-				listSelect.select(0);
-				textField.focus();
-			}
-		});
 
 		IObservableValue targetValueList = VaadinObservables.observeValue(textField);
 
@@ -111,12 +86,12 @@ public class ECPVaadinStringList extends ECPControlFactoryVaadin {
 				// TODO FIXME: Better solution for changing String in List?
 				if (listSelect.getValue() != null && !listSelect.getValue().equals(textField.getValue())
 						&& event.diff.getOldValue() != event.diff.getNewValue()) {
+					List<Object> items = (List<Object>) setting.get(true);
 					int index = items.indexOf(event.diff.getOldValue());
 					if (index != -1) {
 						items.remove(listSelect.getValue());
-						((List<Object>) setting.get(true)).add(index, event.diff.getNewValue());
+						items.add(index, event.diff.getNewValue());
 					}
-
 				}
 
 			}
@@ -138,7 +113,7 @@ public class ECPVaadinStringList extends ECPControlFactoryVaadin {
 		emfUpdateValueStrategy.setConverter(new SelectionConverter(false));
 		getDataBindingContext().bindValue(VaadinObservables.observeVisible(add), observeSingleSelection, null,
 				emfUpdateValueStrategy);
-
+		layout.setData(listSelect);
 		return layout;
 	}
 }

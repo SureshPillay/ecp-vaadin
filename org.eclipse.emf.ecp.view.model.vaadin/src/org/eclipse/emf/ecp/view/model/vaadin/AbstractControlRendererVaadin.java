@@ -23,7 +23,6 @@ import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import com.vaadin.server.UserError;
 import com.vaadin.ui.AbstractComponent;
 import com.vaadin.ui.Component;
-import com.vaadin.ui.ComponentContainer;
 
 public abstract class AbstractControlRendererVaadin<T extends VControl> extends AbstractVaadinRenderer<T> {
 
@@ -49,14 +48,6 @@ public abstract class AbstractControlRendererVaadin<T extends VControl> extends 
 		if (component instanceof AbstractComponent && !StringUtils.isEmpty(description)) {
 			((AbstractComponent) component).setDescription(description);
 		}
-	}
-
-	@Override
-	protected Component getControlComponent(Component component) {
-		if (component instanceof ComponentContainer) {
-			return getControlComponent(((ComponentContainer) component).iterator().next());
-		}
-		return component;
 	}
 
 	@Override

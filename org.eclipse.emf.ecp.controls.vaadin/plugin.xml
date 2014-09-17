@@ -9,8 +9,7 @@
          <staticTest
                priority="1"
                singleValue="true"
-               supportedClassType="java.lang.Object"
-               supportedEObject="org.eclipse.emf.ecore.EObject">
+               supportedClassType="java.lang.String">
          </staticTest>
       </control>
       <control
@@ -94,8 +93,15 @@
          </staticTest>
       </control>
       <control
+            class="org.eclipse.emf.ecp.controls.vaadin.internal.ECPVaadinReferenceList"
+            id="org.eclipse.emf.ecp.control.vaadin.reference.list">
+         <dynamicTest
+               testClass="org.eclipse.emf.ecp.controls.vaadin.internal.ECPVaadinReferenceListTester">
+         </dynamicTest>
+      </control>
+      <control
             class="org.eclipse.emf.ecp.controls.vaadin.internal.ECPVaadinStringList"
-            id="org.eclipse.emf.ecp.controls.vaadin.multi.text">
+            id="org.eclipse.emf.ecp.controls.vaadin.string.list">
          <staticTest
                priority="1"
                singleValue="false"
