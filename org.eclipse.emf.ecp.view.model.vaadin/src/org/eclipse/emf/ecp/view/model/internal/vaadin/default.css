@@ -11,6 +11,10 @@
 	border-radius: 3px;
 }
 
+.link.v-button:focus::after{
+    box-shadow: none;
+}
+
 .table-button-toolbar, .v-slot-table-button-toolbar{
 	height: 0px;
 }
@@ -23,6 +27,9 @@
 	height: 26px;
 }
 
+.reference-list td:last-child{
+border-left: none;
+}
 
 .table-add.v-button{
 	background: url("/VAADIN/icons/add-table.png") center center no-repeat;

@@ -20,15 +20,15 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature.Setting;
 import org.eclipse.emf.ecp.view.core.vaadin.dialog.EditDialog;
 import org.eclipse.emf.ecp.view.spi.model.VView;
-import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 
 import com.vaadin.ui.AbstractSelect;
-import com.vaadin.ui.AbstractSelect.ItemCaptionMode;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
+import com.vaadin.ui.Table;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
+import com.vaadin.ui.themes.BaseTheme;
 
 public final class VaadinWidgetFactory {
 
@@ -36,12 +36,7 @@ public final class VaadinWidgetFactory {
 
 	}
 
-	public static Button createTableAddButton(final Setting setting, final AbstractSelect abstractSelect) {
-		return createTableAddButton(setting, abstractSelect, null);
-	}
-
-	public static Button createTableAddButton(final Setting setting, final AbstractSelect abstractSelect,
-			final IItemPropertyDescriptor itemPropertyDescriptor) {
+	public static Button createTableAddButton(final Setting setting, final Table table) {
 		Button add = new Button();
 		add.addStyleName("table-add");
 		add.addClickListener(new ClickListener() {
@@ -50,9 +45,8 @@ public final class VaadinWidgetFactory {
 			public void buttonClick(ClickEvent event) {
 				EObject addItem = createItem(setting);
 				getItems(setting).add(addItem);
-				abstractSelect.select(addItem);
-				if (ItemCaptionMode.EXPLICIT == abstractSelect.getItemCaptionMode() && itemPropertyDescriptor != null) {
-					abstractSelect.setItemCaption(addItem, itemPropertyDescriptor.getDisplayName(setting.getEObject()));
+				if (table.isSelectable()) {
+					table.select(addItem);
 				}
 			}
 		});
@@ -66,21 +60,21 @@ public final class VaadinWidgetFactory {
 
 			@Override
 			public void buttonClick(ClickEvent event) {
-				removeItems(abstractSelect, setting);
+				removeItems(setting, abstractSelect.getValue());
 			}
 
 		});
 		return remove;
 	}
 
-	public static Button createTableEditButton(final EObject selection, final VView view) {
+	public static Button createTableEditButton(final AbstractSelect abstractSelect, final VView view) {
 		Button edit = new Button();
 		edit.addStyleName("table-edit");
 		edit.addClickListener(new ClickListener() {
 
 			@Override
 			public void buttonClick(ClickEvent event) {
-				EditDialog editDialog = new EditDialog(selection, view);
+				EditDialog editDialog = new EditDialog((EObject) abstractSelect.getValue(), view);
 				UI.getCurrent().addWindow(editDialog);
 			}
 		});
@@ -111,7 +105,7 @@ public final class VaadinWidgetFactory {
 
 			@Override
 			public void buttonClick(ClickEvent event) {
-				removeItems(abstractSelect, setting);
+				removeItems(setting, abstractSelect.getValue());
 				abstractSelect.select(0);
 				textField.focus();
 			}
@@ -120,14 +114,44 @@ public final class VaadinWidgetFactory {
 		return remove;
 	}
 
-	private static void removeItems(final AbstractSelect abstractSelect, final Setting setting) {
-		final List<Object> items = getItems(setting);
-		Object selectedValue = abstractSelect.getValue();
-		if (selectedValue instanceof Collection) {
-			items.removeAll((Collection<?>) selectedValue);
+	public static Button createEditLink(final EObject selection) {
+		Button edit = new Button();
+		edit.addStyleName(BaseTheme.BUTTON_LINK);
+		edit.addClickListener(new ClickListener() {
+
+			@Override
+			public void buttonClick(ClickEvent event) {
+				EditDialog editDialog = new EditDialog(selection);
+				UI.getCurrent().addWindow(editDialog);
+			}
+		});
+		return edit;
+	}
+
+	public static Button createTableRemoveButtonFlat(final Setting setting, final EObject delete) {
+		Button remove = new Button();
+		remove.addStyleName("table-remove");
+		remove.addClickListener(new ClickListener() {
+
+			@Override
+			public void buttonClick(ClickEvent event) {
+				removeItems(setting, delete);
+			}
+
+		});
+		return remove;
+	}
+
+	private static void removeItems(final Setting setting, Object deleteObject) {
+		if (deleteObject == null) {
 			return;
 		}
-		items.remove(selectedValue);
+		final List<Object> items = getItems(setting);
+		if (deleteObject instanceof Collection) {
+			items.removeAll((Collection<?>) deleteObject);
+			return;
+		}
+		items.remove(deleteObject);
 	}
 
 	private static EObject createItem(Setting setting) {

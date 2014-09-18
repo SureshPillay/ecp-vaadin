@@ -83,6 +83,14 @@ public class TableRendererVaadin extends AbstractControlRendererVaadin<VTableCon
 			removeTableContentAdapter((EObject) element);
 		}
 
+		private void removeTableContentAdapter(EObject selectedValue) {
+			for (Iterator<Adapter> iterator = selectedValue.eAdapters().iterator(); iterator.hasNext();) {
+				if (iterator.next() instanceof TableContentUpdateAdaper) {
+					iterator.remove();
+				}
+			}
+		}
+
 	}
 
 	protected EObject addItem(Setting setting) {
@@ -149,8 +157,7 @@ public class TableRendererVaadin extends AbstractControlRendererVaadin<VTableCon
 
 		switch (control.getDetailEditing()) {
 		case WITH_DIALOG:
-			Button edit = VaadinWidgetFactory
-					.createTableEditButton((EObject) table.getValue(), control.getDetailView());
+			Button edit = VaadinWidgetFactory.createTableEditButton(table, control.getDetailView());
 			edit.setEnabled(control.getDetailView() != null);
 			horizontalLayout.addComponent(edit);
 			dataBindingContext.bindValue(VaadinObservables.observeEnabled(edit), observeSingleSelection, null,
@@ -190,14 +197,6 @@ public class TableRendererVaadin extends AbstractControlRendererVaadin<VTableCon
 
 	private List<Object> getItems(final Setting setting) {
 		return (List<Object>) setting.getEObject().eGet(setting.getEStructuralFeature());
-	}
-
-	private void removeTableContentAdapter(EObject selectedValue) {
-		for (Iterator<Adapter> iterator = selectedValue.eAdapters().iterator(); iterator.hasNext();) {
-			if (iterator.next() instanceof TableContentUpdateAdaper) {
-				iterator.remove();
-			}
-		}
 	}
 
 }

@@ -30,7 +30,7 @@ public class ECPVaadinReferenceListTester implements ECPApplicableTester {
 
 	@Override
 	public int isApplicable(EObject eObject, EStructuralFeature eStructuralFeature) {
-		int bestPriority = 1;
+		int bestPriority = 2;
 
 		if (!eStructuralFeature.isMany()) {
 			return NOT_APPLICABLE;
@@ -39,7 +39,7 @@ public class ECPVaadinReferenceListTester implements ECPApplicableTester {
 			return NOT_APPLICABLE;
 		}
 		final Class<?> instanceClass = eStructuralFeature.getEType().getInstanceClass();
-		if (instanceClass == null && instanceClass.isPrimitive()) {
+		if (instanceClass == null || instanceClass.isPrimitive()) {
 			return NOT_APPLICABLE;
 		}
 		return bestPriority;

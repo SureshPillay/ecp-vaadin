@@ -20,6 +20,7 @@ import org.eclipse.emf.ecp.view.core.vaadin.ECPFVaadinViewRenderer;
 import org.eclipse.emf.ecp.view.core.vaadin.ECPVaadinView;
 import org.eclipse.emf.ecp.view.core.vaadin.internal.Messages;
 import org.eclipse.emf.ecp.view.spi.model.VView;
+import org.eclipse.emf.ecp.view.spi.provider.ViewProviderHelper;
 import org.eclipse.emf.edit.provider.AdapterFactoryItemDelegator;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.edit.provider.ReflectiveItemProviderAdapterFactory;
@@ -39,7 +40,7 @@ public class EditDialog extends Window {
 	private Adapter objectChangeAdapter;
 	private ComposedAdapterFactory composedAdapterFactory;
 	private AdapterFactoryItemDelegator adapterFactoryItemDelegator;
-	private final VView view;
+	private VView view;
 	private Button okButton;
 
 	public EditDialog(final EObject selection, VView view) {
@@ -73,12 +74,7 @@ public class EditDialog extends Window {
 
 	private void initUi() {
 		VaadinObservables.activateRealm(UI.getCurrent());
-		ECPVaadinView ecpVaadinView = null;
-		if (this.view == null) {
-			ecpVaadinView = ECPFVaadinViewRenderer.INSTANCE.render(this.selection, this.view);
-		} else {
-			ecpVaadinView = ECPFVaadinViewRenderer.INSTANCE.render(this.selection);
-		}
+		ECPVaadinView ecpVaadinView = ECPFVaadinViewRenderer.INSTANCE.render(this.selection, getView());
 		VerticalLayout layout = new VerticalLayout();
 		layout.setMargin(true);
 		layout.setSpacing(true);
@@ -96,6 +92,15 @@ public class EditDialog extends Window {
 		setContent(layout);
 	}
 
+	private VView getView() {
+		if (this.view != null) {
+			return this.view;
+		}
+
+		this.view = ViewProviderHelper.getView(this.selection, null);
+		return this.view;
+	}
+
 	@Override
 	public void close() {
 		if (this.objectChangeAdapter != null) {
@@ -104,6 +109,7 @@ public class EditDialog extends Window {
 		if (this.composedAdapterFactory != null) {
 			this.composedAdapterFactory.dispose();
 		}
+		this.composedAdapterFactory = null;
 		super.close();
 	}
 
