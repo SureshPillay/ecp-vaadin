@@ -18,6 +18,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature.Setting;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecp.view.core.vaadin.dialog.EditDialog;
 import org.eclipse.emf.ecp.view.spi.model.VView;
 
@@ -60,7 +61,7 @@ public final class VaadinWidgetFactory {
 
 			@Override
 			public void buttonClick(ClickEvent event) {
-				removeItems(setting, abstractSelect.getValue());
+				removeItems(abstractSelect.getValue());
 			}
 
 		});
@@ -105,7 +106,7 @@ public final class VaadinWidgetFactory {
 
 			@Override
 			public void buttonClick(ClickEvent event) {
-				removeItems(setting, abstractSelect.getValue());
+				removeItems(abstractSelect.getValue());
 				abstractSelect.select(0);
 				textField.focus();
 			}
@@ -135,23 +136,26 @@ public final class VaadinWidgetFactory {
 
 			@Override
 			public void buttonClick(ClickEvent event) {
-				removeItems(setting, delete);
+				removeItems(delete);
 			}
 
 		});
 		return remove;
 	}
 
-	private static void removeItems(final Setting setting, Object deleteObject) {
+	private static void removeItems(Object deleteObject) {
 		if (deleteObject == null) {
 			return;
 		}
-		final List<Object> items = getItems(setting);
+
 		if (deleteObject instanceof Collection) {
-			items.removeAll((Collection<?>) deleteObject);
+			Collection<?> deleteCollection = (Collection<?>) deleteObject;
+			for (Object object : deleteCollection) {
+				EcoreUtil.delete((EObject) object);
+			}
 			return;
 		}
-		items.remove(deleteObject);
+		EcoreUtil.delete((EObject) deleteObject);
 	}
 
 	private static EObject createItem(Setting setting) {

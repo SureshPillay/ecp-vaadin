@@ -1,13 +1,17 @@
 package makeithappen.vaadin.app.internal;
 
+import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.ecore.util.EContentAdapter;
+import org.eclipse.emf.ecp.view.core.vaadin.ECPFVaadinViewRenderer;
+import org.eclipse.emf.ecp.view.core.vaadin.ECPVaadinView;
+import org.lunifera.runtime.web.vaadin.databinding.VaadinObservables;
+
 import com.eclipsesource.makeithappen.model.task.TaskFactory;
 import com.eclipsesource.makeithappen.model.task.User;
 import com.vaadin.annotations.PreserveOnRefresh;
 import com.vaadin.annotations.Theme;
 import com.vaadin.server.VaadinRequest;
-import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
-import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 
 @PreserveOnRefresh
@@ -22,32 +26,32 @@ public class VaadinMainUI extends UI {
 	protected void init(VaadinRequest request) {
 		getPage().setTitle("Test Vaadin Valo");
 
-		// VaadinObservables.activateRealm(UI.getCurrent());
-		// ECPVaadinView ecpVaadinView = ECPFVaadinViewRenderer.INSTANCE.render(user);
-		// setContent(ecpVaadinView.getComponent());
+		VaadinObservables.activateRealm(UI.getCurrent());
+		ECPVaadinView ecpVaadinView = ECPFVaadinViewRenderer.INSTANCE.render(user);
+		setContent(ecpVaadinView.getComponent());
+
+		EContentAdapter adapter = new EContentAdapter() {
+			@Override
+			public void notifyChanged(Notification notification) {
+				System.out.println(user);
+			}
+		};
+		user.eAdapters().add(adapter);
+
+		// VerticalLayout verticalLayout = new VerticalLayout();
+		// verticalLayout.setSizeFull();
+		// verticalLayout.setMargin(true);
+		// verticalLayout.setSpacing(true);
 		//
-		// EContentAdapter adapter = new EContentAdapter() {
-		// @Override
-		// public void notifyChanged(Notification notification) {
-		// System.out.println(user);
+		// VerticalLayout layout = new VerticalLayout();
+		// layout.setMargin(true);
+		// layout.setSpacing(true);
+		// for (int i = 0; i < 20; i++) {
+		// layout.addComponent(new TextField("" + i));
 		// }
-		// };
-		// user.eAdapters().add(adapter);
-
-		VerticalLayout verticalLayout = new VerticalLayout();
-		verticalLayout.setSizeFull();
-		verticalLayout.setMargin(true);
-		verticalLayout.setSpacing(true);
-
-		VerticalLayout layout = new VerticalLayout();
-		layout.setMargin(true);
-		layout.setSpacing(true);
-		for (int i = 0; i < 20; i++) {
-			layout.addComponent(new TextField("" + i));
-		}
-
-		verticalLayout.addComponent(layout);
-		setContent(verticalLayout);
+		//
+		// verticalLayout.addComponent(layout);
+		// setContent(verticalLayout);
 		setResizeLazy(true);
 		setPollInterval(1000);
 	}
