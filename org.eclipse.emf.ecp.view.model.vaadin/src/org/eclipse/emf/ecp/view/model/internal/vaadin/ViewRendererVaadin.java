@@ -31,15 +31,17 @@ public class ViewRendererVaadin extends AbstractVaadinRenderer<VView> {
 
 	@Override
 	public Component render(VView renderable, ViewModelContext viewModelContext) {
-		ECPVaadinViewComponent customComponent = new ECPVaadinViewComponent(getLayout());
-		customComponent.setSizeFull();
+		AbstractOrderedLayout layout = getLayout();
+		layout.setSpacing(true);
+		layout.setSizeFull();
+		// ECPVaadinViewComponent customComponent = new ECPVaadinViewComponent();
 		for (VContainedElement composite : renderable.getChildren()) {
 			Component renderResult = VaadinRendererFactory.INSTANCE.render(composite, viewModelContext);
-			customComponent.getCompositionRoot().addComponent(renderResult);
+			layout.addComponent(renderResult);
 
 		}
 
-		return customComponent;
+		return new ECPVaadinViewComponent(layout);
 	}
 
 	private AbstractOrderedLayout getLayout() {

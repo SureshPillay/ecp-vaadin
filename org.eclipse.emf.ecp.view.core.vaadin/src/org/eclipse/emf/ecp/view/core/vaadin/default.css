@@ -28,7 +28,7 @@
 }
 
 .reference-list td:last-child{
-border-left: none;
+	border-left: none;
 }
 
 .table-add.v-button{

@@ -18,7 +18,6 @@ import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecp.view.core.vaadin.ECPFVaadinViewRenderer;
 import org.eclipse.emf.ecp.view.core.vaadin.ECPVaadinView;
-import org.eclipse.emf.ecp.view.core.vaadin.ECPVaadinViewComponent;
 import org.eclipse.emf.ecp.view.core.vaadin.internal.Messages;
 import org.eclipse.emf.ecp.view.spi.model.VView;
 import org.eclipse.emf.ecp.view.spi.provider.ViewProviderHelper;
@@ -82,15 +81,6 @@ public class EditDialog extends Window {
 
 	private Component getContentLayout(ECPVaadinView ecpVaadinView) {
 		Component component = ecpVaadinView.getComponent();
-		if (component instanceof ECPVaadinViewComponent) {
-			ECPVaadinViewComponent ecpVaadinViewComponent = (ECPVaadinViewComponent) component;
-			AbstractOrderedLayout layout = (AbstractOrderedLayout) ecpVaadinViewComponent.getCompositionRoot();
-			layout.setSpacing(true);
-			layout.setMargin(true);
-			createOkButton(layout);
-			return component;
-		}
-
 		return createDefaultLayout(component);
 	}
 

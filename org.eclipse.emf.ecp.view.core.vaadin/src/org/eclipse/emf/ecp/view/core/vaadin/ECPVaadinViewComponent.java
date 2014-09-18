@@ -20,6 +20,7 @@ public class ECPVaadinViewComponent extends CustomComponent {
 
 	public ECPVaadinViewComponent(Layout layout) {
 		setCompositionRoot(layout);
+		setSizeFull();
 	}
 
 	@Override
