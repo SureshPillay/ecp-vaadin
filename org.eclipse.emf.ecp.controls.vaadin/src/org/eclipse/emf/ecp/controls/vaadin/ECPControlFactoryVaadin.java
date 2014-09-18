@@ -42,7 +42,7 @@ public abstract class ECPControlFactoryVaadin extends ECPAbstractControl {
 		return binding;
 	}
 
-	public Component render(final VControl control) {
+	public Component render(final VControl control, boolean caption) {
 		Setting setting = control.getDomainModelReference().getIterator().next();
 		final Component component = createControl(control, setting);
 

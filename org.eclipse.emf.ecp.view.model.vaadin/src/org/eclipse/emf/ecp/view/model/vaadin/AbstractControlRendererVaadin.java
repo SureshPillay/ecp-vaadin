@@ -29,16 +29,13 @@ public abstract class AbstractControlRendererVaadin<T extends VControl> extends 
 
 	@Override
 	protected void applyCaption(T control, Component component) {
-		if (component == null || LabelAlignment.NONE == control.getLabelAlignment()) {
-			return;
-		}
-
 		Setting setting = control.getDomainModelReference().getIterator().next();
 		final IItemPropertyDescriptor itemPropertyDescriptor = VaadinRendererUtil.getItemPropertyDescriptor(setting);
 
-		if (itemPropertyDescriptor == null) {
+		if (!hasCaption(control, itemPropertyDescriptor)) {
 			return;
 		}
+
 		String extra = "";
 
 		if (setting.getEStructuralFeature().getLowerBound() > 0) {
@@ -49,6 +46,16 @@ public abstract class AbstractControlRendererVaadin<T extends VControl> extends 
 		if (component instanceof AbstractComponent && !StringUtils.isEmpty(description)) {
 			((AbstractComponent) component).setDescription(description);
 		}
+	}
+
+	protected boolean hasCaption(T control, IItemPropertyDescriptor itemPropertyDescriptor) {
+		return itemPropertyDescriptor != null && LabelAlignment.NONE != control.getLabelAlignment();
+	}
+
+	protected boolean hasCaption(T control) {
+		Setting setting = control.getDomainModelReference().getIterator().next();
+		final IItemPropertyDescriptor itemPropertyDescriptor = VaadinRendererUtil.getItemPropertyDescriptor(setting);
+		return hasCaption(control, itemPropertyDescriptor);
 	}
 
 	@Override

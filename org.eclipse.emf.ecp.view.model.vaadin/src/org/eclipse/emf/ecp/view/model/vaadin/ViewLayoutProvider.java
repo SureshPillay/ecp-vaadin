@@ -1,8 +1,8 @@
 package org.eclipse.emf.ecp.view.model.vaadin;
 
-import com.vaadin.ui.Layout;
+import com.vaadin.ui.AbstractOrderedLayout;
 
 public interface ViewLayoutProvider {
 
-	Layout getViewLayout();
+	AbstractOrderedLayout getViewLayout();
 }

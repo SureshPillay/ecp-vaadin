@@ -141,7 +141,9 @@ public class TableRendererVaadin extends AbstractControlRendererVaadin<VTableCon
 		emfUpdateValueStrategy.setConverter(new SelectionConverter());
 
 		HorizontalLayout horizontalLayout = new HorizontalLayout();
-		horizontalLayout.addStyleName("table-button-toolbar");
+		if (hasCaption(control)) {
+			horizontalLayout.addStyleName("table-button-toolbar");
+		}
 		layout.addComponent(horizontalLayout);
 
 		IObservableValue observeSingleSelection = VaadinObservables.observeSingleSelection(table,

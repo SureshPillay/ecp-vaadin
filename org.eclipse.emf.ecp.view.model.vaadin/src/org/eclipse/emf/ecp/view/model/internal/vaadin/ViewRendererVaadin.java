@@ -13,6 +13,7 @@
 package org.eclipse.emf.ecp.view.model.internal.vaadin;
 
 import org.eclipse.emf.ecp.view.core.vaadin.AbstractVaadinRenderer;
+import org.eclipse.emf.ecp.view.core.vaadin.ECPVaadinViewComponent;
 import org.eclipse.emf.ecp.view.core.vaadin.VaadinRendererFactory;
 import org.eclipse.emf.ecp.view.model.vaadin.ViewLayoutProvider;
 import org.eclipse.emf.ecp.view.spi.context.ViewModelContext;
@@ -22,8 +23,8 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.FrameworkUtil;
 import org.osgi.framework.ServiceReference;
 
+import com.vaadin.ui.AbstractOrderedLayout;
 import com.vaadin.ui.Component;
-import com.vaadin.ui.Layout;
 import com.vaadin.ui.VerticalLayout;
 
 public class ViewRendererVaadin extends AbstractVaadinRenderer<VView> {
@@ -41,7 +42,7 @@ public class ViewRendererVaadin extends AbstractVaadinRenderer<VView> {
 		return customComponent;
 	}
 
-	private Layout getLayout() {
+	private AbstractOrderedLayout getLayout() {
 		BundleContext bundleContext = FrameworkUtil.getBundle(getClass()).getBundleContext();
 		if (bundleContext == null) {
 			return new VerticalLayout();

@@ -3,6 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Core Vaadin
 Bundle-SymbolicName: org.eclipse.emf.ecp.view.core.vaadin;singleton:=true
 Bundle-Version: 1.0.0.qualifier
+Vaadin-Resources: .
 Require-Bundle: com.vaadin.server;bundle-version="[7.2.4,8.0.0)",
  org.eclipse.emf.edit;bundle-version="[2.10.0,3.0.0)",
  org.eclipse.core.databinding;bundle-version="[1.4.1,2.0.0)",

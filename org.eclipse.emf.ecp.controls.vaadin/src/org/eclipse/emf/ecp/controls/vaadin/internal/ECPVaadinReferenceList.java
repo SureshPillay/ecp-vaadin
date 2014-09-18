@@ -115,7 +115,7 @@ public class ECPVaadinReferenceList extends ECPControlFactoryVaadin {
 	}
 
 	@Override
-	public Component render(final VControl control) {
+	public Component render(final VControl control, boolean caption) {
 		final Setting setting = control.getDomainModelReference().getIterator().next();
 		this.composedAdapterFactory = new ComposedAdapterFactory(new AdapterFactory[] {
 				new CustomReflectiveItemProviderAdapterFactory(),
@@ -154,7 +154,9 @@ public class ECPVaadinReferenceList extends ECPControlFactoryVaadin {
 		emfUpdateValueStrategy.setConverter(new SelectionConverter());
 
 		HorizontalLayout horizontalLayout = new HorizontalLayout();
-		horizontalLayout.addStyleName("table-button-toolbar");
+		if (caption) {
+			horizontalLayout.addStyleName("table-button-toolbar");
+		}
 		layout.addComponent(horizontalLayout);
 
 		Button add = VaadinWidgetFactory.createTableAddButton(setting, table);

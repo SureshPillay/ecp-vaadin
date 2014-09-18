@@ -33,6 +33,9 @@ public abstract class AbstractVaadinRenderer<T extends VElement> {
 	public Component renderComponent(final T renderable, final ViewModelContext viewContext) {
 		initServices(viewContext);
 		final Component component = render(renderable, viewContext);
+		if (component == null) {
+			new RuntimeException("No Renderer for: " + renderable.getName());
+		}
 		final Component controlComponent = getCaptionControlComponent(component);
 		ModelChangeListener listener = new ModelChangeListener() {
 
@@ -102,12 +105,12 @@ public abstract class AbstractVaadinRenderer<T extends VElement> {
 	}
 
 	private void initServices(ViewModelContext viewContext) {
-		if (viewLocaleService == null) {
-			viewLocaleService = viewContext.getService(ViewLocaleService.class);
+		if (this.viewLocaleService == null) {
+			this.viewLocaleService = viewContext.getService(ViewLocaleService.class);
 		}
 
-		if (translationService == null) {
-			translationService = viewContext.getService(TranslationService.class);
+		if (this.translationService == null) {
+			this.translationService = viewContext.getService(TranslationService.class);
 		}
 	}
 
@@ -117,15 +120,15 @@ public abstract class AbstractVaadinRenderer<T extends VElement> {
 			return keyName;
 		}
 
-		if (translationService == null) {
+		if (this.translationService == null) {
 			return keyName;
 		}
 		Locale locale = Locale.getDefault();
-		if (viewLocaleService != null) {
-			locale = viewLocaleService.getLocale();
+		if (this.viewLocaleService != null) {
+			locale = this.viewLocaleService.getLocale();
 		}
 
-		return translationService.getTranslation(keyName, locale);
+		return this.translationService.getTranslation(keyName, locale);
 	}
 
 	protected abstract Component render(T renderable, final ViewModelContext viewContext);

@@ -9,7 +9,7 @@
  * Contributors:
  * Dennis - initial API and implementation
  ******************************************************************************/
-package org.eclipse.emf.ecp.view.model.internal.vaadin;
+package org.eclipse.emf.ecp.view.core.vaadin;
 
 import com.vaadin.annotations.StyleSheet;
 import com.vaadin.ui.CustomComponent;

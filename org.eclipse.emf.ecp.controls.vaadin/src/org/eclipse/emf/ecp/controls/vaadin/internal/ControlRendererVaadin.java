@@ -31,7 +31,7 @@ public class ControlRendererVaadin extends AbstractControlRendererVaadin<VContro
 		ECPControlFactoryVaadin createControl = factory.createControl(ECPControlFactoryVaadin.class,
 				control.getDomainModelReference());
 		createControl.init(viewContext, control);
-		return createControl.render(control);
+		return createControl.render(control, hasCaption(control));
 	}
 
 }

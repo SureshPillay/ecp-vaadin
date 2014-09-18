@@ -18,6 +18,7 @@ import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecp.view.core.vaadin.ECPFVaadinViewRenderer;
 import org.eclipse.emf.ecp.view.core.vaadin.ECPVaadinView;
+import org.eclipse.emf.ecp.view.core.vaadin.ECPVaadinViewComponent;
 import org.eclipse.emf.ecp.view.core.vaadin.internal.Messages;
 import org.eclipse.emf.ecp.view.spi.model.VView;
 import org.eclipse.emf.ecp.view.spi.provider.ViewProviderHelper;
@@ -26,6 +27,7 @@ import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.edit.provider.ReflectiveItemProviderAdapterFactory;
 import org.lunifera.runtime.web.vaadin.databinding.VaadinObservables;
 
+import com.vaadin.ui.AbstractOrderedLayout;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
@@ -75,11 +77,33 @@ public class EditDialog extends Window {
 	private void initUi() {
 		VaadinObservables.activateRealm(UI.getCurrent());
 		ECPVaadinView ecpVaadinView = ECPFVaadinViewRenderer.INSTANCE.render(this.selection, getView());
+		setContent(getContentLayout(ecpVaadinView));
+	}
+
+	private Component getContentLayout(ECPVaadinView ecpVaadinView) {
+		Component component = ecpVaadinView.getComponent();
+		if (component instanceof ECPVaadinViewComponent) {
+			ECPVaadinViewComponent ecpVaadinViewComponent = (ECPVaadinViewComponent) component;
+			AbstractOrderedLayout layout = (AbstractOrderedLayout) ecpVaadinViewComponent.getCompositionRoot();
+			layout.setSpacing(true);
+			layout.setMargin(true);
+			createOkButton(layout);
+			return component;
+		}
+
+		return createDefaultLayout(component);
+	}
+
+	private VerticalLayout createDefaultLayout(Component component) {
 		VerticalLayout layout = new VerticalLayout();
 		layout.setMargin(true);
 		layout.setSpacing(true);
-		Component component = ecpVaadinView.getComponent();
 		layout.addComponent(component);
+		createOkButton(layout);
+		return layout;
+	}
+
+	private void createOkButton(AbstractOrderedLayout layout) {
 		this.okButton = new Button(Messages.ok, new Button.ClickListener() {
 
 			@Override
@@ -89,7 +113,6 @@ public class EditDialog extends Window {
 		});
 		layout.addComponent(this.okButton);
 		layout.setComponentAlignment(this.okButton, Alignment.TOP_RIGHT);
-		setContent(layout);
 	}
 
 	private VView getView() {

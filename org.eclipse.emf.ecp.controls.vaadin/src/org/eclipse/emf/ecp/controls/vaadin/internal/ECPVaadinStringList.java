@@ -43,7 +43,7 @@ public class ECPVaadinStringList extends ECPControlFactoryVaadin {
 	}
 
 	@Override
-	public Component render(final VControl control) {
+	public Component render(final VControl control, boolean caption) {
 		final Setting setting = control.getDomainModelReference().getIterator().next();
 		VerticalLayout layout = new VerticalLayout();
 		layout.setSizeFull();
