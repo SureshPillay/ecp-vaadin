@@ -22,6 +22,7 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecp.view.core.vaadin.dialog.EditDialog;
 import org.eclipse.emf.ecp.view.spi.model.VView;
 
+import com.vaadin.data.util.converter.Converter;
 import com.vaadin.ui.AbstractSelect;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
@@ -61,7 +62,7 @@ public final class VaadinWidgetFactory {
 
 			@Override
 			public void buttonClick(ClickEvent event) {
-				removeItems(abstractSelect.getValue());
+				removeItems(setting, abstractSelect.getValue());
 			}
 
 		});
@@ -89,7 +90,11 @@ public final class VaadinWidgetFactory {
 
 			@Override
 			public void buttonClick(ClickEvent event) {
-				getItems(setting).add(textField.getValue());
+				try {
+					getItems(setting).add(textField.getConvertedValue());
+				} catch (Converter.ConversionException e) {
+					return;
+				}
 				textField.setValue("");
 				textField.focus();
 			}
@@ -106,7 +111,7 @@ public final class VaadinWidgetFactory {
 
 			@Override
 			public void buttonClick(ClickEvent event) {
-				removeItems(abstractSelect.getValue());
+				removeItems(setting, abstractSelect.getValue());
 				abstractSelect.select(0);
 				textField.focus();
 			}
@@ -115,8 +120,8 @@ public final class VaadinWidgetFactory {
 		return remove;
 	}
 
-	public static Button createEditLink(final EObject selection) {
-		Button edit = new Button();
+	public static Button createEditLink(final EObject selection, String caption) {
+		Button edit = new Button(caption);
 		edit.addStyleName(BaseTheme.BUTTON_LINK);
 		edit.addClickListener(new ClickListener() {
 
@@ -129,21 +134,21 @@ public final class VaadinWidgetFactory {
 		return edit;
 	}
 
-	public static Button createTableRemoveButtonFlat(final Setting setting, final EObject delete) {
+	public static Button createTableRemoveButtonFlat(final Setting setting, final Object delete) {
 		Button remove = new Button();
 		remove.addStyleName("table-remove");
 		remove.addClickListener(new ClickListener() {
 
 			@Override
 			public void buttonClick(ClickEvent event) {
-				removeItems(delete);
+				removeItems(setting, delete);
 			}
 
 		});
 		return remove;
 	}
 
-	private static void removeItems(Object deleteObject) {
+	private static void removeItems(Setting setting, Object deleteObject) {
 		if (deleteObject == null) {
 			return;
 		}
@@ -151,11 +156,19 @@ public final class VaadinWidgetFactory {
 		if (deleteObject instanceof Collection) {
 			Collection<?> deleteCollection = (Collection<?>) deleteObject;
 			for (Object object : deleteCollection) {
-				EcoreUtil.delete((EObject) object);
+				deleteObjectItems(setting, object);
 			}
 			return;
 		}
-		EcoreUtil.delete((EObject) deleteObject);
+		deleteObjectItems(setting, deleteObject);
+	}
+
+	private static void deleteObjectItems(Setting setting, Object deleteObject) {
+		if (deleteObject instanceof EObject) {
+			EcoreUtil.delete((EObject) deleteObject);
+		} else {
+			getItems(setting).remove(deleteObject);
+		}
 	}
 
 	private static EObject createItem(Setting setting) {

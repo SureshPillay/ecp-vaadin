@@ -11,27 +11,50 @@
  ******************************************************************************/
 package org.eclipse.emf.ecp.controls.vaadin.internal;
 
+import org.apache.commons.lang.ClassUtils;
 import org.eclipse.core.databinding.UpdateValueStrategy;
+import org.eclipse.emf.databinding.EMFUpdateValueStrategy;
 import org.eclipse.emf.ecore.EStructuralFeature.Setting;
 import org.eclipse.emf.ecp.controls.vaadin.ECPControlFactoryVaadin;
-import org.eclipse.emf.ecp.controls.vaadin.ECPTextFieldToModelUpdateValueStrategy;
+import org.eclipse.emf.ecp.view.core.vaadin.converter.VaadinConverterToString;
 import org.eclipse.emf.ecp.view.spi.model.VControl;
 
+import com.vaadin.ui.AbstractField;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.TextField;
 
 public class ECPVaadinNumber extends ECPControlFactoryVaadin {
 
 	@Override
-	protected UpdateValueStrategy getModelToTargetStrategy(VControl control) {
-		return new ECPTextFieldToModelUpdateValueStrategy();
-	}
-
-	@Override
 	public Component createControl(VControl control, Setting setting) {
 		final TextField component = new TextField();
-		component.setConverter(setting.getEStructuralFeature().getEType().getInstanceClass());
+
+		Class<?> instanceClass = setting.getEStructuralFeature().getEType().getInstanceClass();
+		if (instanceClass.isPrimitive()) {
+			instanceClass = ClassUtils.primitiveToWrapper(instanceClass);
+		}
+		component.setConverter(instanceClass);
+		component.setNullRepresentation("");
 		return component;
+	}
+
+	// @SuppressWarnings("unchecked")
+	// @Override
+	// protected UpdateValueStrategy getTargetToModelStrategy(VControl control, Component component) {
+	// EMFUpdateValueStrategy emfUpdateValueStrategy = new EMFUpdateValueStrategy();
+	// emfUpdateValueStrategy.setConverter(new StringToVaadinConverter(((AbstractField<String>) component)
+	// .getConverter()));
+	//
+	// return emfUpdateValueStrategy;
+	// }
+
+	@Override
+	protected UpdateValueStrategy getModelToTargetStrategy(VControl control, Component component) {
+		EMFUpdateValueStrategy emfUpdateValueStrategy = new EMFUpdateValueStrategy();
+		emfUpdateValueStrategy.setConverter(new VaadinConverterToString(((AbstractField<String>) component)
+				.getConverter()));
+
+		return emfUpdateValueStrategy;
 	}
 
 }

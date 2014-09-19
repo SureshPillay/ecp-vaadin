@@ -30,7 +30,7 @@ import com.vaadin.ui.DateField;
 public class ECPVaadinXMLDate extends ECPControlFactoryVaadin {
 
 	@Override
-	protected UpdateValueStrategy getModelToTargetStrategy(final VControl control) {
+	protected UpdateValueStrategy getModelToTargetStrategy(final VControl control, Component component) {
 		return new EMFUpdateValueStrategy() {
 			@Override
 			public Object convert(Object value) {
@@ -48,7 +48,7 @@ public class ECPVaadinXMLDate extends ECPControlFactoryVaadin {
 	}
 
 	@Override
-	protected UpdateValueStrategy getTargetToModelStrategy(VControl control) {
+	protected UpdateValueStrategy getTargetToModelStrategy(VControl control, Component component) {
 		return new ECPXMLDateFieldToModelUpdateValueStrategy();
 	}
 

@@ -26,12 +26,12 @@ import com.vaadin.ui.TextField;
 public class ECPVaadinText extends ECPControlFactoryVaadin {
 
 	@Override
-	protected UpdateValueStrategy getTargetToModelStrategy(VControl control) {
+	protected UpdateValueStrategy getTargetToModelStrategy(VControl control, Component component) {
 		return new ECPTextFieldToTargetUpdateValueStrategy();
 	}
 
 	@Override
-	protected UpdateValueStrategy getModelToTargetStrategy(VControl control) {
+	protected UpdateValueStrategy getModelToTargetStrategy(VControl control, Component component) {
 		return new ECPTextFieldToModelUpdateValueStrategy();
 	}
 
@@ -39,9 +39,13 @@ public class ECPVaadinText extends ECPControlFactoryVaadin {
 	public Component createControl(VControl control, Setting setting) {
 		IItemPropertyDescriptor itemPropertyDescriptor = getItemPropertyDescriptor(setting);
 		if (itemPropertyDescriptor.isMultiLine(null)) {
-			return new TextArea();
+			TextArea textArea = new TextArea();
+			textArea.setNullRepresentation("");
+			return textArea;
 		}
-		return new TextField();
+		TextField textField = new TextField();
+		textField.setNullRepresentation("");
+		return textField;
 	}
 
 }

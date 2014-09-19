@@ -12,17 +12,13 @@
 package org.eclipse.emf.ecp.view.table.vaadin;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 
 import org.eclipse.core.databinding.observable.list.IListChangeListener;
 import org.eclipse.core.databinding.observable.list.IObservableList;
 import org.eclipse.core.databinding.observable.list.ListChangeEvent;
-import org.eclipse.core.databinding.observable.list.ListDiffVisitor;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
-import org.eclipse.emf.common.notify.Adapter;
-import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.databinding.EMFDataBindingContext;
 import org.eclipse.emf.databinding.EMFProperties;
 import org.eclipse.emf.databinding.EMFUpdateValueStrategy;
@@ -32,6 +28,7 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EStructuralFeature.Setting;
 import org.eclipse.emf.ecore.InternalEObject;
+import org.eclipse.emf.ecp.view.core.vaadin.TableListDiffVisitor;
 import org.eclipse.emf.ecp.view.core.vaadin.VaadinRendererUtil;
 import org.eclipse.emf.ecp.view.core.vaadin.VaadinWidgetFactory;
 import org.eclipse.emf.ecp.view.core.vaadin.converter.SelectionConverter;
@@ -47,51 +44,11 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Table;
+import com.vaadin.ui.Table.ColumnGenerator;
+import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 
 public class TableRendererVaadin extends AbstractControlRendererVaadin<VTableControl> {
-
-	private static class TableContentUpdateAdaper extends AdapterImpl {
-
-		private Table table;
-
-		public TableContentUpdateAdaper(Table table) {
-			this.table = table;
-		}
-
-		@Override
-		public void notifyChanged(Notification msg) {
-			this.table.refreshRowCache();
-		}
-	}
-
-	private class TableListDiffVisitor extends ListDiffVisitor {
-
-		private Table table;
-
-		public TableListDiffVisitor(Table table) {
-			this.table = table;
-		}
-
-		@Override
-		public void handleAdd(int index, Object element) {
-			((EObject) element).eAdapters().add(new TableContentUpdateAdaper(this.table));
-		}
-
-		@Override
-		public void handleRemove(int index, Object element) {
-			removeTableContentAdapter((EObject) element);
-		}
-
-		private void removeTableContentAdapter(EObject selectedValue) {
-			for (Iterator<Adapter> iterator = selectedValue.eAdapters().iterator(); iterator.hasNext();) {
-				if (iterator.next() instanceof TableContentUpdateAdaper) {
-					iterator.remove();
-				}
-			}
-		}
-
-	}
 
 	protected EObject addItem(Setting setting) {
 		final EClass clazz = ((EReference) setting.getEStructuralFeature()).getEReferenceType();
@@ -185,12 +142,30 @@ public class TableRendererVaadin extends AbstractControlRendererVaadin<VTableCon
 		final InternalEObject tempInstance = getInstanceOf(clazz);
 		List<String> visibleColumnsNames = new ArrayList<String>();
 		List<String> visibleColumnsId = new ArrayList<String>();
-		for (EStructuralFeature eStructuralFeature : listFeatures) {
+		for (final EStructuralFeature eStructuralFeature : listFeatures) {
 			IItemPropertyDescriptor itemPropertyDescriptor = VaadinRendererUtil.getItemPropertyDescriptor(tempInstance,
 					eStructuralFeature);
+			if (itemPropertyDescriptor == null) {
+				continue;
+			}
 			String displayName = itemPropertyDescriptor.getDisplayName(null);
 			visibleColumnsNames.add(displayName);
 			visibleColumnsId.add(eStructuralFeature.getName());
+			Class<?> instanceClass = eStructuralFeature.getEType().getInstanceClass();
+			if (Number.class.isAssignableFrom(instanceClass)) {
+				final TextField converter = new TextField();
+				converter.setConverter(instanceClass);
+				table.addGeneratedColumn(eStructuralFeature.getName(), new ColumnGenerator() {
+
+					@Override
+					public Object generateCell(Table source, Object itemId, Object columnId) {
+						EObject eObject = (EObject) itemId;
+						return converter.getConverter().convertToPresentation(eObject.eGet(eStructuralFeature),
+								String.class, Locale.getDefault());
+					}
+				});
+			}
+
 		}
 		table.setContainerDataSource(indexedContainer);
 		table.setVisibleColumns(visibleColumnsId.toArray(new Object[visibleColumnsId.size()]));

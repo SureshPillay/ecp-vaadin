@@ -100,7 +100,7 @@
          </dynamicTest>
       </control>
       <control
-            class="org.eclipse.emf.ecp.controls.vaadin.internal.ECPVaadinStringList"
+            class="org.eclipse.emf.ecp.controls.vaadin.internal.ECPVaadinPrimitiveList"
             id="org.eclipse.emf.ecp.controls.vaadin.string.list">
          <staticTest
                priority="1"

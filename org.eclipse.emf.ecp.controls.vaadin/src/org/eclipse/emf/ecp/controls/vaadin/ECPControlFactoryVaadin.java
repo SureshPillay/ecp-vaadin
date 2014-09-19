@@ -46,20 +46,25 @@ public abstract class ECPControlFactoryVaadin extends ECPAbstractControl {
 		Setting setting = control.getDomainModelReference().getIterator().next();
 		final Component component = createControl(control, setting);
 
-		IObservableValue targetValue = VaadinObservables.observeValue((ValueChangeNotifier) component);
-		IObservableValue modelValue = EMFProperties.value(setting.getEStructuralFeature())
-				.observe(setting.getEObject());
-		bindModelToTarget(targetValue, modelValue, getTargetToModelStrategy(control), getModelToTargetStrategy(control));
+		createDatabinding(control, setting, component);
 
 		component.setWidth(100, Unit.PERCENTAGE);
 		return component;
 	}
 
-	protected UpdateValueStrategy getModelToTargetStrategy(VControl control) {
+	protected void createDatabinding(final VControl control, Setting setting, final Component component) {
+		IObservableValue targetValue = VaadinObservables.observeValue((ValueChangeNotifier) component);
+		IObservableValue modelValue = EMFProperties.value(setting.getEStructuralFeature())
+				.observe(setting.getEObject());
+		bindModelToTarget(targetValue, modelValue, getTargetToModelStrategy(control, component),
+				getModelToTargetStrategy(control, component));
+	}
+
+	protected UpdateValueStrategy getModelToTargetStrategy(VControl control, Component component) {
 		return new EMFUpdateValueStrategy();
 	}
 
-	protected UpdateValueStrategy getTargetToModelStrategy(VControl control) {
+	protected UpdateValueStrategy getTargetToModelStrategy(VControl control, Component component) {
 		return new EMFUpdateValueStrategy();
 	}
 

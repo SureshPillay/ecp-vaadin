@@ -8,15 +8,14 @@ import org.lunifera.runtime.web.vaadin.databinding.VaadinObservables;
 
 import com.eclipsesource.makeithappen.model.task.TaskFactory;
 import com.eclipsesource.makeithappen.model.task.User;
-import com.vaadin.annotations.PreserveOnRefresh;
 import com.vaadin.annotations.Theme;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.themes.ValoTheme;
 
-@PreserveOnRefresh
+//@PreserveOnRefresh
 @Theme(ValoTheme.THEME_NAME)
-// @Theme(Reindeer.THEME_NAME)
+// @Theme("mill")
 public class VaadinMainUI extends UI {
 
 	private static final long serialVersionUID = 1L;
@@ -39,6 +38,11 @@ public class VaadinMainUI extends UI {
 		user.eAdapters().add(adapter);
 
 		// VerticalLayout verticalLayout = new VerticalLayout();
+		//
+		// ListSelect listSelect = new ListSelect("test", Arrays.asList("test", "test1", "test3"));
+		// listSelect.setSizeFull();
+		// verticalLayout.addComponent(listSelect);
+		// setContent(verticalLayout);
 		// verticalLayout.setSizeFull();
 		// verticalLayout.setMargin(true);
 		// verticalLayout.setSpacing(true);
@@ -52,6 +56,7 @@ public class VaadinMainUI extends UI {
 		//
 		// verticalLayout.addComponent(layout);
 		// setContent(verticalLayout);
+
 		setResizeLazy(true);
 		setPollInterval(1000);
 	}

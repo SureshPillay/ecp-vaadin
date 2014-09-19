@@ -3,7 +3,6 @@
     border-color: #FF444B !important;
 }
 
-
 .group{
 	background-color: #e8e8e8;
 	border-color: #d4d4d4;
@@ -17,6 +16,14 @@
 
 .table-button-toolbar, .v-slot-table-button-toolbar{
 	height: 0px;
+}
+
+.valo .reference-list .v-table-row .v-table-cell-content, .valo .reference-list .v-table-row-odd .v-table-cell-content {
+border: none;
+}
+
+.valo .reference-list .v-table-row-odd {
+ background-color: white;
 }
 
 .table-button-toolbar > .v-slot{
