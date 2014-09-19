@@ -11,7 +11,7 @@
  ******************************************************************************/
 package org.eclipse.emf.ecp.view.vertical.vaadin;
 
-import org.eclipse.emf.ecp.view.model.vaadin.AbstractContainerRendererVaadin;
+import org.eclipse.emf.ecp.view.core.vaadin.AbstractContainerRendererVaadin;
 import org.eclipse.emf.ecp.view.spi.vertical.model.VVerticalLayout;
 
 import com.vaadin.ui.AbstractOrderedLayout;

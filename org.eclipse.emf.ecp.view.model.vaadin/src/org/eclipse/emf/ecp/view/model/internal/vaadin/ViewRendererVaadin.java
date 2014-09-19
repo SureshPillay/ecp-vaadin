@@ -25,6 +25,7 @@ import org.osgi.framework.ServiceReference;
 
 import com.vaadin.ui.AbstractOrderedLayout;
 import com.vaadin.ui.Component;
+import com.vaadin.ui.Panel;
 import com.vaadin.ui.VerticalLayout;
 
 public class ViewRendererVaadin extends AbstractVaadinRenderer<VView> {
@@ -34,14 +35,16 @@ public class ViewRendererVaadin extends AbstractVaadinRenderer<VView> {
 		AbstractOrderedLayout layout = getLayout();
 		layout.setSpacing(true);
 		layout.setSizeFull();
-		// ECPVaadinViewComponent customComponent = new ECPVaadinViewComponent();
 		for (VContainedElement composite : renderable.getChildren()) {
 			Component renderResult = VaadinRendererFactory.INSTANCE.render(composite, viewModelContext);
 			layout.addComponent(renderResult);
 
 		}
-
-		return new ECPVaadinViewComponent(layout);
+		Panel panel = new Panel();
+		panel.setContent(layout);
+		ECPVaadinViewComponent ecpVaadinViewComponent = new ECPVaadinViewComponent();
+		ecpVaadinViewComponent.setContent(layout);
+		return ecpVaadinViewComponent;
 	}
 
 	private AbstractOrderedLayout getLayout() {

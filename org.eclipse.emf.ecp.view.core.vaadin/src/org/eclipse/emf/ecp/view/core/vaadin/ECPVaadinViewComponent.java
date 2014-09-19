@@ -12,19 +12,9 @@
 package org.eclipse.emf.ecp.view.core.vaadin;
 
 import com.vaadin.annotations.StyleSheet;
-import com.vaadin.ui.CustomComponent;
-import com.vaadin.ui.Layout;
+import com.vaadin.ui.Panel;
 
 @StyleSheet({ "default.css" })
-public class ECPVaadinViewComponent extends CustomComponent {
+public class ECPVaadinViewComponent extends Panel {
 
-	public ECPVaadinViewComponent(Layout layout) {
-		setCompositionRoot(layout);
-		setSizeFull();
-	}
-
-	@Override
-	public Layout getCompositionRoot() {
-		return (Layout) super.getCompositionRoot();
-	}
 }

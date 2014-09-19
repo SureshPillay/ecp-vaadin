@@ -15,7 +15,7 @@ import com.vaadin.ui.themes.ValoTheme;
 
 //@PreserveOnRefresh
 @Theme(ValoTheme.THEME_NAME)
-// @Theme("mill")
+// @Theme(Reindeer.THEME_NAME)
 public class VaadinMainUI extends UI {
 
 	private static final long serialVersionUID = 1L;
@@ -36,26 +36,6 @@ public class VaadinMainUI extends UI {
 			}
 		};
 		user.eAdapters().add(adapter);
-
-		// VerticalLayout verticalLayout = new VerticalLayout();
-		//
-		// ListSelect listSelect = new ListSelect("test", Arrays.asList("test", "test1", "test3"));
-		// listSelect.setSizeFull();
-		// verticalLayout.addComponent(listSelect);
-		// setContent(verticalLayout);
-		// verticalLayout.setSizeFull();
-		// verticalLayout.setMargin(true);
-		// verticalLayout.setSpacing(true);
-		//
-		// VerticalLayout layout = new VerticalLayout();
-		// layout.setMargin(true);
-		// layout.setSpacing(true);
-		// for (int i = 0; i < 20; i++) {
-		// layout.addComponent(new TextField("" + i));
-		// }
-		//
-		// verticalLayout.addComponent(layout);
-		// setContent(verticalLayout);
 
 		setResizeLazy(true);
 		setPollInterval(1000);

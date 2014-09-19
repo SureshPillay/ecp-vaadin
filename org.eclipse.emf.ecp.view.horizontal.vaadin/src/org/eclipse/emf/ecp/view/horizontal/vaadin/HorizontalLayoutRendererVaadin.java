@@ -12,7 +12,7 @@
 
 package org.eclipse.emf.ecp.view.horizontal.vaadin;
 
-import org.eclipse.emf.ecp.view.model.vaadin.AbstractContainerRendererVaadin;
+import org.eclipse.emf.ecp.view.core.vaadin.AbstractContainerRendererVaadin;
 import org.eclipse.emf.ecp.view.spi.horizontal.model.VHorizontalLayout;
 
 import com.vaadin.ui.AbstractOrderedLayout;

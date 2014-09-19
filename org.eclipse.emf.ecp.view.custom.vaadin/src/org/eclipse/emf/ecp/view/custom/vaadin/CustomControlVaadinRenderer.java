@@ -12,7 +12,7 @@
 package org.eclipse.emf.ecp.view.custom.vaadin;
 
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.emf.ecp.view.model.vaadin.AbstractControlRendererVaadin;
+import org.eclipse.emf.ecp.view.core.vaadin.AbstractControlRendererVaadin;
 import org.eclipse.emf.ecp.view.spi.context.ViewModelContext;
 import org.eclipse.emf.ecp.view.spi.custom.model.VCustomControl;
 import org.osgi.framework.Bundle;

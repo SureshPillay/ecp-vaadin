@@ -13,7 +13,7 @@ package org.eclipse.emf.ecp.controls.vaadin.internal;
 
 import org.eclipse.emf.ecp.controls.vaadin.ECPControlFactoryVaadin;
 import org.eclipse.emf.ecp.edit.spi.ECPControlFactory;
-import org.eclipse.emf.ecp.view.model.vaadin.AbstractControlRendererVaadin;
+import org.eclipse.emf.ecp.view.core.vaadin.AbstractControlRendererVaadin;
 import org.eclipse.emf.ecp.view.spi.context.ViewModelContext;
 import org.eclipse.emf.ecp.view.spi.model.VControl;
 import org.osgi.framework.BundleContext;
