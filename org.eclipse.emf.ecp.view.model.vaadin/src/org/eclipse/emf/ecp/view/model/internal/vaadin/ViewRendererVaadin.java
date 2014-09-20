@@ -25,7 +25,6 @@ import org.osgi.framework.ServiceReference;
 
 import com.vaadin.ui.AbstractOrderedLayout;
 import com.vaadin.ui.Component;
-import com.vaadin.ui.Panel;
 import com.vaadin.ui.VerticalLayout;
 
 public class ViewRendererVaadin extends AbstractVaadinRenderer<VView> {
@@ -40,9 +39,8 @@ public class ViewRendererVaadin extends AbstractVaadinRenderer<VView> {
 			layout.addComponent(renderResult);
 
 		}
-		Panel panel = new Panel();
-		panel.setContent(layout);
 		ECPVaadinViewComponent ecpVaadinViewComponent = new ECPVaadinViewComponent();
+		ecpVaadinViewComponent.addStyleName("borderless");
 		ecpVaadinViewComponent.setContent(layout);
 		return ecpVaadinViewComponent;
 	}

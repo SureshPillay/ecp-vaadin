@@ -101,8 +101,6 @@ public class TableRendererVaadin extends AbstractControlRendererVaadin<VTableCon
 		if (hasCaption(control)) {
 			horizontalLayout.addStyleName("table-button-toolbar");
 		}
-		layout.addComponent(horizontalLayout);
-
 		IObservableValue observeSingleSelection = VaadinObservables.observeSingleSelection(table,
 				clazz.getInstanceClass());
 		if (!control.isAddRemoveDisabled()) {
