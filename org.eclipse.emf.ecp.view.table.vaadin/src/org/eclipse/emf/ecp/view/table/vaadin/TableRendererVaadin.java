@@ -69,6 +69,7 @@ public class TableRendererVaadin extends AbstractControlRendererVaadin<VTableCon
 		layout.setData(table);
 		table.setSelectable(true);
 		table.setSizeFull();
+		// table.setPageLength(10);
 
 		final EClass clazz = ((EReference) setting.getEStructuralFeature()).getEReferenceType();
 		BeanItemContainer<Object> indexedContainer = new BeanItemContainer(clazz.getInstanceClass());

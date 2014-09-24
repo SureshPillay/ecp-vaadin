@@ -8,7 +8,10 @@ Require-Bundle: com.vaadin.server;bundle-version="[7.2.1,8.0.0)",
  com.vaadin.shared;bundle-version="[7.2.1,8.0.0)",
  org.eclipse.emf.ecore;bundle-version="[2.9.0,3.0.0)",
  org.eclipse.equinox.http.servlet;bundle-version="[1.1.500,2.0.0)",
- com.eclipsesource.makeithappen.model;bundle-version="[0.1.0,1.0.0)"
+ com.eclipsesource.makeithappen.model;bundle-version="[0.1.0,1.0.0)",
+ org.eclipse.emf.ecp.view.core.vaadin,
+ com.compart.dbqp.web.ui.model;bundle-version="1.0.0",
+ com.compart.dbqp.web.ui.model.edit;bundle-version="1.0.0"
 Import-Package: com.vaadin.shared.ui.label;version="[7.2.1,8.0.0)",
  javax.servlet;version="[2.6.0,3.0.0)",
  javax.servlet.http;version="[2.6.0,3.0.0)",

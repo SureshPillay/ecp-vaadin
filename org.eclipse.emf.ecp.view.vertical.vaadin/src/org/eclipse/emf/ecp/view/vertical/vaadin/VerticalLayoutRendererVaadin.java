@@ -20,7 +20,7 @@ import com.vaadin.ui.VerticalLayout;
 public class VerticalLayoutRendererVaadin extends AbstractContainerRendererVaadin<VVerticalLayout> {
 
 	@Override
-	protected AbstractOrderedLayout getComponentContainer(VVerticalLayout renderable) {
+	protected AbstractOrderedLayout getAbstractOrderedLayout(VVerticalLayout renderable) {
 		return new VerticalLayout();
 	}
 

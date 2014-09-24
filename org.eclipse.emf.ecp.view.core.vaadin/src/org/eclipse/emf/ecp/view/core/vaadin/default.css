@@ -10,8 +10,33 @@
 	border-radius: 3px;
 }
 
-.link.v-button:focus::after{
+.link.v-button:focus{
     box-shadow: none;
+}
+
+.collapsible-panel-expand.v-nativebutton-collapsible-panel-expand{
+	border-radius: 3px 3px 0px 0px;
+	color: #FCFCFC;
+	background: #3FA9FA url("/VAADIN/icons/menu_active.png") calc(100% - 16px) center no-repeat;
+}
+
+.collapsible-panel-collapsed.v-nativebutton-collapsible-panel-collapsed {
+	border-radius: 3px;
+	color: #E8E8E8;
+	background: #2C89D0 url("/VAADIN/icons/menu_deactive.png") calc(100% - 16px) center no-repeat;
+}
+
+.collapsible-panel-expand.v-nativebutton-collapsible-panel-expand, .collapsible-panel-collapsed.v-nativebutton-collapsible-panel-collapsed {
+	margin: 0;
+	border: 0;
+	box-shadow: 0 0 5px rgba(51,51,51,0.5);
+	height: 40px;
+	padding-left: 16px;
+	cursor: pointer;
+}
+
+.collapsible-panel-expand.v-nativebutton-collapsible-panel-expand:focus, .collapsible-panel-collapsed.v-nativebutton-collapsible-panel-collapsed:focus{
+   outline: none !important;
 }
 
 .table-button-toolbar, .v-slot-table-button-toolbar{
@@ -38,22 +63,26 @@ border: none;
 	border-left: none;
 }
 
-.table-add.v-button{
-	background: url("/VAADIN/icons/add-table.png") center center no-repeat;
+.table-add.v-button,.v-disabled.table-add.v-button, .v-disabled.table-add.v-button:hover, .v-disabled.table-add.v-button:active, .list-add.v-button, .v-disabled.list-add.v-button, .v-disabled.list-add.v-button:hover, .v-disabled.list-add.v-button:active{
+	background: url("/VAADIN/icons/plus_normal.png") center center no-repeat;
 }
 
-.table-remove.v-button{
-	background: url("/VAADIN/icons/remove-table.png") center center no-repeat;
+.table-add.v-button:active, .table-add.v-button:hover, .list-add.v-button:active, .list-add.v-button:hover{
+	background: url("/VAADIN/icons/plus_active.png") center center no-repeat;
 }
 
-.table-edit.v-button{
-	background: url("/VAADIN/icons/edit-table.png") center center no-repeat;
+.table-remove.v-button, .v-disabled.table-remove.v-button, .v-disabled.table-remove.v-button:hover, .v-disabled.table-remove.v-button:active, .list-remove.v-button, .v-disabled.list-remove.v-button:hover, .v-disabled.list-remove.v-button:active{
+	background: url("/VAADIN/icons/minus_normal.png") center center no-repeat;
 }
 
-.list-add.v-button{
-	background: url("/VAADIN/icons/add-list.png") center center no-repeat;
+.table-remove.v-button:active, .table-remove.v-button:hover, .list-remove.v-button:active, .list-remove.v-button:hover{
+	background: url("/VAADIN/icons/minus_active.png") center center no-repeat;
 }
 
-.list-remove.v-button{
-	background: url("/VAADIN/icons/remove-list.png") center center no-repeat;
+.table-edit.v-button, .v-disabled.table-edit.v-button, .v-disabled.table-edit.v-button:hover, .v-disabled.table-edit.v-button:active{
+	background: url("/VAADIN/icons/edit_normal.png") center center no-repeat;
+}
+
+.table-edit.v-button:active, .table-edit.v-button:hover{
+	background: url("/VAADIN/icons/edit_active.png") center center no-repeat;
 }

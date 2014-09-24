@@ -23,15 +23,19 @@ public abstract class AbstractContainerRendererVaadin<T extends VContainer> exte
 
 	@Override
 	protected Component render(T renderable, final ViewModelContext viewContext) {
-		AbstractOrderedLayout layout = getComponentContainer(renderable);
+		AbstractOrderedLayout layout = getAbstractOrderedLayout(renderable);
 		for (VContainedElement composite : renderable.getChildren()) {
 			Component renderResult = VaadinRendererFactory.INSTANCE.render(composite, viewContext);
 			layout.addComponent(renderResult);
 		}
-		layout.setWidth(100, Unit.PERCENTAGE);
-		layout.setMargin(isMargin(renderable));
-		layout.setSpacing(isSpacing(renderable));
-		return layout;
+		Component renderComponent = getRenderComponent(renderable, layout);
+		renderComponent.setWidth(100, Unit.PERCENTAGE);
+		if (renderComponent instanceof AbstractOrderedLayout) {
+			AbstractOrderedLayout abstractOrderedLayout = (AbstractOrderedLayout) renderComponent;
+			abstractOrderedLayout.setMargin(isMargin(renderable));
+			abstractOrderedLayout.setSpacing(isSpacing(renderable));
+		}
+		return renderComponent;
 	}
 
 	protected boolean isMargin(T renderable) {
@@ -42,5 +46,9 @@ public abstract class AbstractContainerRendererVaadin<T extends VContainer> exte
 		return true;
 	}
 
-	protected abstract AbstractOrderedLayout getComponentContainer(T renderable);
+	protected Component getRenderComponent(T renderable, AbstractOrderedLayout orderedLayout) {
+		return orderedLayout;
+	}
+
+	protected abstract AbstractOrderedLayout getAbstractOrderedLayout(T renderable);
 }

@@ -21,7 +21,7 @@ import com.vaadin.ui.HorizontalLayout;
 public class HorizontalLayoutRendererVaadin extends AbstractContainerRendererVaadin<VHorizontalLayout> {
 
 	@Override
-	protected AbstractOrderedLayout getComponentContainer(VHorizontalLayout renderable) {
+	protected AbstractOrderedLayout getAbstractOrderedLayout(VHorizontalLayout renderable) {
 		return new HorizontalLayout();
 	}
 

@@ -13,8 +13,6 @@ package makeithappen.vaadin.app.internal.servlet;
 
 import makeithappen.vaadin.app.internal.VaadinMainUI;
 
-import com.vaadin.server.ErrorEvent;
-import com.vaadin.server.ErrorHandler;
 import com.vaadin.server.UIClassSelectionEvent;
 import com.vaadin.server.UICreateEvent;
 import com.vaadin.server.UIProvider;
@@ -22,15 +20,13 @@ import com.vaadin.server.VaadinSession;
 import com.vaadin.server.WrappedSession;
 import com.vaadin.ui.UI;
 
-public class VaadinOsgiUIProvider extends UIProvider implements ErrorHandler {
+public class VaadinOsgiUIProvider extends UIProvider {
 
 	private static final long serialVersionUID = 1L;
 	private static final int MAX_INACTIVE_INTERVAL = 10 * 60;
 
 	@Override
 	public Class<? extends UI> getUIClass(UIClassSelectionEvent event) {
-		VaadinSession currentVaadinSession = VaadinSession.getCurrent();
-		currentVaadinSession.setErrorHandler(this);
 		return VaadinMainUI.class;
 	}
 
@@ -42,9 +38,4 @@ public class VaadinOsgiUIProvider extends UIProvider implements ErrorHandler {
 		return ui;
 	}
 
-	@Override
-	public void error(ErrorEvent event) {
-		Throwable throwable = event.getThrowable();
-		System.out.println(throwable.getMessage());
-	}
 }
