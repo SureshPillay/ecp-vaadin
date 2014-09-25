@@ -4,7 +4,7 @@ Bundle-Name: Vaadin View Rendere
 Bundle-SymbolicName: org.eclipse.emf.ecp.view.vaadin;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Import-Package: org.apache.commons.lang;version="[2.6.0,3.0.0)",
+Import-Package: org.apache.commons.lang3;version="[3.3.2,4.0.0)",
  org.eclipse.emf.ecp.edit.spi;version="[1.4.0,2.0.0)",
  org.eclipse.emf.ecp.translation.service;version="[1.0.0,2.0.0)",
  org.eclipse.emf.ecp.view.core.vaadin;version="[1.0.0,2.0.0)",

@@ -13,7 +13,7 @@ package org.eclipse.emf.ecp.view.core.vaadin;
 
 import java.util.Locale;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.emf.ecp.edit.spi.ViewLocaleService;
 import org.eclipse.emf.ecp.translation.service.TranslationService;
 import org.eclipse.emf.ecp.view.spi.context.ViewModelContext;
@@ -24,6 +24,7 @@ import org.eclipse.emf.ecp.view.spi.model.VViewPackage;
 
 import com.vaadin.ui.AbstractComponent;
 import com.vaadin.ui.Component;
+import com.vaadin.ui.UI;
 
 public abstract class AbstractVaadinRenderer<T extends VElement> {
 
@@ -40,13 +41,30 @@ public abstract class AbstractVaadinRenderer<T extends VElement> {
 		ModelChangeListener listener = new ModelChangeListener() {
 
 			@Override
-			public void notifyChange(ModelChangeNotification notification) {
+			public void notifyChange(final ModelChangeNotification notification) {
 				if (notification.getRawNotification().isTouch()) {
 					return;
 				}
 				if (notification.getNotifier() != renderable) {
 					return;
 				}
+				// TODO: ok?
+				UI ui = controlComponent.getUI();
+				if (ui == null) {
+					updateUI(renderable, controlComponent, notification);
+					return;
+				}
+				controlComponent.getUI().access(new Runnable() {
+
+					@Override
+					public void run() {
+						updateUI(renderable, controlComponent, notification);
+					}
+				});
+			}
+
+			private void updateUI(final T renderable, final Component controlComponent,
+					ModelChangeNotification notification) {
 				if (notification.getStructuralFeature() == VViewPackage.eINSTANCE.getElement_Visible()) {
 					applyVisible(renderable, controlComponent);
 				}

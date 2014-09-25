@@ -19,7 +19,7 @@ import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.BundleEvent;
@@ -43,13 +43,13 @@ public class VaadinResourceProvider implements HttpContext, BundleListener {
 	 * Registers as bundle listener and check current bundles.
 	 */
 	public VaadinResourceProvider() {
-		resourceBundles = new HashSet<Bundle>();
-		bundleContext = FrameworkUtil.getBundle(getClass()).getBundleContext();
-		bundleContext.addBundleListener(this);
+		this.resourceBundles = new HashSet<Bundle>();
+		this.bundleContext = FrameworkUtil.getBundle(getClass()).getBundleContext();
+		this.bundleContext.addBundleListener(this);
 
-		for (Bundle bundle : bundleContext.getBundles()) {
+		for (Bundle bundle : this.bundleContext.getBundles()) {
 			if (isVaadinResourceBundle(bundle)) {
-				resourceBundles.add(bundle);
+				this.resourceBundles.add(bundle);
 			}
 		}
 	}
@@ -58,8 +58,8 @@ public class VaadinResourceProvider implements HttpContext, BundleListener {
 	 * Unregisters as bundle listener and clears the resource bundle list.
 	 */
 	public void deactivate() {
-		bundleContext.removeBundleListener(this);
-		resourceBundles = null;
+		this.bundleContext.removeBundleListener(this);
+		this.resourceBundles = null;
 	}
 
 	@Override
@@ -74,9 +74,9 @@ public class VaadinResourceProvider implements HttpContext, BundleListener {
 		int type = event.getType();
 
 		if (type == BundleEvent.RESOLVED && isVaadinResourceBundle(bundle)) {
-			resourceBundles.add(bundle);
+			this.resourceBundles.add(bundle);
 		} else if (type == BundleEvent.UNINSTALLED && isVaadinResourceBundle(bundle)) {
-			resourceBundles.remove(bundle);
+			this.resourceBundles.remove(bundle);
 		}
 	}
 
@@ -99,7 +99,7 @@ public class VaadinResourceProvider implements HttpContext, BundleListener {
 	public URL getResource(String name) {
 		String uri = name.charAt(0) == '/' ? name : "/" + name;
 
-		for (Bundle bundle : resourceBundles) {
+		for (Bundle bundle : this.resourceBundles) {
 			String adjustedUri = adjustUri(uri, bundle);
 			URL resource = bundle.getResource(adjustedUri);
 

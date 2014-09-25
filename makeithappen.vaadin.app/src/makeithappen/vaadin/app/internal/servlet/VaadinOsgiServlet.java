@@ -11,11 +11,15 @@
  ******************************************************************************/
 package makeithappen.vaadin.app.internal.servlet;
 
+import makeithappen.vaadin.app.internal.VaadinMainUI;
+
+import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.server.DeploymentConfiguration;
 import com.vaadin.server.ServiceException;
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.server.VaadinServletService;
 
+@VaadinServletConfiguration(ui = VaadinMainUI.class, productionMode = false)
 public class VaadinOsgiServlet extends VaadinServlet {
 
 	private static final long serialVersionUID = 1L;

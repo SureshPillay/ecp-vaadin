@@ -13,12 +13,14 @@ package makeithappen.vaadin.app.internal.servlet;
 
 import com.vaadin.server.DeploymentConfiguration;
 import com.vaadin.server.ServiceException;
+import com.vaadin.server.SessionInitEvent;
+import com.vaadin.server.SessionInitListener;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.server.VaadinServletService;
 import com.vaadin.server.VaadinSession;
 
-public class VaadinOsgiServletService extends VaadinServletService {
+public class VaadinOsgiServletService extends VaadinServletService implements SessionInitListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -29,10 +31,20 @@ public class VaadinOsgiServletService extends VaadinServletService {
 
 	@Override
 	protected VaadinSession createVaadinSession(VaadinRequest request) throws ServiceException {
-		VaadinSession vaadinSession = new VaadinSession(request.getService());
-		vaadinSession.addUIProvider(new VaadinOsgiUIProvider());
+		addSessionInitListener(this);
+		return super.createVaadinSession(request);
+	}
 
-		return vaadinSession;
+	@Override
+	public void sessionInit(SessionInitEvent event) throws ServiceException {
+		event.getSession().addUIProvider(new VaadinOsgiUIProvider());
+
+	}
+
+	@Override
+	public void destroy() {
+		removeSessionInitListener(this);
+		super.destroy();
 	}
 
 }
