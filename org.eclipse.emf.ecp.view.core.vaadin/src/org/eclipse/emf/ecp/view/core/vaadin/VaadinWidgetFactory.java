@@ -166,9 +166,8 @@ public final class VaadinWidgetFactory {
 	private static void deleteObjectItems(Setting setting, Object deleteObject) {
 		if (deleteObject instanceof EObject) {
 			EcoreUtil.delete((EObject) deleteObject);
-		} else {
-			getItems(setting).remove(deleteObject);
 		}
+		getItems(setting).remove(deleteObject);
 	}
 
 	private static EObject createItem(Setting setting) {
