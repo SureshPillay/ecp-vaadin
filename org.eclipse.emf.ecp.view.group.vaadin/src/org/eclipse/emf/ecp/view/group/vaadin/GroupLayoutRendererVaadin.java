@@ -45,6 +45,11 @@ public class GroupLayoutRendererVaadin extends AbstractContainerRendererVaadin<V
 	}
 
 	@Override
+	protected boolean shouldShowCaption(VGroup renderable) {
+		return true;
+	}
+
+	@Override
 	protected Component getRenderComponent(VGroup renderable, final AbstractOrderedLayout orderedLayout) {
 		if (GroupType.COLLAPSIBLE.equals(renderable.getGroupType())) {
 			VerticalLayout mainLayout = new VerticalLayout();

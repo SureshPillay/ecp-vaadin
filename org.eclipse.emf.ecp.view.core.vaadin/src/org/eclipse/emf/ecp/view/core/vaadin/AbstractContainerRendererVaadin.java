@@ -38,6 +38,17 @@ public abstract class AbstractContainerRendererVaadin<T extends VContainer> exte
 		return renderComponent;
 	}
 
+	@Override
+	protected void applyCaption(T renderable, Component controlComponent) {
+		if (shouldShowCaption(renderable)) {
+			super.applyCaption(renderable, controlComponent);
+		}
+	}
+
+	protected boolean shouldShowCaption(T renderable) {
+		return false;
+	}
+
 	protected boolean isMargin(T renderable) {
 		return true;
 	}
