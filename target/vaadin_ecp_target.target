@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?pde version="3.8"?><target name="vaadin_ecp_target" sequenceNumber="49">
+<?pde version="3.8"?><target name="vaadin_ecp_target" sequenceNumber="50">
 <locations>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="slicer" includeSource="false" type="InstallableUnit">
 <unit id="org.eclipse.platform.sdk" version="4.4.1.M20140925-0400"/>
@@ -12,5 +12,23 @@
 <repository location="http://download.eclipse.org/releases/luna/"/>
 </location>
 <location path="${project_loc}/plugins" type="Directory"/>
+<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="slicer" includeSource="false" type="InstallableUnit">
+<unit id="org.eclipse.emf.ecp.view.label.feature.feature.group" version="1.4.1.20141006-1346"/>
+<unit id="org.eclipse.emf.ecp.view.horizontal.feature.feature.group" version="1.4.1.20141006-1346"/>
+<unit id="org.eclipse.emf.ecp.view.custom.feature.feature.group" version="1.4.1.20141006-1346"/>
+<unit id="org.eclipse.emf.ecp.view.rule.feature.feature.group" version="1.4.1.20141006-1346"/>
+<unit id="org.eclipse.emf.ecp.view.vertical.feature.feature.group" version="1.4.1.20141006-1346"/>
+<unit id="org.eclipse.emf.ecp.view.categorization.feature.feature.group" version="1.4.1.20141006-1346"/>
+<unit id="org.eclipse.emf.ecp.view.group.swt.collapsible.pgroup" version="1.4.1.20141006-1346"/>
+<unit id="org.eclipse.emf.ecp.viewmodel.feature.feature.group" version="1.4.1.20141006-1346"/>
+<unit id="org.eclipse.emf.ecp.emfforms.sdk.feature.feature.group" version="1.4.1.20141006-1346"/>
+<unit id="org.eclipse.emf.ecp.view.compoundcontrol.feature.feature.group" version="1.4.1.20141006-1346"/>
+<unit id="org.eclipse.emf.ecp.view.stack.feature.feature.group" version="1.4.1.20141006-1346"/>
+<unit id="org.eclipse.emf.ecp.view.treemasterdetail.feature.feature.group" version="1.4.1.20141006-1346"/>
+<unit id="org.eclipse.emf.ecp.view.viewproxy.feature.feature.group" version="1.4.1.20141006-1346"/>
+<unit id="org.eclipse.emf.ecp.view.table.feature.feature.group" version="1.4.1.20141006-1346"/>
+<unit id="org.eclipse.emf.ecp.view.group.feature.feature.group" version="1.4.1.20141006-1346"/>
+<repository location="http://download.eclipse.org/ecp/releases/releases_14/"/>
+</location>
 </locations>
 </target>
