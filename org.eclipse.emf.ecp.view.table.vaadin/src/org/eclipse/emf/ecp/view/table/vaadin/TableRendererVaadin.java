@@ -74,7 +74,7 @@ public class TableRendererVaadin extends AbstractControlRendererVaadin<VTableCon
 		final EClass clazz = ((EReference) setting.getEStructuralFeature()).getEReferenceType();
 		BeanItemContainer<Object> indexedContainer = new BeanItemContainer(clazz.getInstanceClass());
 
-		setVisibleColumns(control, table, clazz, indexedContainer);
+		setVisibleColumns(control, table, clazz, indexedContainer, viewContext);
 		IObservableList targetValue = VaadinObservables.observeContainerItemSetContents(table, setting.getEObject()
 				.getClass());
 
@@ -136,7 +136,7 @@ public class TableRendererVaadin extends AbstractControlRendererVaadin<VTableCon
 	}
 
 	private void setVisibleColumns(VTableControl control, final Table table, final EClass clazz,
-			BeanItemContainer<Object> indexedContainer) {
+			BeanItemContainer<Object> indexedContainer, ViewModelContext viewContext) {
 		List<EStructuralFeature> listFeatures = VaadinRendererUtil.getColumnFeatures(control);
 		final InternalEObject tempInstance = getInstanceOf(clazz);
 		List<String> visibleColumnsNames = new ArrayList<String>();
@@ -150,20 +150,19 @@ public class TableRendererVaadin extends AbstractControlRendererVaadin<VTableCon
 			String displayName = itemPropertyDescriptor.getDisplayName(null);
 			visibleColumnsNames.add(displayName);
 			visibleColumnsId.add(eStructuralFeature.getName());
-			Class<?> instanceClass = eStructuralFeature.getEType().getInstanceClass();
-			if (Number.class.isAssignableFrom(instanceClass)) {
-				final TextField converter = new TextField();
-				converter.setConverter(instanceClass);
-				table.addGeneratedColumn(eStructuralFeature.getName(), new ColumnGenerator() {
-
-					@Override
-					public Object generateCell(Table source, Object itemId, Object columnId) {
-						EObject eObject = (EObject) itemId;
-						return converter.getConverter().convertToPresentation(eObject.eGet(eStructuralFeature),
-								String.class, Locale.getDefault());
-					}
-				});
+			final TextField converter = new TextField();
+			VaadinRendererUtil.setConverterToTextField(eStructuralFeature, converter, control, viewContext);
+			if (converter.getConverter() == null) {
+				return;
 			}
+			table.addGeneratedColumn(eStructuralFeature.getName(), new ColumnGenerator() {
+				@Override
+				public Object generateCell(Table source, Object itemId, Object columnId) {
+					EObject eObject = (EObject) itemId;
+					return converter.getConverter().convertToPresentation(eObject.eGet(eStructuralFeature),
+							String.class, Locale.getDefault());
+				}
+			});
 
 		}
 		table.setContainerDataSource(indexedContainer);

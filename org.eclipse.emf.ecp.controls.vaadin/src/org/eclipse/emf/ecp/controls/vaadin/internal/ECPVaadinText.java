@@ -16,6 +16,7 @@ import org.eclipse.emf.ecore.EStructuralFeature.Setting;
 import org.eclipse.emf.ecp.controls.vaadin.ECPControlFactoryVaadin;
 import org.eclipse.emf.ecp.controls.vaadin.ECPTextFieldToModelUpdateValueStrategy;
 import org.eclipse.emf.ecp.controls.vaadin.ECPTextFieldToTargetUpdateValueStrategy;
+import org.eclipse.emf.ecp.view.spi.context.ViewModelContext;
 import org.eclipse.emf.ecp.view.spi.model.VControl;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 
@@ -36,7 +37,7 @@ public class ECPVaadinText extends ECPControlFactoryVaadin {
 	}
 
 	@Override
-	public Component createControl(VControl control, Setting setting) {
+	public Component createControl(VControl control, ViewModelContext viewContext, Setting setting) {
 		IItemPropertyDescriptor itemPropertyDescriptor = getItemPropertyDescriptor(setting);
 		if (itemPropertyDescriptor.isMultiLine(null)) {
 			TextArea textArea = new TextArea();

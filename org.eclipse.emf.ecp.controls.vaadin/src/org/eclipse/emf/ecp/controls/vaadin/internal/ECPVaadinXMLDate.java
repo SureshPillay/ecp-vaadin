@@ -22,6 +22,7 @@ import org.eclipse.emf.databinding.EMFUpdateValueStrategy;
 import org.eclipse.emf.ecore.EStructuralFeature.Setting;
 import org.eclipse.emf.ecp.controls.vaadin.ECPControlFactoryVaadin;
 import org.eclipse.emf.ecp.controls.vaadin.ECPXMLDateFieldToModelUpdateValueStrategy;
+import org.eclipse.emf.ecp.view.spi.context.ViewModelContext;
 import org.eclipse.emf.ecp.view.spi.model.VControl;
 
 import com.vaadin.ui.Component;
@@ -53,7 +54,7 @@ public class ECPVaadinXMLDate extends ECPControlFactoryVaadin {
 	}
 
 	@Override
-	public Component createControl(VControl control, Setting setting) {
+	public Component createControl(VControl control, ViewModelContext viewContext, Setting setting) {
 		return new DateField();
 	}
 

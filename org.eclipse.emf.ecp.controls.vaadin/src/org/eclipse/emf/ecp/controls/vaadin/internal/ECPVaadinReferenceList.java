@@ -25,6 +25,7 @@ import org.eclipse.emf.ecp.view.core.vaadin.TableListDiffVisitor;
 import org.eclipse.emf.ecp.view.core.vaadin.VaadinWidgetFactory;
 import org.eclipse.emf.ecp.view.core.vaadin.converter.SelectionConverter;
 import org.eclipse.emf.ecp.view.model.common.edit.provider.CustomReflectiveItemProviderAdapterFactory;
+import org.eclipse.emf.ecp.view.spi.context.ViewModelContext;
 import org.eclipse.emf.ecp.view.spi.model.VControl;
 import org.eclipse.emf.edit.provider.AdapterFactoryItemDelegator;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
@@ -49,12 +50,12 @@ public class ECPVaadinReferenceList extends ECPControlFactoryVaadin {
 	private AdapterFactoryItemDelegator adapterFactoryItemDelegator;
 
 	@Override
-	public Component createControl(VControl control, Setting setting) {
+	public Component createControl(VControl control, ViewModelContext viewContext, Setting setting) {
 		return null;
 	}
 
 	@Override
-	public Component render(final VControl control, boolean caption) {
+	public Component render(final VControl control, ViewModelContext viewContext, boolean caption) {
 		final Setting setting = control.getDomainModelReference().getIterator().next();
 		this.composedAdapterFactory = new ComposedAdapterFactory(new AdapterFactory[] {
 				new CustomReflectiveItemProviderAdapterFactory(),

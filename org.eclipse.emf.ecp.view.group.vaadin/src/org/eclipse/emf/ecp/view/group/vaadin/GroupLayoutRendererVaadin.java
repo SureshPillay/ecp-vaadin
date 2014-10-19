@@ -12,6 +12,7 @@
 package org.eclipse.emf.ecp.view.group.vaadin;
 
 import org.eclipse.emf.ecp.view.core.vaadin.AbstractContainerRendererVaadin;
+import org.eclipse.emf.ecp.view.spi.context.ViewModelContext;
 import org.eclipse.emf.ecp.view.spi.group.model.GroupType;
 import org.eclipse.emf.ecp.view.spi.group.model.VGroup;
 
@@ -89,12 +90,12 @@ public class GroupLayoutRendererVaadin extends AbstractContainerRendererVaadin<V
 	}
 
 	@Override
-	protected void applyCaption(VGroup renderable, Component controlComponent) {
+	protected void applyCaption(VGroup renderable, Component controlComponent, ViewModelContext viewContext) {
 		if (GroupType.COLLAPSIBLE.equals(renderable.getGroupType())) {
-			super.applyCaption(renderable, ((AbstractOrderedLayout) controlComponent).getComponent(0));
+			super.applyCaption(renderable, ((AbstractOrderedLayout) controlComponent).getComponent(0), viewContext);
 			return;
 
 		}
-		super.applyCaption(renderable, controlComponent);
+		super.applyCaption(renderable, controlComponent, viewContext);
 	}
 }

@@ -19,6 +19,7 @@ import org.eclipse.emf.databinding.EMFProperties;
 import org.eclipse.emf.databinding.EMFUpdateValueStrategy;
 import org.eclipse.emf.ecore.EStructuralFeature.Setting;
 import org.eclipse.emf.ecp.edit.spi.ECPAbstractControl;
+import org.eclipse.emf.ecp.view.spi.context.ViewModelContext;
 import org.eclipse.emf.ecp.view.spi.model.VControl;
 import org.lunifera.runtime.web.vaadin.databinding.VaadinObservables;
 
@@ -28,7 +29,7 @@ import com.vaadin.ui.Component;
 
 public abstract class ECPControlFactoryVaadin extends ECPAbstractControl {
 
-	public abstract Component createControl(VControl control, Setting setting);
+	public abstract Component createControl(VControl control, ViewModelContext viewModelContext, Setting setting);
 
 	protected Binding bindModelToTarget(IObservableValue target, IObservableValue model,
 			UpdateValueStrategy targetToModelStrategy, UpdateValueStrategy modelToTargetStrategy) {
@@ -42,9 +43,9 @@ public abstract class ECPControlFactoryVaadin extends ECPAbstractControl {
 		return binding;
 	}
 
-	public Component render(final VControl control, boolean caption) {
+	public Component render(final VControl control, ViewModelContext viewModelContext, boolean caption) {
 		Setting setting = control.getDomainModelReference().getIterator().next();
-		final Component component = createControl(control, setting);
+		final Component component = createControl(control, viewModelContext, setting);
 
 		createDatabinding(control, setting, component);
 

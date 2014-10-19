@@ -17,6 +17,8 @@ import org.eclipse.emf.ecore.EStructuralFeature.Setting;
 import org.eclipse.emf.ecp.view.spi.context.ViewModelContext;
 import org.eclipse.emf.ecp.view.spi.model.LabelAlignment;
 import org.eclipse.emf.ecp.view.spi.model.VControl;
+import org.eclipse.emf.ecp.view.template.style.mandatory.model.VTMandatoryPackage;
+import org.eclipse.emf.ecp.view.template.style.mandatory.model.VTMandatoryStyleProperty;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 
 import com.vaadin.server.UserError;
@@ -25,8 +27,10 @@ import com.vaadin.ui.Component;
 
 public abstract class AbstractControlRendererVaadin<T extends VControl> extends AbstractVaadinRenderer<T> {
 
+	private static final String DEFAULT_MANADORY_MARKER = "*";
+
 	@Override
-	protected void applyCaption(T control, Component component) {
+	protected void applyCaption(T control, Component component, ViewModelContext viewContext) {
 		Setting setting = control.getDomainModelReference().getIterator().next();
 		final IItemPropertyDescriptor itemPropertyDescriptor = VaadinRendererUtil.getItemPropertyDescriptor(setting);
 
@@ -37,8 +41,16 @@ public abstract class AbstractControlRendererVaadin<T extends VControl> extends 
 		String extra = "";
 
 		if (setting.getEStructuralFeature().getLowerBound() > 0) {
-			extra = "*"; //$NON-NLS-1$
+			VTMandatoryStyleProperty styleProperty = VaadinStyleTemplateUtil.getVTStyleProperty(
+					VTMandatoryPackage.Literals.MANDATORY_STYLE_PROPERTY, control, viewContext);
+			if (styleProperty == null) {
+				extra = DEFAULT_MANADORY_MARKER; //$NON-NLS-1$
+			} else {
+				extra = styleProperty.getMandatoryMarker();
+			}
+
 		}
+
 		component.setCaption(itemPropertyDescriptor.getDisplayName(setting.getEObject()) + extra);
 		String description = itemPropertyDescriptor.getDescription(setting.getEObject());
 		if (component instanceof AbstractComponent && !StringUtils.isEmpty(description)) {
@@ -57,7 +69,7 @@ public abstract class AbstractControlRendererVaadin<T extends VControl> extends 
 	}
 
 	@Override
-	protected void applyValidation(T control, Component component) {
+	protected void applyValidation(T control, Component component, ViewModelContext viewContext) {
 		AbstractComponent abstractComponent = (AbstractComponent) component;
 		abstractComponent.setComponentError(null);
 

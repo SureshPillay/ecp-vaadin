@@ -48,7 +48,6 @@ public abstract class AbstractVaadinRenderer<T extends VElement> {
 				if (notification.getNotifier() != renderable) {
 					return;
 				}
-				// TODO: ok?
 				UI ui = controlComponent.getUI();
 				if (ui == null) {
 					updateUI(renderable, controlComponent, notification);
@@ -66,28 +65,28 @@ public abstract class AbstractVaadinRenderer<T extends VElement> {
 			private void updateUI(final T renderable, final Component controlComponent,
 					ModelChangeNotification notification) {
 				if (notification.getStructuralFeature() == VViewPackage.eINSTANCE.getElement_Visible()) {
-					applyVisible(renderable, controlComponent);
+					applyVisible(renderable, controlComponent, viewContext);
 				}
 				if (notification.getStructuralFeature() == VViewPackage.eINSTANCE.getElement_Enabled()
 						&& !renderable.isReadonly()) {
-					applyEnable(renderable, controlComponent);
+					applyEnable(renderable, controlComponent, viewContext);
 				}
 				if (notification.getStructuralFeature() == VViewPackage.eINSTANCE.getElement_Diagnostic()) {
-					applyValidation(renderable, controlComponent);
+					applyValidation(renderable, controlComponent, viewContext);
 				}
 			}
 
 		};
 		viewContext.registerViewChangeListener(listener);
-		applyVisible(renderable, controlComponent);
-		applyEnable(renderable, controlComponent);
-		applyValidation(renderable, controlComponent);
-		applyReadonly(renderable, controlComponent);
-		applyCaption(renderable, controlComponent);
+		applyVisible(renderable, controlComponent, viewContext);
+		applyEnable(renderable, controlComponent, viewContext);
+		applyValidation(renderable, controlComponent, viewContext);
+		applyReadonly(renderable, controlComponent, viewContext);
+		applyCaption(renderable, controlComponent, viewContext);
 		return component;
 	}
 
-	protected void applyCaption(T renderable, Component controlComponent) {
+	protected void applyCaption(T renderable, Component controlComponent, ViewModelContext viewContext) {
 		String caption = getTranslation(renderable);
 		if (StringUtils.isEmpty(caption)) {
 			return;
@@ -95,19 +94,19 @@ public abstract class AbstractVaadinRenderer<T extends VElement> {
 		controlComponent.setCaption(caption);
 	}
 
-	protected void applyValidation(T renderable, Component component) {
+	protected void applyValidation(T renderable, Component component, ViewModelContext viewContext) {
 
 	}
 
-	protected void applyEnable(T renderable, Component component) {
+	protected void applyEnable(T renderable, Component component, ViewModelContext viewContext) {
 		component.setEnabled(renderable.isEnabled());
 	}
 
-	protected void applyReadonly(T renderable, Component component) {
+	protected void applyReadonly(T renderable, Component component, ViewModelContext viewContext) {
 		component.setReadOnly(renderable.isReadonly());
 	}
 
-	protected void applyVisible(T renderable, Component component) {
+	protected void applyVisible(T renderable, Component component, ViewModelContext viewContext) {
 		component.setVisible(renderable.isVisible());
 	}
 

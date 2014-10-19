@@ -11,12 +11,13 @@
  ******************************************************************************/
 package org.eclipse.emf.ecp.controls.vaadin.internal;
 
-import org.apache.commons.lang3.ClassUtils;
 import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.emf.databinding.EMFUpdateValueStrategy;
 import org.eclipse.emf.ecore.EStructuralFeature.Setting;
 import org.eclipse.emf.ecp.controls.vaadin.ECPControlFactoryVaadin;
+import org.eclipse.emf.ecp.view.core.vaadin.VaadinRendererUtil;
 import org.eclipse.emf.ecp.view.core.vaadin.converter.VaadinConverterToString;
+import org.eclipse.emf.ecp.view.spi.context.ViewModelContext;
 import org.eclipse.emf.ecp.view.spi.model.VControl;
 
 import com.vaadin.ui.AbstractField;
@@ -26,14 +27,10 @@ import com.vaadin.ui.TextField;
 public class ECPVaadinNumber extends ECPControlFactoryVaadin {
 
 	@Override
-	public Component createControl(VControl control, Setting setting) {
+	public Component createControl(VControl control, ViewModelContext viewContext, Setting setting) {
 		final TextField component = new TextField();
 
-		Class<?> instanceClass = setting.getEStructuralFeature().getEType().getInstanceClass();
-		if (instanceClass.isPrimitive()) {
-			instanceClass = ClassUtils.primitiveToWrapper(instanceClass);
-		}
-		component.setConverter(instanceClass);
+		VaadinRendererUtil.setConverterToTextField(setting.getEStructuralFeature(), component, control, viewContext);
 		component.setNullRepresentation("");
 		return component;
 	}

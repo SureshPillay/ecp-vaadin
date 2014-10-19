@@ -29,6 +29,7 @@ import org.eclipse.emf.ecp.view.core.vaadin.VaadinWidgetFactory;
 import org.eclipse.emf.ecp.view.core.vaadin.converter.SelectionConverter;
 import org.eclipse.emf.ecp.view.core.vaadin.converter.StringToVaadinConverter;
 import org.eclipse.emf.ecp.view.core.vaadin.converter.VaadinConverterToString;
+import org.eclipse.emf.ecp.view.spi.context.ViewModelContext;
 import org.eclipse.emf.ecp.view.spi.model.VControl;
 import org.lunifera.runtime.web.vaadin.databinding.VaadinObservables;
 
@@ -51,12 +52,12 @@ public class ECPVaadinPrimitiveList extends ECPControlFactoryVaadin {
 	private static final String REMOVE_COLUMN = "remove";
 
 	@Override
-	public Component createControl(VControl control, Setting setting) {
+	public Component createControl(VControl control, ViewModelContext viewContext, Setting setting) {
 		return null;
 	}
 
 	@Override
-	public Component render(final VControl control, boolean caption) {
+	public Component render(final VControl control, ViewModelContext viewContext, boolean caption) {
 		final Setting setting = control.getDomainModelReference().getIterator().next();
 		final Class<?> instanceClass = setting.getEStructuralFeature().getEType().getInstanceClass();
 		EStructuralFeature eStructuralFeature = setting.getEStructuralFeature();

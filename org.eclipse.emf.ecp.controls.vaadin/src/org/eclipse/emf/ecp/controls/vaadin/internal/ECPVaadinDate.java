@@ -13,6 +13,7 @@ package org.eclipse.emf.ecp.controls.vaadin.internal;
 
 import org.eclipse.emf.ecore.EStructuralFeature.Setting;
 import org.eclipse.emf.ecp.controls.vaadin.ECPControlFactoryVaadin;
+import org.eclipse.emf.ecp.view.spi.context.ViewModelContext;
 import org.eclipse.emf.ecp.view.spi.model.VControl;
 
 import com.vaadin.shared.ui.datefield.Resolution;
@@ -22,9 +23,9 @@ import com.vaadin.ui.DateField;
 public class ECPVaadinDate extends ECPControlFactoryVaadin {
 
 	@Override
-	public Component createControl(VControl control, Setting setting) {
+	public Component createControl(VControl control, ViewModelContext viewContext, Setting setting) {
 		DateField dateField = new DateField();
-		// TODO Model einstellung
+		// TODO Style?
 		dateField.setResolution(Resolution.MINUTE);
 		return dateField;
 	}
