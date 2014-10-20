@@ -144,25 +144,26 @@ public class TableRendererVaadin extends AbstractControlRendererVaadin<VTableCon
 		for (final EStructuralFeature eStructuralFeature : listFeatures) {
 			IItemPropertyDescriptor itemPropertyDescriptor = VaadinRendererUtil.getItemPropertyDescriptor(tempInstance,
 					eStructuralFeature);
-			if (itemPropertyDescriptor == null) {
-				continue;
+			String displayName = eStructuralFeature.getName();
+			// String tooltipText = eStructuralFeature.getName();
+
+			if (itemPropertyDescriptor != null) {
+				displayName = itemPropertyDescriptor.getDisplayName(null);
 			}
-			String displayName = itemPropertyDescriptor.getDisplayName(null);
 			visibleColumnsNames.add(displayName);
 			visibleColumnsId.add(eStructuralFeature.getName());
 			final TextField converter = new TextField();
 			VaadinRendererUtil.setConverterToTextField(eStructuralFeature, converter, control, viewContext);
-			if (converter.getConverter() == null) {
-				return;
+			if (converter.getConverter() != null) {
+				table.addGeneratedColumn(eStructuralFeature.getName(), new ColumnGenerator() {
+					@Override
+					public Object generateCell(Table source, Object itemId, Object columnId) {
+						EObject eObject = (EObject) itemId;
+						return converter.getConverter().convertToPresentation(eObject.eGet(eStructuralFeature),
+								String.class, Locale.getDefault());
+					}
+				});
 			}
-			table.addGeneratedColumn(eStructuralFeature.getName(), new ColumnGenerator() {
-				@Override
-				public Object generateCell(Table source, Object itemId, Object columnId) {
-					EObject eObject = (EObject) itemId;
-					return converter.getConverter().convertToPresentation(eObject.eGet(eStructuralFeature),
-							String.class, Locale.getDefault());
-				}
-			});
 
 		}
 		table.setContainerDataSource(indexedContainer);
