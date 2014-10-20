@@ -59,4 +59,8 @@ public class ViewRendererVaadin extends AbstractVaadinRenderer<VView> {
 		ViewLayoutProvider service = bundleContext.getService(reference);
 		return service == null ? new VerticalLayout() : service.getViewLayout();
 	}
+
+	@Override
+	protected void applyCaption(VView renderable, Component controlComponent, ViewModelContext viewContext) {
+	}
 }
