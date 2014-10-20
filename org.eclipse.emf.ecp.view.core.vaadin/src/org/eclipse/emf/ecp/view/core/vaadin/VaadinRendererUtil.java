@@ -79,9 +79,13 @@ public final class VaadinRendererUtil {
 		List<EStructuralFeature> listFeatures = new ArrayList<EStructuralFeature>();
 		// TODO FIXME: NPE
 		for (final VDomainModelReference column : domainModelReference.getColumnDomainModelReferences()) {
-			for (Iterator<EStructuralFeature> iterator = column.getEStructuralFeatureIterator(); iterator.hasNext();) {
-				listFeatures.add(iterator.next());
+
+			final Iterator<EStructuralFeature> eStructuralFeatureIterator = column.getEStructuralFeatureIterator();
+			if (eStructuralFeatureIterator == null || !eStructuralFeatureIterator.hasNext()) {
+				continue;
 			}
+			final EStructuralFeature eStructuralFeature = eStructuralFeatureIterator.next();
+			listFeatures.add(eStructuralFeature);
 
 		}
 		return listFeatures;

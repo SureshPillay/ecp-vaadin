@@ -33,6 +33,7 @@ public class ViewRendererVaadin extends AbstractVaadinRenderer<VView> {
 	public Component render(VView renderable, ViewModelContext viewModelContext) {
 		AbstractOrderedLayout layout = getLayout();
 		layout.setSpacing(true);
+		layout.setMargin(true);
 		layout.setSizeFull();
 		for (VContainedElement composite : renderable.getChildren()) {
 			Component renderResult = VaadinRendererFactory.INSTANCE.render(composite, viewModelContext);
