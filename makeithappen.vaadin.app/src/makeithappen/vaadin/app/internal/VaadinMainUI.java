@@ -1,11 +1,11 @@
 package makeithappen.vaadin.app.internal;
 
+import org.eclipse.emf.ecp.makeithappen.model.task.TaskFactory;
+import org.eclipse.emf.ecp.makeithappen.model.task.User;
 import org.eclipse.emf.ecp.view.core.vaadin.ECPFVaadinViewRenderer;
 import org.eclipse.emf.ecp.view.core.vaadin.ECPVaadinView;
 import org.lunifera.runtime.web.vaadin.databinding.VaadinObservables;
 
-import com.eclipsesource.makeithappen.model.task.TaskFactory;
-import com.eclipsesource.makeithappen.model.task.User;
 import com.vaadin.annotations.Push;
 import com.vaadin.annotations.Theme;
 import com.vaadin.server.VaadinRequest;
