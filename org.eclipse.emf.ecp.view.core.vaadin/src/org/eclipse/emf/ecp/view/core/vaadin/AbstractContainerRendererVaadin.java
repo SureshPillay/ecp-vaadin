@@ -50,7 +50,7 @@ public abstract class AbstractContainerRendererVaadin<T extends VContainer> exte
 	}
 
 	protected boolean isMargin(T renderable) {
-		return true;
+		return false;
 	}
 
 	protected boolean isSpacing(T renderable) {
