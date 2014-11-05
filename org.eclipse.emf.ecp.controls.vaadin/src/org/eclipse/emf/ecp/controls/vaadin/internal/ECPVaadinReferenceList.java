@@ -26,6 +26,8 @@ import org.eclipse.emf.ecp.view.core.vaadin.converter.SelectionConverter;
 import org.eclipse.emf.ecp.view.model.common.edit.provider.CustomReflectiveItemProviderAdapterFactory;
 import org.eclipse.emf.ecp.view.spi.context.ViewModelContext;
 import org.eclipse.emf.ecp.view.spi.model.VControl;
+import org.eclipse.emf.ecp.view.spi.model.VView;
+import org.eclipse.emf.ecp.view.spi.provider.ViewProviderHelper;
 import org.eclipse.emf.edit.provider.AdapterFactoryItemDelegator;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.lunifera.runtime.web.vaadin.databinding.VaadinObservables;
@@ -91,9 +93,13 @@ public class ECPVaadinReferenceList extends AbstractVaadinList {
 				if (!(itemId instanceof EObject)) {
 					return null;
 				}
+				VView view = ViewProviderHelper.getView((EObject) itemId, null);
+				String text = ECPVaadinReferenceList.this.adapterFactoryItemDelegator.getText(itemId);
+				if (view == null) {
+					return text;
+				}
 
-				return VaadinWidgetFactory.createEditLink((EObject) itemId,
-						ECPVaadinReferenceList.this.adapterFactoryItemDelegator.getText(itemId));
+				return VaadinWidgetFactory.createEditLink((EObject) itemId, text);
 			}
 		});
 	}
