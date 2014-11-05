@@ -50,6 +50,10 @@ import com.vaadin.ui.VerticalLayout;
 
 public class TableRendererVaadin extends AbstractControlRendererVaadin<VTableControl> {
 
+	private Setting setting;
+	private Table table;
+	private EMFDataBindingContext dataBindingContext;
+
 	protected EObject addItem(Setting setting) {
 		final EClass clazz = ((EReference) setting.getEStructuralFeature()).getEReferenceType();
 		final EObject instance = clazz.getEPackage().getEFactoryInstance().create(clazz);
@@ -62,64 +66,42 @@ public class TableRendererVaadin extends AbstractControlRendererVaadin<VTableCon
 
 	@Override
 	protected Component renderControl(VTableControl control, ViewModelContext viewContext) {
-		final Setting setting = control.getDomainModelReference().getIterator().next();
+		this.setting = control.getDomainModelReference().getIterator().next();
 
 		VerticalLayout layout = new VerticalLayout();
-		final Table table = new Table();
-		layout.setData(table);
-		table.setSelectable(true);
-		table.setSizeFull();
-		// table.setPageLength(10);
+		this.table = createTable();
+		layout.setData(this.table);
 
-		final EClass clazz = ((EReference) setting.getEStructuralFeature()).getEReferenceType();
-		BeanItemContainer<Object> indexedContainer = new BeanItemContainer(clazz.getInstanceClass());
+		setVisibleColumns(control, viewContext);
 
-		setVisibleColumns(control, table, clazz, indexedContainer, viewContext);
-		IObservableList targetValue = VaadinObservables.observeContainerItemSetContents(table, setting.getEObject()
-				.getClass());
-
-		targetValue.addListChangeListener(new IListChangeListener() {
-
-			@Override
-			public void handleListChange(ListChangeEvent event) {
-				// TODO: FIXME Databinding is correct https://vaadin.com/forum#!/thread/68419
-				event.diff.accept(new TableListDiffVisitor(table));
-			}
-		});
-
-		IObservableList modelValue = EMFProperties.list(setting.getEStructuralFeature()).observe(setting.getEObject());
-		EMFDataBindingContext dataBindingContext = new EMFDataBindingContext();
-		dataBindingContext.bindList(targetValue, modelValue);
+		this.dataBindingContext = new EMFDataBindingContext();
+		bindTable(this.setting, this.table, this.dataBindingContext);
 
 		if (control.isReadonly()) {
-			layout.addComponent(table);
+			layout.addComponent(this.table);
 			return layout;
 		}
-		EMFUpdateValueStrategy emfUpdateValueStrategy = new EMFUpdateValueStrategy();
-		emfUpdateValueStrategy.setConverter(new SelectionConverter());
 
+		HorizontalLayout horizontalLayout = createDetailEditing(control);
+
+		layout.addComponent(horizontalLayout);
+		layout.setComponentAlignment(horizontalLayout, Alignment.TOP_RIGHT);
+		layout.addComponent(this.table);
+		return layout;
+
+	}
+
+	private HorizontalLayout createDetailEditing(VTableControl control) {
 		HorizontalLayout horizontalLayout = new HorizontalLayout();
-		if (hasCaption(control)) {
-			horizontalLayout.addStyleName("table-button-toolbar");
-		}
-		IObservableValue observeSingleSelection = VaadinObservables.observeSingleSelection(table,
-				clazz.getInstanceClass());
+		addTableToolbarStyle(control, horizontalLayout);
+
 		if (!control.isAddRemoveDisabled()) {
-			Button add = VaadinWidgetFactory.createTableAddButton(setting, table);
-			horizontalLayout.addComponent(add);
-			Button remove = VaadinWidgetFactory.createTableRemoveButton(setting, table);
-			horizontalLayout.addComponent(remove);
-			dataBindingContext.bindValue(VaadinObservables.observeEnabled(remove), observeSingleSelection, null,
-					emfUpdateValueStrategy);
+			createAddRemoveButton(horizontalLayout);
 		}
 
 		switch (control.getDetailEditing()) {
 		case WITH_DIALOG:
-			Button edit = VaadinWidgetFactory.createTableEditButton(table, control.getDetailView());
-			edit.setEnabled(control.getDetailView() != null);
-			horizontalLayout.addComponent(edit);
-			dataBindingContext.bindValue(VaadinObservables.observeEnabled(edit), observeSingleSelection, null,
-					emfUpdateValueStrategy);
+			createEditButton(control, horizontalLayout);
 			break;
 		case WITH_PANEL:
 			// TODO Master/Detail Panel
@@ -127,18 +109,74 @@ public class TableRendererVaadin extends AbstractControlRendererVaadin<VTableCon
 		default:
 			break;
 		}
-
-		layout.addComponent(horizontalLayout);
-		layout.setComponentAlignment(horizontalLayout, Alignment.TOP_RIGHT);
-		layout.addComponent(table);
-		return layout;
-
+		return horizontalLayout;
 	}
 
-	private void setVisibleColumns(VTableControl control, final Table table, final EClass clazz,
-			BeanItemContainer<Object> indexedContainer, ViewModelContext viewContext) {
+	private void createEditButton(VTableControl control, HorizontalLayout horizontalLayout) {
+		EMFUpdateValueStrategy emfUpdateValueStrategy = new EMFUpdateValueStrategy();
+		emfUpdateValueStrategy.setConverter(new SelectionConverter());
+		Button edit = VaadinWidgetFactory.createTableEditButton(this.table, control.getDetailView());
+		edit.setEnabled(control.getDetailView() != null);
+		horizontalLayout.addComponent(edit);
+		bindButtonEnable(edit);
+	}
+
+	private void createAddRemoveButton(HorizontalLayout horizontalLayout) {
+		Button add = VaadinWidgetFactory.createTableAddButton(this.setting, this.table);
+		horizontalLayout.addComponent(add);
+		Button remove = VaadinWidgetFactory.createTableRemoveButton(this.setting, this.table);
+		horizontalLayout.addComponent(remove);
+		bindButtonEnable(remove);
+	}
+
+	private void bindButtonEnable(Button button) {
+		EMFUpdateValueStrategy strategy = new EMFUpdateValueStrategy();
+		strategy.setConverter(new SelectionConverter());
+		IObservableValue observeSingleSelection = VaadinObservables.observeSingleSelection(this.table,
+				getReferenceType().getInstanceClass());
+		this.dataBindingContext.bindValue(VaadinObservables.observeEnabled(button), observeSingleSelection, null,
+				strategy);
+	}
+
+	private void addTableToolbarStyle(VTableControl control, HorizontalLayout horizontalLayout) {
+		if (hasCaption(control)) {
+			horizontalLayout.addStyleName("table-button-toolbar");
+		}
+	}
+
+	private void bindTable(final Setting setting, final Table table, EMFDataBindingContext dataBindingContext) {
+		IObservableList targetValue = VaadinObservables.observeContainerItemSetContents(table, setting.getEObject()
+				.getClass());
+		targetValue.addListChangeListener(new IListChangeListener() {
+
+			@Override
+			public void handleListChange(ListChangeEvent event) {
+				event.diff.accept(new TableListDiffVisitor(table));
+			}
+		});
+
+		IObservableList modelValue = EMFProperties.list(setting.getEStructuralFeature()).observe(setting.getEObject());
+		dataBindingContext.bindList(targetValue, modelValue);
+	}
+
+	private Table createTable() {
+		final Table table = new Table();
+		table.setSelectable(true);
+		table.setSizeFull();
+
+		final EClass clazz = getReferenceType();
+		BeanItemContainer<Object> indexedContainer = new BeanItemContainer(clazz.getInstanceClass());
+		table.setContainerDataSource(indexedContainer);
+		return table;
+	}
+
+	private EClass getReferenceType() {
+		return ((EReference) this.setting.getEStructuralFeature()).getEReferenceType();
+	}
+
+	private void setVisibleColumns(VTableControl control, ViewModelContext viewContext) {
 		List<EStructuralFeature> listFeatures = VaadinRendererUtil.getColumnFeatures(control);
-		final InternalEObject tempInstance = getInstanceOf(clazz);
+		final InternalEObject tempInstance = getInstanceOf(getReferenceType());
 		List<String> visibleColumnsNames = new ArrayList<String>();
 		List<String> visibleColumnsId = new ArrayList<String>();
 		for (final EStructuralFeature eStructuralFeature : listFeatures) {
@@ -155,7 +193,7 @@ public class TableRendererVaadin extends AbstractControlRendererVaadin<VTableCon
 			final TextField converter = new TextField();
 			VaadinRendererUtil.setConverterToTextField(eStructuralFeature, converter, control, viewContext);
 			if (converter.getConverter() != null) {
-				table.addGeneratedColumn(eStructuralFeature.getName(), new ColumnGenerator() {
+				this.table.addGeneratedColumn(eStructuralFeature.getName(), new ColumnGenerator() {
 					@Override
 					public Object generateCell(Table source, Object itemId, Object columnId) {
 						EObject eObject = (EObject) itemId;
@@ -166,9 +204,9 @@ public class TableRendererVaadin extends AbstractControlRendererVaadin<VTableCon
 			}
 
 		}
-		table.setContainerDataSource(indexedContainer);
-		table.setVisibleColumns(visibleColumnsId.toArray(new Object[visibleColumnsId.size()]));
-		table.setColumnHeaders(visibleColumnsNames.toArray(new String[visibleColumnsNames.size()]));
+
+		this.table.setVisibleColumns(visibleColumnsId.toArray(new Object[visibleColumnsId.size()]));
+		this.table.setColumnHeaders(visibleColumnsNames.toArray(new String[visibleColumnsNames.size()]));
 	}
 
 	private List<Object> getItems(final Setting setting) {
