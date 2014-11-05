@@ -38,8 +38,18 @@ public abstract class AbstractControlRendererVaadin<T extends VControl> extends 
 			return;
 		}
 
-		String extra = "";
+		String extra = StringUtils.EMPTY;
 
+		extra = getMandatoryText(control, viewContext, setting, extra);
+		component.setCaption(itemPropertyDescriptor.getDisplayName(setting.getEObject()) + extra);
+
+		String description = itemPropertyDescriptor.getDescription(setting.getEObject());
+		if (component instanceof AbstractComponent && !StringUtils.isEmpty(description)) {
+			((AbstractComponent) component).setDescription(description);
+		}
+	}
+
+	private String getMandatoryText(T control, ViewModelContext viewContext, Setting setting, String extra) {
 		if (setting.getEStructuralFeature().getLowerBound() > 0) {
 			VTMandatoryStyleProperty styleProperty = VaadinStyleTemplateUtil.getVTStyleProperty(
 					VTMandatoryPackage.Literals.MANDATORY_STYLE_PROPERTY, control, viewContext);
@@ -50,12 +60,7 @@ public abstract class AbstractControlRendererVaadin<T extends VControl> extends 
 			}
 
 		}
-
-		component.setCaption(itemPropertyDescriptor.getDisplayName(setting.getEObject()) + extra);
-		String description = itemPropertyDescriptor.getDescription(setting.getEObject());
-		if (component instanceof AbstractComponent && !StringUtils.isEmpty(description)) {
-			((AbstractComponent) component).setDescription(description);
-		}
+		return extra;
 	}
 
 	protected boolean hasCaption(T control, IItemPropertyDescriptor itemPropertyDescriptor) {
