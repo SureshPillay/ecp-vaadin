@@ -20,7 +20,6 @@ import org.eclipse.emf.databinding.EMFProperties;
 import org.eclipse.emf.databinding.EMFUpdateValueStrategy;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature.Setting;
-import org.eclipse.emf.ecp.controls.vaadin.ECPControlFactoryVaadin;
 import org.eclipse.emf.ecp.view.core.vaadin.TableListDiffVisitor;
 import org.eclipse.emf.ecp.view.core.vaadin.VaadinWidgetFactory;
 import org.eclipse.emf.ecp.view.core.vaadin.converter.SelectionConverter;
@@ -38,12 +37,10 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.Table.ColumnGenerator;
-import com.vaadin.ui.Table.ColumnHeaderMode;
 import com.vaadin.ui.VerticalLayout;
 
-public class ECPVaadinReferenceList extends ECPControlFactoryVaadin {
+public class ECPVaadinReferenceList extends AbstractVaadinList {
 
-	private static final String REMOVE_COLUMN = "remove";
 	private static final String LINK_COLUMN = "link";
 
 	private ComposedAdapterFactory composedAdapterFactory;
@@ -55,72 +52,62 @@ public class ECPVaadinReferenceList extends ECPControlFactoryVaadin {
 	}
 
 	@Override
-	public Component render(final VControl control, ViewModelContext viewContext, boolean caption) {
-		final Setting setting = control.getDomainModelReference().getIterator().next();
+	public void renderList(VerticalLayout layout) {
 		this.composedAdapterFactory = new ComposedAdapterFactory(new AdapterFactory[] {
 				new CustomReflectiveItemProviderAdapterFactory(),
 				new ComposedAdapterFactory(ComposedAdapterFactory.Descriptor.Registry.INSTANCE) });
 		this.adapterFactoryItemDelegator = new AdapterFactoryItemDelegator(this.composedAdapterFactory);
-		VerticalLayout layout = new VerticalLayout();
-		final Table table = new Table();
-		table.addStyleName("reference-list");
-		table.setColumnHeaderMode(ColumnHeaderMode.HIDDEN);
-		table.setSizeFull();
-		table.setNullSelectionAllowed(false);
-		table.setSelectable(false);
-		IndexedContainer container = new IndexedContainer();
+		createLinkColumn();
+		bindTable();
+		layout.addComponent(this.toolbarLayout);
+		layout.addComponent(this.table);
+		layout.setData(this.table);
+		layout.setComponentAlignment(this.toolbarLayout, Alignment.TOP_RIGHT);
+	}
 
-		// Define the properties (columns)
-		container.addContainerProperty(LINK_COLUMN, Button.class, null);
-		container.addContainerProperty(REMOVE_COLUMN, Button.class, null);
-		table.addGeneratedColumn(LINK_COLUMN, new ColumnGenerator() {
-
-			@Override
-			public Object generateCell(Table source, Object itemId, Object columnId) {
-				return VaadinWidgetFactory.createEditLink((EObject) itemId,
-						ECPVaadinReferenceList.this.adapterFactoryItemDelegator.getText(itemId));
-			}
-		});
-		table.addGeneratedColumn(REMOVE_COLUMN, new ColumnGenerator() {
-
-			@Override
-			public Object generateCell(Table source, Object itemId, Object columnId) {
-				return VaadinWidgetFactory.createTableRemoveButtonFlat(setting, itemId);
-			}
-		});
-		table.setContainerDataSource(container);
-		table.setColumnWidth(REMOVE_COLUMN, 40);
-
-		table.addItems(setting.getEObject().eGet(setting.getEStructuralFeature()));
-
-		IObservableList targetValue = VaadinObservables.observeContainerItemSetContents(table, setting.getEObject()
-				.getClass());
+	private void bindTable() {
+		IObservableList targetValue = VaadinObservables.observeContainerItemSetContents(this.table, this.setting
+				.getEObject().getClass());
 		targetValue.addListChangeListener(new IListChangeListener() {
 
 			@Override
 			public void handleListChange(ListChangeEvent event) {
-				event.diff.accept(new TableListDiffVisitor(table));
+				event.diff.accept(new TableListDiffVisitor(ECPVaadinReferenceList.this.table));
 			}
 		});
-		IObservableList modelValue = EMFProperties.list(setting.getEStructuralFeature()).observe(setting.getEObject());
+		IObservableList modelValue = EMFProperties.list(this.setting.getEStructuralFeature()).observe(
+				this.setting.getEObject());
 		EMFDataBindingContext dataBindingContext = new EMFDataBindingContext();
 		dataBindingContext.bindList(targetValue, modelValue);
 		EMFUpdateValueStrategy emfUpdateValueStrategy = new EMFUpdateValueStrategy();
 		emfUpdateValueStrategy.setConverter(new SelectionConverter());
+	}
 
+	private void createLinkColumn() {
+		this.table.addGeneratedColumn(LINK_COLUMN, new ColumnGenerator() {
+
+			@Override
+			public Object generateCell(Table source, Object itemId, Object columnId) {
+				if (!(itemId instanceof EObject)) {
+					return null;
+				}
+
+				return VaadinWidgetFactory.createEditLink((EObject) itemId,
+						ECPVaadinReferenceList.this.adapterFactoryItemDelegator.getText(itemId));
+			}
+		});
+	}
+
+	@Override
+	protected HorizontalLayout createToolbar(boolean caption) {
 		HorizontalLayout horizontalLayout = new HorizontalLayout();
 		if (caption) {
 			horizontalLayout.addStyleName("table-button-toolbar");
 		}
-		layout.addComponent(horizontalLayout);
 
-		Button add = VaadinWidgetFactory.createTableAddButton(setting, table);
+		Button add = VaadinWidgetFactory.createTableAddButton(this.setting, this.table);
 		horizontalLayout.addComponent(add);
-
-		layout.setComponentAlignment(horizontalLayout, Alignment.TOP_RIGHT);
-		layout.addComponent(table);
-		layout.setData(table);
-		return layout;
+		return horizontalLayout;
 	}
 
 	@Override
@@ -130,5 +117,12 @@ public class ECPVaadinReferenceList extends ECPControlFactoryVaadin {
 		}
 		this.composedAdapterFactory = null;
 		super.dispose();
+	}
+
+	@Override
+	protected void createContainerPropery(IndexedContainer container) {
+		container.addContainerProperty(LINK_COLUMN, Button.class, null);
+		container.addContainerProperty(REMOVE_COLUMN, Button.class, null);
+
 	}
 }
