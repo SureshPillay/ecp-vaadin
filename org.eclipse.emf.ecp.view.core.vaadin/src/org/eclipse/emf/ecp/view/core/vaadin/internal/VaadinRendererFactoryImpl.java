@@ -245,7 +245,7 @@ public class VaadinRendererFactoryImpl implements VaadinRendererFactory {
 	// }
 
 	@Override
-	public <T extends VElement> Component render(T renderable, ViewModelContext viewContext) {
+	public Component render(VElement renderable, ViewModelContext viewContext) {
 		return getVaadinComponentRenderer(renderable, viewContext).renderComponent();
 	}
 

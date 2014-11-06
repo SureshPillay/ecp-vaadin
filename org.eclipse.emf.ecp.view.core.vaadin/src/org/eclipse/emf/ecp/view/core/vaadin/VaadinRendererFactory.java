@@ -18,8 +18,7 @@ import com.vaadin.ui.Component;
 
 public interface VaadinRendererFactory {
 
-	<T extends VElement> Component render(T renderable, ViewModelContext viewContext);
+	Component render(VElement renderable, ViewModelContext viewContext);
 
-	<T extends VElement> AbstractVaadinRenderer<VElement> getVaadinComponentRenderer(T renderable,
-			ViewModelContext viewContext);
+	AbstractVaadinRenderer<VElement> getVaadinComponentRenderer(VElement renderable, ViewModelContext viewContext);
 }
