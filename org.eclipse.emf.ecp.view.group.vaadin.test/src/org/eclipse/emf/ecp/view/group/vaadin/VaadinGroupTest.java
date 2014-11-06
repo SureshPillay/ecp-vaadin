@@ -9,7 +9,7 @@
  * Contributors:
  * Dennis - initial API and implementation
  ******************************************************************************/
-package org.eclipse.emf.ecp.view.group.vaadin.test;
+package org.eclipse.emf.ecp.view.group.vaadin;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -18,9 +18,9 @@ import static org.junit.Assert.fail;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EcoreFactory;
 import org.eclipse.emf.ecore.EcorePackage;
+import org.eclipse.emf.ecp.view.common.vaadin.test.VaadinDatabindingClassRunner;
 import org.eclipse.emf.ecp.view.core.vaadin.ECPVaadinViewComponent;
-import org.eclipse.emf.ecp.view.core.vaadin.VaadinRendererFactory;
-import org.eclipse.emf.ecp.view.group.vaadin.GroupLayoutRendererVaadin;
+import org.eclipse.emf.ecp.view.core.vaadin.test.VaadinTestHelper;
 import org.eclipse.emf.ecp.view.spi.context.ViewModelContext;
 import org.eclipse.emf.ecp.view.spi.context.ViewModelContextFactory;
 import org.eclipse.emf.ecp.view.spi.group.model.VGroup;
@@ -130,18 +130,16 @@ public class VaadinGroupTest {
 	private AbstractOrderedLayout getContentLayout(VView view) {
 		final ViewModelContext viewContext = ViewModelContextFactory.INSTANCE.createViewModelContext(view,
 				VViewFactory.eINSTANCE.createView());
-		
-		VaadinTestHelper.getVaadinRendererFactory()
-		
-		final ECPVaadinViewComponent control = (ECPVaadinViewComponent)VaadinTestHelper render(view,
-				viewContext);
+
+		final ECPVaadinViewComponent control = (ECPVaadinViewComponent) VaadinTestHelper.getVaadinRendererFactory()
+				.render(view, viewContext);
 		return (AbstractOrderedLayout) control.getContent();
 	}
 
 	private AbstractOrderedLayout getContentLayout(VView view, EObject eObject) {
 		final ViewModelContext viewContext = ViewModelContextFactory.INSTANCE.createViewModelContext(view, eObject);
-		final ECPVaadinViewComponent control = (ECPVaadinViewComponent) VaadinRendererFactory.INSTANCE.render(view,
-				viewContext);
+		final ECPVaadinViewComponent control = (ECPVaadinViewComponent) VaadinTestHelper.getVaadinRendererFactory()
+				.render(view, viewContext);
 		return (AbstractOrderedLayout) control.getContent();
 	}
 
@@ -182,7 +180,7 @@ public class VaadinGroupTest {
 		subGroup.setName(GROUP_NAME2);
 
 		// setup ui
-		AbstractOrderedLayout viewLayout = getContentLyout(view);
+		AbstractOrderedLayout viewLayout = getContentLayout(view);
 		final AbstractOrderedLayout renderedControl1 = (AbstractOrderedLayout) viewLayout.getComponent(0);
 		final Component renderedControl2 = renderedControl1.getComponent(0);
 		assertGroupControl(renderedControl1, GROUP_NAME);

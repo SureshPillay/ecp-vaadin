@@ -115,6 +115,10 @@
       <renderer
             renderable="org.eclipse.emf.ecp.view.spi.model.VControl"
             renderer="org.eclipse.emf.ecp.controls.vaadin.internal.ControlRendererVaadin">
+         <staticTest
+               element="org.eclipse.emf.ecp.view.spi.model.VControl"
+               priority="1">
+         </staticTest>
       </renderer>
    </extension>
 

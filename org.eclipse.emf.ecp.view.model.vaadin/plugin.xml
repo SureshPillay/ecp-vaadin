@@ -7,6 +7,10 @@
       <renderer
             renderable="org.eclipse.emf.ecp.view.spi.model.VView"
             renderer="org.eclipse.emf.ecp.view.model.internal.vaadin.ViewRendererVaadin">
+         <staticTest
+               element="org.eclipse.emf.ecp.view.spi.model.VView"
+               priority="1">
+         </staticTest>
       </renderer>
    </extension>
 </plugin>

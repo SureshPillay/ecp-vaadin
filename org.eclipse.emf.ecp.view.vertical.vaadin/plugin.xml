@@ -6,6 +6,10 @@
       <renderer
             renderable="org.eclipse.emf.ecp.view.spi.vertical.model.VVerticalLayout"
             renderer="org.eclipse.emf.ecp.view.vertical.vaadin.VerticalLayoutRendererVaadin">
+         <staticTest
+               element="org.eclipse.emf.ecp.view.spi.vertical.model.VVerticalLayout"
+               priority="1">
+         </staticTest>
       </renderer>
    </extension>
 

@@ -6,6 +6,10 @@
       <renderer
             renderable="org.eclipse.emf.ecp.view.spi.table.model.VTableControl"
             renderer="org.eclipse.emf.ecp.view.table.vaadin.TableRendererVaadin">
+         <staticTest
+               element="org.eclipse.emf.ecp.view.spi.table.model.VTableControl"
+               priority="1">
+         </staticTest>
       </renderer>
    </extension>
 

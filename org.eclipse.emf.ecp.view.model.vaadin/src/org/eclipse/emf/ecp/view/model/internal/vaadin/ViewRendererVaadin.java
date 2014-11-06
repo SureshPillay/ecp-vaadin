@@ -29,6 +29,10 @@ import com.vaadin.ui.VerticalLayout;
 
 public class ViewRendererVaadin extends AbstractVaadinRenderer<VView> {
 
+	public ViewRendererVaadin() {
+		super();
+	}
+
 	/**
 	 * Constructor for testing purpose.
 	 *
