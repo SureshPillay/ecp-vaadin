@@ -37,6 +37,7 @@ public class VaadinViewRendererTest {
 
 		this.context = Mockito.mock(ViewModelContext.class);
 		this.viewRenderer = new ViewRendererVaadin(this.factory);
+		this.viewRenderer.init(this.view, this.context);
 
 	}
 
@@ -50,7 +51,7 @@ public class VaadinViewRendererTest {
 	@Test
 	public void testEmptyView() throws NoRendererFoundException, NoPropertyDescriptorFoundExeption {
 		Mockito.when(this.view.getChildren()).thenReturn(new BasicEList<VContainedElement>());
-		Component render = this.viewRenderer.renderComponent(this.view, this.context);
+		Component render = this.viewRenderer.renderComponent();
 		assertVaadinView(render, 0);
 	}
 
@@ -69,7 +70,7 @@ public class VaadinViewRendererTest {
 		// Mockito.when(this.factory.getVaadinComponentRenderer(control1, this.context)).thenReturn(mockRenderer1);
 		// Mockito.when(this.factory.getVaadinComponentRenderer(control2, this.context)).thenReturn(mockRenderer2);
 
-		Component render = this.viewRenderer.renderComponent(this.view, this.context);
+		Component render = this.viewRenderer.renderComponent();
 		AbstractOrderedLayout assertVaadinView = assertVaadinView(render, 2);
 		Component component1 = assertVaadinView.getComponent(0);
 		Component component2 = assertVaadinView.getComponent(1);
