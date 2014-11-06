@@ -27,7 +27,6 @@ import org.eclipse.emf.ecp.view.model.common.ECPStaticRendererTester;
 import org.eclipse.emf.ecp.view.spi.context.ViewModelContext;
 import org.eclipse.emf.ecp.view.spi.model.VElement;
 import org.eclipse.emf.ecp.view.spi.model.reporting.AbstractReport;
-import org.eclipse.emf.ecp.view.spi.model.reporting.ReportService;
 import org.osgi.framework.Bundle;
 
 import com.vaadin.ui.Component;
@@ -167,7 +166,7 @@ public class VaadinRendererFactoryImpl implements VaadinRendererFactory {
 
 		int highestPriority = -1;
 		AbstractVaadinRenderer<VElement> bestCandidate = null;
-		final ReportService reportService = Activator.getDefault().getReportService();
+		// final ReportService reportService = Activator.getDefault().getReportService();
 
 		for (final ECPRendererDescription description : this.rendererDescriptors) {
 
