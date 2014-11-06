@@ -27,7 +27,6 @@ public class UploadCustomComponent extends AbstractControlRendererVaadin<VCustom
 
 	@Override
 	protected Component render() {
-		// TODO: FIXME
 		HorizontalLayout horizontalLayout = new HorizontalLayout();
 		this.label = new Label();
 		horizontalLayout.addComponent(this.label);

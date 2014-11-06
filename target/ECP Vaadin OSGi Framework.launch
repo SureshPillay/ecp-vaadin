@@ -1,29 +1,175 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<launchConfiguration type="org.eclipse.pde.ui.EquinoxLauncher">
-<booleanAttribute key="append.args" value="true"/>
-<booleanAttribute key="automaticAdd" value="false"/>
-<booleanAttribute key="automaticValidate" value="false"/>
-<stringAttribute key="bad_container_name" value="/target/l"/>
-<stringAttribute key="bootstrap" value=""/>
-<stringAttribute key="checked" value="[NONE]"/>
-<booleanAttribute key="clearConfig" value="false"/>
-<stringAttribute key="configLocation" value="${workspace_loc}/.metadata/.plugins/org.eclipse.pde.core/ECP Vaadin OSGi Framework"/>
-<booleanAttribute key="default" value="true"/>
-<booleanAttribute key="default_auto_start" value="true"/>
-<intAttribute key="default_start_level" value="4"/>
-<booleanAttribute key="includeOptional" value="false"/>
-<stringAttribute key="org.eclipse.debug.ui.ATTR_CAPTURE_IN_FILE" value="${workspace_loc:/makeithappen.vaadin.app}/launch.launch"/>
-<booleanAttribute key="org.eclipse.jdt.launching.ATTR_USE_START_ON_FIRST_THREAD" value="true"/>
-<stringAttribute key="org.eclipse.jdt.launching.JRE_CONTAINER" value="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
-<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-os ${target.os} -ws ${target.ws} -arch ${target.arch} -nl de -consoleLog -console"/>
-<stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.pde.ui.workbenchClasspathProvider"/>
-<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Declipse.ignoreApp=true -Dosgi.noShutdown=true -Dorg.osgi.service.http.port=8080 -ea"/>
-<booleanAttribute key="pde.generated.config" value="true"/>
-<stringAttribute key="pde.version" value="3.3"/>
-<booleanAttribute key="show_selected_only" value="false"/>
-<stringAttribute key="target_bundles" value="com.compart.web.common.themes.mill@default:default,com.google.gwt.thirdparty.guava@default:default,com.google.gwt.thirdparty.streamhtmlparser@default:default,com.ibm.icu@default:default,com.vaadin.client-compiled@default:default,com.vaadin.client-compiler.deps@default:default,com.vaadin.client-compiler@default:default,com.vaadin.client@default:default,com.vaadin.external.atmosphere.runtime@default:default,com.vaadin.external.org.slf4j@default:default,com.vaadin.push@default:default,com.vaadin.server@default:default,com.vaadin.shared@default:default,com.vaadin.themes@default:default,javax.annotation@default:default,javax.inject@default:default,javax.servlet@default:default,javax.xml@default:default,org.apache.batik.css@default:default,org.apache.batik.util.gui@default:default,org.apache.batik.util@default:default,org.apache.commons.beanutils@default:default,org.apache.commons.collections@default:default,org.apache.commons.lang3@default:default,org.apache.commons.logging@default:default,org.apache.felix.gogo.command@default:default,org.apache.felix.gogo.runtime@default:default,org.apache.felix.gogo.shell@default:default,org.eclipse.ant.core@default:default,org.eclipse.compare.core@default:default,org.eclipse.core.commands@default:default,org.eclipse.core.contenttype@default:default,org.eclipse.core.databinding.beans@default:default,org.eclipse.core.databinding.observable@default:default,org.eclipse.core.databinding.property@default:default,org.eclipse.core.databinding@default:default,org.eclipse.core.expressions@default:default,org.eclipse.core.filesystem.java7@default:false,org.eclipse.core.filesystem.macosx@default:false,org.eclipse.core.filesystem@default:default,org.eclipse.core.jobs@default:default,org.eclipse.core.resources@default:default,org.eclipse.core.runtime.compatibility.registry@default:false,org.eclipse.core.runtime@default:true,org.eclipse.core.variables@default:default,org.eclipse.emf.common@default:default,org.eclipse.emf.databinding.edit@default:default,org.eclipse.emf.databinding@default:default,org.eclipse.emf.ecore.change@default:default,org.eclipse.emf.ecore.xmi@default:default,org.eclipse.emf.ecore@default:default,org.eclipse.emf.edit@default:default,org.eclipse.equinox.app@default:default,org.eclipse.equinox.bidi@default:default,org.eclipse.equinox.cm@default:true,org.eclipse.equinox.common@2:true,org.eclipse.equinox.console@default:default,org.eclipse.equinox.ds@1:true,org.eclipse.equinox.event@default:default,org.eclipse.equinox.http.jetty@default:default,org.eclipse.equinox.http.servlet@default:default,org.eclipse.equinox.preferences@default:default,org.eclipse.equinox.registry@default:default,org.eclipse.equinox.util@default:default,org.eclipse.help@default:default,org.eclipse.jetty.continuation@default:default,org.eclipse.jetty.http@default:default,org.eclipse.jetty.io@default:default,org.eclipse.jetty.security@default:default,org.eclipse.jetty.server@default:default,org.eclipse.jetty.servlet@default:default,org.eclipse.jetty.util@default:default,org.eclipse.jetty.websocket@default:default,org.eclipse.osgi.compatibility.state@default:false,org.eclipse.osgi.services@default:default,org.eclipse.osgi@-1:true,org.eclipse.team.core@default:default,org.json@default:default,org.jsoup@default:default,org.slf4j.api@default:default,org.w3c.css.sac@default:default,org.w3c.dom.events@default:default,org.w3c.dom.smil@default:default,org.w3c.dom.svg@default:default,org.w3c.flute@default:default"/>
-<booleanAttribute key="tracing" value="false"/>
-<booleanAttribute key="useCustomFeatures" value="false"/>
-<booleanAttribute key="useDefaultConfigArea" value="true"/>
-<stringAttribute key="workspace_bundles" value="com.compart.commonplugins.configuration.model.edit@default:default,com.compart.commonplugins.configuration.model@default:default,com.compart.dbqp.web.ui.model.edit@default:default,com.compart.dbqp.web.ui.model@default:default,makeithappen.vaadin.app@default:default,makeithappen.vaadin.custom.control@default:default,org.eclipse.emf.ecp.common@default:default,org.eclipse.emf.ecp.controls.vaadin@default:default,org.eclipse.emf.ecp.edit@default:default,org.eclipse.emf.ecp.makeithappen.model.edit@default:default,org.eclipse.emf.ecp.makeithappen.model.viewmodel@default:default,org.eclipse.emf.ecp.makeithappen.model@default:default,org.eclipse.emf.ecp.translation.service@default:true,org.eclipse.emf.ecp.ui.view@default:default,org.eclipse.emf.ecp.view.categorization.model@default:default,org.eclipse.emf.ecp.view.context.locale@default:default,org.eclipse.emf.ecp.view.context.translation@default:default,org.eclipse.emf.ecp.view.context@default:default,org.eclipse.emf.ecp.view.core.vaadin@default:default,org.eclipse.emf.ecp.view.custom.model@default:default,org.eclipse.emf.ecp.view.custom.vaadin@default:default,org.eclipse.emf.ecp.view.group.model@default:default,org.eclipse.emf.ecp.view.group.vaadin@default:default,org.eclipse.emf.ecp.view.groupedgrid.model@default:default,org.eclipse.emf.ecp.view.horizontal.model@default:true,org.eclipse.emf.ecp.view.horizontal.vaadin@default:true,org.eclipse.emf.ecp.view.label.model@default:default,org.eclipse.emf.ecp.view.label.vaadin@default:default,org.eclipse.emf.ecp.view.model.common@default:default,org.eclipse.emf.ecp.view.model.provider.xmi@default:default,org.eclipse.emf.ecp.view.model@default:default,org.eclipse.emf.ecp.view.rule.model@default:default,org.eclipse.emf.ecp.view.rule@default:default,org.eclipse.emf.ecp.view.table.model@default:default,org.eclipse.emf.ecp.view.table.vaadin@default:default,org.eclipse.emf.ecp.view.template.model@default:default,org.eclipse.emf.ecp.view.template.service@default:default,org.eclipse.emf.ecp.view.treemasterdetail.model@default:default,org.eclipse.emf.ecp.view.vaadin@default:default,org.eclipse.emf.ecp.view.validation@default:default,org.eclipse.emf.ecp.view.vertical.model@default:default,org.eclipse.emf.ecp.view.vertical.vaadin@default:default,org.lunifera.runtime.web.vaadin.databinding@default:default,studio.edit@default:true,studio.view@default:true,studio@default:default"/>
-</launchConfiguration>
+!SESSION 2014-11-06 21:46:05.840 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.8.0_11
+java.vendor=Oracle Corporation
+BootLoader constants: OS=macosx, ARCH=x86_64, WS=cocoa, NL=de
+Command-line arguments:  -dev file:/Users/dme/Documents/workspace_ecp_vaadin/.metadata/.plugins/org.eclipse.pde.core/ECP Vaadin OSGi Framework/dev.properties -os macosx -ws cocoa -arch x86_64 -consoleLog -console
+
+!ENTRY org.eclipse.equinox.registry 2 0 2014-11-06 21:46:06.421
+!MESSAGE The extensions and extension-points from the bundle "com.vaadin.client-compiler" are ignored. The bundle is not marked as singleton. 
+SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
+SLF4J: Defaulting to no-operation (NOP) logger implementation
+SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
+ ____                    ____                   __                            
+/\  _`\                 /\  _`\          __    /\ \                           
+\ \ \/\ \    ___     ___\ \ \L\ \  _ __ /\_\   \_\ \     __      __           
+ \ \ \ \ \  / __`\  /'___\ \  _ <'/\`'__\/\ \  /'_` \  /'_ `\  /'__`\         
+  \ \ \_\ \/\ \L\ \/\ \__/\ \ \L\ \ \ \/ \ \ \/\ \L\ \/\ \L\ \/\  __/         
+   \ \____/\ \____/\ \____\\ \____/\ \_\  \ \_\ \___,_\ \____ \ \____\        
+    \/___/  \/___/  \/____/ \/___/  \/_/   \/_/\/__,_ /\/___L\ \/____/        
+              ___    ___       ____                      /\____/              
+ /'\_/`\  __ /\_ \  /\_ \     /\  _`\                    \_/__/               
+/\      \/\_\\//\ \ \//\ \    \ \,\L\_\     __   _ __   __  __     __   _ __  
+\ \ \__\ \/\ \ \ \ \  \ \ \    \/_\__ \   /'__`\/\`'__\/\ \/\ \  /'__`\/\`'__\
+ \ \ \_/\ \ \ \ \_\ \_ \_\ \_    /\ \L\ \/\  __/\ \ \/ \ \ \_/ |/\  __/\ \ \/ 
+  \ \_\\ \_\ \_\/\____\/\____\   \ `\____\ \____\\ \_\  \ \___/ \ \____\\ \_\ 
+   \/_/ \/_/\/_/\/____/\/____/    \/_____/\/____/ \/_/   \/__/   \/____/ \/_/ 
+                           __                                                 
+ /'\_/`\                  /\ \__                                              
+/\      \     __      ____\ \ ,_\    __   _ __                                
+\ \ \__\ \  /'__`\   /',__\\ \ \/  /'__`\/\`'__\                              
+ \ \ \_/\ \/\ \L\.\_/\__, `\\ \ \_/\  __/\ \ \/                               
+  \ \_\\ \_\ \__/.\_\/\____/ \ \__\ \____\\ \_\                               
+   \/_/ \/_/\/__/\/_/\/___/   \/__/\/____/ \/_/                               
+                                                                         2.2.0
+dbmillserver> 
+!ENTRY studio.edit 4 0 2014-11-06 21:46:06.829
+!MESSAGE FrameworkEvent ERROR
+!STACK 0
+org.osgi.framework.BundleException: Could not resolve module: studio.edit [456]
+  Unresolved requirement: Require-Bundle: studio; visibility:="reexport"
+    -> Bundle-SymbolicName: studio; bundle-version="0.1.0.qualifier"; singleton:="true"
+       studio [521]
+         Unresolved requirement: Require-Bundle: com.eclipsesource.makeithappen.model; bundle-version="0.1.0"
+
+	at org.eclipse.osgi.container.Module.start(Module.java:434)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel.incStartLevel(ModuleContainer.java:1582)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel.incStartLevel(ModuleContainer.java:1562)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel.doContainerStartLevel(ModuleContainer.java:1533)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel.dispatchEvent(ModuleContainer.java:1476)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel.dispatchEvent(ModuleContainer.java:1)
+	at org.eclipse.osgi.framework.eventmgr.EventManager.dispatchEvent(EventManager.java:230)
+	at org.eclipse.osgi.framework.eventmgr.EventManager$EventThread.run(EventManager.java:340)
+
+!ENTRY studio 4 0 2014-11-06 21:46:06.865
+!MESSAGE FrameworkEvent ERROR
+!STACK 0
+org.osgi.framework.BundleException: Could not resolve module: studio [521]
+  Unresolved requirement: Require-Bundle: com.eclipsesource.makeithappen.model; bundle-version="0.1.0"
+
+	at org.eclipse.osgi.container.Module.start(Module.java:434)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel.incStartLevel(ModuleContainer.java:1582)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel.incStartLevel(ModuleContainer.java:1562)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel.doContainerStartLevel(ModuleContainer.java:1533)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel.dispatchEvent(ModuleContainer.java:1476)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel.dispatchEvent(ModuleContainer.java:1)
+	at org.eclipse.osgi.framework.eventmgr.EventManager.dispatchEvent(EventManager.java:230)
+	at org.eclipse.osgi.framework.eventmgr.EventManager$EventThread.run(EventManager.java:340)
+Nov 06, 2014 9:46:06 PM org.atmosphere.cpr.AtmosphereFramework addAtmosphereHandler
+INFORMATION: Installed AtmosphereHandler com.vaadin.server.communication.PushHandler$1 mapped to context-path: /*
+Nov 06, 2014 9:46:06 PM org.atmosphere.cpr.AtmosphereFramework addAtmosphereHandler
+INFORMATION: Installed the following AtmosphereInterceptor mapped to AtmosphereHandler com.vaadin.server.communication.PushHandler$1
+Nov 06, 2014 9:46:06 PM org.atmosphere.cpr.AtmosphereFramework doInitParams
+WARNUNG: SessionSupport error. Make sure you define org.atmosphere.cpr.SessionSupport as a listener in web.xml instead
+Nov 06, 2014 9:46:06 PM org.atmosphere.cpr.AtmosphereFramework autoConfigureService
+INFORMATION: Atmosphere is using org.atmosphere.cpr.DefaultAnnotationProcessor for processing annotation
+Nov 06, 2014 9:46:06 PM org.atmosphere.cpr.DefaultAnnotationProcessor configure
+INFORMATION: AnnotationProcessor class org.atmosphere.cpr.DefaultAnnotationProcessor$BytecodeBasedAnnotationProcessor being used
+Nov 06, 2014 9:46:06 PM org.atmosphere.cpr.AtmosphereFramework autoConfigureService
+SCHWERWIEGEND: 
+java.lang.AssertionError: Not a File: /org/atmosphere/annotation
+	at org.atmosphere.util.annotation.AnnotationDetector.detect(AnnotationDetector.java:352)
+	at org.atmosphere.cpr.DefaultAnnotationProcessor.scanForAnnotation(DefaultAnnotationProcessor.java:147)
+	at org.atmosphere.cpr.DefaultAnnotationProcessor.configure(DefaultAnnotationProcessor.java:133)
+	at org.atmosphere.cpr.AtmosphereFramework.autoConfigureService(AtmosphereFramework.java:2280)
+	at org.atmosphere.cpr.AtmosphereFramework.init(AtmosphereFramework.java:707)
+	at org.atmosphere.cpr.AtmosphereFramework.init(AtmosphereFramework.java:614)
+	at com.vaadin.server.communication.PushRequestHandler.<init>(PushRequestHandler.java:121)
+	at com.vaadin.server.VaadinServletService.createRequestHandlers(VaadinServletService.java:92)
+	at com.vaadin.server.VaadinService.init(VaadinService.java:182)
+	at makeithappen.vaadin.app.internal.servlet.VaadinOsgiServlet.createServletService(VaadinOsgiServlet.java:31)
+	at com.vaadin.server.VaadinServlet.init(VaadinServlet.java:164)
+	at org.eclipse.equinox.http.servlet.internal.ServletRegistration.init(ServletRegistration.java:49)
+	at org.eclipse.equinox.http.servlet.internal.ProxyServlet.registerServlet(ProxyServlet.java:184)
+	at org.eclipse.equinox.http.servlet.internal.HttpServiceImpl.registerServlet(HttpServiceImpl.java:66)
+	at makeithappen.vaadin.app.internal.servlet.VaadinOsgiServletConfigurator.bindHttpService(VaadinOsgiServletConfigurator.java:57)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:483)
+	at org.eclipse.equinox.internal.ds.model.ServiceComponent.activate(ServiceComponent.java:235)
+	at org.eclipse.equinox.internal.ds.model.ServiceComponentProp.activate(ServiceComponentProp.java:146)
+	at org.eclipse.equinox.internal.ds.model.ServiceComponentProp.build(ServiceComponentProp.java:345)
+	at org.eclipse.equinox.internal.ds.InstanceProcess.buildComponent(InstanceProcess.java:620)
+	at org.eclipse.equinox.internal.ds.InstanceProcess.buildComponents(InstanceProcess.java:197)
+	at org.eclipse.equinox.internal.ds.Resolver.buildNewlySatisfied(Resolver.java:473)
+	at org.eclipse.equinox.internal.ds.Resolver.enableComponents(Resolver.java:217)
+	at org.eclipse.equinox.internal.ds.SCRManager.performWork(SCRManager.java:816)
+	at org.eclipse.equinox.internal.ds.SCRManager$QueuedJob.dispatch(SCRManager.java:783)
+	at org.eclipse.equinox.internal.ds.WorkThread.run(WorkThread.java:89)
+	at org.eclipse.equinox.internal.util.impl.tpt.threadpool.Executor.run(Executor.java:70)
+
+Nov 06, 2014 9:46:07 PM org.atmosphere.cpr.AtmosphereFramework autoDetectWebSocketHandler
+INFORMATION: Auto detecting WebSocketHandler in /WEB-INF/classes/
+Nov 06, 2014 9:46:07 PM org.atmosphere.cpr.AtmosphereFramework initWebSocket
+INFORMATION: Installed WebSocketProtocol org.atmosphere.websocket.protocol.SimpleHttpProtocol 
+Nov 06, 2014 9:46:07 PM org.atmosphere.cpr.AtmosphereFramework configureAtmosphereInterceptor
+INFORMATION: Installing Default AtmosphereInterceptor
+Nov 06, 2014 9:46:07 PM org.atmosphere.cpr.AtmosphereFramework newAInterceptor
+INFORMATION: 	org.atmosphere.interceptor.CorsInterceptor : CORS Interceptor Support
+Nov 06, 2014 9:46:07 PM org.atmosphere.cpr.AtmosphereFramework newAInterceptor
+INFORMATION: 	org.atmosphere.interceptor.CacheHeadersInterceptor : Default Response's Headers Interceptor
+Nov 06, 2014 9:46:07 PM org.atmosphere.cpr.AtmosphereFramework newAInterceptor
+INFORMATION: 	org.atmosphere.interceptor.PaddingAtmosphereInterceptor : Browser Padding Interceptor Support
+Nov 06, 2014 9:46:07 PM org.atmosphere.cpr.AtmosphereFramework newAInterceptor
+INFORMATION: 	org.atmosphere.interceptor.AndroidAtmosphereInterceptor : Android Interceptor Support
+Nov 06, 2014 9:46:07 PM org.atmosphere.cpr.AtmosphereFramework newAInterceptor
+INFORMATION: 	org.atmosphere.interceptor.HeartbeatInterceptor : Heartbeat Interceptor Support
+Nov 06, 2014 9:46:07 PM org.atmosphere.cpr.AtmosphereFramework newAInterceptor
+INFORMATION: 	org.atmosphere.interceptor.SSEAtmosphereInterceptor : SSE Interceptor Support
+Nov 06, 2014 9:46:07 PM org.atmosphere.cpr.AtmosphereFramework newAInterceptor
+INFORMATION: 	org.atmosphere.interceptor.JSONPAtmosphereInterceptor : JSONP Interceptor Support
+Nov 06, 2014 9:46:07 PM org.atmosphere.cpr.AtmosphereFramework newAInterceptor
+INFORMATION: 	org.atmosphere.interceptor.JavaScriptProtocol : Atmosphere JavaScript Protocol
+Nov 06, 2014 9:46:07 PM org.atmosphere.cpr.AtmosphereFramework newAInterceptor
+INFORMATION: 	org.atmosphere.interceptor.WebSocketMessageSuspendInterceptor : org.atmosphere.interceptor.WebSocketMessageSuspendInterceptor
+Nov 06, 2014 9:46:07 PM org.atmosphere.cpr.AtmosphereFramework newAInterceptor
+INFORMATION: 	org.atmosphere.interceptor.OnDisconnectInterceptor : Browser disconnection detection
+Nov 06, 2014 9:46:07 PM org.atmosphere.cpr.AtmosphereFramework newAInterceptor
+INFORMATION: 	org.atmosphere.interceptor.IdleResourceInterceptor : org.atmosphere.interceptor.IdleResourceInterceptor
+Nov 06, 2014 9:46:07 PM org.atmosphere.cpr.AtmosphereFramework configureAtmosphereInterceptor
+INFORMATION: Set org.atmosphere.cpr.AtmosphereInterceptor.disableDefaults to disable them.
+Nov 06, 2014 9:46:07 PM org.atmosphere.cpr.AtmosphereFramework info
+INFORMATION: Using EndpointMapper class org.atmosphere.util.DefaultEndpointMapper
+Nov 06, 2014 9:46:07 PM org.atmosphere.cpr.AtmosphereFramework info
+INFORMATION: Using BroadcasterCache: org.atmosphere.cache.UUIDBroadcasterCache
+Nov 06, 2014 9:46:07 PM org.atmosphere.cpr.AtmosphereFramework info
+INFORMATION: Default Broadcaster Class: org.atmosphere.cpr.DefaultBroadcaster
+Nov 06, 2014 9:46:07 PM org.atmosphere.cpr.AtmosphereFramework info
+INFORMATION: Broadcaster Polling Wait Time 100
+Nov 06, 2014 9:46:07 PM org.atmosphere.cpr.AtmosphereFramework info
+INFORMATION: Shared ExecutorService supported: true
+Nov 06, 2014 9:46:07 PM org.atmosphere.cpr.AtmosphereFramework info
+INFORMATION: Messaging Thread Pool Size: Unlimited
+Nov 06, 2014 9:46:07 PM org.atmosphere.cpr.AtmosphereFramework info
+INFORMATION: Async I/O Thread Pool Size: 200
+Nov 06, 2014 9:46:07 PM org.atmosphere.cpr.AtmosphereFramework info
+INFORMATION: Using BroadcasterFactory: org.atmosphere.cpr.DefaultBroadcasterFactory
+Nov 06, 2014 9:46:07 PM org.atmosphere.cpr.AtmosphereFramework info
+INFORMATION: Using WebSocketProcessor: org.atmosphere.websocket.DefaultWebSocketProcessor
+Nov 06, 2014 9:46:07 PM org.atmosphere.cpr.AtmosphereFramework info
+INFORMATION: HttpSession supported: true
+Nov 06, 2014 9:46:07 PM org.atmosphere.cpr.AtmosphereFramework info
+INFORMATION: Atmosphere is using DefaultAtmosphereObjectFactory for dependency injection and object creation
+Nov 06, 2014 9:46:07 PM org.atmosphere.cpr.AtmosphereFramework info
+INFORMATION: Atmosphere is using async support: org.atmosphere.container.JettyServlet30AsyncSupportWithWebSocket running under container: jetty/8.1.14.v20131031 with WebSocket enabled.
+Nov 06, 2014 9:46:07 PM org.atmosphere.cpr.AtmosphereFramework info
+INFORMATION: Atmosphere Framework 2.1.2.vaadin5 started.
+Nov 06, 2014 9:46:07 PM org.atmosphere.cpr.AtmosphereFramework interceptor
+INFORMATION: Installed AtmosphereInterceptor  Track Message Size Interceptor using | with priority BEFORE_DEFAULT 
+
+!ENTRY org.eclipse.osgi 4 0 2014-11-06 21:46:07.057
+!MESSAGE Bundle initial@reference:file:../../../../studio/ was not resolved.
+
+!ENTRY org.eclipse.osgi 4 0 2014-11-06 21:46:07.057
+!MESSAGE Bundle initial@reference:file:../../../../studio.edit/ was not resolved.
