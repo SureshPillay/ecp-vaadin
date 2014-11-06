@@ -40,9 +40,9 @@ public abstract class AbstractContainerRendererVaadin<T extends VContainer> exte
 	}
 
 	@Override
-	protected void applyCaption(Component controlComponent) {
+	protected void applyCaption() {
 		if (shouldShowCaption()) {
-			super.applyCaption(controlComponent);
+			super.applyCaption();
 		}
 	}
 

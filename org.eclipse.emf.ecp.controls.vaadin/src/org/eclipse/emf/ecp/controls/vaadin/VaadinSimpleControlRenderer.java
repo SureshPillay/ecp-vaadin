@@ -14,24 +14,18 @@ package org.eclipse.emf.ecp.controls.vaadin;
 import java.util.Iterator;
 
 import org.eclipse.core.databinding.Binding;
-import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.core.databinding.observable.list.IObservableList;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.databinding.observable.value.WritableValue;
-import org.eclipse.emf.common.notify.AdapterFactory;
-import org.eclipse.emf.databinding.EMFDataBindingContext;
 import org.eclipse.emf.databinding.EMFUpdateValueStrategy;
 import org.eclipse.emf.databinding.edit.EMFEditProperties;
 import org.eclipse.emf.ecore.EStructuralFeature.Setting;
 import org.eclipse.emf.ecp.view.core.vaadin.AbstractControlRendererVaadin;
-import org.eclipse.emf.ecp.view.model.common.edit.provider.CustomReflectiveItemProviderAdapterFactory;
 import org.eclipse.emf.ecp.view.spi.context.ViewModelContext;
 import org.eclipse.emf.ecp.view.spi.model.VControl;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.emf.edit.domain.EditingDomain;
-import org.eclipse.emf.edit.provider.AdapterFactoryItemDelegator;
-import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.lunifera.runtime.web.vaadin.databinding.VaadinObservables;
 
@@ -41,33 +35,15 @@ import com.vaadin.ui.Component;
 
 public abstract class VaadinSimpleControlRenderer extends AbstractControlRendererVaadin<VControl> {
 
-	protected DataBindingContext bindingContext;
-	private AdapterFactoryItemDelegator adapterFactoryItemDelegator;
-	private ComposedAdapterFactory composedAdapterFactory;
 	private IObservableValue modelValue;
 	private final WritableValue value = new WritableValue();
 
-	// private DomainModelReferenceChangeListener domainModelReferenceChangeListener;
-
 	@Override
 	protected void dispose() {
-		// if (getVElement().getDomainModelReference() != null) {
-		// getVElement().getDomainModelReference().getChangeListener().remove(this.domainModelReferenceChangeListener);
-		// }
-		//
-		// this.domainModelReferenceChangeListener = null;
 		if (this.value != null) {
 			this.value.dispose();
 		}
 
-		if (this.composedAdapterFactory != null) {
-			this.composedAdapterFactory.dispose();
-			this.composedAdapterFactory = null;
-		}
-		if (this.bindingContext != null) {
-			this.bindingContext.dispose();
-			this.bindingContext = null;
-		}
 		if (this.modelValue != null) {
 			this.modelValue.dispose();
 			this.modelValue = null;
@@ -114,29 +90,7 @@ public abstract class VaadinSimpleControlRenderer extends AbstractControlRendere
 	@Override
 	public void init(VControl vElement, ViewModelContext viewContext) {
 		super.init(vElement, viewContext);
-		this.bindingContext = new EMFDataBindingContext();
-		this.composedAdapterFactory = new ComposedAdapterFactory(new AdapterFactory[] {
-				new CustomReflectiveItemProviderAdapterFactory(),
-				new ComposedAdapterFactory(ComposedAdapterFactory.Descriptor.Registry.INSTANCE) });
-		this.adapterFactoryItemDelegator = new AdapterFactoryItemDelegator(this.composedAdapterFactory);
-		// this.domainModelReferenceChangeListener = new DomainModelReferenceChangeListener() {
-		//
-		// @Override
-		// public void notifyChange() {
-		// UI.getCurrent().accessSynchronously(new Runnable() {
-		//
-		// @Override
-		// public void run() {
-		// // if (!value.isDisposed()) {
-		// // updateControl();
-		// // }
-		// System.out.println("hier");
-		// }
-		// });
-		// }
-		// };
 		updateControl();
-		// getVElement().getDomainModelReference().getChangeListener().add(this.domainModelReferenceChangeListener);
 	}
 
 	/**

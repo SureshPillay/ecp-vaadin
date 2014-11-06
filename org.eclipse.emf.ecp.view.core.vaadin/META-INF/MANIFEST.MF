@@ -5,9 +5,9 @@ Bundle-SymbolicName: org.eclipse.emf.ecp.view.core.vaadin;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Vaadin-Resources: .
 Require-Bundle: com.vaadin.server;bundle-version="[7.2.4,8.0.0)",
- org.eclipse.emf.edit;bundle-version="[2.10.0,3.0.0)",
  org.eclipse.core.databinding;bundle-version="[1.4.1,2.0.0)",
- org.eclipse.core.runtime;bundle-version="[3.10.0,4.0.0)"
+ org.eclipse.core.runtime;bundle-version="[3.10.0,4.0.0)",
+ org.eclipse.emf.databinding.edit;bundle-version="1.3.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Export-Package: org.eclipse.emf.ecp.view.core.vaadin;version="1.0.0",
  org.eclipse.emf.ecp.view.core.vaadin.converter;version="1.0.0",
@@ -17,6 +17,7 @@ Import-Package: org.apache.commons.lang3;version="3.3.2",
  org.eclipse.emf.ecp.edit.spi;version="[1.4.0,2.0.0)",
  org.eclipse.emf.ecp.translation.service;version="[1.0.0,2.0.0)",
  org.eclipse.emf.ecp.view.model.common;version="1.5.0",
+ org.eclipse.emf.ecp.view.model.common.edit.provider;version="1.5.0",
  org.eclipse.emf.ecp.view.spi.context;version="[1.4.0,2.0.0)",
  org.eclipse.emf.ecp.view.spi.model;version="[1.3.0,2.0.0)",
  org.eclipse.emf.ecp.view.spi.model.reporting;version="1.5.0",

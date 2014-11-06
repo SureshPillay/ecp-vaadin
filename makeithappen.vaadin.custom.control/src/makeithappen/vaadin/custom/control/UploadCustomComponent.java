@@ -11,63 +11,35 @@
  ******************************************************************************/
 package makeithappen.vaadin.custom.control;
 
-import org.eclipse.core.databinding.observable.value.IObservableValue;
-import org.eclipse.emf.databinding.EMFDataBindingContext;
-import org.eclipse.emf.databinding.EMFProperties;
-import org.eclipse.emf.ecore.EStructuralFeature.Setting;
-import org.eclipse.emf.ecp.view.custom.vaadin.VaadinCustomControl;
-import org.eclipse.emf.ecp.view.spi.context.ViewModelContext;
+import org.eclipse.emf.ecp.view.core.vaadin.AbstractControlRendererVaadin;
+import org.eclipse.emf.ecp.view.core.vaadin.VaadinRendererUtil;
 import org.eclipse.emf.ecp.view.spi.custom.model.VCustomControl;
-import org.lunifera.runtime.web.vaadin.databinding.VaadinObservables;
+import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 
 import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Upload;
 
-public class UploadCustomComponent extends HorizontalLayout implements VaadinCustomControl {
+public class UploadCustomComponent extends AbstractControlRendererVaadin<VCustomControl> {
 
 	private Label label;
 
 	@Override
-	public void renderCustomControl(VCustomControl customControl, ViewModelContext viewModelContext) {
-		label = new Label();
-		addComponent(label);
+	protected Component render() {
+		// TODO: FIXME
+		HorizontalLayout horizontalLayout = new HorizontalLayout();
+		this.label = new Label();
+		horizontalLayout.addComponent(this.label);
 		Upload upload = new Upload();
-		addComponent(upload);
-
-		EMFDataBindingContext bindingContext = new EMFDataBindingContext();
-		Setting setting = customControl.getDomainModelReference().getIterator().next();
-		IObservableValue targetValue = VaadinObservables.observeCaption(label);
-		IObservableValue modelValue = EMFProperties.value(setting.getEStructuralFeature())
-				.observe(setting.getEObject());
-		bindingContext.bindValue(targetValue, modelValue);
+		horizontalLayout.addComponent(upload);
+		return horizontalLayout;
 	}
 
 	@Override
-	public boolean showCaption() {
-		return false;
-	}
-
-	@Override
-	public Component getControlComponent() {
-		return label;
-	}
-
-	@Override
-	public boolean showValidation() {
-		return false;
-	}
-
-	@Override
-	public void applyValidation(VCustomControl control) {
-	}
-
-	@Override
-	public void applyEnable(VCustomControl renderable) {
-	}
-
-	@Override
-	public void applyVisible(VCustomControl renderable) {
+	protected void applyCaption() {
+		final IItemPropertyDescriptor itemPropertyDescriptor = VaadinRendererUtil
+				.getItemPropertyDescriptor(getVElement().getDomainModelReference().getIterator().next());
+		this.label.setCaption(itemPropertyDescriptor.getDisplayName(null));
 	}
 }

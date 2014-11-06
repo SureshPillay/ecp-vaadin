@@ -19,7 +19,6 @@ import org.eclipse.core.databinding.observable.list.IListChangeListener;
 import org.eclipse.core.databinding.observable.list.IObservableList;
 import org.eclipse.core.databinding.observable.list.ListChangeEvent;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
-import org.eclipse.emf.databinding.EMFDataBindingContext;
 import org.eclipse.emf.databinding.EMFProperties;
 import org.eclipse.emf.databinding.EMFUpdateValueStrategy;
 import org.eclipse.emf.ecore.EClass;
@@ -52,7 +51,6 @@ public class TableRendererVaadin extends AbstractControlRendererVaadin<VTableCon
 
 	private Setting setting;
 	private Table table;
-	private EMFDataBindingContext dataBindingContext;
 
 	protected EObject addItem(Setting setting) {
 		final EClass clazz = ((EReference) setting.getEStructuralFeature()).getEReferenceType();
@@ -76,8 +74,7 @@ public class TableRendererVaadin extends AbstractControlRendererVaadin<VTableCon
 
 		setVisibleColumns(control, viewContext);
 
-		this.dataBindingContext = new EMFDataBindingContext();
-		bindTable(this.setting, this.table, this.dataBindingContext);
+		bindTable(this.setting, this.table);
 
 		if (control.isReadonly()) {
 			layout.addComponent(this.table);
@@ -135,8 +132,7 @@ public class TableRendererVaadin extends AbstractControlRendererVaadin<VTableCon
 		strategy.setConverter(new SelectionConverter());
 		IObservableValue observeSingleSelection = VaadinObservables.observeSingleSelection(this.table,
 				getReferenceType().getInstanceClass());
-		this.dataBindingContext.bindValue(VaadinObservables.observeEnabled(button), observeSingleSelection, null,
-				strategy);
+		this.bindingContext.bindValue(VaadinObservables.observeEnabled(button), observeSingleSelection, null, strategy);
 	}
 
 	private void addTableToolbarStyle(VTableControl control, HorizontalLayout horizontalLayout) {
@@ -145,7 +141,7 @@ public class TableRendererVaadin extends AbstractControlRendererVaadin<VTableCon
 		}
 	}
 
-	private void bindTable(final Setting setting, final Table table, EMFDataBindingContext dataBindingContext) {
+	private void bindTable(final Setting setting, final Table table) {
 		IObservableList targetValue = VaadinObservables.observeContainerItemSetContents(table, setting.getEObject()
 				.getClass());
 		targetValue.addListChangeListener(new IListChangeListener() {
@@ -157,7 +153,7 @@ public class TableRendererVaadin extends AbstractControlRendererVaadin<VTableCon
 		});
 
 		IObservableList modelValue = EMFProperties.list(setting.getEStructuralFeature()).observe(setting.getEObject());
-		dataBindingContext.bindList(targetValue, modelValue);
+		this.bindingContext.bindList(targetValue, modelValue);
 	}
 
 	private Table createTable() {

@@ -18,6 +18,7 @@ import org.eclipse.emf.ecp.edit.spi.ViewLocaleService;
 import org.eclipse.emf.ecp.translation.service.TranslationService;
 import org.eclipse.emf.ecp.view.core.vaadin.internal.VaadinRendererFactoryImpl;
 import org.eclipse.emf.ecp.view.model.common.AbstractRenderer;
+import org.eclipse.emf.ecp.view.spi.context.ViewModelContext;
 import org.eclipse.emf.ecp.view.spi.model.ModelChangeListener;
 import org.eclipse.emf.ecp.view.spi.model.ModelChangeNotification;
 import org.eclipse.emf.ecp.view.spi.model.VElement;
@@ -30,8 +31,10 @@ import com.vaadin.ui.UI;
 public abstract class AbstractVaadinRenderer<T extends VElement> extends AbstractRenderer<T> {
 
 	protected VaadinRendererFactory rendererFactory;
+	protected Component controlComponent;
 	private ViewLocaleService viewLocaleService;
 	private TranslationService translationService;
+	private ModelChangeListener modelChangeListener;
 
 	/**
 	 * Default constructor.
@@ -51,12 +54,24 @@ public abstract class AbstractVaadinRenderer<T extends VElement> extends Abstrac
 
 	public final Component renderComponent() {
 		initServices();
-		final Component component = render();
+		Component component = render();
 		if (component == null) {
 			throw new RuntimeException("Error Render Component: " + getVElement().getName());
 		}
-		final Component controlComponent = getCaptionControlComponent(component);
-		ModelChangeListener listener = new ModelChangeListener() {
+		this.controlComponent = getCaptionControlComponent(component);
+
+		applyVisible();
+		applyEnable();
+		applyValidation();
+		applyReadonly();
+		applyCaption();
+		return component;
+	}
+
+	@Override
+	public void init(T vElement, ViewModelContext viewContext) {
+		super.init(vElement, viewContext);
+		this.modelChangeListener = new ModelChangeListener() {
 
 			@Override
 			public void notifyChange(final ModelChangeNotification notification) {
@@ -66,66 +81,65 @@ public abstract class AbstractVaadinRenderer<T extends VElement> extends Abstrac
 				if (notification.getNotifier() != getVElement()) {
 					return;
 				}
-				UI ui = controlComponent.getUI();
+				UI ui = AbstractVaadinRenderer.this.controlComponent.getUI();
 				if (ui == null) {
-					updateUI(controlComponent, notification);
+					updateUI(AbstractVaadinRenderer.this.controlComponent, notification);
 					return;
 				}
-				controlComponent.getUI().access(new Runnable() {
+				AbstractVaadinRenderer.this.controlComponent.getUI().access(new Runnable() {
 
 					@Override
 					public void run() {
-						updateUI(controlComponent, notification);
+						updateUI(AbstractVaadinRenderer.this.controlComponent, notification);
 					}
 				});
 			}
 
 			private void updateUI(final Component controlComponent, ModelChangeNotification notification) {
 				if (notification.getStructuralFeature() == VViewPackage.eINSTANCE.getElement_Visible()) {
-					applyVisible(controlComponent);
+					applyVisible();
 				}
 				if (notification.getStructuralFeature() == VViewPackage.eINSTANCE.getElement_Enabled()
 						&& !getVElement().isReadonly()) {
-					applyEnable(controlComponent);
+					applyEnable();
 				}
 				if (notification.getStructuralFeature() == VViewPackage.eINSTANCE.getElement_Diagnostic()) {
-					applyValidation(controlComponent);
+					applyValidation();
 				}
 			}
 
 		};
-		getViewModelContext().registerViewChangeListener(listener);
-		applyVisible(controlComponent);
-		applyEnable(controlComponent);
-		applyValidation(controlComponent);
-		applyReadonly(controlComponent);
-		applyCaption(controlComponent);
-		return component;
+		getViewModelContext().registerViewChangeListener(this.modelChangeListener);
 	}
 
-	protected void applyCaption(Component controlComponent) {
-		controlComponent.setCaption(StringUtils.EMPTY);
+	@Override
+	protected void dispose() {
+		super.dispose();
+		getViewModelContext().registerViewChangeListener(this.modelChangeListener);
+	}
+
+	protected void applyCaption() {
+		// controlComponent.setCaption(StringUtils.EMPTY);
 		String caption = getTranslation(getVElement());
 		if (StringUtils.isEmpty(caption)) {
 			return;
 		}
-		controlComponent.setCaption(caption);
+		this.controlComponent.setCaption(caption);
 	}
 
-	protected void applyValidation(Component component) {
-
+	protected void applyValidation() {
 	}
 
-	protected void applyEnable(Component component) {
-		component.setEnabled(getVElement().isEnabled());
+	protected void applyEnable() {
+		this.controlComponent.setEnabled(getVElement().isEnabled());
 	}
 
-	protected void applyReadonly(Component component) {
-		component.setReadOnly(getVElement().isReadonly());
+	protected void applyReadonly() {
+		this.controlComponent.setReadOnly(getVElement().isReadonly());
 	}
 
-	protected void applyVisible(Component component) {
-		component.setVisible(getVElement().isVisible());
+	protected void applyVisible() {
+		this.controlComponent.setVisible(getVElement().isVisible());
 	}
 
 	protected Component getCaptionControlComponent(Component component) {

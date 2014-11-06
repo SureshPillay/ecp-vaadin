@@ -12,29 +12,40 @@
 package org.eclipse.emf.ecp.view.core.vaadin;
 
 import org.apache.commons.lang3.StringUtils;
+import org.eclipse.core.databinding.DataBindingContext;
+import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.util.Diagnostic;
+import org.eclipse.emf.databinding.EMFDataBindingContext;
 import org.eclipse.emf.ecore.EStructuralFeature.Setting;
+import org.eclipse.emf.ecp.view.model.common.edit.provider.CustomReflectiveItemProviderAdapterFactory;
+import org.eclipse.emf.ecp.view.spi.context.ViewModelContext;
+import org.eclipse.emf.ecp.view.spi.model.DomainModelReferenceChangeListener;
 import org.eclipse.emf.ecp.view.spi.model.LabelAlignment;
 import org.eclipse.emf.ecp.view.spi.model.VControl;
 import org.eclipse.emf.ecp.view.template.style.mandatory.model.VTMandatoryPackage;
 import org.eclipse.emf.ecp.view.template.style.mandatory.model.VTMandatoryStyleProperty;
+import org.eclipse.emf.edit.provider.AdapterFactoryItemDelegator;
+import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 
 import com.vaadin.server.UserError;
 import com.vaadin.ui.AbstractComponent;
-import com.vaadin.ui.Component;
 
 public abstract class AbstractControlRendererVaadin<T extends VControl> extends AbstractVaadinRenderer<T> {
 
 	private static final String DEFAULT_MANADORY_MARKER = "*";
+	protected DataBindingContext bindingContext;
+	protected AdapterFactoryItemDelegator adapterFactoryItemDelegator;
+	private ComposedAdapterFactory composedAdapterFactory;
+	private DomainModelReferenceChangeListener domainModelReferenceChangeListener;
 
 	@Override
-	protected void applyCaption(Component component) {
+	protected void applyCaption() {
 		Setting setting = getVElement().getDomainModelReference().getIterator().next();
 		final IItemPropertyDescriptor itemPropertyDescriptor = VaadinRendererUtil.getItemPropertyDescriptor(setting);
 
 		if (LabelAlignment.NONE == getVElement().getLabelAlignment()) {
-			component.setCaption(null);
+			this.controlComponent.setCaption(null);
 		}
 
 		if (!hasCaption(itemPropertyDescriptor)) {
@@ -44,12 +55,49 @@ public abstract class AbstractControlRendererVaadin<T extends VControl> extends 
 		String extra = StringUtils.EMPTY;
 
 		extra = getMandatoryText(setting, extra);
-		component.setCaption(itemPropertyDescriptor.getDisplayName(setting.getEObject()) + extra);
+		this.controlComponent.setCaption(itemPropertyDescriptor.getDisplayName(setting.getEObject()) + extra);
 
 		String description = itemPropertyDescriptor.getDescription(setting.getEObject());
-		if (component instanceof AbstractComponent && !StringUtils.isEmpty(description)) {
-			((AbstractComponent) component).setDescription(description);
+		if (this.controlComponent instanceof AbstractComponent && !StringUtils.isEmpty(description)) {
+			((AbstractComponent) this.controlComponent).setDescription(description);
 		}
+	}
+
+	@Override
+	protected void dispose() {
+		if (getVElement().getDomainModelReference() != null) {
+			getVElement().getDomainModelReference().getChangeListener().remove(this.domainModelReferenceChangeListener);
+		}
+
+		this.domainModelReferenceChangeListener = null;
+		if (this.composedAdapterFactory != null) {
+			this.composedAdapterFactory.dispose();
+			this.composedAdapterFactory = null;
+		}
+		if (this.bindingContext != null) {
+			this.bindingContext.dispose();
+			this.bindingContext = null;
+		}
+		super.dispose();
+	}
+
+	@Override
+	public void init(T vElement, ViewModelContext viewContext) {
+		super.init(vElement, viewContext);
+		this.bindingContext = new EMFDataBindingContext();
+		this.composedAdapterFactory = new ComposedAdapterFactory(new AdapterFactory[] {
+				new CustomReflectiveItemProviderAdapterFactory(),
+				new ComposedAdapterFactory(ComposedAdapterFactory.Descriptor.Registry.INSTANCE) });
+		this.adapterFactoryItemDelegator = new AdapterFactoryItemDelegator(this.composedAdapterFactory);
+		this.domainModelReferenceChangeListener = new DomainModelReferenceChangeListener() {
+
+			@Override
+			public void notifyChange() {
+				System.out.println(getVElement());
+				applyValidation();
+			}
+		};
+		getVElement().getDomainModelReference().getChangeListener().add(this.domainModelReferenceChangeListener);
 	}
 
 	private String getMandatoryText(Setting setting, String extra) {
@@ -77,8 +125,9 @@ public abstract class AbstractControlRendererVaadin<T extends VControl> extends 
 	}
 
 	@Override
-	protected void applyValidation(Component component) {
-		AbstractComponent abstractComponent = (AbstractComponent) component;
+	protected void applyValidation() {
+		// TODO: FIXME Register
+		AbstractComponent abstractComponent = (AbstractComponent) this.controlComponent;
 		abstractComponent.setComponentError(null);
 
 		if (getVElement().getDiagnostic() == null) {

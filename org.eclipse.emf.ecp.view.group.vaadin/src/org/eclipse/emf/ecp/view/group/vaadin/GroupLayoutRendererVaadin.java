@@ -91,12 +91,13 @@ public class GroupLayoutRendererVaadin extends AbstractContainerRendererVaadin<V
 	}
 
 	@Override
-	protected void applyCaption(Component controlComponent) {
+	protected void applyCaption() {
 		if (GroupType.COLLAPSIBLE.equals(getVElement().getGroupType())) {
-			super.applyCaption(((AbstractOrderedLayout) controlComponent).getComponent(0));
+			this.controlComponent = ((AbstractOrderedLayout) this.controlComponent).getComponent(0);
+			super.applyCaption();
 			return;
 
 		}
-		super.applyCaption(controlComponent);
+		super.applyCaption();
 	}
 }

@@ -12,6 +12,7 @@
 package org.eclipse.emf.ecp.view.group.vaadin;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -227,7 +228,7 @@ public class VaadinGroupTest {
 		try {
 			AbstractOrderedLayout viewLayout = getContentLayout(view, EcoreFactory.eINSTANCE.createEClass());
 			final Component renderedControl = viewLayout.getComponent(0);
-			assertEquals("", renderedControl.getCaption());
+			assertNull(renderedControl.getCaption());
 		} catch (final IllegalArgumentException e) {
 			fail("Renderer throws IlleaglArgument on empty group name" + e.getStackTrace());
 		}
