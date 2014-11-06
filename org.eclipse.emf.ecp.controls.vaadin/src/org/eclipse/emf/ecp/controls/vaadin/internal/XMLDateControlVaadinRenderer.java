@@ -19,19 +19,16 @@ import javax.xml.datatype.XMLGregorianCalendar;
 
 import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.emf.databinding.EMFUpdateValueStrategy;
-import org.eclipse.emf.ecore.EStructuralFeature.Setting;
-import org.eclipse.emf.ecp.controls.vaadin.ECPControlFactoryVaadin;
 import org.eclipse.emf.ecp.controls.vaadin.ECPXMLDateFieldToModelUpdateValueStrategy;
-import org.eclipse.emf.ecp.view.spi.context.ViewModelContext;
-import org.eclipse.emf.ecp.view.spi.model.VControl;
+import org.eclipse.emf.ecp.controls.vaadin.VaadinSimpleControlRenderer;
 
 import com.vaadin.ui.Component;
 import com.vaadin.ui.DateField;
 
-public class ECPVaadinXMLDate extends ECPControlFactoryVaadin {
+public class XMLDateControlVaadinRenderer extends VaadinSimpleControlRenderer {
 
 	@Override
-	protected UpdateValueStrategy getModelToTargetStrategy(final VControl control, Component component) {
+	protected UpdateValueStrategy getModelToTargetStrategy(Component component) {
 		return new EMFUpdateValueStrategy() {
 			@Override
 			public Object convert(Object value) {
@@ -49,12 +46,12 @@ public class ECPVaadinXMLDate extends ECPControlFactoryVaadin {
 	}
 
 	@Override
-	protected UpdateValueStrategy getTargetToModelStrategy(VControl control, Component component) {
+	protected UpdateValueStrategy getTargetToModelStrategy(Component component) {
 		return new ECPXMLDateFieldToModelUpdateValueStrategy();
 	}
 
 	@Override
-	public Component createControl(VControl control, ViewModelContext viewContext, Setting setting) {
+	public Component createControl() {
 		return new DateField();
 	}
 

@@ -4,7 +4,6 @@
    <extension
          point="org.eclipse.emf.ecp.view.model.vaadin.renderer">
       <renderer
-            renderable="org.eclipse.emf.ecp.view.spi.horizontal.model.VHorizontalLayout"
             renderer="org.eclipse.emf.ecp.view.horizontal.vaadin.HorizontalLayoutRendererVaadin">
          <staticTest
                element="org.eclipse.emf.ecp.view.spi.horizontal.model.VHorizontalLayout"

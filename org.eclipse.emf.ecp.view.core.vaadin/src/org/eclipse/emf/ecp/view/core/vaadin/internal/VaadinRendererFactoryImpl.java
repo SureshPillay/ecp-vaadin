@@ -208,9 +208,10 @@ public class VaadinRendererFactoryImpl implements VaadinRendererFactory {
 			// } else {
 			// bestCandidate = new EmptyVElementSWTRenderer();
 			// }
+			throw new RuntimeException("No Renderer for: " + vElement.getName());
 		}
 
-		// bestCandidate.init(vElement, viewContext);
+		bestCandidate.init(vElement, viewContext);
 
 		return bestCandidate;
 	}
@@ -245,7 +246,7 @@ public class VaadinRendererFactoryImpl implements VaadinRendererFactory {
 
 	@Override
 	public <T extends VElement> Component render(T renderable, ViewModelContext viewContext) {
-		return getVaadinComponentRenderer(renderable, viewContext).renderComponent(renderable, viewContext);
+		return getVaadinComponentRenderer(renderable, viewContext).renderComponent();
 	}
 
 }

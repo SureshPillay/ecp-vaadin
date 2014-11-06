@@ -5,7 +5,6 @@
    <extension
          point="org.eclipse.emf.ecp.view.model.vaadin.renderer">
       <renderer
-            renderable="org.eclipse.emf.ecp.view.spi.model.VView"
             renderer="org.eclipse.emf.ecp.view.model.internal.vaadin.ViewRendererVaadin">
          <staticTest
                element="org.eclipse.emf.ecp.view.spi.model.VView"

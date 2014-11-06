@@ -14,23 +14,22 @@ package org.eclipse.emf.ecp.controls.vaadin.internal;
 import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.emf.databinding.EMFUpdateValueStrategy;
 import org.eclipse.emf.ecore.EStructuralFeature.Setting;
-import org.eclipse.emf.ecp.controls.vaadin.ECPControlFactoryVaadin;
+import org.eclipse.emf.ecp.controls.vaadin.VaadinSimpleControlRenderer;
 import org.eclipse.emf.ecp.view.core.vaadin.VaadinRendererUtil;
 import org.eclipse.emf.ecp.view.core.vaadin.converter.VaadinConverterToString;
-import org.eclipse.emf.ecp.view.spi.context.ViewModelContext;
-import org.eclipse.emf.ecp.view.spi.model.VControl;
 
 import com.vaadin.ui.AbstractField;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.TextField;
 
-public class ECPVaadinNumber extends ECPControlFactoryVaadin {
+public class NumberControlVaadinRenderer extends VaadinSimpleControlRenderer {
 
 	@Override
-	public Component createControl(VControl control, ViewModelContext viewContext, Setting setting) {
+	public Component createControl() {
 		final TextField component = new TextField();
-
-		VaadinRendererUtil.setConverterToTextField(setting.getEStructuralFeature(), component, control, viewContext);
+		Setting setting = getVElement().getDomainModelReference().getIterator().next();
+		VaadinRendererUtil.setConverterToTextField(setting.getEStructuralFeature(), component, getVElement(),
+				getViewModelContext());
 		component.setNullRepresentation("");
 		return component;
 	}
@@ -46,7 +45,7 @@ public class ECPVaadinNumber extends ECPControlFactoryVaadin {
 	// }
 
 	@Override
-	protected UpdateValueStrategy getModelToTargetStrategy(VControl control, Component component) {
+	protected UpdateValueStrategy getModelToTargetStrategy(Component component) {
 		EMFUpdateValueStrategy emfUpdateValueStrategy = new EMFUpdateValueStrategy();
 		emfUpdateValueStrategy.setConverter(new VaadinConverterToString(((AbstractField<String>) component)
 				.getConverter()));

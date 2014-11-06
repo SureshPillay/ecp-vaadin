@@ -4,7 +4,6 @@
    <extension
          point="org.eclipse.emf.ecp.view.model.vaadin.renderer">
       <renderer
-            renderable="org.eclipse.emf.ecp.view.spi.custom.model.VCustomControl"
             renderer="org.eclipse.emf.ecp.view.custom.vaadin.CustomControlVaadinRenderer">
          <staticTest
                element="org.eclipse.emf.ecp.view.spi.custom.model.VCustomControl"

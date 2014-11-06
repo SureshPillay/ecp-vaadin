@@ -11,19 +11,14 @@
  ******************************************************************************/
 package org.eclipse.emf.ecp.controls.vaadin.internal;
 
-import org.eclipse.emf.ecore.EStructuralFeature.Setting;
-import org.eclipse.emf.ecp.controls.vaadin.ECPControlFactoryVaadin;
-import org.eclipse.emf.ecp.view.spi.context.ViewModelContext;
-import org.eclipse.emf.ecp.view.spi.model.VControl;
+import org.eclipse.emf.ecore.EAttribute;
+import org.eclipse.emf.ecore.EStructuralFeature;
 
-import com.vaadin.ui.CheckBox;
-import com.vaadin.ui.Component;
-
-public class ECPVaadinBoolean extends ECPControlFactoryVaadin {
+public class ReferenceListVaadinRendererTester extends AbstractListVaadinRendererTester {
 
 	@Override
-	public Component createControl(VControl control, ViewModelContext viewContext, Setting setting) {
-		return new CheckBox();
+	protected boolean checkReference(EStructuralFeature feature) {
+		return EAttribute.class.isInstance(feature);
 	}
 
 }

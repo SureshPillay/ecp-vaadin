@@ -16,7 +16,6 @@ import org.eclipse.emf.ecp.view.core.vaadin.AbstractVaadinRenderer;
 import org.eclipse.emf.ecp.view.core.vaadin.ECPVaadinViewComponent;
 import org.eclipse.emf.ecp.view.core.vaadin.VaadinRendererFactory;
 import org.eclipse.emf.ecp.view.model.vaadin.ViewLayoutProvider;
-import org.eclipse.emf.ecp.view.spi.context.ViewModelContext;
 import org.eclipse.emf.ecp.view.spi.model.VContainedElement;
 import org.eclipse.emf.ecp.view.spi.model.VView;
 import org.osgi.framework.BundleContext;
@@ -43,13 +42,13 @@ public class ViewRendererVaadin extends AbstractVaadinRenderer<VView> {
 	}
 
 	@Override
-	public Component render(VView renderable, ViewModelContext viewModelContext) {
+	public Component render() {
 		AbstractOrderedLayout layout = getLayout();
 		layout.setSpacing(true);
 		layout.setMargin(true);
 		layout.setSizeFull();
-		for (VContainedElement composite : renderable.getChildren()) {
-			Component renderResult = this.rendererFactory.render(composite, viewModelContext);
+		for (VContainedElement composite : getVElement().getChildren()) {
+			Component renderResult = this.rendererFactory.render(composite, getViewModelContext());
 			layout.addComponent(renderResult);
 
 		}
@@ -74,7 +73,4 @@ public class ViewRendererVaadin extends AbstractVaadinRenderer<VView> {
 		return service == null ? new VerticalLayout() : service.getViewLayout();
 	}
 
-	@Override
-	protected void applyCaption(VView renderable, Component controlComponent, ViewModelContext viewContext) {
-	}
 }

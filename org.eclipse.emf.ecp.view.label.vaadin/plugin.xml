@@ -4,7 +4,6 @@
    <extension
          point="org.eclipse.emf.ecp.view.model.vaadin.renderer">
       <renderer
-            renderable="org.eclipse.emf.ecp.view.spi.label.model.VLabel"
             renderer="org.eclipse.emf.ecp.view.label.vaadin.LabelRendererVaadin">
          <staticTest
                element="org.eclipse.emf.ecp.view.spi.label.model.VLabel"

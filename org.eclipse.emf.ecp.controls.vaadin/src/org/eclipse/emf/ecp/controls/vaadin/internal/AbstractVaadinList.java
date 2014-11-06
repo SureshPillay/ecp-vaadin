@@ -12,10 +12,8 @@
 package org.eclipse.emf.ecp.controls.vaadin.internal;
 
 import org.eclipse.emf.ecore.EStructuralFeature.Setting;
-import org.eclipse.emf.ecp.controls.vaadin.ECPControlFactoryVaadin;
+import org.eclipse.emf.ecp.controls.vaadin.VaadinSimpleControlRenderer;
 import org.eclipse.emf.ecp.view.core.vaadin.VaadinWidgetFactory;
-import org.eclipse.emf.ecp.view.spi.context.ViewModelContext;
-import org.eclipse.emf.ecp.view.spi.model.VControl;
 
 import com.vaadin.data.util.IndexedContainer;
 import com.vaadin.ui.Component;
@@ -25,7 +23,7 @@ import com.vaadin.ui.Table.ColumnGenerator;
 import com.vaadin.ui.Table.ColumnHeaderMode;
 import com.vaadin.ui.VerticalLayout;
 
-public abstract class AbstractVaadinList extends ECPControlFactoryVaadin {
+public abstract class AbstractVaadinList extends VaadinSimpleControlRenderer {
 
 	protected static final String REMOVE_COLUMN = "remove";
 	protected Table table;
@@ -33,19 +31,19 @@ public abstract class AbstractVaadinList extends ECPControlFactoryVaadin {
 	protected HorizontalLayout toolbarLayout;
 
 	@Override
-	public Component createControl(VControl control, ViewModelContext viewContext, Setting setting) {
+	public Component createControl() {
 		return null;
 	}
 
 	@Override
-	public VerticalLayout render(final VControl control, ViewModelContext viewContext, boolean caption) {
-		this.setting = control.getDomainModelReference().getIterator().next();
+	public VerticalLayout render() {
+		this.setting = getVElement().getDomainModelReference().getIterator().next();
 		VerticalLayout layout = new VerticalLayout();
 		layout.setSizeFull();
 		this.table = createTable();
 		createRemoveColumn(this.setting);
 
-		this.toolbarLayout = createToolbar(caption);
+		this.toolbarLayout = createToolbar();
 		renderList(layout);
 		return layout;
 	}
@@ -80,7 +78,7 @@ public abstract class AbstractVaadinList extends ECPControlFactoryVaadin {
 
 	protected abstract void createContainerPropery(IndexedContainer container);
 
-	protected abstract HorizontalLayout createToolbar(boolean caption);
+	protected abstract HorizontalLayout createToolbar();
 
 	protected abstract void renderList(VerticalLayout layout);
 

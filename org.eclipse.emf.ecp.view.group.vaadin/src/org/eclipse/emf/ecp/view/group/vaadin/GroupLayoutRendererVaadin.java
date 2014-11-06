@@ -12,7 +12,6 @@
 package org.eclipse.emf.ecp.view.group.vaadin;
 
 import org.eclipse.emf.ecp.view.core.vaadin.AbstractContainerRendererVaadin;
-import org.eclipse.emf.ecp.view.spi.context.ViewModelContext;
 import org.eclipse.emf.ecp.view.spi.group.model.GroupType;
 import org.eclipse.emf.ecp.view.spi.group.model.VGroup;
 
@@ -29,32 +28,32 @@ public class GroupLayoutRendererVaadin extends AbstractContainerRendererVaadin<V
 	public static final String GROUP_STYLE_NAME = "group";
 
 	@Override
-	protected boolean isMargin(VGroup renderable) {
-		return GroupType.NORMAL.equals(renderable.getGroupType());
+	protected boolean isMargin() {
+		return GroupType.NORMAL.equals(getVElement().getGroupType());
 	}
 
 	@Override
-	protected boolean isSpacing(VGroup renderable) {
-		return !GroupType.COLLAPSIBLE.equals(renderable.getGroupType());
+	protected boolean isSpacing() {
+		return !GroupType.COLLAPSIBLE.equals(getVElement().getGroupType());
 	}
 
 	@Override
-	protected AbstractOrderedLayout getAbstractOrderedLayout(VGroup renderable) {
+	protected AbstractOrderedLayout getAbstractOrderedLayout() {
 		VerticalLayout formLayout = new VerticalLayout();
-		if (GroupType.NORMAL.equals(renderable.getGroupType())) {
+		if (GroupType.NORMAL.equals(getVElement().getGroupType())) {
 			formLayout.addStyleName(GROUP_STYLE_NAME);
 		}
 		return formLayout;
 	}
 
 	@Override
-	protected boolean shouldShowCaption(VGroup renderable) {
+	protected boolean shouldShowCaption() {
 		return true;
 	}
 
 	@Override
-	protected Component getRenderComponent(VGroup renderable, final AbstractOrderedLayout orderedLayout) {
-		if (GroupType.COLLAPSIBLE.equals(renderable.getGroupType())) {
+	protected Component getRenderComponent(final AbstractOrderedLayout orderedLayout) {
+		if (GroupType.COLLAPSIBLE.equals(getVElement().getGroupType())) {
 			VerticalLayout mainLayout = new VerticalLayout();
 			NativeButton collapseButton = new NativeButton("", new Button.ClickListener() {
 
@@ -71,12 +70,12 @@ public class GroupLayoutRendererVaadin extends AbstractContainerRendererVaadin<V
 			mainLayout.addComponent(orderedLayout);
 			orderedLayout.setMargin(true);
 			orderedLayout.setSpacing(true);
-			orderedLayout.setVisible(renderable.isCollapsed());
-			setCollapseStyle(collapseButton, renderable.isCollapsed());
+			orderedLayout.setVisible(getVElement().isCollapsed());
+			setCollapseStyle(collapseButton, getVElement().isCollapsed());
 			mainLayout.addStyleName(GROUP_STYLE_NAME);
 			return mainLayout;
 		}
-		return super.getRenderComponent(renderable, orderedLayout);
+		return super.getRenderComponent(orderedLayout);
 	}
 
 	private void setCollapseStyle(Button collapseButton, boolean collapse) {
@@ -92,12 +91,12 @@ public class GroupLayoutRendererVaadin extends AbstractContainerRendererVaadin<V
 	}
 
 	@Override
-	protected void applyCaption(VGroup renderable, Component controlComponent, ViewModelContext viewContext) {
-		if (GroupType.COLLAPSIBLE.equals(renderable.getGroupType())) {
-			super.applyCaption(renderable, ((AbstractOrderedLayout) controlComponent).getComponent(0), viewContext);
+	protected void applyCaption(Component controlComponent) {
+		if (GroupType.COLLAPSIBLE.equals(getVElement().getGroupType())) {
+			super.applyCaption(((AbstractOrderedLayout) controlComponent).getComponent(0));
 			return;
 
 		}
-		super.applyCaption(renderable, controlComponent, viewContext);
+		super.applyCaption(controlComponent);
 	}
 }

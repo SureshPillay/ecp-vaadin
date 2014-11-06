@@ -19,13 +19,10 @@ import org.eclipse.emf.databinding.EMFDataBindingContext;
 import org.eclipse.emf.databinding.EMFProperties;
 import org.eclipse.emf.databinding.EMFUpdateValueStrategy;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EStructuralFeature.Setting;
 import org.eclipse.emf.ecp.view.core.vaadin.TableListDiffVisitor;
 import org.eclipse.emf.ecp.view.core.vaadin.VaadinWidgetFactory;
 import org.eclipse.emf.ecp.view.core.vaadin.converter.SelectionConverter;
 import org.eclipse.emf.ecp.view.model.common.edit.provider.CustomReflectiveItemProviderAdapterFactory;
-import org.eclipse.emf.ecp.view.spi.context.ViewModelContext;
-import org.eclipse.emf.ecp.view.spi.model.VControl;
 import org.eclipse.emf.ecp.view.spi.model.VView;
 import org.eclipse.emf.ecp.view.spi.provider.ViewProviderHelper;
 import org.eclipse.emf.edit.provider.AdapterFactoryItemDelegator;
@@ -35,23 +32,17 @@ import org.lunifera.runtime.web.vaadin.databinding.VaadinObservables;
 import com.vaadin.data.util.IndexedContainer;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
-import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.Table.ColumnGenerator;
 import com.vaadin.ui.VerticalLayout;
 
-public class ECPVaadinReferenceList extends AbstractVaadinList {
+public class ReferenceListVaadinRenderer extends AbstractVaadinList {
 
 	private static final String LINK_COLUMN = "link";
 
 	private ComposedAdapterFactory composedAdapterFactory;
 	private AdapterFactoryItemDelegator adapterFactoryItemDelegator;
-
-	@Override
-	public Component createControl(VControl control, ViewModelContext viewContext, Setting setting) {
-		return null;
-	}
 
 	@Override
 	public void renderList(VerticalLayout layout) {
@@ -74,7 +65,7 @@ public class ECPVaadinReferenceList extends AbstractVaadinList {
 
 			@Override
 			public void handleListChange(ListChangeEvent event) {
-				event.diff.accept(new TableListDiffVisitor(ECPVaadinReferenceList.this.table));
+				event.diff.accept(new TableListDiffVisitor(ReferenceListVaadinRenderer.this.table));
 			}
 		});
 		IObservableList modelValue = EMFProperties.list(this.setting.getEStructuralFeature()).observe(
@@ -94,7 +85,7 @@ public class ECPVaadinReferenceList extends AbstractVaadinList {
 					return null;
 				}
 				VView view = ViewProviderHelper.getView((EObject) itemId, null);
-				String text = ECPVaadinReferenceList.this.adapterFactoryItemDelegator.getText(itemId);
+				String text = ReferenceListVaadinRenderer.this.adapterFactoryItemDelegator.getText(itemId);
 				if (view == null) {
 					return text;
 				}
@@ -105,9 +96,9 @@ public class ECPVaadinReferenceList extends AbstractVaadinList {
 	}
 
 	@Override
-	protected HorizontalLayout createToolbar(boolean caption) {
+	protected HorizontalLayout createToolbar() {
 		HorizontalLayout horizontalLayout = new HorizontalLayout();
-		if (caption) {
+		if (hasCaption()) {
 			horizontalLayout.addStyleName("table-button-toolbar");
 		}
 

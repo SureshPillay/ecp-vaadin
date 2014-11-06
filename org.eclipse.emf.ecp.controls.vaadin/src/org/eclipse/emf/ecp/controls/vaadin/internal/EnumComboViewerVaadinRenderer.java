@@ -17,20 +17,20 @@ import java.util.List;
 import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EEnumLiteral;
 import org.eclipse.emf.ecore.EStructuralFeature.Setting;
-import org.eclipse.emf.ecp.controls.vaadin.ECPControlFactoryVaadin;
-import org.eclipse.emf.ecp.view.spi.context.ViewModelContext;
-import org.eclipse.emf.ecp.view.spi.model.VControl;
+import org.eclipse.emf.ecp.controls.vaadin.VaadinSimpleControlRenderer;
 
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Component;
 
-public class ECPVaadinEnum extends ECPControlFactoryVaadin {
+public class EnumComboViewerVaadinRenderer extends VaadinSimpleControlRenderer {
 
 	@Override
-	public Component createControl(VControl control, ViewModelContext viewContext, Setting setting) {
+	public Component createControl() {
+		Setting setting = getVElement().getDomainModelReference().getIterator().next();
 		ComboBox combobox = new ComboBox();
 		final List<Object> inputValues = new ArrayList<Object>();
-		for (final EEnumLiteral literal : EEnum.class.cast(setting.getEStructuralFeature().getEType()).getELiterals()) {
+		for (final EEnumLiteral literal : EEnum.class.cast(setting.getEStructuralFeature().getEType())
+				.getELiterals()) {
 			inputValues.add(literal.getInstance());
 		}
 

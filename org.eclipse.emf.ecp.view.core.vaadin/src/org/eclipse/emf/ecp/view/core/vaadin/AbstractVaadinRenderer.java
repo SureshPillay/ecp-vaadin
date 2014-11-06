@@ -17,7 +17,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.eclipse.emf.ecp.edit.spi.ViewLocaleService;
 import org.eclipse.emf.ecp.translation.service.TranslationService;
 import org.eclipse.emf.ecp.view.core.vaadin.internal.VaadinRendererFactoryImpl;
-import org.eclipse.emf.ecp.view.spi.context.ViewModelContext;
+import org.eclipse.emf.ecp.view.model.common.AbstractRenderer;
 import org.eclipse.emf.ecp.view.spi.model.ModelChangeListener;
 import org.eclipse.emf.ecp.view.spi.model.ModelChangeNotification;
 import org.eclipse.emf.ecp.view.spi.model.VElement;
@@ -27,7 +27,7 @@ import com.vaadin.ui.AbstractComponent;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.UI;
 
-public abstract class AbstractVaadinRenderer<T extends VElement> {
+public abstract class AbstractVaadinRenderer<T extends VElement> extends AbstractRenderer<T> {
 
 	protected VaadinRendererFactory rendererFactory;
 	private ViewLocaleService viewLocaleService;
@@ -49,11 +49,11 @@ public abstract class AbstractVaadinRenderer<T extends VElement> {
 		this.rendererFactory = factory;
 	}
 
-	public Component renderComponent(final T renderable, final ViewModelContext viewContext) {
-		initServices(viewContext);
-		final Component component = render(renderable, viewContext);
+	public final Component renderComponent() {
+		initServices();
+		final Component component = render();
 		if (component == null) {
-			new RuntimeException("No Renderer for: " + renderable.getName());
+			throw new RuntimeException("Error Render Component: " + getVElement().getName());
 		}
 		final Component controlComponent = getCaptionControlComponent(component);
 		ModelChangeListener listener = new ModelChangeListener() {
@@ -63,70 +63,69 @@ public abstract class AbstractVaadinRenderer<T extends VElement> {
 				if (notification.getRawNotification().isTouch()) {
 					return;
 				}
-				if (notification.getNotifier() != renderable) {
+				if (notification.getNotifier() != getVElement()) {
 					return;
 				}
 				UI ui = controlComponent.getUI();
 				if (ui == null) {
-					updateUI(renderable, controlComponent, notification);
+					updateUI(controlComponent, notification);
 					return;
 				}
 				controlComponent.getUI().access(new Runnable() {
 
 					@Override
 					public void run() {
-						updateUI(renderable, controlComponent, notification);
+						updateUI(controlComponent, notification);
 					}
 				});
 			}
 
-			private void updateUI(final T renderable, final Component controlComponent,
-					ModelChangeNotification notification) {
+			private void updateUI(final Component controlComponent, ModelChangeNotification notification) {
 				if (notification.getStructuralFeature() == VViewPackage.eINSTANCE.getElement_Visible()) {
-					applyVisible(renderable, controlComponent, viewContext);
+					applyVisible(controlComponent);
 				}
 				if (notification.getStructuralFeature() == VViewPackage.eINSTANCE.getElement_Enabled()
-						&& !renderable.isReadonly()) {
-					applyEnable(renderable, controlComponent, viewContext);
+						&& !getVElement().isReadonly()) {
+					applyEnable(controlComponent);
 				}
 				if (notification.getStructuralFeature() == VViewPackage.eINSTANCE.getElement_Diagnostic()) {
-					applyValidation(renderable, controlComponent, viewContext);
+					applyValidation(controlComponent);
 				}
 			}
 
 		};
-		viewContext.registerViewChangeListener(listener);
-		applyVisible(renderable, controlComponent, viewContext);
-		applyEnable(renderable, controlComponent, viewContext);
-		applyValidation(renderable, controlComponent, viewContext);
-		applyReadonly(renderable, controlComponent, viewContext);
-		applyCaption(renderable, controlComponent, viewContext);
+		getViewModelContext().registerViewChangeListener(listener);
+		applyVisible(controlComponent);
+		applyEnable(controlComponent);
+		applyValidation(controlComponent);
+		applyReadonly(controlComponent);
+		applyCaption(controlComponent);
 		return component;
 	}
 
-	protected void applyCaption(T renderable, Component controlComponent, ViewModelContext viewContext) {
+	protected void applyCaption(Component controlComponent) {
 		controlComponent.setCaption(StringUtils.EMPTY);
-		String caption = getTranslation(renderable);
+		String caption = getTranslation(getVElement());
 		if (StringUtils.isEmpty(caption)) {
 			return;
 		}
 		controlComponent.setCaption(caption);
 	}
 
-	protected void applyValidation(T renderable, Component component, ViewModelContext viewContext) {
+	protected void applyValidation(Component component) {
 
 	}
 
-	protected void applyEnable(T renderable, Component component, ViewModelContext viewContext) {
-		component.setEnabled(renderable.isEnabled());
+	protected void applyEnable(Component component) {
+		component.setEnabled(getVElement().isEnabled());
 	}
 
-	protected void applyReadonly(T renderable, Component component, ViewModelContext viewContext) {
-		component.setReadOnly(renderable.isReadonly());
+	protected void applyReadonly(Component component) {
+		component.setReadOnly(getVElement().isReadonly());
 	}
 
-	protected void applyVisible(T renderable, Component component, ViewModelContext viewContext) {
-		component.setVisible(renderable.isVisible());
+	protected void applyVisible(Component component) {
+		component.setVisible(getVElement().isVisible());
 	}
 
 	protected Component getCaptionControlComponent(Component component) {
@@ -140,13 +139,13 @@ public abstract class AbstractVaadinRenderer<T extends VElement> {
 		return component;
 	}
 
-	private void initServices(ViewModelContext viewContext) {
+	private void initServices() {
 		if (this.viewLocaleService == null) {
-			this.viewLocaleService = viewContext.getService(ViewLocaleService.class);
+			this.viewLocaleService = getViewModelContext().getService(ViewLocaleService.class);
 		}
 
 		if (this.translationService == null) {
-			this.translationService = viewContext.getService(TranslationService.class);
+			this.translationService = getViewModelContext().getService(TranslationService.class);
 		}
 	}
 
@@ -167,6 +166,6 @@ public abstract class AbstractVaadinRenderer<T extends VElement> {
 		return this.translationService.getTranslation(keyName, locale);
 	}
 
-	protected abstract Component render(T renderable, final ViewModelContext viewContext);
+	protected abstract Component render();
 
 }

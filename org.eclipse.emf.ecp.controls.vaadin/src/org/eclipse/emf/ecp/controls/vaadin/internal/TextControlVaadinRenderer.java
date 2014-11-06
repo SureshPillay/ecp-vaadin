@@ -13,31 +13,30 @@ package org.eclipse.emf.ecp.controls.vaadin.internal;
 
 import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.emf.ecore.EStructuralFeature.Setting;
-import org.eclipse.emf.ecp.controls.vaadin.ECPControlFactoryVaadin;
 import org.eclipse.emf.ecp.controls.vaadin.ECPTextFieldToModelUpdateValueStrategy;
 import org.eclipse.emf.ecp.controls.vaadin.ECPTextFieldToTargetUpdateValueStrategy;
-import org.eclipse.emf.ecp.view.spi.context.ViewModelContext;
-import org.eclipse.emf.ecp.view.spi.model.VControl;
+import org.eclipse.emf.ecp.controls.vaadin.VaadinSimpleControlRenderer;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 
 import com.vaadin.ui.Component;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 
-public class ECPVaadinText extends ECPControlFactoryVaadin {
+public class TextControlVaadinRenderer extends VaadinSimpleControlRenderer {
 
 	@Override
-	protected UpdateValueStrategy getTargetToModelStrategy(VControl control, Component component) {
+	protected UpdateValueStrategy getTargetToModelStrategy(Component component) {
 		return new ECPTextFieldToTargetUpdateValueStrategy();
 	}
 
 	@Override
-	protected UpdateValueStrategy getModelToTargetStrategy(VControl control, Component component) {
+	protected UpdateValueStrategy getModelToTargetStrategy(Component component) {
 		return new ECPTextFieldToModelUpdateValueStrategy();
 	}
 
 	@Override
-	public Component createControl(VControl control, ViewModelContext viewContext, Setting setting) {
+	protected Component createControl() {
+		Setting setting = getVElement().getDomainModelReference().getIterator().next();
 		IItemPropertyDescriptor itemPropertyDescriptor = getItemPropertyDescriptor(setting);
 		if (itemPropertyDescriptor.isMultiLine(null)) {
 			TextArea textArea = new TextArea();

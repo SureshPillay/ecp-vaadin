@@ -65,7 +65,9 @@ public class TableRendererVaadin extends AbstractControlRendererVaadin<VTableCon
 	}
 
 	@Override
-	protected Component renderControl(VTableControl control, ViewModelContext viewContext) {
+	protected Component render() {
+		VTableControl control = getVElement();
+		ViewModelContext viewContext = getViewModelContext();
 		this.setting = control.getDomainModelReference().getIterator().next();
 
 		VerticalLayout layout = new VerticalLayout();
@@ -88,7 +90,6 @@ public class TableRendererVaadin extends AbstractControlRendererVaadin<VTableCon
 		layout.setComponentAlignment(horizontalLayout, Alignment.TOP_RIGHT);
 		layout.addComponent(this.table);
 		return layout;
-
 	}
 
 	private HorizontalLayout createDetailEditing(VTableControl control) {
@@ -139,7 +140,7 @@ public class TableRendererVaadin extends AbstractControlRendererVaadin<VTableCon
 	}
 
 	private void addTableToolbarStyle(VTableControl control, HorizontalLayout horizontalLayout) {
-		if (hasCaption(control)) {
+		if (hasCaption()) {
 			horizontalLayout.addStyleName("table-button-toolbar");
 		}
 	}

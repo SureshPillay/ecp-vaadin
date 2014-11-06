@@ -4,7 +4,6 @@
    <extension
          point="org.eclipse.emf.ecp.view.model.vaadin.renderer">
       <renderer
-            renderable="org.eclipse.emf.ecp.view.spi.group.model.VGroup"
             renderer="org.eclipse.emf.ecp.view.group.vaadin.GroupLayoutRendererVaadin">
          <staticTest
                element="org.eclipse.emf.ecp.view.spi.group.model.VGroup"

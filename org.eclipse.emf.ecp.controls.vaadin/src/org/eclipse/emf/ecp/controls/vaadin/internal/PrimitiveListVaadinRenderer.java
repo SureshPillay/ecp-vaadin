@@ -28,8 +28,6 @@ import org.eclipse.emf.ecp.view.core.vaadin.VaadinWidgetFactory;
 import org.eclipse.emf.ecp.view.core.vaadin.converter.SelectionConverter;
 import org.eclipse.emf.ecp.view.core.vaadin.converter.StringToVaadinConverter;
 import org.eclipse.emf.ecp.view.core.vaadin.converter.VaadinConverterToString;
-import org.eclipse.emf.ecp.view.spi.context.ViewModelContext;
-import org.eclipse.emf.ecp.view.spi.model.VControl;
 import org.lunifera.runtime.web.vaadin.databinding.VaadinObservables;
 
 import com.vaadin.data.util.IndexedContainer;
@@ -37,21 +35,15 @@ import com.vaadin.data.util.converter.Converter;
 import com.vaadin.server.Sizeable.Unit;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
-import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.Table.ColumnGenerator;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 
-public class ECPVaadinPrimitiveList extends AbstractVaadinList {
+public class PrimitiveListVaadinRenderer extends AbstractVaadinList {
 
 	private static final String VALUE_COLUMN = "value";
-
-	@Override
-	public Component createControl(VControl control, ViewModelContext viewContext, Setting setting) {
-		return null;
-	}
 
 	@Override
 	public void renderList(VerticalLayout layout) {
@@ -89,7 +81,7 @@ public class ECPVaadinPrimitiveList extends AbstractVaadinList {
 		IObservableValue observeSingleSelection = VaadinObservables.observeSingleSelection(this.table, clazz);
 		UpdateValueStrategy emfUpdateValueStrategy = new EMFUpdateValueStrategy();
 		emfUpdateValueStrategy.setConverter(new SelectionConverter(false));
-		getDataBindingContext().bindValue(VaadinObservables.observeVisible(add), observeSingleSelection, null,
+		this.bindingContext.bindValue(VaadinObservables.observeVisible(add), observeSingleSelection, null,
 				emfUpdateValueStrategy);
 	}
 
@@ -97,7 +89,7 @@ public class ECPVaadinPrimitiveList extends AbstractVaadinList {
 		IObservableValue observeSingleSelection = VaadinObservables.observeSingleSelection(this.table, clazz);
 		UpdateValueStrategy emfUpdateValueStrategy = new EMFUpdateValueStrategy();
 		emfUpdateValueStrategy.setConverter(new SelectionConverter());
-		getDataBindingContext().bindValue(VaadinObservables.observeFocus(textField), observeSingleSelection, null,
+		this.bindingContext.bindValue(VaadinObservables.observeFocus(textField), observeSingleSelection, null,
 				emfUpdateValueStrategy);
 	}
 
@@ -118,14 +110,14 @@ public class ECPVaadinPrimitiveList extends AbstractVaadinList {
 					Object fieldValue = getConvertedValue(textField);
 					// TODO FIXME: Better solution for changing String and primitive types in List?
 					ValueDiff diff = event.diff;
-					if (ECPVaadinPrimitiveList.this.table.getValue() != null
-							&& !ECPVaadinPrimitiveList.this.table.getValue().equals(fieldValue)
+					if (PrimitiveListVaadinRenderer.this.table.getValue() != null
+							&& !PrimitiveListVaadinRenderer.this.table.getValue().equals(fieldValue)
 							&& diff.getOldValue() != diff.getNewValue()) {
 						List<Object> items = (List<Object>) setting.get(true);
 						Object convertedValue = getConvertedValue(diff.getOldValue(), converter);
 						int index = items.indexOf(convertedValue);
 						if (index != -1) {
-							items.remove(ECPVaadinPrimitiveList.this.table.getValue());
+							items.remove(PrimitiveListVaadinRenderer.this.table.getValue());
 							Object convertToModel = getConvertedValue(diff.getNewValue(), converter);
 							items.add(index, convertToModel);
 						}
@@ -203,7 +195,7 @@ public class ECPVaadinPrimitiveList extends AbstractVaadinList {
 	}
 
 	@Override
-	protected HorizontalLayout createToolbar(boolean caption) {
+	protected HorizontalLayout createToolbar() {
 		final HorizontalLayout horizontalLayout = new HorizontalLayout();
 		horizontalLayout.setWidth(100, Unit.PERCENTAGE);
 		return horizontalLayout;
