@@ -26,6 +26,8 @@ import com.vaadin.ui.VerticalLayout;
 
 public class GroupLayoutRendererVaadin extends AbstractContainerRendererVaadin<VGroup> {
 
+	public static final String GROUP_STYLE_NAME = "group";
+
 	@Override
 	protected boolean isMargin(VGroup renderable) {
 		return GroupType.NORMAL.equals(renderable.getGroupType());
@@ -40,7 +42,7 @@ public class GroupLayoutRendererVaadin extends AbstractContainerRendererVaadin<V
 	protected AbstractOrderedLayout getAbstractOrderedLayout(VGroup renderable) {
 		VerticalLayout formLayout = new VerticalLayout();
 		if (GroupType.NORMAL.equals(renderable.getGroupType())) {
-			formLayout.addStyleName("group");
+			formLayout.addStyleName(GROUP_STYLE_NAME);
 		}
 		return formLayout;
 	}
@@ -71,7 +73,7 @@ public class GroupLayoutRendererVaadin extends AbstractContainerRendererVaadin<V
 			orderedLayout.setSpacing(true);
 			orderedLayout.setVisible(renderable.isCollapsed());
 			setCollapseStyle(collapseButton, renderable.isCollapsed());
-			mainLayout.addStyleName("group");
+			mainLayout.addStyleName(GROUP_STYLE_NAME);
 			return mainLayout;
 		}
 		return super.getRenderComponent(renderable, orderedLayout);

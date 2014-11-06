@@ -73,8 +73,12 @@ public final class VaadinRendererFactoryImpl implements VaadinRendererFactory {
 
 	@Override
 	public <T extends VElement> Component render(T renderable, ViewModelContext viewContext) {
-		return this.rendererMapping.get(renderable.getClass().getInterfaces()[0]).renderComponent(renderable,
-				viewContext);
+		return getVaadinComponentRenderer(renderable).renderComponent(renderable, viewContext);
+	}
+
+	@Override
+	public <T extends VElement> AbstractVaadinRenderer<VElement> getVaadinComponentRenderer(T renderable) {
+		return this.rendererMapping.get(renderable.getClass().getInterfaces()[0]);
 	}
 
 }

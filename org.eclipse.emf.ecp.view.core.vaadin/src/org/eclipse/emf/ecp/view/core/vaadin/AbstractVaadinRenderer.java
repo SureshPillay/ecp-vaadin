@@ -87,6 +87,7 @@ public abstract class AbstractVaadinRenderer<T extends VElement> {
 	}
 
 	protected void applyCaption(T renderable, Component controlComponent, ViewModelContext viewContext) {
+		controlComponent.setCaption(StringUtils.EMPTY);
 		String caption = getTranslation(renderable);
 		if (StringUtils.isEmpty(caption)) {
 			return;

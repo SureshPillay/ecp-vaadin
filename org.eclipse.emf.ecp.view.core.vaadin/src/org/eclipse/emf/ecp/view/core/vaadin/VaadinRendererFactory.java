@@ -22,4 +22,6 @@ public interface VaadinRendererFactory {
 	VaadinRendererFactory INSTANCE = new VaadinRendererFactoryImpl();
 
 	<T extends VElement> Component render(T renderable, final ViewModelContext viewContext);
+
+	<T extends VElement> AbstractVaadinRenderer<VElement> getVaadinComponentRenderer(T renderable);
 }
