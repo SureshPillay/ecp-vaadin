@@ -29,6 +29,15 @@ import com.vaadin.ui.VerticalLayout;
 
 public class ViewRendererVaadin extends AbstractVaadinRenderer<VView> {
 
+	/**
+	 * Constructor for testing purpose.
+	 *
+	 * @param factory the factory to use
+	 */
+	protected ViewRendererVaadin(VaadinRendererFactory factory) {
+		super(factory);
+	}
+
 	@Override
 	public Component render(VView renderable, ViewModelContext viewModelContext) {
 		AbstractOrderedLayout layout = getLayout();
@@ -36,7 +45,7 @@ public class ViewRendererVaadin extends AbstractVaadinRenderer<VView> {
 		layout.setMargin(true);
 		layout.setSizeFull();
 		for (VContainedElement composite : renderable.getChildren()) {
-			Component renderResult = VaadinRendererFactory.INSTANCE.render(composite, viewModelContext);
+			Component renderResult = this.rendererFactory.render(composite, viewModelContext);
 			layout.addComponent(renderResult);
 
 		}

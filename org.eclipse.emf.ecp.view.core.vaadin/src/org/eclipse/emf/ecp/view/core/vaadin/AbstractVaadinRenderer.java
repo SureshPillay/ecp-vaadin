@@ -16,6 +16,7 @@ import java.util.Locale;
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.emf.ecp.edit.spi.ViewLocaleService;
 import org.eclipse.emf.ecp.translation.service.TranslationService;
+import org.eclipse.emf.ecp.view.core.vaadin.internal.VaadinRendererFactoryImpl;
 import org.eclipse.emf.ecp.view.spi.context.ViewModelContext;
 import org.eclipse.emf.ecp.view.spi.model.ModelChangeListener;
 import org.eclipse.emf.ecp.view.spi.model.ModelChangeNotification;
@@ -28,8 +29,25 @@ import com.vaadin.ui.UI;
 
 public abstract class AbstractVaadinRenderer<T extends VElement> {
 
+	protected VaadinRendererFactory rendererFactory;
 	private ViewLocaleService viewLocaleService;
 	private TranslationService translationService;
+
+	/**
+	 * Default constructor.
+	 */
+	public AbstractVaadinRenderer() {
+		this(new VaadinRendererFactoryImpl());
+	}
+
+	/**
+	 * Constructor for testing purpose.
+	 *
+	 * @param factory the factory to use
+	 */
+	protected AbstractVaadinRenderer(VaadinRendererFactory factory) {
+		this.rendererFactory = factory;
+	}
 
 	public Component renderComponent(final T renderable, final ViewModelContext viewContext) {
 		initServices(viewContext);

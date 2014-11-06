@@ -11,15 +11,12 @@
  ******************************************************************************/
 package org.eclipse.emf.ecp.view.core.vaadin;
 
-import org.eclipse.emf.ecp.view.core.vaadin.internal.VaadinRendererFactoryImpl;
 import org.eclipse.emf.ecp.view.spi.context.ViewModelContext;
 import org.eclipse.emf.ecp.view.spi.model.VElement;
 
 import com.vaadin.ui.Component;
 
 public interface VaadinRendererFactory {
-
-	VaadinRendererFactory INSTANCE = new VaadinRendererFactoryImpl();
 
 	<T extends VElement> Component render(T renderable, final ViewModelContext viewContext);
 

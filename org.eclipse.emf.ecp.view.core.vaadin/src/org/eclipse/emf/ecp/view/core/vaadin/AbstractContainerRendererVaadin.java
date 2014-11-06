@@ -25,7 +25,7 @@ public abstract class AbstractContainerRendererVaadin<T extends VContainer> exte
 	protected Component render(T renderable, final ViewModelContext viewContext) {
 		AbstractOrderedLayout layout = getAbstractOrderedLayout(renderable);
 		for (VContainedElement composite : renderable.getChildren()) {
-			Component renderResult = VaadinRendererFactory.INSTANCE.render(composite, viewContext);
+			Component renderResult = this.rendererFactory.render(composite, viewContext);
 			layout.addComponent(renderResult);
 		}
 		Component renderComponent = getRenderComponent(renderable, layout);

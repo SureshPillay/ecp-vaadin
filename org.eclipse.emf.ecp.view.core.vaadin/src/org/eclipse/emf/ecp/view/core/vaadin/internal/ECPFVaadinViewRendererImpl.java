@@ -26,6 +26,8 @@ import com.vaadin.ui.VerticalLayout;
 
 public class ECPFVaadinViewRendererImpl implements ECPFVaadinViewRenderer {
 
+	private VaadinRendererFactory factory = new VaadinRendererFactoryImpl();
+
 	@Override
 	public ECPVaadinView render(EObject domainObject) {
 		return render(domainObject, ViewProviderHelper.getView(domainObject, null));
@@ -40,7 +42,7 @@ public class ECPFVaadinViewRendererImpl implements ECPFVaadinViewRenderer {
 
 	@Override
 	public ECPVaadinView render(ViewModelContext viewModelContext) {
-		Component resultSet = VaadinRendererFactory.INSTANCE.render(viewModelContext.getViewModel(), viewModelContext);
+		Component resultSet = this.factory.render(viewModelContext.getViewModel(), viewModelContext);
 		if (resultSet == null) {
 			Label label = new Label();
 			label.setCaption("Rendering went wrong!");

@@ -18,7 +18,6 @@ import static org.junit.Assert.fail;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EcoreFactory;
 import org.eclipse.emf.ecore.EcorePackage;
-import org.eclipse.emf.ecp.view.common.vaadin.test.VaadinDatabindingClassRunner;
 import org.eclipse.emf.ecp.view.core.vaadin.ECPVaadinViewComponent;
 import org.eclipse.emf.ecp.view.core.vaadin.VaadinRendererFactory;
 import org.eclipse.emf.ecp.view.group.vaadin.GroupLayoutRendererVaadin;
@@ -116,7 +115,7 @@ public class VaadinGroupTest {
 		group.setName(GROUP_NAME);
 
 		// setup ui
-		AbstractOrderedLayout viewLayout = getContentLyout(view);
+		AbstractOrderedLayout viewLayout = getContentLayout(view);
 		final Component renderedControl = viewLayout.getComponent(0);
 		assertGroupControl(renderedControl, GROUP_NAME);
 		// assertEquals("Rendered Control and control returned by renderer are not the same", control, renderedControl);
@@ -128,10 +127,13 @@ public class VaadinGroupTest {
 		assertEquals("Rendered Group does not have correct name", groupName, renderedControl.getCaption());
 	}
 
-	private AbstractOrderedLayout getContentLyout(VView view) {
+	private AbstractOrderedLayout getContentLayout(VView view) {
 		final ViewModelContext viewContext = ViewModelContextFactory.INSTANCE.createViewModelContext(view,
 				VViewFactory.eINSTANCE.createView());
-		final ECPVaadinViewComponent control = (ECPVaadinViewComponent) VaadinRendererFactory.INSTANCE.render(view,
+		
+		VaadinTestHelper.getVaadinRendererFactory()
+		
+		final ECPVaadinViewComponent control = (ECPVaadinViewComponent)VaadinTestHelper render(view,
 				viewContext);
 		return (AbstractOrderedLayout) control.getContent();
 	}
@@ -157,7 +159,7 @@ public class VaadinGroupTest {
 		group2.setName(GROUP_NAME2);
 
 		// setup ui
-		AbstractOrderedLayout viewLayout = getContentLyout(view);
+		AbstractOrderedLayout viewLayout = getContentLayout(view);
 		final Component renderedControl1 = viewLayout.getComponent(0);
 		final Component renderedControl2 = viewLayout.getComponent(1);
 		assertGroupControl(renderedControl1, GROUP_NAME);

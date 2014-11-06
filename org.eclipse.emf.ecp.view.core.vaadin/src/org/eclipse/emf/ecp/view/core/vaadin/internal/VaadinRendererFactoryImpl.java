@@ -28,7 +28,7 @@ import org.osgi.framework.Bundle;
 
 import com.vaadin.ui.Component;
 
-public final class VaadinRendererFactoryImpl implements VaadinRendererFactory {
+public class VaadinRendererFactoryImpl implements VaadinRendererFactory {
 	private static final String RENDER_EXTENSION = "org.eclipse.emf.ecp.view.model.vaadin.renderer"; //$NON-NLS-1$
 	private Map<Class<VElement>, AbstractVaadinRenderer<VElement>> rendererMapping = new LinkedHashMap<>();
 
