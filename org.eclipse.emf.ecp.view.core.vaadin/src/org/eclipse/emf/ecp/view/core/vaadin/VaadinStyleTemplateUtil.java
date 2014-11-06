@@ -29,6 +29,10 @@ public final class VaadinStyleTemplateUtil {
 	public static <T extends VTStyleProperty> T getVTStyleProperty(EClass eClass, VElement vElement,
 			ViewModelContext viewContext) {
 
+		if (Activator.getDefault() == null) {
+			return null;
+		}
+
 		final VTViewTemplateProvider vtViewTemplateProvider = Activator.getDefault().getVTViewTemplateProvider();
 		if (vtViewTemplateProvider == null) {
 			return null;

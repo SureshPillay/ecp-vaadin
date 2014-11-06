@@ -22,6 +22,7 @@ import org.eclipse.emf.ecp.view.spi.context.ViewModelContext;
 import org.eclipse.emf.ecp.view.spi.model.DomainModelReferenceChangeListener;
 import org.eclipse.emf.ecp.view.spi.model.LabelAlignment;
 import org.eclipse.emf.ecp.view.spi.model.VControl;
+import org.eclipse.emf.ecp.view.spi.model.VDomainModelReference;
 import org.eclipse.emf.ecp.view.template.style.mandatory.model.VTMandatoryPackage;
 import org.eclipse.emf.ecp.view.template.style.mandatory.model.VTMandatoryStyleProperty;
 import org.eclipse.emf.edit.provider.AdapterFactoryItemDelegator;
@@ -89,6 +90,11 @@ public abstract class AbstractControlRendererVaadin<T extends VControl> extends 
 				new CustomReflectiveItemProviderAdapterFactory(),
 				new ComposedAdapterFactory(ComposedAdapterFactory.Descriptor.Registry.INSTANCE) });
 		this.adapterFactoryItemDelegator = new AdapterFactoryItemDelegator(this.composedAdapterFactory);
+
+		VDomainModelReference domainModelReference = getVElement().getDomainModelReference();
+		if (domainModelReference == null) {
+			return;
+		}
 		this.domainModelReferenceChangeListener = new DomainModelReferenceChangeListener() {
 
 			@Override
@@ -97,7 +103,7 @@ public abstract class AbstractControlRendererVaadin<T extends VControl> extends 
 				applyValidation();
 			}
 		};
-		getVElement().getDomainModelReference().getChangeListener().add(this.domainModelReferenceChangeListener);
+		domainModelReference.getChangeListener().add(this.domainModelReferenceChangeListener);
 	}
 
 	private String getMandatoryText(Setting setting, String extra) {

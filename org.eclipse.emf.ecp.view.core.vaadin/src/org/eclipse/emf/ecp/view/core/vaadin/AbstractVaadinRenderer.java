@@ -53,7 +53,7 @@ public abstract class AbstractVaadinRenderer<T extends VElement> extends Abstrac
 	}
 
 	public final Component renderComponent() {
-		initServices();
+
 		Component component = render();
 		if (component == null) {
 			throw new RuntimeException("Error Render Component: " + getVElement().getName());
@@ -71,6 +71,7 @@ public abstract class AbstractVaadinRenderer<T extends VElement> extends Abstrac
 	@Override
 	public void init(T vElement, ViewModelContext viewContext) {
 		super.init(vElement, viewContext);
+		initServices();
 		this.modelChangeListener = new ModelChangeListener() {
 
 			@Override
