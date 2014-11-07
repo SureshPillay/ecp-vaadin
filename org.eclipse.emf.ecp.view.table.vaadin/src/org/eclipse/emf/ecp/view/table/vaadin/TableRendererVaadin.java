@@ -12,6 +12,7 @@
 package org.eclipse.emf.ecp.view.table.vaadin;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
@@ -66,7 +67,11 @@ public class TableRendererVaadin extends AbstractControlRendererVaadin<VTableCon
 	protected Component render() {
 		VTableControl control = getVElement();
 		ViewModelContext viewContext = getViewModelContext();
-		this.setting = control.getDomainModelReference().getIterator().next();
+		Iterator<Setting> iterator = control.getDomainModelReference().getIterator();
+		if (!iterator.hasNext()) {
+			return null;
+		}
+		this.setting = iterator.next();
 
 		VerticalLayout layout = new VerticalLayout();
 		this.table = createTable();

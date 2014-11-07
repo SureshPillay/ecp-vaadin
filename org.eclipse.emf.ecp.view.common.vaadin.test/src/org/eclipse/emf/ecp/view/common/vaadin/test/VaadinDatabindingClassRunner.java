@@ -24,7 +24,8 @@ public class VaadinDatabindingClassRunner extends BlockJUnit4ClassRunner {
 
 	@Override
 	public void run(final RunNotifier notifier) {
-		Realm.runWithDefault(new UIRealm(), new Runnable() {
+		final TestRealm realm = new TestRealm();
+		Realm.runWithDefault(realm, new Runnable() {
 			@Override
 			public void run() {
 				VaadinDatabindingClassRunner.super.run(notifier);
@@ -32,11 +33,20 @@ public class VaadinDatabindingClassRunner extends BlockJUnit4ClassRunner {
 		});
 	}
 
-	private static class UIRealm extends Realm {
+	private static class TestRealm extends Realm {
+
+		public TestRealm() {
+			setDefault(this);
+		}
 
 		@Override
 		public boolean isCurrent() {
 			return true;
+		}
+
+		@Override
+		public void exec(Runnable runnable) {
+			runnable.run();
 		}
 
 	}

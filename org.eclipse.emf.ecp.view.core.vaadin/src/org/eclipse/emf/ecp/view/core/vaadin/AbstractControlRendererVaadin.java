@@ -45,11 +45,8 @@ public abstract class AbstractControlRendererVaadin<T extends VControl> extends 
 		Setting setting = getVElement().getDomainModelReference().getIterator().next();
 		final IItemPropertyDescriptor itemPropertyDescriptor = VaadinRendererUtil.getItemPropertyDescriptor(setting);
 
-		if (LabelAlignment.NONE == getVElement().getLabelAlignment()) {
-			this.controlComponent.setCaption(null);
-		}
-
 		if (!hasCaption(itemPropertyDescriptor)) {
+			this.controlComponent.setCaption(null);
 			return;
 		}
 

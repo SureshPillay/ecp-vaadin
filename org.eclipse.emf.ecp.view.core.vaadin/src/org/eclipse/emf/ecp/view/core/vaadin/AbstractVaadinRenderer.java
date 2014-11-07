@@ -56,7 +56,7 @@ public abstract class AbstractVaadinRenderer<T extends VElement> extends Abstrac
 
 		Component component = render();
 		if (component == null) {
-			throw new RuntimeException("Error Render Component: " + getVElement().getName());
+			return null;
 		}
 		this.controlComponent = getCaptionControlComponent(component);
 
