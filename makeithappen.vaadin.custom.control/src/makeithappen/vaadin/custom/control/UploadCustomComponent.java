@@ -11,9 +11,8 @@
  ******************************************************************************/
 package makeithappen.vaadin.custom.control;
 
-import org.eclipse.emf.ecp.view.core.vaadin.AbstractControlRendererVaadin;
 import org.eclipse.emf.ecp.view.core.vaadin.VaadinRendererUtil;
-import org.eclipse.emf.ecp.view.spi.custom.model.VCustomControl;
+import org.eclipse.emf.ecp.view.custom.vaadin.CustomControlVaadinRenderer;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 
 import com.vaadin.ui.Component;
@@ -21,7 +20,7 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Upload;
 
-public class UploadCustomComponent extends AbstractControlRendererVaadin<VCustomControl> {
+public class UploadCustomComponent extends CustomControlVaadinRenderer {
 
 	private Label label;
 
