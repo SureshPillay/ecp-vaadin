@@ -51,7 +51,9 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
+import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.VerticalLayout;
 
@@ -88,13 +90,7 @@ public class TableRendererVaadinTest {
 	}
 
 	private int getItemCountByTable(Table table) {
-		int i = 0;
-		for (Object string : table.getContainerDataSource().getItemIds()) {
-			if (table.getContainerDataSource().getItem(string) != null) {
-				i++;
-			}
-		}
-		return i;
+		return table.getContainerDataSource().getItemIds().size();
 	}
 
 	@Test
@@ -236,16 +232,35 @@ public class TableRendererVaadinTest {
 	}
 
 	@Test
+	public void testTableAddRemoveButton() throws NoRendererFoundException, NoPropertyDescriptorFoundExeption {
+		final TableControlHandle handle = createTableWithTwoTableColumns();
+
+		VerticalLayout layout = (VerticalLayout) renderTableLayoutWithoutServices(handle);
+		HorizontalLayout horizontalLayout = (HorizontalLayout) layout.getComponent(0);
+		Button addButton = (Button) horizontalLayout.getComponent(0);
+		Button removeButton = (Button) horizontalLayout.getComponent(1);
+		Table table = getTable(layout);
+		EList<EClass> eSuperTypes = ((EClass) this.domainElement).getESuperTypes();
+		assertEquals(eSuperTypes.size(), getItemCountByTable(table));
+		addButton.click();
+		assertEquals(2, getItemCountByTable(table));
+		final EClass eClass = eSuperTypes.get(1);
+		table.select(eClass);
+		removeButton.click();
+		assertEquals(1, getItemCountByTable(table));
+	}
+
+	@Test
 	public void testTableWithTwoColumnsClear() throws NoRendererFoundException, NoPropertyDescriptorFoundExeption {
 		final EClass eClass = EcoreFactory.eINSTANCE.createEClass();
 		EList<EClass> eSuperTypes = ((EClass) this.domainElement).getESuperTypes();
 		eSuperTypes.add(eClass);
 		final TableControlHandle handle = createTableWithTwoTableColumns();
 		Table table = assertTableWithoutService(handle, 2);
-		assertEquals(eSuperTypes.size(), getItemCountByTable(table));
+		assertEquals(2, getItemCountByTable(table));
 		eSuperTypes.clear();
 		// TODO FIXME
-		assertEquals(eSuperTypes.size(), getItemCountByTable(table));
+		assertEquals(0, getItemCountByTable(table));
 	}
 
 	@Test
@@ -310,8 +325,8 @@ public class TableRendererVaadinTest {
 
 	}
 
-	private Component getTable(VerticalLayout render) {
-		return render.getComponent(1);
+	private Table getTable(VerticalLayout render) {
+		return (Table) render.getComponent(1);
 	}
 
 	private TableControlHandle createTableWithTwoTableColumns() {

@@ -12,7 +12,6 @@
 package org.eclipse.emf.ecp.view.custom.vaadin;
 
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.emf.ecp.view.core.vaadin.AbstractControlRendererVaadin;
 import org.eclipse.emf.ecp.view.core.vaadin.AbstractVaadinRenderer;
 import org.eclipse.emf.ecp.view.spi.context.ViewModelContext;
 import org.eclipse.emf.ecp.view.spi.custom.model.VCustomControl;
@@ -22,7 +21,7 @@ import com.vaadin.ui.Component;
 
 public class CustomControlVaadinRenderer extends AbstractVaadinRenderer<VCustomControl> {
 
-	private static AbstractControlRendererVaadin<VCustomControl> loadObject(String bundleName, String clazz) {
+	private static AbstractVaadinRenderer<VCustomControl> loadObject(String bundleName, String clazz) {
 		final Bundle bundle = Platform.getBundle(bundleName);
 		if (bundle == null) {
 			new ClassNotFoundException(clazz + " from " + bundleName + " could not be loaded");
@@ -30,10 +29,10 @@ public class CustomControlVaadinRenderer extends AbstractVaadinRenderer<VCustomC
 		}
 		try {
 			final Class<?> loadClass = bundle.loadClass(clazz);
-			if (!AbstractControlRendererVaadin.class.isAssignableFrom(loadClass)) {
+			if (!AbstractVaadinRenderer.class.isAssignableFrom(loadClass)) {
 				return null;
 			}
-			return AbstractControlRendererVaadin.class.cast(loadClass.newInstance());
+			return AbstractVaadinRenderer.class.cast(loadClass.newInstance());
 		} catch (final ClassNotFoundException ex) {
 			return null;
 		} catch (final InstantiationException ex) {
@@ -56,7 +55,7 @@ public class CustomControlVaadinRenderer extends AbstractVaadinRenderer<VCustomC
 		if (className == null) {
 			className = ""; //$NON-NLS-1$
 		}
-		final AbstractControlRendererVaadin component = loadObject(bundleName, className);
+		final AbstractVaadinRenderer component = loadObject(bundleName, className);
 		if (component == null) {
 			// TODO
 			throw new IllegalStateException(String.format("The  %1$s/%2$s cannot be loaded!", //$NON-NLS-1$
