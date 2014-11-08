@@ -4,6 +4,7 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
 
 import com.vaadin.ui.Table;
+import com.vaadin.ui.UI;
 
 public class TableContentUpdateAdaper extends AdapterImpl {
 
@@ -15,6 +16,18 @@ public class TableContentUpdateAdaper extends AdapterImpl {
 
 	@Override
 	public void notifyChanged(Notification msg) {
-		this.table.refreshRowCache();
+		UI ui = this.table.getUI();
+		if (ui == null) {
+			return;
+		}
+		ui.access(new Runnable() {
+
+			@Override
+			public void run() {
+				TableContentUpdateAdaper.this.table.refreshRowCache();
+
+			}
+		});
+
 	}
 }

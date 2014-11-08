@@ -24,7 +24,7 @@ public class VaadinMainUI extends UI {
 	@Override
 	protected void init(VaadinRequest request) {
 		getPage().setTitle("Test Vaadin Valo");
-		VaadinObservables.activateRealm(UI.getCurrent());
+		VaadinObservables.activateRealm(this);
 		ECPVaadinView ecpVaadinView = ECPFVaadinViewRenderer.INSTANCE.render(USER);
 		setContent(ecpVaadinView.getComponent());
 	}

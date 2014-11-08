@@ -87,7 +87,7 @@ public abstract class AbstractVaadinRenderer<T extends VElement> extends Abstrac
 					updateUI(AbstractVaadinRenderer.this.controlComponent, notification);
 					return;
 				}
-				AbstractVaadinRenderer.this.controlComponent.getUI().access(new Runnable() {
+				ui.access(new Runnable() {
 
 					@Override
 					public void run() {

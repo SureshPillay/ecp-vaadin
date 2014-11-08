@@ -77,7 +77,7 @@ public final class VaadinRendererUtil {
 	public static List<EStructuralFeature> getColumnFeatures(VControl control) {
 		VTableDomainModelReference domainModelReference = getTableDomainModelReference(control);
 		List<EStructuralFeature> listFeatures = new ArrayList<EStructuralFeature>();
-		// TODO FIXME: NPE
+		// TODO FIXME: NPE and other ModelReferences?
 		for (final VDomainModelReference column : domainModelReference.getColumnDomainModelReferences()) {
 
 			final Iterator<EStructuralFeature> eStructuralFeatureIterator = column.getEStructuralFeatureIterator();

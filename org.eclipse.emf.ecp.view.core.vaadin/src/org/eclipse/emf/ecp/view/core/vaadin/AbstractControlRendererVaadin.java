@@ -31,6 +31,7 @@ import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 
 import com.vaadin.server.UserError;
 import com.vaadin.ui.AbstractComponent;
+import com.vaadin.ui.UI;
 
 public abstract class AbstractControlRendererVaadin<T extends VControl> extends AbstractVaadinRenderer<T> {
 
@@ -96,8 +97,19 @@ public abstract class AbstractControlRendererVaadin<T extends VControl> extends 
 
 			@Override
 			public void notifyChange() {
-				System.out.println(getVElement());
-				applyValidation();
+				final UI ui = AbstractControlRendererVaadin.this.controlComponent.getUI();
+				if (ui == null) {
+					return;
+				}
+				ui.access(new Runnable() {
+
+					@Override
+					public void run() {
+						System.out.println(ui.getId() + " " + getVElement());
+						applyValidation();
+					}
+				});
+
 			}
 		};
 		domainModelReference.getChangeListener().add(this.domainModelReferenceChangeListener);

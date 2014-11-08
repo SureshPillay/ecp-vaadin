@@ -206,7 +206,7 @@ public class TableRendererVaadin extends AbstractControlRendererVaadin<VTableCon
 			}
 
 		}
-
+		// TODO: FIXME 2 gleiche coloumns?
 		this.table.setVisibleColumns(visibleColumnsId.toArray(new Object[visibleColumnsId.size()]));
 		this.table.setColumnHeaders(visibleColumnsNames.toArray(new String[visibleColumnsNames.size()]));
 	}
