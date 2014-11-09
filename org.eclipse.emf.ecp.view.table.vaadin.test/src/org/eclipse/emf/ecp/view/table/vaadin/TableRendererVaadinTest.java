@@ -248,18 +248,17 @@ public class TableRendererVaadinTest {
 		table.select(eClass);
 		removeButton.click();
 		assertEquals(1, getItemCountByTable(table));
+		addButton.click();
+		assertEquals(2, getItemCountByTable(table));
 	}
 
 	@Test
 	public void testTableWithTwoColumnsClear() throws NoRendererFoundException, NoPropertyDescriptorFoundExeption {
-		final EClass eClass = EcoreFactory.eINSTANCE.createEClass();
 		EList<EClass> eSuperTypes = ((EClass) this.domainElement).getESuperTypes();
-		eSuperTypes.add(eClass);
 		final TableControlHandle handle = createTableWithTwoTableColumns();
 		Table table = assertTableWithoutService(handle, 2);
-		assertEquals(2, getItemCountByTable(table));
+		assertEquals(1, getItemCountByTable(table));
 		eSuperTypes.clear();
-		// TODO FIXME
 		assertEquals(0, getItemCountByTable(table));
 	}
 

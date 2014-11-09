@@ -37,4 +37,13 @@ public class TableListDiffVisitor extends ListDiffVisitor {
 		}
 	}
 
+	public static boolean containsTableContentAdapter(EObject selectedValue) {
+		for (Iterator<Adapter> iterator = selectedValue.eAdapters().iterator(); iterator.hasNext();) {
+			if (iterator.next() instanceof TableContentUpdateAdaper) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 }
