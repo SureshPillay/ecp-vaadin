@@ -38,6 +38,7 @@ import com.vaadin.ui.Label;
 
 public class LabelRendererVaadin extends AbstractVaadinRenderer<VLabel> {
 
+	private static final String HTML_SEPERATOR = "<hr/>";
 	private DataBindingContext bindingContext;
 	private IObservableValue modelValue;
 	private final WritableValue value = new WritableValue();
@@ -45,9 +46,10 @@ public class LabelRendererVaadin extends AbstractVaadinRenderer<VLabel> {
 	@Override
 	public Component render() {
 		VLabel renderable = getVElement();
-		Label label = new Label();
+		String name = getVElement().getName() == null ? "" : getVElement().getName();
+		Label label = new Label(name);
 		if (renderable.getStyle() == VLabelStyle.SEPARATOR) {
-			label = new Label("<hr/>", ContentMode.HTML);
+			label = new Label(HTML_SEPERATOR, ContentMode.HTML);
 		} else {
 			label.addStyleName(renderable.getStyle().getName().toLowerCase());
 			if (renderable.getStyle().getValue() > 6) {
@@ -62,6 +64,10 @@ public class LabelRendererVaadin extends AbstractVaadinRenderer<VLabel> {
 			createDatabinding(iterator.next(), label);
 		}
 		return label;
+	}
+
+	@Override
+	protected void applyCaption() {
 	}
 
 	@Override
