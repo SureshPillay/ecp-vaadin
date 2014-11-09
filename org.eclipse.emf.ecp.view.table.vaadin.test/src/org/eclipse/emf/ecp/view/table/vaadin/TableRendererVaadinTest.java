@@ -43,6 +43,7 @@ import org.eclipse.emf.ecp.view.spi.model.VViewPackage;
 import org.eclipse.emf.ecp.view.spi.model.util.ViewModelUtil;
 import org.eclipse.emf.ecp.view.spi.renderer.NoPropertyDescriptorFoundExeption;
 import org.eclipse.emf.ecp.view.spi.renderer.NoRendererFoundException;
+import org.eclipse.emf.ecp.view.spi.table.model.DetailEditing;
 import org.eclipse.emf.ecp.view.spi.table.model.VTableControl;
 import org.eclipse.emf.ecp.view.spi.table.model.VTableDomainModelReference;
 import org.eclipse.emf.ecp.view.spi.table.model.VTableFactory;
@@ -264,18 +265,16 @@ public class TableRendererVaadinTest {
 
 	@Test
 	public void testPanelTableWithTwoColumns() throws NoRendererFoundException, NoPropertyDescriptorFoundExeption {
-		// final EClass eClass = EcoreFactory.eINSTANCE.createEClass();
-		// ((EClass) this.domainElement).getESuperTypes().add(eClass);
-		// final TableControlHandle handle = createTableWithTwoTableColumns();
-		// handle.getTableControl().setDetailEditing(DetailEditing.WITH_PANEL);
-		// handle.getTableControl().setDetailView(createDetailView());
-		// final AbstractSWTRenderer<VElement> tableRenderer =
-		// this.rendererFactory.getRenderer(handle.getTableControl(),
-		// new ViewModelContextWithoutServices(handle.getTableControl()));
-		// final Control control = tableRenderer.render(new SWTGridCell(0, 0, tableRenderer), this.shell);
-		// if (control == null) {
-		// fail("No control was rendered");
-		// }
+		final EClass eClass = EcoreFactory.eINSTANCE.createEClass();
+		((EClass) this.domainElement).getESuperTypes().add(eClass);
+		final TableControlHandle handle = createTableWithTwoTableColumns();
+		handle.getTableControl().setDetailEditing(DetailEditing.WITH_PANEL);
+		handle.getTableControl().setDetailView(createDetailView());
+		try {
+			Table table = assertTableWithoutService(handle, 2);
+			fail();
+		} catch (RuntimeException e) {
+		}
 		// final Composite controlComposite = (Composite) ((Composite) control).getChildren()[1];
 		// final Composite tableComposite = (Composite) controlComposite.getChildren()[0];
 		// final Table table = (Table) tableComposite.getChildren()[0];
