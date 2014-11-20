@@ -1,11 +1,11 @@
 /*******************************************************************************
  * Copyright (c) 2014 Dennis Melzer and others.
- * 
+ *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  * Dennis - initial API and implementation
  ******************************************************************************/
@@ -32,20 +32,33 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.themes.BaseTheme;
 
+/**
+ * A Factory for vaadin controls.
+ *
+ * @author Dennis Melzer
+ *
+ */
 public final class VaadinWidgetFactory {
 
 	private VaadinWidgetFactory() {
 
 	}
 
+	/**
+	 * Creates a add button for table.
+	 *
+	 * @param setting the setting
+	 * @param table the table
+	 * @return the button
+	 */
 	public static Button createTableAddButton(final Setting setting, final Table table) {
-		Button add = new Button();
-		add.addStyleName("table-add");
+		final Button add = new Button();
+		add.addStyleName("table-add"); //$NON-NLS-1$
 		add.addClickListener(new ClickListener() {
 
 			@Override
 			public void buttonClick(ClickEvent event) {
-				EObject addItem = createItem(setting);
+				final EObject addItem = createItem(setting);
 				getItems(setting).add(addItem);
 				if (table.isSelectable()) {
 					table.select(addItem);
@@ -55,9 +68,16 @@ public final class VaadinWidgetFactory {
 		return add;
 	}
 
+	/**
+	 * Creates a remove button for a select element.
+	 *
+	 * @param setting the setting
+	 * @param abstractSelect the table
+	 * @return the button
+	 */
 	public static Button createTableRemoveButton(final Setting setting, final AbstractSelect abstractSelect) {
-		Button remove = new Button();
-		remove.addStyleName("table-remove");
+		final Button remove = new Button();
+		remove.addStyleName("table-remove"); //$NON-NLS-1$
 		remove.addClickListener(new ClickListener() {
 
 			@Override
@@ -69,43 +89,65 @@ public final class VaadinWidgetFactory {
 		return remove;
 	}
 
+	/**
+	 * Creates a edit button for a select element.
+	 *
+	 * @param abstractSelect the element
+	 * @param view the view which should be show
+	 * @return the button
+	 */
 	public static Button createTableEditButton(final AbstractSelect abstractSelect, final VView view) {
-		Button edit = new Button();
-		edit.addStyleName("table-edit");
+		final Button edit = new Button();
+		edit.addStyleName("table-edit"); //$NON-NLS-1$
 		edit.addClickListener(new ClickListener() {
 
 			@Override
 			public void buttonClick(ClickEvent event) {
-				EditDialog editDialog = new EditDialog((EObject) abstractSelect.getValue(), view);
+				final EditDialog editDialog = new EditDialog((EObject) abstractSelect.getValue(), view);
 				UI.getCurrent().addWindow(editDialog);
 			}
 		});
 		return edit;
 	}
 
+	/**
+	 * Creates a add button for a list.
+	 *
+	 * @param setting the setting
+	 * @param textField the textfield
+	 * @return the button
+	 */
 	public static Button createListAddButton(final Setting setting, final TextField textField) {
-		Button add = new Button();
-		add.addStyleName("list-add");
+		final Button add = new Button();
+		add.addStyleName("list-add"); //$NON-NLS-1$
 		add.addClickListener(new ClickListener() {
 
 			@Override
 			public void buttonClick(ClickEvent event) {
 				try {
 					getItems(setting).add(textField.getConvertedValue());
-				} catch (Converter.ConversionException e) {
+				} catch (final Converter.ConversionException e) {
 					return;
 				}
-				textField.setValue("");
+				textField.setValue(""); //$NON-NLS-1$
 				textField.focus();
 			}
 		});
 		return add;
 	}
 
+	/**
+	 * Creates a remove button for a list.
+	 *
+	 * @param setting the seeting
+	 * @param abstractSelect the select element
+	 * @param textField the textfield
+	 * @return the button
+	 */
 	public static Button createListRemoveButton(final Setting setting, final AbstractSelect abstractSelect,
-			final TextField textField) {
-		Button remove = new Button();
-		remove.addStyleName("list-remove");
+		final TextField textField) {
+		final Button remove = new Button();
+		remove.addStyleName("list-remove"); //$NON-NLS-1$
 
 		remove.addClickListener(new ClickListener() {
 
@@ -120,23 +162,37 @@ public final class VaadinWidgetFactory {
 		return remove;
 	}
 
+	/**
+	 * Creates a edit link.
+	 *
+	 * @param selection the selection
+	 * @param caption the caption
+	 * @return the button
+	 */
 	public static Button createEditLink(final EObject selection, String caption) {
-		Button edit = new Button(caption);
+		final Button edit = new Button(caption);
 		edit.addStyleName(BaseTheme.BUTTON_LINK);
 		edit.addClickListener(new ClickListener() {
 
 			@Override
 			public void buttonClick(ClickEvent event) {
-				EditDialog editDialog = new EditDialog(selection);
+				final EditDialog editDialog = new EditDialog(selection);
 				UI.getCurrent().addWindow(editDialog);
 			}
 		});
 		return edit;
 	}
 
+	/**
+	 * Creates a remove button in flat look.
+	 *
+	 * @param setting the setting
+	 * @param delete the selection
+	 * @return the button
+	 */
 	public static Button createTableRemoveButtonFlat(final Setting setting, final Object delete) {
-		Button remove = new Button();
-		remove.addStyleName("table-remove");
+		final Button remove = new Button();
+		remove.addStyleName("table-remove"); //$NON-NLS-1$
 		remove.addClickListener(new ClickListener() {
 
 			@Override
@@ -154,8 +210,8 @@ public final class VaadinWidgetFactory {
 		}
 
 		if (deleteObject instanceof Collection) {
-			Collection<?> deleteCollection = (Collection<?>) deleteObject;
-			for (Object object : deleteCollection) {
+			final Collection<?> deleteCollection = (Collection<?>) deleteObject;
+			for (final Object object : deleteCollection) {
 				deleteObjectItems(setting, object);
 			}
 			return;

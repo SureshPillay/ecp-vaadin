@@ -1,3 +1,14 @@
+/*******************************************************************************
+ * Copyright (c) 2014 Dennis Melzer and others.
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ * Dennis - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.emf.ecp.view.core.vaadin;
 
 import java.util.Iterator;
@@ -8,17 +19,28 @@ import org.eclipse.emf.ecore.EObject;
 
 import com.vaadin.ui.Table;
 
+/**
+ * The List Diff Visitor for handling removing and adding object from a table to add the refresh row adapter.
+ *
+ * @author Dennis Melzer
+ *
+ */
 public class TableListDiffVisitor extends ListDiffVisitor {
 
-	private Table table;
+	private final Table table;
 
+	/**
+	 * Constructor.
+	 *
+	 * @param table the table
+	 */
 	public TableListDiffVisitor(Table table) {
 		this.table = table;
 	}
 
 	@Override
 	public void handleAdd(int index, Object element) {
-		((EObject) element).eAdapters().add(new TableContentUpdateAdaper(this.table));
+		((EObject) element).eAdapters().add(new TableContentUpdateAdaper(table));
 	}
 
 	@Override
@@ -30,20 +52,11 @@ public class TableListDiffVisitor extends ListDiffVisitor {
 	}
 
 	private void removeTableContentAdapter(EObject selectedValue) {
-		for (Iterator<Adapter> iterator = selectedValue.eAdapters().iterator(); iterator.hasNext();) {
+		for (final Iterator<Adapter> iterator = selectedValue.eAdapters().iterator(); iterator.hasNext();) {
 			if (iterator.next() instanceof TableContentUpdateAdaper) {
 				iterator.remove();
 			}
 		}
-	}
-
-	public static boolean containsTableContentAdapter(EObject selectedValue) {
-		for (Iterator<Adapter> iterator = selectedValue.eAdapters().iterator(); iterator.hasNext();) {
-			if (iterator.next() instanceof TableContentUpdateAdaper) {
-				return true;
-			}
-		}
-		return false;
 	}
 
 }

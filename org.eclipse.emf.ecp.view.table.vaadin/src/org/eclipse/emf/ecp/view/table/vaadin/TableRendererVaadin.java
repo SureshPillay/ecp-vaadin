@@ -1,11 +1,11 @@
 /*******************************************************************************
  * Copyright (c) 2014 Dennis Melzer and others.
- * 
+ *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  * Dennis - initial API and implementation
  ******************************************************************************/
@@ -48,16 +48,17 @@ import com.vaadin.ui.Table.ColumnGenerator;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 
+/**
+ * Vaadin Renderer for {@link VTableControl}.
+ *
+ * @author Dennis Melzer
+ *
+ */
 public class TableRendererVaadin extends AbstractControlRendererVaadin<VTableControl> {
 
+	private static final String TABLE_BUTTON_TOOLBAR = "table-button-toolbar"; //$NON-NLS-1$
 	private Setting setting;
 	private Table table;
-
-	protected EObject addItem(Setting setting) {
-		final EClass clazz = ((EReference) setting.getEStructuralFeature()).getEReferenceType();
-		final EObject instance = clazz.getEPackage().getEFactoryInstance().create(clazz);
-		return instance;
-	}
 
 	private InternalEObject getInstanceOf(EClass clazz) {
 		return InternalEObject.class.cast(clazz.getEPackage().getEFactoryInstance().create(clazz));
@@ -65,37 +66,37 @@ public class TableRendererVaadin extends AbstractControlRendererVaadin<VTableCon
 
 	@Override
 	protected Component render() {
-		VTableControl control = getVElement();
-		ViewModelContext viewContext = getViewModelContext();
-		Iterator<Setting> iterator = control.getDomainModelReference().getIterator();
+		final VTableControl control = getVElement();
+		final ViewModelContext viewContext = getViewModelContext();
+		final Iterator<Setting> iterator = control.getDomainModelReference().getIterator();
 		if (!iterator.hasNext()) {
 			return null;
 		}
-		this.setting = iterator.next();
+		setting = iterator.next();
 
-		VerticalLayout layout = new VerticalLayout();
-		this.table = createTable();
-		layout.setData(this.table);
+		final VerticalLayout layout = new VerticalLayout();
+		table = createTable();
+		layout.setData(table);
 
 		setVisibleColumns(control, viewContext);
 
-		bindTable(this.setting, this.table);
+		bindTable(setting, table);
 
 		if (control.isReadonly()) {
-			layout.addComponent(this.table);
+			layout.addComponent(table);
 			return layout;
 		}
 
-		HorizontalLayout horizontalLayout = createDetailEditing(control);
+		final HorizontalLayout horizontalLayout = createDetailEditing(control);
 
 		layout.addComponent(horizontalLayout);
 		layout.setComponentAlignment(horizontalLayout, Alignment.TOP_RIGHT);
-		layout.addComponent(this.table);
+		layout.addComponent(table);
 		return layout;
 	}
 
 	private HorizontalLayout createDetailEditing(VTableControl control) {
-		HorizontalLayout horizontalLayout = new HorizontalLayout();
+		final HorizontalLayout horizontalLayout = new HorizontalLayout();
 		addTableToolbarStyle(control, horizontalLayout);
 
 		if (!control.isAddRemoveDisabled()) {
@@ -108,7 +109,7 @@ public class TableRendererVaadin extends AbstractControlRendererVaadin<VTableCon
 			break;
 		case WITH_PANEL:
 			// TODO Master/Detail Panel
-			throw new UnsupportedOperationException("WITH_PANEL is not implmented yet");
+			throw new UnsupportedOperationException("WITH_PANEL is not implmented yet"); //$NON-NLS-1$
 		default:
 			break;
 		}
@@ -116,39 +117,40 @@ public class TableRendererVaadin extends AbstractControlRendererVaadin<VTableCon
 	}
 
 	private void createEditButton(VTableControl control, HorizontalLayout horizontalLayout) {
-		EMFUpdateValueStrategy emfUpdateValueStrategy = new EMFUpdateValueStrategy();
+		final EMFUpdateValueStrategy emfUpdateValueStrategy = new EMFUpdateValueStrategy();
 		emfUpdateValueStrategy.setConverter(new SelectionConverter());
-		Button edit = VaadinWidgetFactory.createTableEditButton(this.table, control.getDetailView());
+		final Button edit = VaadinWidgetFactory.createTableEditButton(table, control.getDetailView());
 		edit.setEnabled(control.getDetailView() != null);
 		horizontalLayout.addComponent(edit);
 		bindButtonEnable(edit);
 	}
 
 	private void createAddRemoveButton(HorizontalLayout horizontalLayout) {
-		Button add = VaadinWidgetFactory.createTableAddButton(this.setting, this.table);
+		final Button add = VaadinWidgetFactory.createTableAddButton(setting, table);
 		horizontalLayout.addComponent(add);
-		Button remove = VaadinWidgetFactory.createTableRemoveButton(this.setting, this.table);
+		final Button remove = VaadinWidgetFactory.createTableRemoveButton(setting, table);
 		horizontalLayout.addComponent(remove);
 		bindButtonEnable(remove);
 	}
 
 	private void bindButtonEnable(Button button) {
-		EMFUpdateValueStrategy strategy = new EMFUpdateValueStrategy();
+		final EMFUpdateValueStrategy strategy = new EMFUpdateValueStrategy();
 		strategy.setConverter(new SelectionConverter());
-		IObservableValue observeSingleSelection = VaadinObservables.observeSingleSelection(this.table,
-				getReferenceType().getInstanceClass());
-		this.bindingContext.bindValue(VaadinObservables.observeEnabled(button), observeSingleSelection, null, strategy);
+		final IObservableValue observeSingleSelection = VaadinObservables.observeSingleSelection(table,
+			getReferenceType().getInstanceClass());
+		getBindingContext().bindValue(VaadinObservables.observeEnabled(button), observeSingleSelection, null, strategy);
 	}
 
 	private void addTableToolbarStyle(VTableControl control, HorizontalLayout horizontalLayout) {
 		if (hasCaption()) {
-			horizontalLayout.addStyleName("table-button-toolbar");
+			horizontalLayout.addStyleName(TABLE_BUTTON_TOOLBAR);
 		}
 	}
 
 	private void bindTable(final Setting setting, final Table table) {
-		IObservableList targetValue = VaadinObservables.observeContainerItemSetContents(table, setting.getEObject()
-				.getClass());
+		final IObservableList targetValue = VaadinObservables.observeContainerItemSetContents(table, setting
+			.getEObject()
+			.getClass());
 		targetValue.addListChangeListener(new IListChangeListener() {
 
 			@Override
@@ -157,8 +159,9 @@ public class TableRendererVaadin extends AbstractControlRendererVaadin<VTableCon
 			}
 		});
 
-		IObservableList modelValue = EMFProperties.list(setting.getEStructuralFeature()).observe(setting.getEObject());
-		this.bindingContext.bindList(targetValue, modelValue);
+		final IObservableList modelValue = EMFProperties.list(setting.getEStructuralFeature()).observe(
+			setting.getEObject());
+		getBindingContext().bindList(targetValue, modelValue);
 	}
 
 	private Table createTable() {
@@ -167,23 +170,24 @@ public class TableRendererVaadin extends AbstractControlRendererVaadin<VTableCon
 		table.setSizeFull();
 
 		final EClass clazz = getReferenceType();
-		BeanItemContainer<Object> indexedContainer = new BeanItemContainer(clazz.getInstanceClass());
+		final BeanItemContainer<Object> indexedContainer = new BeanItemContainer(clazz.getInstanceClass());
 		table.setContainerDataSource(indexedContainer);
 		return table;
 	}
 
 	private EClass getReferenceType() {
-		return ((EReference) this.setting.getEStructuralFeature()).getEReferenceType();
+		return ((EReference) setting.getEStructuralFeature()).getEReferenceType();
 	}
 
 	private void setVisibleColumns(VTableControl control, ViewModelContext viewContext) {
-		List<EStructuralFeature> listFeatures = VaadinRendererUtil.getColumnFeatures(control);
+		final List<EStructuralFeature> listFeatures = VaadinRendererUtil.getColumnFeatures(control);
 		final InternalEObject tempInstance = getInstanceOf(getReferenceType());
-		List<String> visibleColumnsNames = new ArrayList<String>();
-		List<String> visibleColumnsId = new ArrayList<String>();
+		final List<String> visibleColumnsNames = new ArrayList<String>();
+		final List<String> visibleColumnsId = new ArrayList<String>();
 		for (final EStructuralFeature eStructuralFeature : listFeatures) {
-			IItemPropertyDescriptor itemPropertyDescriptor = VaadinRendererUtil.getItemPropertyDescriptor(tempInstance,
-					eStructuralFeature);
+			final IItemPropertyDescriptor itemPropertyDescriptor = VaadinRendererUtil.getItemPropertyDescriptor(
+				tempInstance,
+				eStructuralFeature);
 			String displayName = eStructuralFeature.getName();
 			// String tooltipText = eStructuralFeature.getName();
 
@@ -195,20 +199,20 @@ public class TableRendererVaadin extends AbstractControlRendererVaadin<VTableCon
 			final TextField converter = new TextField();
 			VaadinRendererUtil.setConverterToTextField(eStructuralFeature, converter, control, viewContext);
 			if (converter.getConverter() != null) {
-				this.table.addGeneratedColumn(eStructuralFeature.getName(), new ColumnGenerator() {
+				table.addGeneratedColumn(eStructuralFeature.getName(), new ColumnGenerator() {
 					@Override
 					public Object generateCell(Table source, Object itemId, Object columnId) {
-						EObject eObject = (EObject) itemId;
+						final EObject eObject = (EObject) itemId;
 						return converter.getConverter().convertToPresentation(eObject.eGet(eStructuralFeature),
-								String.class, Locale.getDefault());
+							String.class, Locale.getDefault());
 					}
 				});
 			}
 
 		}
 		// TODO: FIXME 2 gleiche coloumns?
-		this.table.setVisibleColumns(visibleColumnsId.toArray(new Object[visibleColumnsId.size()]));
-		this.table.setColumnHeaders(visibleColumnsNames.toArray(new String[visibleColumnsNames.size()]));
+		table.setVisibleColumns(visibleColumnsId.toArray(new Object[visibleColumnsId.size()]));
+		table.setColumnHeaders(visibleColumnsNames.toArray(new String[visibleColumnsNames.size()]));
 	}
 
 	private List<Object> getItems(final Setting setting) {

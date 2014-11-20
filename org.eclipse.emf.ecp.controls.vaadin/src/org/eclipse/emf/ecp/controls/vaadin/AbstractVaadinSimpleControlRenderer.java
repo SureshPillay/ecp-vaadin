@@ -1,11 +1,11 @@
 /*******************************************************************************
  * Copyright (c) 2014 Dennis Melzer and others.
- * 
+ *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  * Dennis - initial API and implementation
  ******************************************************************************/
@@ -33,56 +33,90 @@ import com.vaadin.data.Property.ValueChangeNotifier;
 import com.vaadin.server.Sizeable.Unit;
 import com.vaadin.ui.Component;
 
-public abstract class VaadinSimpleControlRenderer extends AbstractControlRendererVaadin<VControl> {
+/**
+ * Abstract Class for a Vaadin control.
+ *
+ * @author Dennis Melzer
+ *
+ */
+public abstract class AbstractVaadinSimpleControlRenderer extends AbstractControlRendererVaadin<VControl> {
 
 	private IObservableValue modelValue;
 	private final WritableValue value = new WritableValue();
 
 	@Override
 	protected void dispose() {
-		if (this.value != null) {
-			this.value.dispose();
+		if (value != null) {
+			value.dispose();
 		}
 
-		if (this.modelValue != null) {
-			this.modelValue.dispose();
-			this.modelValue = null;
+		if (modelValue != null) {
+			modelValue.dispose();
+			modelValue = null;
 		}
 		super.dispose();
 	}
 
+	/**
+	 * Bind the model to target.
+	 *
+	 * @param target the target
+	 * @param model the model
+	 * @param targetToModelStrategy the targetToModelStrategy
+	 * @param modelToTargetStrategy the modelToTargetStrategy
+	 * @return binding
+	 */
 	protected Binding bindModelToTarget(IObservableValue target, IObservableValue model,
-			UpdateValueStrategy targetToModelStrategy, UpdateValueStrategy modelToTargetStrategy) {
-		final Binding binding = this.bindingContext.bindValue(target, model, targetToModelStrategy,
-				modelToTargetStrategy);
+		UpdateValueStrategy targetToModelStrategy, UpdateValueStrategy modelToTargetStrategy) {
+		final Binding binding = getBindingContext().bindValue(target, model, targetToModelStrategy,
+			modelToTargetStrategy);
 		return binding;
 	}
 
+	/**
+	 * Bind the model to target.
+	 *
+	 * @param target the target
+	 * @param model the model
+	 * @return the binding
+	 */
 	protected Binding bindModelToTarget(IObservableList target, IObservableList model) {
-		final Binding binding = this.bindingContext.bindList(target, model);
+		final Binding binding = getBindingContext().bindList(target, model);
 		return binding;
 	}
 
 	@Override
 	protected Component render() {
-		Setting setting = getVElement().getDomainModelReference().getIterator().next();
+		final Setting setting = getVElement().getDomainModelReference().getIterator().next();
 		final Component component = createControl();
 		createDatabinding(setting, component);
 		component.setWidth(100, Unit.PERCENTAGE);
 		return component;
 	}
 
-	protected void createDatabinding(Setting setting, final Component component) {
-		IObservableValue targetValue = VaadinObservables.observeValue((ValueChangeNotifier) component);
-		IObservableValue modelValue = getModelValue(setting);
+	private void createDatabinding(Setting setting, final Component component) {
+		final IObservableValue targetValue = VaadinObservables.observeValue((ValueChangeNotifier) component);
+		final IObservableValue modelValue = getModelValue(setting);
 		bindModelToTarget(targetValue, modelValue, getTargetToModelStrategy(component),
-				getModelToTargetStrategy(component));
+			getModelToTargetStrategy(component));
 	}
 
+	/**
+	 * Return the model to target strategy.
+	 *
+	 * @param component the Vaadin component
+	 * @return the strategy
+	 */
 	protected UpdateValueStrategy getModelToTargetStrategy(Component component) {
 		return new EMFUpdateValueStrategy();
 	}
 
+	/**
+	 * Return the target to model strategy.
+	 *
+	 * @param component the Vaadin component
+	 * @return the strategy
+	 */
 	protected UpdateValueStrategy getTargetToModelStrategy(Component component) {
 		return new EMFUpdateValueStrategy();
 	}
@@ -95,7 +129,7 @@ public abstract class VaadinSimpleControlRenderer extends AbstractControlRendere
 
 	/**
 	 * Return the {@link IItemPropertyDescriptor} describing this {@link Setting}.
-	 * 
+	 *
 	 * @param setting the {@link Setting} to use for identifying the {@link IItemPropertyDescriptor}.
 	 * @return the {@link IItemPropertyDescriptor}
 	 */
@@ -103,33 +137,38 @@ public abstract class VaadinSimpleControlRenderer extends AbstractControlRendere
 		if (setting == null) {
 			return null;
 		}
-		final IItemPropertyDescriptor descriptor = this.adapterFactoryItemDelegator.getPropertyDescriptor(
-				setting.getEObject(), setting.getEStructuralFeature());
+		final IItemPropertyDescriptor descriptor = getAdapterFactoryItemDelegator().getPropertyDescriptor(
+			setting.getEObject(), setting.getEStructuralFeature());
 		return descriptor;
 	}
 
-	protected final IObservableValue getModelValue(final Setting setting) {
-		if (this.modelValue == null) {
+	private IObservableValue getModelValue(final Setting setting) {
+		if (modelValue == null) {
 
-			this.modelValue = EMFEditProperties.value(getEditingDomain(setting), setting.getEStructuralFeature())
-					.observeDetail(this.value);
+			modelValue = EMFEditProperties.value(getEditingDomain(setting), setting.getEStructuralFeature())
+				.observeDetail(value);
 		}
-		return this.modelValue;
+		return modelValue;
 	}
 
 	private void updateControl() {
 		final Iterator<Setting> settings = getVElement().getDomainModelReference().getIterator();
 		if (settings.hasNext()) {
-			this.value.setValue(settings.next().getEObject());
+			value.setValue(settings.next().getEObject());
 		} else {
-			this.value.setValue(null);
+			value.setValue(null);
 		}
 	}
 
-	protected final EditingDomain getEditingDomain(Setting setting) {
+	private EditingDomain getEditingDomain(Setting setting) {
 		return AdapterFactoryEditingDomain.getEditingDomainFor(setting.getEObject());
 	}
 
+	/**
+	 * Creates the Vaadin control.
+	 *
+	 * @return the component
+	 */
 	protected abstract Component createControl();
 
 }

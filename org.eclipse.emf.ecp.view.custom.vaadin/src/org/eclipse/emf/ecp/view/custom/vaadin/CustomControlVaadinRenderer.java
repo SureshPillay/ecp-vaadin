@@ -19,12 +19,18 @@ import org.osgi.framework.Bundle;
 
 import com.vaadin.ui.Component;
 
+/**
+ * A Vaadin Renderer for {@link VCustomControl}
+ *
+ * @author Dennis Melzer
+ *
+ */
 public class CustomControlVaadinRenderer extends AbstractVaadinRenderer<VCustomControl> {
 
 	private static AbstractVaadinRenderer<VCustomControl> loadObject(String bundleName, String clazz) {
 		final Bundle bundle = Platform.getBundle(bundleName);
 		if (bundle == null) {
-			new ClassNotFoundException(clazz + " from " + bundleName + " could not be loaded");
+			new ClassNotFoundException(clazz + " from " + bundleName + " could not be loaded"); //$NON-NLS-1$ //$NON-NLS-2$
 			return null;
 		}
 		try {
@@ -45,8 +51,8 @@ public class CustomControlVaadinRenderer extends AbstractVaadinRenderer<VCustomC
 
 	@Override
 	protected Component render() {
-		VCustomControl renderable = getVElement();
-		ViewModelContext viewContext = getViewModelContext();
+		final VCustomControl renderable = getVElement();
+		final ViewModelContext viewContext = getViewModelContext();
 		String bundleName = renderable.getBundleName();
 		String className = renderable.getClassName();
 		if (bundleName == null) {
@@ -55,11 +61,11 @@ public class CustomControlVaadinRenderer extends AbstractVaadinRenderer<VCustomC
 		if (className == null) {
 			className = ""; //$NON-NLS-1$
 		}
-		final AbstractVaadinRenderer component = loadObject(bundleName, className);
+		final AbstractVaadinRenderer<VCustomControl> component = loadObject(bundleName, className);
 		if (component == null) {
 			// TODO
 			throw new IllegalStateException(String.format("The  %1$s/%2$s cannot be loaded!", //$NON-NLS-1$
-					renderable.getBundleName(), renderable.getClassName()));
+				renderable.getBundleName(), renderable.getClassName()));
 		}
 		component.init(renderable, viewContext);
 

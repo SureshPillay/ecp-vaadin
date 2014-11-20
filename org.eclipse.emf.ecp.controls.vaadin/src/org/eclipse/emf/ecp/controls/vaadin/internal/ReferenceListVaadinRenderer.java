@@ -1,11 +1,11 @@
 /*******************************************************************************
  * Copyright (c) 2014 Dennis Melzer and others.
- * 
+ *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  * Dennis - initial API and implementation
  ******************************************************************************/
@@ -37,55 +37,63 @@ import com.vaadin.ui.Table;
 import com.vaadin.ui.Table.ColumnGenerator;
 import com.vaadin.ui.VerticalLayout;
 
+/**
+ * The Vaadin Renderer for a reference (ERefernce).
+ *
+ * @author Dennis Melzer
+ *
+ */
 public class ReferenceListVaadinRenderer extends AbstractVaadinList {
 
-	private static final String LINK_COLUMN = "link";
+	private static final String TABLE_BUTTON_TOOLBAR_STYLE = "table-button-toolbar"; //$NON-NLS-1$
+
+	private static final String LINK_COLUMN = "link"; //$NON-NLS-1$
 
 	private ComposedAdapterFactory composedAdapterFactory;
 	private AdapterFactoryItemDelegator adapterFactoryItemDelegator;
 
 	@Override
 	public void renderList(VerticalLayout layout) {
-		this.composedAdapterFactory = new ComposedAdapterFactory(new AdapterFactory[] {
-				new CustomReflectiveItemProviderAdapterFactory(),
-				new ComposedAdapterFactory(ComposedAdapterFactory.Descriptor.Registry.INSTANCE) });
-		this.adapterFactoryItemDelegator = new AdapterFactoryItemDelegator(this.composedAdapterFactory);
+		composedAdapterFactory = new ComposedAdapterFactory(new AdapterFactory[] {
+			new CustomReflectiveItemProviderAdapterFactory(),
+			new ComposedAdapterFactory(ComposedAdapterFactory.Descriptor.Registry.INSTANCE) });
+		adapterFactoryItemDelegator = new AdapterFactoryItemDelegator(composedAdapterFactory);
 		createLinkColumn();
 		bindTable();
-		layout.addComponent(this.toolbarLayout);
-		layout.addComponent(this.table);
-		layout.setData(this.table);
-		layout.setComponentAlignment(this.toolbarLayout, Alignment.TOP_RIGHT);
+		layout.addComponent(getToolbar());
+		layout.addComponent(getTable());
+		layout.setData(getTable());
+		layout.setComponentAlignment(getToolbar(), Alignment.TOP_RIGHT);
 	}
 
 	private void bindTable() {
-		IObservableList targetValue = VaadinObservables.observeContainerItemSetContents(this.table, this.setting
-				.getEObject().getClass());
+		final IObservableList targetValue = VaadinObservables.observeContainerItemSetContents(getTable(), getSetting()
+			.getEObject().getClass());
 		targetValue.addListChangeListener(new IListChangeListener() {
 
 			@Override
 			public void handleListChange(ListChangeEvent event) {
-				event.diff.accept(new TableListDiffVisitor(ReferenceListVaadinRenderer.this.table));
+				event.diff.accept(new TableListDiffVisitor(ReferenceListVaadinRenderer.this.getTable()));
 			}
 		});
-		IObservableList modelValue = EMFProperties.list(this.setting.getEStructuralFeature()).observe(
-				this.setting.getEObject());
-		EMFDataBindingContext dataBindingContext = new EMFDataBindingContext();
+		final IObservableList modelValue = EMFProperties.list(getSetting().getEStructuralFeature()).observe(
+			getSetting().getEObject());
+		final EMFDataBindingContext dataBindingContext = new EMFDataBindingContext();
 		dataBindingContext.bindList(targetValue, modelValue);
-		EMFUpdateValueStrategy emfUpdateValueStrategy = new EMFUpdateValueStrategy();
+		final EMFUpdateValueStrategy emfUpdateValueStrategy = new EMFUpdateValueStrategy();
 		emfUpdateValueStrategy.setConverter(new SelectionConverter());
 	}
 
 	private void createLinkColumn() {
-		this.table.addGeneratedColumn(LINK_COLUMN, new ColumnGenerator() {
+		getTable().addGeneratedColumn(LINK_COLUMN, new ColumnGenerator() {
 
 			@Override
 			public Object generateCell(Table source, Object itemId, Object columnId) {
 				if (!(itemId instanceof EObject)) {
 					return null;
 				}
-				VView view = ViewProviderHelper.getView((EObject) itemId, null);
-				String text = ReferenceListVaadinRenderer.this.adapterFactoryItemDelegator.getText(itemId);
+				final VView view = ViewProviderHelper.getView((EObject) itemId, null);
+				final String text = adapterFactoryItemDelegator.getText(itemId);
 				if (view == null) {
 					return text;
 				}
@@ -97,27 +105,27 @@ public class ReferenceListVaadinRenderer extends AbstractVaadinList {
 
 	@Override
 	protected HorizontalLayout createToolbar() {
-		HorizontalLayout horizontalLayout = new HorizontalLayout();
+		final HorizontalLayout horizontalLayout = new HorizontalLayout();
 		if (hasCaption()) {
-			horizontalLayout.addStyleName("table-button-toolbar");
+			horizontalLayout.addStyleName(TABLE_BUTTON_TOOLBAR_STYLE);
 		}
 
-		Button add = VaadinWidgetFactory.createTableAddButton(this.setting, this.table);
+		final Button add = VaadinWidgetFactory.createTableAddButton(getSetting(), getTable());
 		horizontalLayout.addComponent(add);
 		return horizontalLayout;
 	}
 
 	@Override
 	public void dispose() {
-		if (this.composedAdapterFactory != null) {
-			this.composedAdapterFactory.dispose();
+		if (composedAdapterFactory != null) {
+			composedAdapterFactory.dispose();
 		}
-		this.composedAdapterFactory = null;
+		composedAdapterFactory = null;
 		super.dispose();
 	}
 
 	@Override
-	protected void createContainerPropery(IndexedContainer container) {
+	protected void createContainerProperty(IndexedContainer container) {
 		container.addContainerProperty(LINK_COLUMN, Button.class, null);
 		container.addContainerProperty(REMOVE_COLUMN, Button.class, null);
 

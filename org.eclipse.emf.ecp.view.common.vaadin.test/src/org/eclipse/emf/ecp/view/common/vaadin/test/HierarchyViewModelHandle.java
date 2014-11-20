@@ -1,3 +1,14 @@
+/*******************************************************************************
+ * Copyright (c) 2014 Dennis Melzer and others.
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ * Dennis - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.emf.ecp.view.common.vaadin.test;
 
 import org.eclipse.emf.ecp.view.spi.model.VContainedContainer;
@@ -17,25 +28,31 @@ public class HierarchyViewModelHandle {
 	private VElement secondSecondChild;
 
 	/**
-	 * @param root
+	 * Construct.
+	 *
+	 * @param root the Element
 	 */
 	public HierarchyViewModelHandle(VElement root) {
 		this.root = root;
 	}
 
 	/**
-	 * @return the horizontal
+	 * The root
+	 *
+	 * @return the horizontal the horizontal
 	 */
 	public VElement getRoot() {
-		return this.root;
+		return root;
 	}
 
 	/**
-	 * @param renderable
+	 *
+	 *
+	 * @param renderable the renderable
 	 */
 	public void addFirstChildToRoot(VElement renderable) {
-		this.firstChild = renderable;
-		final VContainedContainer collection = (VContainedContainer) this.root;
+		firstChild = renderable;
+		final VContainedContainer collection = (VContainedContainer) root;
 		collection.getChildren().add((VContainedElement) renderable);
 
 	}
@@ -45,7 +62,7 @@ public class HierarchyViewModelHandle {
 	 */
 	public void addSecondChildToRoot(VElement renderable) {
 		setSecondChild(renderable);
-		final VContainedContainer collection = (VContainedContainer) this.root;
+		final VContainedContainer collection = (VContainedContainer) root;
 		collection.getChildren().add((VContainedElement) renderable);
 
 	}
@@ -54,14 +71,14 @@ public class HierarchyViewModelHandle {
 	 * @return the first child
 	 */
 	public VElement getFirstChild() {
-		return this.firstChild;
+		return firstChild;
 	}
 
 	/**
 	 * @return the secondChild
 	 */
 	public VElement getSecondChild() {
-		return this.secondChild;
+		return secondChild;
 	}
 
 	/**
@@ -72,7 +89,7 @@ public class HierarchyViewModelHandle {
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	public void addFirstChildToFirstChild(VContainedElement composite) {
 		final VContainedContainer collection = (VContainedContainer) getFirstChild();
@@ -84,7 +101,7 @@ public class HierarchyViewModelHandle {
 	 * @return the firstFirstChild
 	 */
 	public VElement getFirstFirstChild() {
-		return this.firstFirstChild;
+		return firstFirstChild;
 	}
 
 	/**
@@ -98,7 +115,7 @@ public class HierarchyViewModelHandle {
 	 * @return the firstSecondChild
 	 */
 	public VElement getFirstSecondChild() {
-		return this.firstSecondChild;
+		return firstSecondChild;
 	}
 
 	/**
@@ -112,7 +129,7 @@ public class HierarchyViewModelHandle {
 	 * @return the secondFirstChild
 	 */
 	public VElement getSecondFirstChild() {
-		return this.secondFirstChild;
+		return secondFirstChild;
 	}
 
 	/**
@@ -126,7 +143,7 @@ public class HierarchyViewModelHandle {
 	 * @return the secondSecondChild
 	 */
 	public VElement getSecondSecondChild() {
-		return this.secondSecondChild;
+		return secondSecondChild;
 	}
 
 	/**

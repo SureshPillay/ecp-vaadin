@@ -1,11 +1,11 @@
 /*******************************************************************************
  * Copyright (c) 2014 Dennis Melzer and others.
- * 
+ *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  * Dennis - initial API and implementation
  ******************************************************************************/
@@ -26,8 +26,19 @@ import com.vaadin.ui.AbstractOrderedLayout;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.VerticalLayout;
 
+/**
+ * Vaadin Renderer for {@link VView}.
+ *
+ * @author Dennis Melzer
+ *
+ */
 public class ViewRendererVaadin extends AbstractVaadinRenderer<VView> {
 
+	private static final String BORDERLESS = "borderless"; //$NON-NLS-1$
+
+	/**
+	 * Default Constructor.
+	 */
 	public ViewRendererVaadin() {
 		super();
 	}
@@ -43,33 +54,34 @@ public class ViewRendererVaadin extends AbstractVaadinRenderer<VView> {
 
 	@Override
 	public Component render() {
-		AbstractOrderedLayout layout = getLayout();
+		final AbstractOrderedLayout layout = getLayout();
 		layout.setSpacing(true);
 		layout.setMargin(true);
 		layout.setSizeFull();
-		for (VContainedElement composite : getVElement().getChildren()) {
-			Component renderResult = this.rendererFactory.render(composite, getViewModelContext());
+		for (final VContainedElement composite : getVElement().getChildren()) {
+			final Component renderResult = getRendererFactory().render(composite, getViewModelContext());
 			layout.addComponent(renderResult);
 
 		}
-		ECPVaadinViewComponent ecpVaadinViewComponent = new ECPVaadinViewComponent();
-		ecpVaadinViewComponent.addStyleName("borderless");
+		final ECPVaadinViewComponent ecpVaadinViewComponent = new ECPVaadinViewComponent();
+		ecpVaadinViewComponent.addStyleName(BORDERLESS);
 		ecpVaadinViewComponent.setContent(layout);
 		return ecpVaadinViewComponent;
 	}
 
 	private AbstractOrderedLayout getLayout() {
-		BundleContext bundleContext = FrameworkUtil.getBundle(getClass()).getBundleContext();
+		final BundleContext bundleContext = FrameworkUtil.getBundle(getClass()).getBundleContext();
 		if (bundleContext == null) {
 			return new VerticalLayout();
 		}
 
-		ServiceReference<ViewLayoutProvider> reference = bundleContext.getServiceReference(ViewLayoutProvider.class);
+		final ServiceReference<ViewLayoutProvider> reference = bundleContext
+			.getServiceReference(ViewLayoutProvider.class);
 		if (reference == null) {
 			return new VerticalLayout();
 		}
 
-		ViewLayoutProvider service = bundleContext.getService(reference);
+		final ViewLayoutProvider service = bundleContext.getService(reference);
 		return service == null ? new VerticalLayout() : service.getViewLayout();
 	}
 

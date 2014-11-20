@@ -1,11 +1,11 @@
 /*******************************************************************************
  * Copyright (c) 2014 Dennis Melzer and others.
- * 
+ *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  * Dennis - initial API and implementation
  ******************************************************************************/
@@ -14,6 +14,7 @@ package org.eclipse.emf.ecp.controls.vaadin.internal;
 import java.util.List;
 import java.util.Locale;
 
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.core.databinding.observable.list.IObservableList;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
@@ -41,63 +42,69 @@ import com.vaadin.ui.Table.ColumnGenerator;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 
+/**
+ * The Vaadin Renderer for a primitive reference (EAttribute).
+ *
+ * @author Dennis Melzer
+ *
+ */
 public class PrimitiveListVaadinRenderer extends AbstractVaadinList {
 
-	private static final String VALUE_COLUMN = "value";
+	private static final String VALUE_COLUMN = "value"; //$NON-NLS-1$
 
 	@Override
 	public void renderList(VerticalLayout layout) {
-		final Class<?> instanceClass = this.setting.getEStructuralFeature().getEType().getInstanceClass();
+		final Class<?> instanceClass = getSetting().getEStructuralFeature().getEType().getInstanceClass();
 
 		final TextField textField = createTextfield();
-		final Converter<String, Object> converter = createConverter(instanceClass, this.table, textField);
+		final Converter<String, Object> converter = createConverter(instanceClass, getTable(), textField);
 
-		final Button add = createAddButton(this.setting, textField);
-		layout.addComponent(this.table);
-		layout.setData(this.table);
-		layout.addComponent(this.toolbarLayout);
-		bindControls(this.setting, textField, converter, add);
+		final Button add = createAddButton(getSetting(), textField);
+		layout.addComponent(getTable());
+		layout.setData(getTable());
+		layout.addComponent(getToolbar());
+		bindControls(textField, converter, add);
 	}
 
 	private Class<? extends EObject> bindTable(EStructuralFeature eStructuralFeature, Class<? extends EObject> clazz) {
-		this.table.addItems(this.setting.getEObject().eGet(eStructuralFeature));
-		IObservableList targetValue = VaadinObservables.observeContainerItemSetContents(this.table, clazz);
-		IObservableList modelValue = EMFProperties.list(eStructuralFeature).observe(this.setting.getEObject());
+		getTable().addItems(getSetting().getEObject().eGet(eStructuralFeature));
+		final IObservableList targetValue = VaadinObservables.observeContainerItemSetContents(getTable(), clazz);
+		final IObservableList modelValue = EMFProperties.list(eStructuralFeature).observe(getSetting().getEObject());
 		bindModelToTarget(targetValue, modelValue);
 		return clazz;
 	}
 
-	private void bindControls(final Setting setting, final TextField textField,
-			final Converter<String, Object> converter, final Button add) {
-		Class<? extends EObject> clazz = setting.getEObject().getClass();
-		EStructuralFeature eStructuralFeature = this.setting.getEStructuralFeature();
+	private void bindControls(final TextField textField,
+		final Converter<String, Object> converter, final Button add) {
+		final Class<? extends EObject> clazz = getSetting().getEObject().getClass();
+		final EStructuralFeature eStructuralFeature = getSetting().getEStructuralFeature();
 		bindTable(eStructuralFeature, clazz);
-		bindAddTextfield(setting, textField, converter);
+		bindAddTextfield(getSetting(), textField, converter);
 		bindTextfieldFocus(clazz, textField);
 		bindVisibleAddButton(clazz, add);
 	}
 
 	private void bindVisibleAddButton(Class<? extends EObject> clazz, final Button add) {
-		IObservableValue observeSingleSelection = VaadinObservables.observeSingleSelection(this.table, clazz);
-		UpdateValueStrategy emfUpdateValueStrategy = new EMFUpdateValueStrategy();
+		final IObservableValue observeSingleSelection = VaadinObservables.observeSingleSelection(getTable(), clazz);
+		final UpdateValueStrategy emfUpdateValueStrategy = new EMFUpdateValueStrategy();
 		emfUpdateValueStrategy.setConverter(new SelectionConverter(false));
-		this.bindingContext.bindValue(VaadinObservables.observeVisible(add), observeSingleSelection, null,
-				emfUpdateValueStrategy);
+		getBindingContext().bindValue(VaadinObservables.observeVisible(add), observeSingleSelection, null,
+			emfUpdateValueStrategy);
 	}
 
 	private void bindTextfieldFocus(Class<? extends EObject> clazz, final TextField textField) {
-		IObservableValue observeSingleSelection = VaadinObservables.observeSingleSelection(this.table, clazz);
-		UpdateValueStrategy emfUpdateValueStrategy = new EMFUpdateValueStrategy();
+		final IObservableValue observeSingleSelection = VaadinObservables.observeSingleSelection(getTable(), clazz);
+		final UpdateValueStrategy emfUpdateValueStrategy = new EMFUpdateValueStrategy();
 		emfUpdateValueStrategy.setConverter(new SelectionConverter());
-		this.bindingContext.bindValue(VaadinObservables.observeFocus(textField), observeSingleSelection, null,
-				emfUpdateValueStrategy);
+		getBindingContext().bindValue(VaadinObservables.observeFocus(textField), observeSingleSelection, null,
+			emfUpdateValueStrategy);
 	}
 
 	private void bindAddTextfield(final Setting setting, final TextField textField,
-			final Converter<String, Object> converter) {
-		IObservableValue targetValueList = VaadinObservables.observeValue(textField);
-		UpdateValueStrategy emfUpdateValueStrategy = new UpdateValueStrategy();
-		UpdateValueStrategy emfUpdateValueStrategyModel = new UpdateValueStrategy();
+		final Converter<String, Object> converter) {
+		final IObservableValue targetValueList = VaadinObservables.observeValue(textField);
+		final UpdateValueStrategy emfUpdateValueStrategy = new UpdateValueStrategy();
+		final UpdateValueStrategy emfUpdateValueStrategyModel = new UpdateValueStrategy();
 		if (converter != null) {
 			emfUpdateValueStrategy.setConverter(new StringToVaadinConverter(converter));
 			emfUpdateValueStrategy.setConverter(new VaadinConverterToString(converter));
@@ -107,50 +114,50 @@ public class PrimitiveListVaadinRenderer extends AbstractVaadinList {
 			@Override
 			public void handleValueChange(org.eclipse.core.databinding.observable.value.ValueChangeEvent event) {
 				try {
-					Object fieldValue = getConvertedValue(textField);
+					final Object fieldValue = getConvertedValue(textField);
 					// TODO FIXME: Better solution for changing String and primitive types in List?
-					ValueDiff diff = event.diff;
-					if (PrimitiveListVaadinRenderer.this.table.getValue() != null
-							&& !PrimitiveListVaadinRenderer.this.table.getValue().equals(fieldValue)
-							&& diff.getOldValue() != diff.getNewValue()) {
-						List<Object> items = (List<Object>) setting.get(true);
-						Object convertedValue = getConvertedValue(diff.getOldValue(), converter);
-						int index = items.indexOf(convertedValue);
+					final ValueDiff diff = event.diff;
+					if (PrimitiveListVaadinRenderer.this.getTable().getValue() != null
+						&& !PrimitiveListVaadinRenderer.this.getTable().getValue().equals(fieldValue)
+						&& diff.getOldValue() != diff.getNewValue()) {
+						final List<Object> items = (List<Object>) setting.get(true);
+						final Object convertedValue = getConvertedValue(diff.getOldValue(), converter);
+						final int index = items.indexOf(convertedValue);
 						if (index != -1) {
-							items.remove(PrimitiveListVaadinRenderer.this.table.getValue());
-							Object convertToModel = getConvertedValue(diff.getNewValue(), converter);
+							items.remove(PrimitiveListVaadinRenderer.this.getTable().getValue());
+							final Object convertToModel = getConvertedValue(diff.getNewValue(), converter);
 							items.add(index, convertToModel);
 						}
 					}
-				} catch (com.vaadin.data.util.converter.Converter.ConversionException e) {
+				} catch (final com.vaadin.data.util.converter.Converter.ConversionException e) {
 					return;
 				}
 
 			}
 		});
 
-		IObservableValue modelValueList = VaadinObservables.observeValue(this.table);
+		final IObservableValue modelValueList = VaadinObservables.observeValue(getTable());
 		bindModelToTarget(modelValueList, targetValueList, emfUpdateValueStrategy, emfUpdateValueStrategyModel);
 	}
 
 	private Button createAddButton(final Setting setting, final TextField textField) {
 		final Button add = VaadinWidgetFactory.createListAddButton(setting, textField);
-		this.toolbarLayout.addComponent(add);
-		this.toolbarLayout.setComponentAlignment(add, Alignment.TOP_RIGHT);
+		getToolbar().addComponent(add);
+		getToolbar().setComponentAlignment(add, Alignment.TOP_RIGHT);
 		return add;
 	}
 
 	private TextField createTextfield() {
 		final TextField textField = new TextField();
-		textField.setNullRepresentation("");
+		textField.setNullRepresentation(StringUtils.EMPTY);
 		textField.setWidth(100, Unit.PERCENTAGE);
-		this.toolbarLayout.addComponent(textField);
-		this.toolbarLayout.setExpandRatio(textField, 1.0f);
+		getToolbar().addComponent(textField);
+		getToolbar().setExpandRatio(textField, 1.0f);
 		return textField;
 	}
 
 	private Object getConvertedValue(TextField textField) {
-		Converter<String, Object> converter = textField.getConverter();
+		final Converter<String, Object> converter = textField.getConverter();
 		if (converter == null) {
 			return textField.getValue();
 		}
@@ -164,13 +171,13 @@ public class PrimitiveListVaadinRenderer extends AbstractVaadinList {
 		}
 		try {
 			return converter.convertToModel(String.valueOf(value), converter.getModelType(), Locale.getDefault());
-		} catch (com.vaadin.data.util.converter.Converter.ConversionException e) {
+		} catch (final com.vaadin.data.util.converter.Converter.ConversionException exception) {
 			return null;
 		}
 	}
 
 	private Converter<String, Object> createConverter(final Class<?> instanceClass, final Table table,
-			final TextField textField) {
+		final TextField textField) {
 		if (Number.class.isAssignableFrom(instanceClass)) {
 			textField.setConverter(instanceClass);
 		}
@@ -189,7 +196,7 @@ public class PrimitiveListVaadinRenderer extends AbstractVaadinList {
 	}
 
 	@Override
-	protected void createContainerPropery(IndexedContainer container) {
+	protected void createContainerProperty(IndexedContainer container) {
 		container.addContainerProperty(VALUE_COLUMN, String.class, null);
 		container.addContainerProperty(REMOVE_COLUMN, Button.class, null);
 	}

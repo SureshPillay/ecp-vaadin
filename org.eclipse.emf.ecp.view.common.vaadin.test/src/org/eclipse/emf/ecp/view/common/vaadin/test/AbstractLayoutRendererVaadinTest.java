@@ -1,11 +1,11 @@
 /*******************************************************************************
  * Copyright (c) 2014 Dennis Melzer and others.
- * 
+ *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  * Dennis - initial API and implementation
  ******************************************************************************/
@@ -46,7 +46,7 @@ public abstract class AbstractLayoutRendererVaadinTest {
 		final EClass eClass = EcoreFactory.eINSTANCE.createEClass();
 		eClass.getESuperTypes().add(EcorePackage.eINSTANCE.getEClass());
 		eClass.setInstanceClassName("Test");
-		this.domainElement = eClass;
+		domainElement = eClass;
 	}
 
 	@Test
@@ -54,25 +54,25 @@ public abstract class AbstractLayoutRendererVaadinTest {
 		final HierarchyViewModelHandle handle = createVerticalWithoutChildren();
 		final Component render = renderComponent(handle);
 		assertTrue(getUILayouClass().isInstance(render));
-		AbstractOrderedLayout layout = AbstractOrderedLayout.class.cast(render);
+		final AbstractOrderedLayout layout = AbstractOrderedLayout.class.cast(render);
 		assertEquals(0, layout.getComponentCount());
 	}
 
 	private Component renderComponent(final HierarchyViewModelHandle handle) {
 		final ViewModelContext viewContext = ViewModelContextFactory.INSTANCE.createViewModelContext(handle.getRoot(),
-				this.domainElement);
+			domainElement);
 		final Component render = VaadinTestHelper.getVaadinRendererFactory().render(handle.getRoot(), viewContext);
 		return render;
 	}
 
 	@Test
 	public void testVerticalWithTwoControlsAsChildren() throws NoRendererFoundException,
-			NoPropertyDescriptorFoundExeption {
+		NoPropertyDescriptorFoundExeption {
 		// setup model
 		final HierarchyViewModelHandle handle = createVerticalWithTwoControlsAsChildren();
 		final Component render = renderComponent(handle);
 		assertTrue(getUILayouClass().isInstance(render));
-		AbstractOrderedLayout layout = AbstractOrderedLayout.class.cast(render);
+		final AbstractOrderedLayout layout = AbstractOrderedLayout.class.cast(render);
 		assertEquals(2, layout.getComponentCount());
 		assertTrue(layout.getComponent(0) instanceof TextField);
 		assertTrue(layout.getComponent(1) instanceof TextField);
@@ -80,12 +80,12 @@ public abstract class AbstractLayoutRendererVaadinTest {
 
 	@Test
 	public void testVerticalWithTwoVerticalAsChildrenAndControlAsSubChildren() throws NoRendererFoundException,
-			NoPropertyDescriptorFoundExeption {
+		NoPropertyDescriptorFoundExeption {
 		// setup model
 		final HierarchyViewModelHandle handle = createVerticalWithTwoVerticalAsChildrenAndControlAsSubChildren();
 		final Component render = renderComponent(handle);
 		assertTrue(getUILayouClass().isInstance(render));
-		AbstractOrderedLayout composite = AbstractOrderedLayout.class.cast(render);
+		final AbstractOrderedLayout composite = AbstractOrderedLayout.class.cast(render);
 		assertEquals(2, composite.getComponentCount());
 		final AbstractOrderedLayout firstVertical = (AbstractOrderedLayout) composite.getComponent(0);
 		final AbstractOrderedLayout secondVertical = (AbstractOrderedLayout) composite.getComponent(1);
@@ -122,7 +122,7 @@ public abstract class AbstractLayoutRendererVaadinTest {
 	private VControl createControl() {
 		final VControl control = VViewFactory.eINSTANCE.createControl();
 		final VFeaturePathDomainModelReference domainModelReference = VViewFactory.eINSTANCE
-				.createFeaturePathDomainModelReference();
+			.createFeaturePathDomainModelReference();
 		domainModelReference.setDomainModelEFeature(EcorePackage.eINSTANCE.getEClassifier_InstanceClassName());
 		control.setDomainModelReference(domainModelReference);
 		return control;

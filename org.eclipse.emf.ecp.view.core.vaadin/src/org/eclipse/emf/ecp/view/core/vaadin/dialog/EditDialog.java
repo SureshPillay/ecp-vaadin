@@ -1,11 +1,11 @@
 /*******************************************************************************
  * Copyright (c) 2014 Dennis Melzer and others.
- * 
+ *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  * Dennis - initial API and implementation
  ******************************************************************************/
@@ -35,57 +35,74 @@ import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 
+/**
+ * The Edit Dialog for a View.
+ *
+ * @author Dennis Melzer
+ *
+ */
 public class EditDialog extends Window {
 
 	private final EObject selection;
-	private Adapter objectChangeAdapter;
+	private final Adapter objectChangeAdapter;
 	private ComposedAdapterFactory composedAdapterFactory;
-	private AdapterFactoryItemDelegator adapterFactoryItemDelegator;
+	private final AdapterFactoryItemDelegator adapterFactoryItemDelegator;
 	private VView view;
 	private Button okButton;
 
+	/**
+	 * Constructor.
+	 *
+	 * @param selection the selection
+	 * @param view the view
+	 */
 	public EditDialog(final EObject selection, VView view) {
 		this.selection = selection;
 		this.view = view;
-		this.composedAdapterFactory = new ComposedAdapterFactory(new AdapterFactory[] {
-				new ReflectiveItemProviderAdapterFactory(),
-				new ComposedAdapterFactory(ComposedAdapterFactory.Descriptor.Registry.INSTANCE) });
-		this.adapterFactoryItemDelegator = new AdapterFactoryItemDelegator(this.composedAdapterFactory);
+		composedAdapterFactory = new ComposedAdapterFactory(new AdapterFactory[] {
+			new ReflectiveItemProviderAdapterFactory(),
+			new ComposedAdapterFactory(ComposedAdapterFactory.Descriptor.Registry.INSTANCE) });
+		adapterFactoryItemDelegator = new AdapterFactoryItemDelegator(composedAdapterFactory);
 
-		setCaption(this.adapterFactoryItemDelegator.getText(selection));
+		setCaption(adapterFactoryItemDelegator.getText(selection));
 
-		this.objectChangeAdapter = new AdapterImpl() {
+		objectChangeAdapter = new AdapterImpl() {
 
 			@Override
 			public void notifyChanged(Notification msg) {
-				setCaption(EditDialog.this.adapterFactoryItemDelegator.getText(selection));
+				setCaption(adapterFactoryItemDelegator.getText(selection));
 			}
 
 		};
-		selection.eAdapters().add(this.objectChangeAdapter);
+		selection.eAdapters().add(objectChangeAdapter);
 		initUi();
 		setResizable(true);
 		setWidth(40, Unit.PERCENTAGE);
 		center();
 	}
 
+	/**
+	 * Constructor.
+	 *
+	 * @param selection the selection
+	 */
 	public EditDialog(final EObject selection) {
 		this(selection, null);
 	}
 
 	private void initUi() {
 		VaadinObservables.activateRealm(UI.getCurrent());
-		ECPVaadinView ecpVaadinView = ECPFVaadinViewRenderer.INSTANCE.render(this.selection, getView());
+		final ECPVaadinView ecpVaadinView = ECPFVaadinViewRenderer.INSTANCE.render(selection, getView());
 		setContent(getContentLayout(ecpVaadinView));
 	}
 
 	private Component getContentLayout(ECPVaadinView ecpVaadinView) {
-		Component component = ecpVaadinView.getComponent();
+		final Component component = ecpVaadinView.getComponent();
 		return createDefaultLayout(component);
 	}
 
 	private VerticalLayout createDefaultLayout(Component component) {
-		VerticalLayout layout = new VerticalLayout();
+		final VerticalLayout layout = new VerticalLayout();
 		layout.setMargin(true);
 		layout.setSpacing(true);
 		layout.addComponent(component);
@@ -94,35 +111,35 @@ public class EditDialog extends Window {
 	}
 
 	private void createOkButton(AbstractOrderedLayout layout) {
-		this.okButton = new Button(Messages.ok, new Button.ClickListener() {
+		okButton = new Button(Messages.ok, new Button.ClickListener() {
 
 			@Override
 			public void buttonClick(ClickEvent event) {
 				close();
 			}
 		});
-		layout.addComponent(this.okButton);
-		layout.setComponentAlignment(this.okButton, Alignment.TOP_RIGHT);
+		layout.addComponent(okButton);
+		layout.setComponentAlignment(okButton, Alignment.TOP_RIGHT);
 	}
 
 	private VView getView() {
-		if (this.view != null) {
-			return this.view;
+		if (view != null) {
+			return view;
 		}
 
-		this.view = ViewProviderHelper.getView(this.selection, null);
-		return this.view;
+		view = ViewProviderHelper.getView(selection, null);
+		return view;
 	}
 
 	@Override
 	public void close() {
-		if (this.objectChangeAdapter != null) {
-			this.selection.eAdapters().remove(this.objectChangeAdapter);
+		if (objectChangeAdapter != null) {
+			selection.eAdapters().remove(objectChangeAdapter);
 		}
-		if (this.composedAdapterFactory != null) {
-			this.composedAdapterFactory.dispose();
+		if (composedAdapterFactory != null) {
+			composedAdapterFactory.dispose();
 		}
-		this.composedAdapterFactory = null;
+		composedAdapterFactory = null;
 		super.close();
 	}
 

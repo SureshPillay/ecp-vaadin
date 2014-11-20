@@ -6,10 +6,21 @@ import org.eclipse.core.databinding.conversion.IConverter;
 
 import com.vaadin.data.util.converter.Converter;
 
+/**
+ * Vaadin Converter to String.
+ *
+ * @author Dennis Melzer
+ *
+ */
 public class VaadinConverterToString implements IConverter {
 
-	private Converter<String, Object> converter;
+	private final Converter<String, Object> converter;
 
+	/**
+	 * Constructor.
+	 * 
+	 * @param converter the vaadin converter
+	 */
 	public VaadinConverterToString(Converter<String, Object> converter) {
 		this.converter = converter;
 	}
@@ -30,7 +41,7 @@ public class VaadinConverterToString implements IConverter {
 			return null;
 		}
 
-		return this.converter.convertToPresentation(fromObject, this.converter.getPresentationType(),
-				Locale.getDefault());
+		return converter.convertToPresentation(fromObject, converter.getPresentationType(),
+			Locale.getDefault());
 	}
 }

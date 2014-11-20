@@ -12,10 +12,15 @@ import com.vaadin.server.VaadinRequest;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.themes.ValoTheme;
 
-//@PreserveOnRefresh
+// @PreserveOnRefresh
 @Theme(ValoTheme.THEME_NAME)
 // @Theme(Reindeer.THEME_NAME)
 @Push
+/**
+ * Render the eObject
+ * @author Dennis Melzer
+ *
+ */
 public class VaadinMainUI extends UI {
 
 	private static final long serialVersionUID = 1L;
@@ -25,7 +30,7 @@ public class VaadinMainUI extends UI {
 	protected void init(VaadinRequest request) {
 		getPage().setTitle("Test Vaadin Valo");
 		VaadinObservables.activateRealm(this);
-		ECPVaadinView ecpVaadinView = ECPFVaadinViewRenderer.INSTANCE.render(USER);
+		final ECPVaadinView ecpVaadinView = ECPFVaadinViewRenderer.INSTANCE.render(USER);
 		setContent(ecpVaadinView.getComponent());
 	}
 

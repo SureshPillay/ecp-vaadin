@@ -1,11 +1,11 @@
 /*******************************************************************************
  * Copyright (c) 2014 Dennis Melzer and others.
- * 
+ *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  * Dennis - initial API and implementation
  ******************************************************************************/
@@ -40,14 +40,14 @@ public class NumberControlVaadinRendererTest extends AbstractControlTest {
 	@Test
 	public void renderControlLabelAlignmentNone() throws NoRendererFoundException, NoPropertyDescriptorFoundExeption {
 		setMockLabelAlignment(LabelAlignment.NONE);
-		Component render = renderControl();
+		final Component render = renderControl();
 		assertControl(render);
 	}
 
 	@Test
 	public void renderControlLabelAlignmentLeft() throws NoRendererFoundException, NoPropertyDescriptorFoundExeption {
 		setMockLabelAlignment(LabelAlignment.LEFT);
-		Component render = renderControl();
+		final Component render = renderControl();
 
 		assertControl(render);
 	}
@@ -64,8 +64,8 @@ public class NumberControlVaadinRendererTest extends AbstractControlTest {
 
 	@Override
 	protected void mockControl() {
-		EStructuralFeature eObject = EcoreFactory.eINSTANCE.createEAttribute();
-		EStructuralFeature eStructuralFeature = EcorePackage.eINSTANCE.getETypedElement_LowerBound();
+		final EStructuralFeature eObject = EcoreFactory.eINSTANCE.createEAttribute();
+		final EStructuralFeature eStructuralFeature = EcorePackage.eINSTANCE.getETypedElement_LowerBound();
 		super.mockControl(eObject, eStructuralFeature);
 	}
 

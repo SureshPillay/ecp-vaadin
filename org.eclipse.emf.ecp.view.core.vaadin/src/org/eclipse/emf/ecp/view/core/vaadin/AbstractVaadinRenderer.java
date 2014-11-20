@@ -1,11 +1,11 @@
 /*******************************************************************************
  * Copyright (c) 2014 Dennis Melzer and others.
- * 
+ *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  * Dennis - initial API and implementation
  ******************************************************************************/
@@ -28,10 +28,17 @@ import com.vaadin.ui.AbstractComponent;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.UI;
 
+/**
+ * The abstract vaadin renderer for a {@link VElement}.
+ *
+ * @author Dennis Melzer
+ *
+ * @param <T> Element {@link VElement}
+ */
 public abstract class AbstractVaadinRenderer<T extends VElement> extends AbstractRenderer<T> {
 
-	protected VaadinRendererFactory rendererFactory;
-	protected Component controlComponent;
+	private VaadinRendererFactory rendererFactory;
+	private Component controlComponent;
 	private ViewLocaleService viewLocaleService;
 	private TranslationService translationService;
 	private ModelChangeListener modelChangeListener;
@@ -44,6 +51,33 @@ public abstract class AbstractVaadinRenderer<T extends VElement> extends Abstrac
 	}
 
 	/**
+	 * Returns the {@link VaadinRendererFactory}.
+	 *
+	 * @return the rendererFactory
+	 */
+	public VaadinRendererFactory getRendererFactory() {
+		return rendererFactory;
+	}
+
+	/**
+	 * Returns the control Component.
+	 *
+	 * @return the controlComponent
+	 */
+	protected Component getControlComponent() {
+		return controlComponent;
+	}
+
+	/**
+	 * Set the component.
+	 *
+	 * @param controlComponent the controlComponent to set
+	 */
+	protected void setControlComponent(Component controlComponent) {
+		this.controlComponent = controlComponent;
+	}
+
+	/**
 	 * Constructor for testing purpose.
 	 *
 	 * @param factory the factory to use
@@ -52,9 +86,14 @@ public abstract class AbstractVaadinRenderer<T extends VElement> extends Abstrac
 		this.rendererFactory = factory;
 	}
 
+	/**
+	 * Render the vaadin component.
+	 *
+	 * @return the vaadin component
+	 */
 	public final Component renderComponent() {
 
-		Component component = render();
+		final Component component = render();
 		if (component == null) {
 			return null;
 		}
@@ -82,7 +121,7 @@ public abstract class AbstractVaadinRenderer<T extends VElement> extends Abstrac
 				if (notification.getNotifier() != getVElement()) {
 					return;
 				}
-				UI ui = AbstractVaadinRenderer.this.controlComponent.getUI();
+				final UI ui = AbstractVaadinRenderer.this.controlComponent.getUI();
 				if (ui == null) {
 					updateUI(AbstractVaadinRenderer.this.controlComponent, notification);
 					return;
@@ -96,21 +135,21 @@ public abstract class AbstractVaadinRenderer<T extends VElement> extends Abstrac
 				});
 			}
 
-			private void updateUI(final Component controlComponent, ModelChangeNotification notification) {
-				if (notification.getStructuralFeature() == VViewPackage.eINSTANCE.getElement_Visible()) {
-					applyVisible();
-				}
-				if (notification.getStructuralFeature() == VViewPackage.eINSTANCE.getElement_Enabled()
-						&& !getVElement().isReadonly()) {
-					applyEnable();
-				}
-				if (notification.getStructuralFeature() == VViewPackage.eINSTANCE.getElement_Diagnostic()) {
-					applyValidation();
-				}
-			}
-
 		};
 		getViewModelContext().registerViewChangeListener(this.modelChangeListener);
+	}
+
+	private void updateUI(final Component controlComponent, ModelChangeNotification notification) {
+		if (notification.getStructuralFeature() == VViewPackage.eINSTANCE.getElement_Visible()) {
+			applyVisible();
+		}
+		if (notification.getStructuralFeature() == VViewPackage.eINSTANCE.getElement_Enabled()
+			&& !getVElement().isReadonly()) {
+			applyEnable();
+		}
+		if (notification.getStructuralFeature() == VViewPackage.eINSTANCE.getElement_Diagnostic()) {
+			applyValidation();
+		}
 	}
 
 	@Override
@@ -119,35 +158,56 @@ public abstract class AbstractVaadinRenderer<T extends VElement> extends Abstrac
 		getViewModelContext().registerViewChangeListener(this.modelChangeListener);
 	}
 
+	/**
+	 * Apply the Caption.
+	 */
 	protected void applyCaption() {
 		// controlComponent.setCaption(StringUtils.EMPTY);
-		String caption = getTranslation(getVElement());
+		final String caption = getTranslation();
 		if (StringUtils.isEmpty(caption)) {
 			return;
 		}
 		this.controlComponent.setCaption(caption);
 	}
 
+	/**
+	 * Apply the Validation.
+	 */
 	protected void applyValidation() {
 	}
 
+	/**
+	 * Apply the Enable.
+	 */
 	protected void applyEnable() {
 		this.controlComponent.setEnabled(getVElement().isEnabled());
 	}
 
+	/**
+	 * Apply the Readonly.
+	 */
 	protected void applyReadonly() {
 		this.controlComponent.setReadOnly(getVElement().isReadonly());
 	}
 
+	/**
+	 * Apply the Visible.
+	 */
 	protected void applyVisible() {
 		this.controlComponent.setVisible(getVElement().isVisible());
 	}
 
+	/**
+	 * Returns the control for the caption.
+	 *
+	 * @param component the parent component
+	 * @return the caption component
+	 */
 	protected Component getCaptionControlComponent(Component component) {
 		if (!(component instanceof AbstractComponent)) {
 			return component;
 		}
-		AbstractComponent abstractComponent = (AbstractComponent) component;
+		final AbstractComponent abstractComponent = (AbstractComponent) component;
 		if (abstractComponent.getData() instanceof Component) {
 			return (Component) abstractComponent.getData();
 		}
@@ -164,8 +224,13 @@ public abstract class AbstractVaadinRenderer<T extends VElement> extends Abstrac
 		}
 	}
 
-	protected String getTranslation(T renderable) {
-		String keyName = renderable.getName();
+	/**
+	 * Returns the translation.
+	 *
+	 * @return the translation string
+	 */
+	protected String getTranslation() {
+		final String keyName = getVElement().getName();
 		if (StringUtils.isEmpty(keyName)) {
 			return keyName;
 		}
@@ -181,6 +246,11 @@ public abstract class AbstractVaadinRenderer<T extends VElement> extends Abstrac
 		return this.translationService.getTranslation(keyName, locale);
 	}
 
+	/**
+	 * Render the component.
+	 *
+	 * @return the vaadin component
+	 */
 	protected abstract Component render();
 
 }

@@ -1,11 +1,11 @@
 /*******************************************************************************
  * Copyright (c) 2014 Dennis Melzer and others.
- * 
+ *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  * Dennis - initial API and implementation
  ******************************************************************************/
@@ -63,7 +63,7 @@ public class CustomControlVaadinRendererTest {
 		 * @return the view
 		 */
 		public VView getView() {
-			return this.view;
+			return view;
 		}
 
 		/**
@@ -71,13 +71,13 @@ public class CustomControlVaadinRendererTest {
 		 */
 
 		public VControl getCustomControl() {
-			return this.customControl;
+			return customControl;
 		}
 
 	}
 
 	private static final String BUNDLE_ID = "org.eclipse.emf.ecp.view.common.vaadin.test";
-	private VaadinRendererFactory rendererFactory = VaadinTestHelper.getVaadinRendererFactory();
+	private final VaadinRendererFactory rendererFactory = VaadinTestHelper.getVaadinRendererFactory();
 	private EObject domainElement;
 
 	private VView createCustomControlInView() {
@@ -90,7 +90,7 @@ public class CustomControlVaadinRendererTest {
 		customControl.setClassName("org.eclipse.emf.ecp.view.common.vaadin.test.CustomControlStub");
 		// TODO check id
 		final VCustomDomainModelReference domainModelReference = VCustomFactory.eINSTANCE
-				.createCustomDomainModelReference();
+			.createCustomDomainModelReference();
 		domainModelReference.setBundleName(BUNDLE_ID);
 		domainModelReference.setClassName("org.eclipse.emf.ecp.view.common.vaadin.test.CustomControlStub");
 		customControl.setDomainModelReference(domainModelReference);
@@ -101,12 +101,12 @@ public class CustomControlVaadinRendererTest {
 	public void init() {
 		final EClass eClass = EcoreFactory.eINSTANCE.createEClass();
 		eClass.getESuperTypes().add(EcorePackage.eINSTANCE.getEClass());
-		this.domainElement = eClass;
+		domainElement = eClass;
 	}
 
 	@Test
 	public void testCustomControlinViewWithoutClass() throws NoRendererFoundException,
-			NoPropertyDescriptorFoundExeption {
+		NoPropertyDescriptorFoundExeption {
 		final VView view = VViewFactory.eINSTANCE.createView();
 
 		final VCustomControl customControl = createCustomControl();
@@ -116,28 +116,28 @@ public class CustomControlVaadinRendererTest {
 		customControl.setClassName("org.eclipse.emf.ecp.view.custom.vaadin.NoExisting");
 		// TODO check id
 		final VCustomDomainModelReference domainModelReference = VCustomFactory.eINSTANCE
-				.createCustomDomainModelReference();
+			.createCustomDomainModelReference();
 		domainModelReference.setBundleName(BUNDLE_ID);
 		domainModelReference.setClassName("org.eclipse.emf.ecp.view.custom.vaadin.NoExisting");
 		customControl.setDomainModelReference(domainModelReference);
 
 		final ViewModelContext viewContext = ViewModelContextFactory.INSTANCE.createViewModelContext(view,
-				this.domainElement);
+			domainElement);
 		try {
-			ECPVaadinViewComponent component = (ECPVaadinViewComponent) this.rendererFactory.render(view, viewContext);
+			rendererFactory.render(view, viewContext);
 			fail();
-		} catch (IllegalStateException e) {
+		} catch (final IllegalStateException e) {
 		}
 	}
 
 	@Test
 	public void testCustomControlInit() {
 		final VView view = createCustomControlInView();
-		ViewModelContext viewContext = ViewModelContextFactory.INSTANCE
-				.createViewModelContext(view, this.domainElement);
+		final ViewModelContext viewContext = ViewModelContextFactory.INSTANCE
+			.createViewModelContext(view, domainElement);
 
-		ECPVaadinViewComponent component = (ECPVaadinViewComponent) this.rendererFactory.render(view, viewContext);
-		AbstractOrderedLayout layout = (AbstractOrderedLayout) component.getContent();
+		final ECPVaadinViewComponent component = (ECPVaadinViewComponent) rendererFactory.render(view, viewContext);
+		final AbstractOrderedLayout layout = (AbstractOrderedLayout) component.getContent();
 		assertEquals(1, layout.getComponentCount());
 		assertTrue(Button.class.isInstance(layout.getComponent(0)));
 	}

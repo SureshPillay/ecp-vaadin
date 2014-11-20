@@ -1,11 +1,11 @@
 /*******************************************************************************
  * Copyright (c) 2014 Dennis Melzer and others.
- * 
+ *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  * Dennis - initial API and implementation
  ******************************************************************************/
@@ -60,19 +60,19 @@ import com.vaadin.ui.VerticalLayout;
 
 @RunWith(VaadinDatabindingClassRunner.class)
 public class TableRendererVaadinTest {
-	private VaadinRendererFactory rendererFactory = VaadinTestHelper.getVaadinRendererFactory();
+	private final VaadinRendererFactory rendererFactory = VaadinTestHelper.getVaadinRendererFactory();
 	private EObject domainElement;
 
 	@Before
 	public void init() {
 		final EClass eClass = EcoreFactory.eINSTANCE.createEClass();
 		eClass.getESuperTypes().add(EcorePackage.eINSTANCE.getEClass());
-		this.domainElement = eClass;
+		domainElement = eClass;
 	}
 
 	@Test
 	public void testUninitializedTableWithoutColumns() throws NoRendererFoundException,
-			NoPropertyDescriptorFoundExeption {
+		NoPropertyDescriptorFoundExeption {
 		final TableControlHandle handle = createUninitializedTableWithoutColumns();
 		final Component render = renderTableLayout(handle);
 
@@ -81,13 +81,13 @@ public class TableRendererVaadinTest {
 
 	private Component renderTableLayout(final TableControlHandle handle) {
 		final ViewModelContext viewContext = ViewModelContextFactory.INSTANCE.createViewModelContext(
-				handle.getTableControl(), this.domainElement);
-		return this.rendererFactory.render(handle.getTableControl(), viewContext);
+			handle.getTableControl(), domainElement);
+		return rendererFactory.render(handle.getTableControl(), viewContext);
 	}
 
 	private Component renderTableLayoutWithoutServices(final TableControlHandle handle) {
-		return this.rendererFactory.render(handle.getTableControl(),
-				new ViewModelContextWithoutServices(handle.getTableControl()));
+		return rendererFactory.render(handle.getTableControl(),
+			new ViewModelContextWithoutServices(handle.getTableControl()));
 	}
 
 	private int getItemCountByTable(Table table) {
@@ -96,13 +96,13 @@ public class TableRendererVaadinTest {
 
 	@Test
 	public void testInitializedTableWithoutColumnsAndEmptyReference() throws NoRendererFoundException,
-			NoPropertyDescriptorFoundExeption {
+		NoPropertyDescriptorFoundExeption {
 		// setup model
 		final EClass createEClass = EcoreFactory.eINSTANCE.createEClass();
 		createEClass.eUnset(EcorePackage.eINSTANCE.getEClass_ESuperTypes());
-		this.domainElement = createEClass;
+		domainElement = createEClass;
 		final TableControlHandle handle = createInitializedTableWithoutTableColumns();
-		Component component = renderTableLayout(handle);
+		final Component component = renderTableLayout(handle);
 
 		try {
 			assertNotNull(component);
@@ -115,14 +115,14 @@ public class TableRendererVaadinTest {
 	@Ignore
 	@Test
 	public void testInitializedTableWithoutColumnsSingleReference() throws NoRendererFoundException,
-			NoPropertyDescriptorFoundExeption {
+		NoPropertyDescriptorFoundExeption {
 		// setup model
 		final VView view = VViewFactory.eINSTANCE.createView();
 		view.setRootEClass(VViewPackage.eINSTANCE.getView());
-		this.domainElement = view;
+		domainElement = view;
 		final TableControlHandle handle = createInitializedTableWithoutTableColumns();
 		final VFeaturePathDomainModelReference domainModelReference = VViewFactory.eINSTANCE
-				.createFeaturePathDomainModelReference();
+			.createFeaturePathDomainModelReference();
 		domainModelReference.setDomainModelEFeature(VViewPackage.eINSTANCE.getView_RootEClass());
 		handle.getTableControl().setDomainModelReference(domainModelReference);
 
@@ -133,13 +133,13 @@ public class TableRendererVaadinTest {
 	@Ignore
 	@Test
 	public void testInitializedTableWithoutColumnsEmptySingleReference() throws NoRendererFoundException,
-			NoPropertyDescriptorFoundExeption {
+		NoPropertyDescriptorFoundExeption {
 		// setup model
 		final VView view = VViewFactory.eINSTANCE.createView();
-		this.domainElement = view;
+		domainElement = view;
 		final TableControlHandle handle = createInitializedTableWithoutTableColumns();
 		final VFeaturePathDomainModelReference domainModelReference = VViewFactory.eINSTANCE
-				.createFeaturePathDomainModelReference();
+			.createFeaturePathDomainModelReference();
 		domainModelReference.setDomainModelEFeature(VViewPackage.eINSTANCE.getView_RootEClass());
 		handle.getTableControl().setDomainModelReference(domainModelReference);
 
@@ -161,8 +161,8 @@ public class TableRendererVaadinTest {
 		assertTrue(render instanceof VerticalLayout);
 
 		assertEquals(attributLength,
-				VTableDomainModelReference.class.cast(handle.getTableControl().getDomainModelReference())
-						.getColumnDomainModelReferences().size());
+			VTableDomainModelReference.class.cast(handle.getTableControl().getDomainModelReference())
+				.getColumnDomainModelReferences().size());
 
 		final Component control = getTable((VerticalLayout) render);
 		assertTrue(control instanceof Table);
@@ -174,15 +174,15 @@ public class TableRendererVaadinTest {
 	public void testTableWithoutColumns() throws NoRendererFoundException, NoPropertyDescriptorFoundExeption {
 		// setup model
 		final TableControlHandle handle = createInitializedTableWithoutTableColumns();
-		Table table = assertTableWithService(handle, this.domainElement.eClass().getEAttributes().size());
+		final Table table = assertTableWithService(handle, domainElement.eClass().getEAttributes().size());
 		assertEquals(2, table.getColumnHeaders().length);
 	}
 
 	@Test
 	public void testTableWithoutColumnsWithoutViewServices() throws NoRendererFoundException,
-			NoPropertyDescriptorFoundExeption {
+		NoPropertyDescriptorFoundExeption {
 		final TableControlHandle handle = createInitializedTableWithoutTableColumns();
-		Table table = assertTableWithoutService(handle, 0);
+		final Table table = assertTableWithoutService(handle, 0);
 		assertEquals(0, table.getColumnHeaders().length);
 	}
 
@@ -191,16 +191,16 @@ public class TableRendererVaadinTest {
 		// setup model
 		final TableControlHandle handle = createTableWithTwoTableColumns();
 		final Component render = renderTableLayout(handle);
-		Table table = assertTable(render, handle, 2);
+		final Table table = assertTable(render, handle, 2);
 		assertEquals(2, table.getColumnHeaders().length);
 	}
 
 	@Test
 	public void testTableWithTwoColumnsWithoutViewServices() throws NoRendererFoundException,
-			NoPropertyDescriptorFoundExeption {
+		NoPropertyDescriptorFoundExeption {
 		// setup model
 		final TableControlHandle handle = createTableWithTwoTableColumns();
-		Table table = assertTableWithoutService(handle, 2);
+		final Table table = assertTableWithoutService(handle, 2);
 		assertEquals(2, table.getColumnHeaders().length);
 
 	}
@@ -209,10 +209,10 @@ public class TableRendererVaadinTest {
 	public void testTableWithTwoColumnsAdd() throws NoRendererFoundException, NoPropertyDescriptorFoundExeption {
 		final TableControlHandle handle = createTableWithTwoTableColumns();
 
-		Table table = assertTableWithoutService(handle, 2);
+		final Table table = assertTableWithoutService(handle, 2);
 
 		int itemsCount = getItemCountByTable(table);
-		EList<EClass> eSuperTypes = ((EClass) this.domainElement).getESuperTypes();
+		final EList<EClass> eSuperTypes = ((EClass) domainElement).getESuperTypes();
 		assertEquals(eSuperTypes.size(), itemsCount);
 		final EClass eClass = EcoreFactory.eINSTANCE.createEClass();
 		eSuperTypes.add(eClass);
@@ -224,8 +224,8 @@ public class TableRendererVaadinTest {
 	public void testTableWithTwoColumnsRemove() throws NoRendererFoundException, NoPropertyDescriptorFoundExeption {
 		final TableControlHandle handle = createTableWithTwoTableColumns();
 
-		Table table = assertTableWithoutService(handle, 2);
-		EList<EClass> eSuperTypes = ((EClass) this.domainElement).getESuperTypes();
+		final Table table = assertTableWithoutService(handle, 2);
+		final EList<EClass> eSuperTypes = ((EClass) domainElement).getESuperTypes();
 		assertEquals(eSuperTypes.size(), getItemCountByTable(table));
 		final EClass eClass = eSuperTypes.get(0);
 		eSuperTypes.remove(eClass);
@@ -236,12 +236,12 @@ public class TableRendererVaadinTest {
 	public void testTableAddRemoveButton() throws NoRendererFoundException, NoPropertyDescriptorFoundExeption {
 		final TableControlHandle handle = createTableWithTwoTableColumns();
 
-		VerticalLayout layout = (VerticalLayout) renderTableLayoutWithoutServices(handle);
-		HorizontalLayout horizontalLayout = (HorizontalLayout) layout.getComponent(0);
-		Button addButton = (Button) horizontalLayout.getComponent(0);
-		Button removeButton = (Button) horizontalLayout.getComponent(1);
-		Table table = getTable(layout);
-		EList<EClass> eSuperTypes = ((EClass) this.domainElement).getESuperTypes();
+		final VerticalLayout layout = (VerticalLayout) renderTableLayoutWithoutServices(handle);
+		final HorizontalLayout horizontalLayout = (HorizontalLayout) layout.getComponent(0);
+		final Button addButton = (Button) horizontalLayout.getComponent(0);
+		final Button removeButton = (Button) horizontalLayout.getComponent(1);
+		final Table table = getTable(layout);
+		final EList<EClass> eSuperTypes = ((EClass) domainElement).getESuperTypes();
 		assertEquals(eSuperTypes.size(), getItemCountByTable(table));
 		addButton.click();
 		assertEquals(2, getItemCountByTable(table));
@@ -255,9 +255,9 @@ public class TableRendererVaadinTest {
 
 	@Test
 	public void testTableWithTwoColumnsClear() throws NoRendererFoundException, NoPropertyDescriptorFoundExeption {
-		EList<EClass> eSuperTypes = ((EClass) this.domainElement).getESuperTypes();
+		final EList<EClass> eSuperTypes = ((EClass) domainElement).getESuperTypes();
 		final TableControlHandle handle = createTableWithTwoTableColumns();
-		Table table = assertTableWithoutService(handle, 2);
+		final Table table = assertTableWithoutService(handle, 2);
 		assertEquals(1, getItemCountByTable(table));
 		eSuperTypes.clear();
 		assertEquals(0, getItemCountByTable(table));
@@ -266,14 +266,14 @@ public class TableRendererVaadinTest {
 	@Test
 	public void testPanelTableWithTwoColumns() throws NoRendererFoundException, NoPropertyDescriptorFoundExeption {
 		final EClass eClass = EcoreFactory.eINSTANCE.createEClass();
-		((EClass) this.domainElement).getESuperTypes().add(eClass);
+		((EClass) domainElement).getESuperTypes().add(eClass);
 		final TableControlHandle handle = createTableWithTwoTableColumns();
 		handle.getTableControl().setDetailEditing(DetailEditing.WITH_PANEL);
 		handle.getTableControl().setDetailView(createDetailView());
 		try {
-			Table table = assertTableWithoutService(handle, 2);
+			assertTableWithoutService(handle, 2);
 			fail();
-		} catch (RuntimeException e) {
+		} catch (final RuntimeException e) {
 		}
 		// final Composite controlComposite = (Composite) ((Composite) control).getChildren()[1];
 		// final Composite tableComposite = (Composite) controlComposite.getChildren()[0];
@@ -315,7 +315,7 @@ public class TableRendererVaadinTest {
 		detailView.getChildren().add(name);
 		final VControl abstr = VViewFactory.eINSTANCE.createControl();
 		final VFeaturePathDomainModelReference abstractRef = VViewFactory.eINSTANCE
-				.createFeaturePathDomainModelReference();
+			.createFeaturePathDomainModelReference();
 		abstractRef.setDomainModelEFeature(EcorePackage.eINSTANCE.getEClass_Abstract());
 		abstr.setDomainModelReference(abstractRef);
 		detailView.getChildren().add(abstr);
@@ -339,7 +339,7 @@ public class TableRendererVaadinTest {
 
 	public VDomainModelReference createTableColumn(EStructuralFeature feature) {
 		final VFeaturePathDomainModelReference reference = VViewFactory.eINSTANCE
-				.createFeaturePathDomainModelReference();
+			.createFeaturePathDomainModelReference();
 		reference.setDomainModelEFeature(feature);
 		return reference;
 	}
@@ -347,7 +347,7 @@ public class TableRendererVaadinTest {
 	public TableControlHandle createInitializedTableWithoutTableColumns() {
 		final TableControlHandle tableControlHandle = createUninitializedTableWithoutColumns();
 		final VFeaturePathDomainModelReference domainModelReference = VTableFactory.eINSTANCE
-				.createTableDomainModelReference();
+			.createTableDomainModelReference();
 		domainModelReference.setDomainModelEFeature(EcorePackage.eINSTANCE.getEClass_ESuperTypes());
 		tableControlHandle.getTableControl().setDomainModelReference(domainModelReference);
 
@@ -387,7 +387,7 @@ public class TableRendererVaadinTest {
 		 */
 		@Override
 		public VElement getViewModel() {
-			return this.view;
+			return view;
 		}
 
 		/**
@@ -397,7 +397,7 @@ public class TableRendererVaadinTest {
 		 */
 		@Override
 		public EObject getDomainModel() {
-			return TableRendererVaadinTest.this.domainElement;
+			return domainElement;
 		}
 
 		/**

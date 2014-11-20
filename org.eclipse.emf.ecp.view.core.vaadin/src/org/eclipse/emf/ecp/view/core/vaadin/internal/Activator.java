@@ -1,11 +1,11 @@
 /*******************************************************************************
  * Copyright (c) 2014 Dennis Melzer and others.
- * 
+ *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  * Dennis - initial API and implementation
  ******************************************************************************/
@@ -44,7 +44,7 @@ public class Activator extends Plugin {
 
 	/**
 	 * Returns the shared instance.
-	 * 
+	 *
 	 * @return the shared instance
 	 */
 	public static Activator getDefault() {
@@ -53,15 +53,20 @@ public class Activator extends Plugin {
 
 	private VTViewTemplateProvider viewTemplate;
 
+	/**
+	 * Returns the Template Provider.
+	 * 
+	 * @return the provider
+	 */
 	public VTViewTemplateProvider getVTViewTemplateProvider() {
-		if (this.viewTemplate == null) {
+		if (viewTemplate == null) {
 			final ServiceReference<VTViewTemplateProvider> viewTemplateReference = plugin.getBundle()
-					.getBundleContext().getServiceReference(VTViewTemplateProvider.class);
+				.getBundleContext().getServiceReference(VTViewTemplateProvider.class);
 			if (viewTemplateReference != null) {
-				this.viewTemplate = plugin.getBundle().getBundleContext().getService(viewTemplateReference);
+				viewTemplate = plugin.getBundle().getBundleContext().getService(viewTemplateReference);
 			}
 		}
-		return this.viewTemplate;
+		return viewTemplate;
 	}
 
 	/**

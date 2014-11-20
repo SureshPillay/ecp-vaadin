@@ -1,11 +1,11 @@
 /*******************************************************************************
  * Copyright (c) 2014 Dennis Melzer and others.
- * 
+ *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  * Dennis - initial API and implementation
  ******************************************************************************/
@@ -31,6 +31,12 @@ import org.osgi.framework.Bundle;
 
 import com.vaadin.ui.Component;
 
+/**
+ * The implementation for the {@link VaadinRendererFactory}.
+ *
+ * @author Dennis Melzer
+ *
+ */
 public class VaadinRendererFactoryImpl implements VaadinRendererFactory {
 	private static final String RENDER_EXTENSION = "org.eclipse.emf.ecp.view.model.vaadin.renderer"; //$NON-NLS-1$
 	//	private static final String ADDITIONAL_RENDER_EXTENSION = "org.eclipse.emf.ecp.view.model.vaadin.renderer.additionalRenderers"; //$NON-NLS-1$
@@ -74,7 +80,7 @@ public class VaadinRendererFactoryImpl implements VaadinRendererFactory {
 	 * @return a set of descriptions of all available renderers.
 	 */
 	protected Set<ECPRendererDescription> getRendererDescriptors() {
-		return this.rendererDescriptors;
+		return rendererDescriptors;
 	}
 
 	private void readRenderer() {
@@ -84,7 +90,7 @@ public class VaadinRendererFactoryImpl implements VaadinRendererFactory {
 			for (final IConfigurationElement configurationElement : extension.getConfigurationElements()) {
 				try {
 					final Class<AbstractVaadinRenderer<VElement>> renderer = loadClass(configurationElement
-							.getContributor().getName(), configurationElement.getAttribute("renderer")); //$NON-NLS-1$
+						.getContributor().getName(), configurationElement.getAttribute("renderer")); //$NON-NLS-1$
 
 					final Set<ECPRendererTester> tester = new LinkedHashSet<ECPRendererTester>();
 					for (final IConfigurationElement testerExtension : configurationElement.getChildren()) {
@@ -96,13 +102,13 @@ public class VaadinRendererFactoryImpl implements VaadinRendererFactory {
 
 							final String vElement = testerExtension.getAttribute(TESTER_VELEMENT);
 							final Class<? extends VElement> supportedEObject = loadClass(testerExtension
-									.getContributor().getName(), vElement);
+								.getContributor().getName(), vElement);
 
 							tester.add(new ECPStaticRendererTester(priority, supportedEObject));
 						}
 					}
 
-					this.rendererDescriptors.add(new ECPRendererDescription(renderer, tester));
+					rendererDescriptors.add(new ECPRendererDescription(renderer, tester));
 				} catch (final CoreException ex) {
 					ex.printStackTrace();
 					// report(new ECPRendererDescriptionInitFailedReport(ex));
@@ -168,7 +174,7 @@ public class VaadinRendererFactoryImpl implements VaadinRendererFactory {
 		AbstractVaadinRenderer<VElement> bestCandidate = null;
 		// final ReportService reportService = Activator.getDefault().getReportService();
 
-		for (final ECPRendererDescription description : this.rendererDescriptors) {
+		for (final ECPRendererDescription description : rendererDescriptors) {
 
 			int currentPriority = -1;
 

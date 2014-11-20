@@ -1,11 +1,11 @@
 /*******************************************************************************
  * Copyright (c) 2014 Dennis Melzer and others.
- * 
+ *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  * Dennis - initial API and implementation
  ******************************************************************************/
@@ -24,9 +24,15 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 
+/**
+ * The implementation for the {@link ECPFVaadinViewRenderer}.
+ *
+ * @author Dennis Melzer
+ *
+ */
 public class ECPFVaadinViewRendererImpl implements ECPFVaadinViewRenderer {
 
-	private VaadinRendererFactory factory = new VaadinRendererFactoryImpl();
+	private final VaadinRendererFactory factory = new VaadinRendererFactoryImpl();
 
 	@Override
 	public ECPVaadinView render(EObject domainObject) {
@@ -36,17 +42,17 @@ public class ECPFVaadinViewRendererImpl implements ECPFVaadinViewRenderer {
 	@Override
 	public ECPVaadinView render(EObject domainObject, VView viewModel) {
 		final ViewModelContext viewContext = ViewModelContextFactory.INSTANCE.createViewModelContext(viewModel,
-				domainObject);
+			domainObject);
 		return render(viewContext);
 	}
 
 	@Override
 	public ECPVaadinView render(ViewModelContext viewModelContext) {
-		Component resultSet = this.factory.render(viewModelContext.getViewModel(), viewModelContext);
+		final Component resultSet = factory.render(viewModelContext.getViewModel(), viewModelContext);
 		if (resultSet == null) {
-			Label label = new Label();
-			label.setCaption("Rendering went wrong!");
-			VerticalLayout verticalLayout = new VerticalLayout(new com.vaadin.ui.Label());
+			final Label label = new Label();
+			label.setCaption("Rendering went wrong!"); //$NON-NLS-1$
+			final VerticalLayout verticalLayout = new VerticalLayout(new com.vaadin.ui.Label());
 			return new ECPVaadinViewImpl(verticalLayout, viewModelContext);
 		}
 		return new ECPVaadinViewImpl(resultSet, viewModelContext);

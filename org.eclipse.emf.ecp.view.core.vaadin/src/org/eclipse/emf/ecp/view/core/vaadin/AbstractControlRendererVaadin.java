@@ -1,11 +1,11 @@
 /*******************************************************************************
  * Copyright (c) 2014 Dennis Melzer and others.
- * 
+ *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  * Dennis - initial API and implementation
  ******************************************************************************/
@@ -31,34 +31,43 @@ import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 
 import com.vaadin.server.UserError;
 import com.vaadin.ui.AbstractComponent;
+import com.vaadin.ui.Component;
 import com.vaadin.ui.UI;
 
+/**
+ * Abstract Vaadin Renderer for {@link VControl}.
+ *
+ * @author Dennis Melzer
+ *
+ * @param <T> VControl Element
+ */
 public abstract class AbstractControlRendererVaadin<T extends VControl> extends AbstractVaadinRenderer<T> {
 
-	private static final String DEFAULT_MANADORY_MARKER = "*";
-	protected DataBindingContext bindingContext;
-	protected AdapterFactoryItemDelegator adapterFactoryItemDelegator;
+	private static final String DEFAULT_MANADORY_MARKER = "*"; //$NON-NLS-1$
+	private DataBindingContext bindingContext;
+	private AdapterFactoryItemDelegator adapterFactoryItemDelegator;
 	private ComposedAdapterFactory composedAdapterFactory;
 	private DomainModelReferenceChangeListener domainModelReferenceChangeListener;
 
 	@Override
 	protected void applyCaption() {
-		Setting setting = getVElement().getDomainModelReference().getIterator().next();
+		final Setting setting = getVElement().getDomainModelReference().getIterator().next();
 		final IItemPropertyDescriptor itemPropertyDescriptor = VaadinRendererUtil.getItemPropertyDescriptor(setting);
+		final Component controlComponent = getControlComponent();
 
 		if (!hasCaption(itemPropertyDescriptor)) {
-			this.controlComponent.setCaption(null);
+			controlComponent.setCaption(null);
 			return;
 		}
 
 		String extra = StringUtils.EMPTY;
 
 		extra = getMandatoryText(setting, extra);
-		this.controlComponent.setCaption(itemPropertyDescriptor.getDisplayName(setting.getEObject()) + extra);
+		controlComponent.setCaption(itemPropertyDescriptor.getDisplayName(setting.getEObject()) + extra);
 
-		String description = itemPropertyDescriptor.getDescription(setting.getEObject());
-		if (this.controlComponent instanceof AbstractComponent && !StringUtils.isEmpty(description)) {
-			((AbstractComponent) this.controlComponent).setDescription(description);
+		final String description = itemPropertyDescriptor.getDescription(setting.getEObject());
+		if (controlComponent instanceof AbstractComponent && !StringUtils.isEmpty(description)) {
+			((AbstractComponent) controlComponent).setDescription(description);
 		}
 	}
 
@@ -85,11 +94,11 @@ public abstract class AbstractControlRendererVaadin<T extends VControl> extends 
 		super.init(vElement, viewContext);
 		this.bindingContext = new EMFDataBindingContext();
 		this.composedAdapterFactory = new ComposedAdapterFactory(new AdapterFactory[] {
-				new CustomReflectiveItemProviderAdapterFactory(),
-				new ComposedAdapterFactory(ComposedAdapterFactory.Descriptor.Registry.INSTANCE) });
+			new CustomReflectiveItemProviderAdapterFactory(),
+			new ComposedAdapterFactory(ComposedAdapterFactory.Descriptor.Registry.INSTANCE) });
 		this.adapterFactoryItemDelegator = new AdapterFactoryItemDelegator(this.composedAdapterFactory);
 
-		VDomainModelReference domainModelReference = getVElement().getDomainModelReference();
+		final VDomainModelReference domainModelReference = getVElement().getDomainModelReference();
 		if (domainModelReference == null) {
 			return;
 		}
@@ -97,7 +106,7 @@ public abstract class AbstractControlRendererVaadin<T extends VControl> extends 
 
 			@Override
 			public void notifyChange() {
-				final UI ui = AbstractControlRendererVaadin.this.controlComponent.getUI();
+				final UI ui = AbstractControlRendererVaadin.this.getControlComponent().getUI();
 				if (ui == null) {
 					return;
 				}
@@ -105,7 +114,6 @@ public abstract class AbstractControlRendererVaadin<T extends VControl> extends 
 
 					@Override
 					public void run() {
-						System.out.println(ui.getId() + " " + getVElement());
 						applyValidation();
 					}
 				});
@@ -117,10 +125,10 @@ public abstract class AbstractControlRendererVaadin<T extends VControl> extends 
 
 	private String getMandatoryText(Setting setting, String extra) {
 		if (setting.getEStructuralFeature().getLowerBound() > 0) {
-			VTMandatoryStyleProperty styleProperty = VaadinStyleTemplateUtil.getVTStyleProperty(
-					VTMandatoryPackage.Literals.MANDATORY_STYLE_PROPERTY, getVElement(), getViewModelContext());
+			final VTMandatoryStyleProperty styleProperty = VaadinStyleTemplateUtil.getVTStyleProperty(
+				VTMandatoryPackage.Literals.MANDATORY_STYLE_PROPERTY, getVElement(), getViewModelContext());
 			if (styleProperty == null) {
-				extra = DEFAULT_MANADORY_MARKER; //$NON-NLS-1$
+				extra = DEFAULT_MANADORY_MARKER;
 			} else {
 				extra = styleProperty.getMandatoryMarker();
 			}
@@ -129,12 +137,23 @@ public abstract class AbstractControlRendererVaadin<T extends VControl> extends 
 		return extra;
 	}
 
+	/**
+	 * Has the component caption.
+	 *
+	 * @param itemPropertyDescriptor the descriptor
+	 * @return true = has a caption
+	 */
 	protected boolean hasCaption(IItemPropertyDescriptor itemPropertyDescriptor) {
 		return itemPropertyDescriptor != null && LabelAlignment.NONE != getVElement().getLabelAlignment();
 	}
 
+	/**
+	 * Has the component caption.
+	 *
+	 * @return true = has a caption
+	 */
 	protected boolean hasCaption() {
-		Setting setting = getVElement().getDomainModelReference().getIterator().next();
+		final Setting setting = getVElement().getDomainModelReference().getIterator().next();
 		final IItemPropertyDescriptor itemPropertyDescriptor = VaadinRendererUtil.getItemPropertyDescriptor(setting);
 		return hasCaption(itemPropertyDescriptor);
 	}
@@ -142,7 +161,7 @@ public abstract class AbstractControlRendererVaadin<T extends VControl> extends 
 	@Override
 	protected void applyValidation() {
 		// TODO: FIXME Register
-		AbstractComponent abstractComponent = (AbstractComponent) this.controlComponent;
+		final AbstractComponent abstractComponent = (AbstractComponent) getControlComponent();
 		abstractComponent.setComponentError(null);
 
 		if (getVElement().getDiagnostic() == null) {
@@ -151,6 +170,24 @@ public abstract class AbstractControlRendererVaadin<T extends VControl> extends 
 		if (Diagnostic.ERROR == getVElement().getDiagnostic().getHighestSeverity()) {
 			abstractComponent.setComponentError(new UserError(getVElement().getDiagnostic().getMessage()));
 		}
+	}
+
+	/**
+	 * Returns the bindingcontext.
+	 *
+	 * @return the bindingContext
+	 */
+	public DataBindingContext getBindingContext() {
+		return bindingContext;
+	}
+
+	/**
+	 * Returns the factory.
+	 *
+	 * @return the adapterFactoryItemDelegator
+	 */
+	public AdapterFactoryItemDelegator getAdapterFactoryItemDelegator() {
+		return adapterFactoryItemDelegator;
 	}
 
 }

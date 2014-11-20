@@ -1,11 +1,11 @@
 /*******************************************************************************
  * Copyright (c) 2014 Dennis Melzer and others.
- * 
+ *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  * Dennis - initial API and implementation
  ******************************************************************************/
@@ -48,27 +48,36 @@ import org.mockito.stubbing.Answer;
 import com.vaadin.ui.Component;
 
 public abstract class AbstractControlTest {
-	protected AbstractControlRendererVaadin<VControl> renderer;
+	private AbstractControlRendererVaadin<VControl> renderer;
+
+	/**
+	 * Gets the renderer
+	 *
+	 * @return the renderer
+	 */
+	public AbstractControlRendererVaadin<VControl> getRenderer() {
+		return renderer;
+	}
 
 	private Resource createResource() {
-		Resource.Factory.Registry registry = Resource.Factory.Registry.INSTANCE;
-		Map<String, Object> extToFactoryMap = registry.getExtensionToFactoryMap();
+		final Resource.Factory.Registry registry = Resource.Factory.Registry.INSTANCE;
+		final Map<String, Object> extToFactoryMap = registry.getExtensionToFactoryMap();
 		extToFactoryMap.put(Resource.Factory.Registry.DEFAULT_EXTENSION, new ResourceFactoryImpl());
-		ResourceSet resourceSet = new ResourceSetImpl();
+		final ResourceSet resourceSet = new ResourceSetImpl();
 		resourceSet.getPackageRegistry().put(EcorePackage.eNS_URI, EcorePackage.eINSTANCE);
 
-		AdapterFactoryEditingDomain domain = new AdapterFactoryEditingDomain(new ComposedAdapterFactory(
-				ComposedAdapterFactory.Descriptor.Registry.INSTANCE), new BasicCommandStack(), resourceSet);
+		final AdapterFactoryEditingDomain domain = new AdapterFactoryEditingDomain(new ComposedAdapterFactory(
+			ComposedAdapterFactory.Descriptor.Registry.INSTANCE), new BasicCommandStack(), resourceSet);
 		resourceSet.eAdapters().add(new AdapterFactoryEditingDomain.EditingDomainProvider(domain));
-		Resource resource = resourceSet.createResource(URI.createURI("VIRTUAL"));
+		final Resource resource = resourceSet.createResource(URI.createURI("VIRTUAL"));
 		return resource;
 
 	}
 
 	protected void mockControl(EObject eObject, final EStructuralFeature eStructuralFeature) {
-		VDomainModelReference domainModelReference = Mockito.mock(VDomainModelReference.class);
+		final VDomainModelReference domainModelReference = Mockito.mock(VDomainModelReference.class);
 		final Setting setting = mock(Setting.class);
-		Resource resource = createResource();
+		final Resource resource = createResource();
 		resource.getContents().add(eObject);
 
 		when(setting.getEObject()).thenReturn(eObject);
@@ -85,13 +94,13 @@ public abstract class AbstractControlTest {
 				return Collections.singleton(eStructuralFeature).iterator();
 			}
 		});
-		BasicEList<DomainModelReferenceChangeListener> changeListener = new BasicEList<DomainModelReferenceChangeListener>();
+		final BasicEList<DomainModelReferenceChangeListener> changeListener = new BasicEList<DomainModelReferenceChangeListener>();
 		when(domainModelReference.getChangeListener()).thenReturn(changeListener);
-		Mockito.when(this.control.getDomainModelReference()).thenReturn(domainModelReference);
+		Mockito.when(control.getDomainModelReference()).thenReturn(domainModelReference);
 	}
 
 	protected void setMockLabelAlignment(LabelAlignment labelAlignment) {
-		Mockito.when(this.control.getLabelAlignment()).thenReturn(labelAlignment);
+		Mockito.when(control.getLabelAlignment()).thenReturn(labelAlignment);
 	}
 
 	private ViewModelContext context;
@@ -99,16 +108,16 @@ public abstract class AbstractControlTest {
 
 	protected void setup(AbstractControlRendererVaadin<VControl> renderer) {
 		this.renderer = renderer;
-		this.control = Mockito.mock(VControl.class);
-		this.context = Mockito.mock(ViewModelContext.class);
+		control = Mockito.mock(VControl.class);
+		context = Mockito.mock(ViewModelContext.class);
 	}
 
 	@Test
 	public void testGridDescriptionLabelAlignmentNone() {
 		setMockLabelAlignment(LabelAlignment.NONE);
 		mockControl();
-		this.renderer.init(this.control, this.context);
-		Component component = this.renderer.renderComponent();
+		renderer.init(control, context);
+		final Component component = renderer.renderComponent();
 		// SWTGridDescription gridDescription =
 		// renderer.getGridDescription(GridDescriptionFactory.INSTANCE.createEmptyGridDescription());
 		assertEquals(null, component.getCaption());
@@ -127,15 +136,15 @@ public abstract class AbstractControlTest {
 	protected void renderLabel(String text) throws NoRendererFoundException, NoPropertyDescriptorFoundExeption {
 		setMockLabelAlignment(LabelAlignment.LEFT);
 		mockControl();
-		this.renderer.init(this.control, this.context);
-		Component render = this.renderer.renderComponent();
+		renderer.init(control, context);
+		final Component render = renderer.renderComponent();
 		assertEquals(text, render.getCaption());
 	}
 
 	protected Component renderControl() throws NoRendererFoundException, NoPropertyDescriptorFoundExeption {
 		mockControl();
-		this.renderer.init(this.control, this.context);
-		Component render = this.renderer.renderComponent();
+		renderer.init(control, context);
+		final Component render = renderer.renderComponent();
 		return render;
 	}
 

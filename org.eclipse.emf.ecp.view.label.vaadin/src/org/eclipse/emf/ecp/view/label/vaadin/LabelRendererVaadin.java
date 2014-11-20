@@ -1,11 +1,11 @@
 /*******************************************************************************
  * Copyright (c) 2014 Dennis Melzer and others.
- * 
+ *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  * Dennis - initial API and implementation
  ******************************************************************************/
@@ -14,6 +14,7 @@ package org.eclipse.emf.ecp.view.label.vaadin;
 
 import java.util.Iterator;
 
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.UpdateValueStrategy;
@@ -36,30 +37,37 @@ import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Label;
 
+/**
+ * The Vaadin Renderer for {@link VLabel}.
+ *
+ * @author Dennis Melzer
+ *
+ */
 public class LabelRendererVaadin extends AbstractVaadinRenderer<VLabel> {
 
-	private static final String HTML_SEPERATOR = "<hr/>";
+	private static final String SMALL = "small"; //$NON-NLS-1$
+	private static final String HTML_SEPERATOR = "<hr/>"; //$NON-NLS-1$
 	private DataBindingContext bindingContext;
 	private IObservableValue modelValue;
 	private final WritableValue value = new WritableValue();
 
 	@Override
 	public Component render() {
-		VLabel renderable = getVElement();
-		String name = getVElement().getName() == null ? "" : getVElement().getName();
+		final VLabel renderable = getVElement();
+		final String name = getVElement().getName() == null ? StringUtils.EMPTY : getVElement().getName();
 		Label label = new Label(name);
 		if (renderable.getStyle() == VLabelStyle.SEPARATOR) {
 			label = new Label(HTML_SEPERATOR, ContentMode.HTML);
 		} else {
 			label.addStyleName(renderable.getStyle().getName().toLowerCase());
 			if (renderable.getStyle().getValue() > 6) {
-				label.addStyleName("small");
+				label.addStyleName(SMALL);
 			}
 		}
 		if (getVElement().getDomainModelReference() == null) {
 			return label;
 		}
-		Iterator<Setting> iterator = getVElement().getDomainModelReference().getIterator();
+		final Iterator<Setting> iterator = getVElement().getDomainModelReference().getIterator();
 		if (iterator.hasNext()) {
 			createDatabinding(iterator.next(), label);
 		}
@@ -72,17 +80,17 @@ public class LabelRendererVaadin extends AbstractVaadinRenderer<VLabel> {
 
 	@Override
 	protected void dispose() {
-		if (this.value != null) {
-			this.value.dispose();
+		if (value != null) {
+			value.dispose();
 		}
 
-		if (this.bindingContext != null) {
-			this.bindingContext.dispose();
-			this.bindingContext = null;
+		if (bindingContext != null) {
+			bindingContext.dispose();
+			bindingContext = null;
 		}
-		if (this.modelValue != null) {
-			this.modelValue.dispose();
-			this.modelValue = null;
+		if (modelValue != null) {
+			modelValue.dispose();
+			modelValue = null;
 		}
 		super.dispose();
 	}
@@ -90,42 +98,42 @@ public class LabelRendererVaadin extends AbstractVaadinRenderer<VLabel> {
 	@Override
 	public void init(VLabel vElement, ViewModelContext viewContext) {
 		super.init(vElement, viewContext);
-		this.bindingContext = new EMFDataBindingContext();
+		bindingContext = new EMFDataBindingContext();
 		updateControl();
 	}
 
-	protected void createDatabinding(Setting setting, final Component component) {
-		IObservableValue targetValue = VaadinObservables.observeValue((ValueChangeNotifier) component);
-		IObservableValue modelValue = getModelValue(setting);
+	private void createDatabinding(Setting setting, final Component component) {
+		final IObservableValue targetValue = VaadinObservables.observeValue((ValueChangeNotifier) component);
+		final IObservableValue modelValue = getModelValue(setting);
 		bindModelToTarget(targetValue, modelValue, getTargetToModelStrategy(component),
-				getModelToTargetStrategy(component));
+			getModelToTargetStrategy(component));
 	}
 
-	protected UpdateValueStrategy getModelToTargetStrategy(Component component) {
+	private UpdateValueStrategy getModelToTargetStrategy(Component component) {
 		return new EMFUpdateValueStrategy();
 	}
 
-	protected UpdateValueStrategy getTargetToModelStrategy(Component component) {
+	private UpdateValueStrategy getTargetToModelStrategy(Component component) {
 		return new EMFUpdateValueStrategy();
 	}
 
-	protected final IObservableValue getModelValue(final Setting setting) {
-		if (this.modelValue == null) {
+	private IObservableValue getModelValue(final Setting setting) {
+		if (modelValue == null) {
 
-			this.modelValue = EMFEditProperties.value(getEditingDomain(setting), setting.getEStructuralFeature())
-					.observeDetail(this.value);
+			modelValue = EMFEditProperties.value(getEditingDomain(setting), setting.getEStructuralFeature())
+				.observeDetail(value);
 		}
-		return this.modelValue;
+		return modelValue;
 	}
 
-	protected Binding bindModelToTarget(IObservableValue target, IObservableValue model,
-			UpdateValueStrategy targetToModelStrategy, UpdateValueStrategy modelToTargetStrategy) {
-		final Binding binding = this.bindingContext.bindValue(target, model, targetToModelStrategy,
-				modelToTargetStrategy);
+	private Binding bindModelToTarget(IObservableValue target, IObservableValue model,
+		UpdateValueStrategy targetToModelStrategy, UpdateValueStrategy modelToTargetStrategy) {
+		final Binding binding = bindingContext.bindValue(target, model, targetToModelStrategy,
+			modelToTargetStrategy);
 		return binding;
 	}
 
-	protected final EditingDomain getEditingDomain(Setting setting) {
+	private EditingDomain getEditingDomain(Setting setting) {
 		return AdapterFactoryEditingDomain.getEditingDomainFor(setting.getEObject());
 	}
 
@@ -135,9 +143,9 @@ public class LabelRendererVaadin extends AbstractVaadinRenderer<VLabel> {
 		}
 		final Iterator<Setting> settings = getVElement().getDomainModelReference().getIterator();
 		if (settings.hasNext()) {
-			this.value.setValue(settings.next().getEObject());
+			value.setValue(settings.next().getEObject());
 		} else {
-			this.value.setValue(null);
+			value.setValue(null);
 		}
 	}
 

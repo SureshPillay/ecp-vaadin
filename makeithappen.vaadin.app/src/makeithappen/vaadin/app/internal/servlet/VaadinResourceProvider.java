@@ -1,11 +1,11 @@
 /*******************************************************************************
  * Copyright (c) 2014 Dennis Melzer and others.
- * 
+ *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  * Dennis - initial API and implementation
  ******************************************************************************/
@@ -27,15 +27,21 @@ import org.osgi.framework.BundleListener;
 import org.osgi.framework.FrameworkUtil;
 import org.osgi.service.http.HttpContext;
 
+/**
+ * The vaadin resource provider
+ * 
+ * @author Dennis Melzer
+ *
+ */
 public class VaadinResourceProvider implements HttpContext, BundleListener {
 
 	private static final String VAADIN_RESOURCES_HEADER = "Vaadin-Resources"; //$NON-NLS-1$
 
 	@SuppressWarnings("nls")
 	private static final String[] VAADIN_BUNDLE_NAMES = new String[] { "com.vaadin.server", "com.vaadin.client",
-			"com.vaadin.client-compiled", "com.vaadin.push", "com.vaadin.themes" };
+		"com.vaadin.client-compiled", "com.vaadin.push", "com.vaadin.themes" };
 
-	private BundleContext bundleContext;
+	private final BundleContext bundleContext;
 
 	private Set<Bundle> resourceBundles;
 
@@ -43,13 +49,13 @@ public class VaadinResourceProvider implements HttpContext, BundleListener {
 	 * Registers as bundle listener and check current bundles.
 	 */
 	public VaadinResourceProvider() {
-		this.resourceBundles = new HashSet<Bundle>();
-		this.bundleContext = FrameworkUtil.getBundle(getClass()).getBundleContext();
-		this.bundleContext.addBundleListener(this);
+		resourceBundles = new HashSet<Bundle>();
+		bundleContext = FrameworkUtil.getBundle(getClass()).getBundleContext();
+		bundleContext.addBundleListener(this);
 
-		for (Bundle bundle : this.bundleContext.getBundles()) {
+		for (final Bundle bundle : bundleContext.getBundles()) {
 			if (isVaadinResourceBundle(bundle)) {
-				this.resourceBundles.add(bundle);
+				resourceBundles.add(bundle);
 			}
 		}
 	}
@@ -58,38 +64,38 @@ public class VaadinResourceProvider implements HttpContext, BundleListener {
 	 * Unregisters as bundle listener and clears the resource bundle list.
 	 */
 	public void deactivate() {
-		this.bundleContext.removeBundleListener(this);
-		this.resourceBundles = null;
+		bundleContext.removeBundleListener(this);
+		resourceBundles = null;
 	}
 
 	@Override
 	public boolean handleSecurity(HttpServletRequest paramHttpServletRequest,
-			HttpServletResponse paramHttpServletResponse) throws IOException {
+		HttpServletResponse paramHttpServletResponse) throws IOException {
 		return true;
 	}
 
 	@Override
 	public void bundleChanged(BundleEvent event) {
-		Bundle bundle = event.getBundle();
-		int type = event.getType();
+		final Bundle bundle = event.getBundle();
+		final int type = event.getType();
 
 		if (type == BundleEvent.RESOLVED && isVaadinResourceBundle(bundle)) {
-			this.resourceBundles.add(bundle);
+			resourceBundles.add(bundle);
 		} else if (type == BundleEvent.UNINSTALLED && isVaadinResourceBundle(bundle)) {
-			this.resourceBundles.remove(bundle);
+			resourceBundles.remove(bundle);
 		}
 	}
 
 	@Override
 	public String getMimeType(String name) {
-		URL resource = getResource(name);
+		final URL resource = getResource(name);
 		if (null == resource) {
 			return null;
 		}
 
 		try {
 			return resource.openConnection().getContentType();
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			return null;
 		}
 	}
@@ -97,11 +103,11 @@ public class VaadinResourceProvider implements HttpContext, BundleListener {
 	@SuppressWarnings("nls")
 	@Override
 	public URL getResource(String name) {
-		String uri = name.charAt(0) == '/' ? name : "/" + name;
+		final String uri = name.charAt(0) == '/' ? name : "/" + name;
 
-		for (Bundle bundle : this.resourceBundles) {
-			String adjustedUri = adjustUri(uri, bundle);
-			URL resource = bundle.getResource(adjustedUri);
+		for (final Bundle bundle : resourceBundles) {
+			final String adjustedUri = adjustUri(uri, bundle);
+			final URL resource = bundle.getResource(adjustedUri);
 
 			if (resource != null) {
 				return resource;
@@ -113,7 +119,7 @@ public class VaadinResourceProvider implements HttpContext, BundleListener {
 
 	/**
 	 * Adjusts the URI.
-	 * 
+	 *
 	 * @param uri The URI to adjust.
 	 * @param bundle The bundle.
 	 * @return The adjusted URI.
@@ -124,7 +130,7 @@ public class VaadinResourceProvider implements HttpContext, BundleListener {
 			return uri;
 		}
 
-		String root = bundle.getHeaders().get(VAADIN_RESOURCES_HEADER);
+		final String root = bundle.getHeaders().get(VAADIN_RESOURCES_HEADER);
 		if (StringUtils.isEmpty(root) || ".".equals(root)) {
 			return uri;
 		}
@@ -134,7 +140,7 @@ public class VaadinResourceProvider implements HttpContext, BundleListener {
 
 	/**
 	 * Returns <code>true</code> if the given bundle is a vaadin resource bundle.
-	 * 
+	 *
 	 * @param bundle The bundle.
 	 * @return <code>true</code> if the given bundle is a vaadin resource bundle.
 	 */
@@ -147,8 +153,8 @@ public class VaadinResourceProvider implements HttpContext, BundleListener {
 	}
 
 	private boolean isVaadinBundle(Bundle bundle) {
-		String symbolicName = bundle.getSymbolicName();
-		for (String vaadinBundleName : VAADIN_BUNDLE_NAMES) {
+		final String symbolicName = bundle.getSymbolicName();
+		for (final String vaadinBundleName : VAADIN_BUNDLE_NAMES) {
 			if (vaadinBundleName.equals(symbolicName)) {
 				return true;
 			}
