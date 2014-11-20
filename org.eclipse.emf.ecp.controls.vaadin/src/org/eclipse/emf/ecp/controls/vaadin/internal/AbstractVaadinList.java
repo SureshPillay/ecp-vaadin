@@ -31,8 +31,9 @@ import com.vaadin.ui.VerticalLayout;
  */
 public abstract class AbstractVaadinList extends AbstractVaadinSimpleControlRenderer {
 
-	private static final String REFERENCE_LIST = "reference-list"; //$NON-NLS-1$
+	/** The remove column. */
 	protected static final String REMOVE_COLUMN = "remove"; //$NON-NLS-1$
+	private static final String REFERENCE_LIST = "reference-list"; //$NON-NLS-1$
 	private Table table;
 	private Setting setting;
 	private HorizontalLayout toolbar;
