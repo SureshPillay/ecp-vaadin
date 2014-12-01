@@ -21,7 +21,7 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.Upload;
 
 /**
- * Example for custom component
+ * Example for custom component.
  *
  * @author Dennis Melzer
  *

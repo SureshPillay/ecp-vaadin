@@ -17,7 +17,7 @@ import com.vaadin.ui.themes.ValoTheme;
 // @Theme(Reindeer.THEME_NAME)
 @Push
 /**
- * Render the eObject
+ * Render the eObject.
  * @author Dennis Melzer
  *
  */
