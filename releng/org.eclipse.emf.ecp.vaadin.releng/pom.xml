@@ -10,23 +10,79 @@
     <properties>
         <!-- tycho version -->
         <tycho.version>0.21.0</tycho.version>
-        
         <!-- the default encoding -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
     <repositories>
         <repository>
-            <id>dependencies</id>
+            <id>luna</id>
             <layout>p2</layout>
-            <url>${p2.dependencies.location.remote}</url>
+            <url>http://download.eclipse.org/releases/luna/</url>
         </repository>
         <repository>
-            <id>compart</id>
+            <id>updates</id>
             <layout>p2</layout>
-            <url>${p2.compart.location.remote}</url>
+            <url>http://download.eclipse.org/eclipse/updates/4.4</url>
+        </repository>
+        <repository>
+            <id>ecp</id>
+            <layout>p2</layout>
+            <url> http://download.eclipse.org/ecp/releases/releases_15/</url>
         </repository>
     </repositories>
+    
+   
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.eclipse.tycho</groupId>
+                <artifactId>tycho-maven-plugin</artifactId>
+                <version>${tycho.version}</version>
+                <extensions>true</extensions>
+            </plugin>
 
+            <plugin>
+                <groupId>org.eclipse.tycho</groupId>
+                <artifactId>tycho-compiler-plugin</artifactId>
+                <version>${tycho.version}</version>
+                <configuration>
+                    <source>1.7</source>
+                    <target>1.7</target>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.eclipse.tycho</groupId>
+                <artifactId>target-platform-configuration</artifactId>
+                <version>${tycho.version}</version>
+                <configuration>
+                    <resolver>p2</resolver>
+                    <pomDependencies>consider</pomDependencies>
+                    <ignoreTychoRepositories>false</ignoreTychoRepositories>
+                </configuration>
+            </plugin>
+
+            <!-- necessary to omit the maven pom.xml inside the generated jar files -->
+            <plugin>
+                <groupId>org.eclipse.tycho</groupId>
+                <artifactId>tycho-packaging-plugin</artifactId>
+                <version>${tycho.version}</version>
+                <configuration>
+                    <includeSources>true</includeSources>
+                    <archive>
+                        <addMavenDescriptor>false</addMavenDescriptor>
+                    </archive>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+
+	<modules>
+		<module>../../releng/org.eclipse.emf.ecp.vaadin.releng.bundles</module>
+		<module>../../releng/org.eclipse.emf.ecp.vaadin.releng.tests</module>
+		<module>../../releng/org.eclipse.emf.ecp.vaadin.releng.repository</module>
+	</modules>
 
 </project>
