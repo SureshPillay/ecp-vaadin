@@ -1,5 +1,8 @@
-*/bin
-*/target
-.DS_Store
-*/target
-*/.DS_Store
+bin/
+*.class
+*~
+*.lock
+*.DS_Store
+*.swp
+*.out
+target/
