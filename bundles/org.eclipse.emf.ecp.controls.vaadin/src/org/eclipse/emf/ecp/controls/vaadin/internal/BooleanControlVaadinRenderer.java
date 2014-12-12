@@ -29,4 +29,9 @@ public class BooleanControlVaadinRenderer extends AbstractVaadinSimpleControlRen
 		return new CheckBox();
 	}
 
+	@Override
+	protected String getUnsetLabel() {
+		return VaadinRendererMessages.BooleanControlVaadinRenderer_NoBooleanSetClickToSetBoolean;
+	}
+
 }

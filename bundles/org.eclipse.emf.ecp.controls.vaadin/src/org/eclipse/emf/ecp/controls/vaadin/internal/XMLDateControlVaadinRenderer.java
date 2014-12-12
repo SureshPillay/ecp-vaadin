@@ -61,4 +61,9 @@ public class XMLDateControlVaadinRenderer extends AbstractVaadinSimpleControlRen
 		return new DateField();
 	}
 
+	@Override
+	protected String getUnsetLabel() {
+		return VaadinRendererMessages.XMLDateControlVaadinRenderer_NoDateSetClickToSetDate;
+	}
+
 }

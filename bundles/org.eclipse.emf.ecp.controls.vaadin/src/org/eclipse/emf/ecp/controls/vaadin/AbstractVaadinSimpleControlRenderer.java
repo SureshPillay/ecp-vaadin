@@ -21,9 +21,11 @@ import org.eclipse.core.databinding.observable.value.WritableValue;
 import org.eclipse.emf.databinding.EMFUpdateValueStrategy;
 import org.eclipse.emf.databinding.edit.EMFEditProperties;
 import org.eclipse.emf.ecore.EStructuralFeature.Setting;
+import org.eclipse.emf.ecp.controls.vaadin.internal.VaadinRendererMessages;
 import org.eclipse.emf.ecp.view.core.vaadin.AbstractControlRendererVaadin;
 import org.eclipse.emf.ecp.view.spi.context.ViewModelContext;
 import org.eclipse.emf.ecp.view.spi.model.VControl;
+import org.eclipse.emf.edit.command.SetCommand;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
@@ -31,7 +33,13 @@ import org.lunifera.runtime.web.vaadin.databinding.VaadinObservables;
 
 import com.vaadin.data.Property.ValueChangeNotifier;
 import com.vaadin.server.Sizeable.Unit;
+import com.vaadin.ui.Alignment;
+import com.vaadin.ui.Button;
+import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Component;
+import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Label;
 
 /**
  * Abstract Class for a Vaadin control.
@@ -91,7 +99,53 @@ public abstract class AbstractVaadinSimpleControlRenderer extends AbstractContro
 		final Component component = createControl();
 		createDatabinding(setting, component);
 		component.setWidth(100, Unit.PERCENTAGE);
+
+		if (setting.getEStructuralFeature().isUnsettable()) {
+			final HorizontalLayout horizontalLayout = new HorizontalLayout();
+			horizontalLayout.setWidth(100, Unit.PERCENTAGE);
+			final Button setButton = new Button();
+			setButton.setEnabled(getVElement().isEnabled());
+			setButton.setVisible(getVElement().isVisible());
+			setButton.setReadOnly(getVElement().isReadonly());
+
+			createSetOrUnsetComponent(component, horizontalLayout, setButton, setting);
+
+			setButton.addClickListener(new ClickListener() {
+
+				@Override
+				public void buttonClick(ClickEvent event) {
+					final Object value = setting.isSet() ? SetCommand.UNSET_VALUE : setting
+						.getEStructuralFeature().getDefaultValue();
+					final EditingDomain editingDomain = getEditingDomain(setting);
+					editingDomain.getCommandStack().execute(
+						SetCommand.create(editingDomain, setting.getEObject(), setting.getEStructuralFeature(), value));
+					createSetOrUnsetComponent(component, horizontalLayout, setButton, setting);
+
+				}
+			});
+			return horizontalLayout;
+		}
+
 		return component;
+	}
+
+	private void createSetOrUnsetComponent(final Component component, final HorizontalLayout horizontalLayout,
+		final Button setButton, Setting setting) {
+		horizontalLayout.removeAllComponents();
+		Component addComponent = component;
+		if (setting.isSet()) {
+			setButton.setCaption(VaadinRendererMessages.AbstractVaadinSimpleControlRenderer_Set);
+			addComponent = new Label(getUnsetLabel());
+
+		} else {
+			setButton.setCaption(VaadinRendererMessages.AbstractVaadinSimpleControlRenderer_Unset);
+
+		}
+		horizontalLayout.setData(addComponent);
+		horizontalLayout.addComponent(addComponent);
+		horizontalLayout.setExpandRatio(addComponent, 1f);
+		horizontalLayout.addComponent(setButton);
+		horizontalLayout.setComponentAlignment(setButton, Alignment.BOTTOM_RIGHT);
 	}
 
 	private void createDatabinding(Setting setting, final Component component) {
@@ -162,6 +216,15 @@ public abstract class AbstractVaadinSimpleControlRenderer extends AbstractContro
 
 	private EditingDomain getEditingDomain(Setting setting) {
 		return AdapterFactoryEditingDomain.getEditingDomainFor(setting.getEObject());
+	}
+
+	/**
+	 * Gets the unset label
+	 *
+	 * @return the unset label
+	 */
+	protected String getUnsetLabel() {
+		return VaadinRendererMessages.AbstractVaadinSimpleControlRenderer_NotSetClickToSet;
 	}
 
 	/**

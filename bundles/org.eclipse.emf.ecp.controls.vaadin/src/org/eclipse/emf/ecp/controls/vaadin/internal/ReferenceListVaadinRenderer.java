@@ -130,4 +130,15 @@ public class ReferenceListVaadinRenderer extends AbstractVaadinList {
 		container.addContainerProperty(REMOVE_COLUMN, Button.class, null);
 
 	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.emf.ecp.controls.vaadin.AbstractVaadinSimpleControlRenderer#getUnsetLabel()
+	 */
+	@Override
+	protected String getUnsetLabel() {
+		// TODO Auto-generated method stub
+		return super.getUnsetLabel();
+	}
 }

@@ -46,4 +46,9 @@ public class EnumComboViewerVaadinRenderer extends AbstractVaadinSimpleControlRe
 		return combobox;
 	}
 
+	@Override
+	protected String getUnsetLabel() {
+		return VaadinRendererMessages.EnumComboViewerVaadinRenderer_NoValueSetClickToSetValue;
+	}
+
 }

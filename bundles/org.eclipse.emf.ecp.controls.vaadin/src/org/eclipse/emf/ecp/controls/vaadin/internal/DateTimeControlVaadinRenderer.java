@@ -33,4 +33,9 @@ public class DateTimeControlVaadinRenderer extends AbstractVaadinSimpleControlRe
 		return dateField;
 	}
 
+	@Override
+	protected String getUnsetLabel() {
+		return VaadinRendererMessages.DateTimeControlVaadinRenderer_NoDateSetClickToSetDate;
+	}
+
 }

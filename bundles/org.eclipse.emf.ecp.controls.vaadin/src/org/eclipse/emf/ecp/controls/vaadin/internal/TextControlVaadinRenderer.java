@@ -55,4 +55,14 @@ public class TextControlVaadinRenderer extends AbstractVaadinSimpleControlRender
 		return textField;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.emf.ecp.controls.vaadin.AbstractVaadinSimpleControlRenderer#getUnsetLabel()
+	 */
+	@Override
+	protected String getUnsetLabel() {
+		return VaadinRendererMessages.TextControlVaadinRenderer_NoTextSetClickToSetText;
+	}
+
 }

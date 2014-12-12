@@ -50,4 +50,9 @@ public class NumberControlVaadinRenderer extends AbstractVaadinSimpleControlRend
 		return emfUpdateValueStrategy;
 	}
 
+	@Override
+	protected String getUnsetLabel() {
+		return VaadinRendererMessages.NumberControlVaadinRenderer_NoNumberClickToSetNumber;
+	}
+
 }
