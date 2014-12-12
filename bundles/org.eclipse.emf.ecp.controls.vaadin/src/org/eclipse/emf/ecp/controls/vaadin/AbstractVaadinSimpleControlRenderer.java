@@ -97,6 +97,7 @@ public abstract class AbstractVaadinSimpleControlRenderer extends AbstractContro
 	protected Component render() {
 		final Setting setting = getVElement().getDomainModelReference().getIterator().next();
 		final Component component = createControl();
+		final Label label = new Label();
 		createDatabinding(setting, component);
 		component.setWidth(100, Unit.PERCENTAGE);
 
@@ -108,7 +109,7 @@ public abstract class AbstractVaadinSimpleControlRenderer extends AbstractContro
 			setButton.setVisible(getVElement().isVisible());
 			setButton.setReadOnly(getVElement().isReadonly());
 
-			createSetOrUnsetComponent(component, horizontalLayout, setButton, setting);
+			createSetOrUnsetComponent(component, horizontalLayout, setButton, setting, label);
 
 			setButton.addClickListener(new ClickListener() {
 
@@ -119,7 +120,7 @@ public abstract class AbstractVaadinSimpleControlRenderer extends AbstractContro
 					final EditingDomain editingDomain = getEditingDomain(setting);
 					editingDomain.getCommandStack().execute(
 						SetCommand.create(editingDomain, setting.getEObject(), setting.getEStructuralFeature(), value));
-					createSetOrUnsetComponent(component, horizontalLayout, setButton, setting);
+					createSetOrUnsetComponent(component, horizontalLayout, setButton, setting, label);
 
 				}
 			});
@@ -130,12 +131,13 @@ public abstract class AbstractVaadinSimpleControlRenderer extends AbstractContro
 	}
 
 	private void createSetOrUnsetComponent(final Component component, final HorizontalLayout horizontalLayout,
-		final Button setButton, Setting setting) {
+		final Button setButton, Setting setting, Label label) {
 		horizontalLayout.removeAllComponents();
 		Component addComponent = component;
 		if (setting.isSet()) {
 			setButton.setCaption(VaadinRendererMessages.AbstractVaadinSimpleControlRenderer_Set);
-			addComponent = new Label(getUnsetLabel());
+			label.setCaption(getUnsetLabel());
+			addComponent = label;
 
 		} else {
 			setButton.setCaption(VaadinRendererMessages.AbstractVaadinSimpleControlRenderer_Unset);
