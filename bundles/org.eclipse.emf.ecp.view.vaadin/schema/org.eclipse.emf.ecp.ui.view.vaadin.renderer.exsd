@@ -1,0 +1,178 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Schema file written by PDE -->
+<schema targetNamespace="org.eclipse.emf.ecp.view.model.vaadin" xmlns="http://www.w3.org/2001/XMLSchema">
+<annotation>
+      <appinfo>
+         <meta.schema plugin="org.eclipse.emf.ecp.view.model.vaadin" id="org.eclipse.emf.ecp.view.model.vaadin.renderer" name="ECP View Model Vaadin Renderer"/>
+      </appinfo>
+      <documentation>
+         This extension point allows to register renderer 
+Renderer are used to render view model elements.
+      </documentation>
+   </annotation>
+
+   <element name="extension">
+      <annotation>
+         <appinfo>
+            <meta.element />
+         </appinfo>
+      </annotation>
+      <complexType>
+         <sequence minOccurs="1" maxOccurs="unbounded">
+            <element ref="renderer"/>
+         </sequence>
+         <attribute name="point" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="id" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+               <appinfo>
+                  <meta.attribute translatable="true"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="renderer">
+      <complexType>
+         <choice>
+            <element ref="dynamicTest"/>
+            <element ref="staticTest" minOccurs="1" maxOccurs="unbounded"/>
+         </choice>
+         <attribute name="renderer" type="string" use="required">
+            <annotation>
+               <documentation>
+                  The class defining the renderer.
+               </documentation>
+               <appinfo>
+                  <meta.attribute kind="java" basedOn="org.eclipse.emf.ecp.view.spi.swt.AbstractSWTRenderer:"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="dynamicTest">
+      <annotation>
+         <documentation>
+            A dynamic tester allows to check specific conditions which cannot be expressed staticly.
+         </documentation>
+      </annotation>
+      <complexType>
+         <attribute name="testClass" type="string" use="required">
+            <annotation>
+               <documentation>
+                  The implementation of the tester. The Class must extend the org.eclipse.emf.ecp.view.model.common.ECPRendererTester.
+               </documentation>
+               <appinfo>
+                  <meta.attribute kind="java" basedOn=":org.eclipse.emf.ecp.view.model.common.ECPRendererTester"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="staticTest">
+      <annotation>
+         <documentation>
+            A static tester allows to register a renderer with a specific priority for a specific VElement without writing code.
+         </documentation>
+      </annotation>
+      <complexType>
+         <attribute name="element" type="string" use="required">
+            <annotation>
+               <documentation>
+                  The VElement this renderer is designed for.
+               </documentation>
+               <appinfo>
+                  <meta.attribute kind="java" basedOn=":org.eclipse.emf.ecp.view.spi.model.VElement"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+         <attribute name="priority" use="default" value="1">
+            <annotation>
+               <documentation>
+                  The priority to use for this renderer if multiple fitting renderers can be found.  The renderer with the highest priority will be taken.
+               </documentation>
+            </annotation>
+            <simpleType>
+               <restriction base="string">
+                  <enumeration value="1">
+                  </enumeration>
+                  <enumeration value="2">
+                  </enumeration>
+                  <enumeration value="3">
+                  </enumeration>
+                  <enumeration value="4">
+                  </enumeration>
+                  <enumeration value="5">
+                  </enumeration>
+                  <enumeration value="6">
+                  </enumeration>
+                  <enumeration value="7">
+                  </enumeration>
+                  <enumeration value="8">
+                  </enumeration>
+                  <enumeration value="9">
+                  </enumeration>
+                  <enumeration value="10">
+                  </enumeration>
+               </restriction>
+            </simpleType>
+         </attribute>
+      </complexType>
+   </element>
+
+   <annotation>
+      <appinfo>
+         <meta.section type="since"/>
+      </appinfo>
+      <documentation>
+         1.1
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appinfo>
+         <meta.section type="examples"/>
+      </appinfo>
+      <documentation>
+         [Enter extension point usage example here.]
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appinfo>
+         <meta.section type="apiinfo"/>
+      </appinfo>
+      <documentation>
+         [Enter API information here.]
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appinfo>
+         <meta.section type="implementation"/>
+      </appinfo>
+      <documentation>
+         [Enter information about supplied implementation of this extension point.]
+      </documentation>
+   </annotation>
+
+
+</schema>
