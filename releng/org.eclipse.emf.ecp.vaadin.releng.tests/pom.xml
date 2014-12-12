@@ -4,12 +4,12 @@
 	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.eclipse.emf.ecp.vaadin</groupId>
-	<artifactId>ecp-test-parent</artifactId>
+	<artifactId>ecp-tests-parent</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<parent>
-		<relativePath>../../releng/org.eclipse.emf.ecp.releng/</relativePath>
+		<relativePath>../../releng/org.eclipse.emf.ecp.vaadin.releng/</relativePath>
 		<version>1.0.0-SNAPSHOT</version>
 		<groupId>org.eclipse.emf.ecp.vaadin</groupId>
 		<artifactId>parent-pom</artifactId>
