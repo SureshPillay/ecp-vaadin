@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.eclipse.emf.ecp.vaadin</groupId>
+	<artifactId>ecp-test-parent</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+	<packaging>pom</packaging>
+
+	<parent>
+		<relativePath>../../releng/org.eclipse.emf.ecp.releng/</relativePath>
+		<version>1.0.0-SNAPSHOT</version>
+		<groupId>org.eclipse.emf.ecp.vaadin</groupId>
+		<artifactId>parent-pom</artifactId>
+	</parent>
+
+
+	<modules>
+		<module>../../tests/org.eclipse.emf.ecp.controls.vaadin.test</module>
+		<module>../../tests/org.eclipse.emf.ecp.view.common.vaadin.test</module>
+		<module>../../tests/org.eclipse.emf.ecp.view.custom.vaadin.test</module>
+		<module>../../tests/org.eclipse.emf.ecp.view.group.vaadin.test</module>
+		<module>../../tests/org.eclipse.emf.ecp.view.horizontal.vaadin.test</module>
+		<module>../../tests/org.eclipse.emf.ecp.view.label.vaadin.test</module>
+		<module>../../tests/org.eclipse.emf.ecp.view.table.vaadin.test</module>
+		<module>../../tests/org.eclipse.emf.ecp.view.vaadin.test</module>
+		<module>../../tests/org.eclipse.emf.ecp.view.vertical.vaadin.test</module>
+	</modules>
+
+
+
+
+
+
+
+
+
+
+</project>

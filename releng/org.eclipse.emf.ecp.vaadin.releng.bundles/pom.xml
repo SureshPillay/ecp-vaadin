@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.eclipse.emf.ecp.vaadin</groupId>
+	<artifactId>ecp-bundles-parent</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+	<packaging>pom</packaging>
+
+	<parent>
+		<relativePath>../../releng/org.eclipse.emf.ecp.releng/</relativePath>
+		<version>1.0.0-SNAPSHOT</version>
+		<groupId>org.eclipse.emf.ecp.vaadin</groupId>
+		<artifactId>parent-pom</artifactId>
+	</parent>
+
+
+	<modules>
+		<module>../../bundles/org.eclipse.emf.ecp.controls.vaadin</module>
+		<module>../../bundles/org.eclipse.emf.ecp.translation.service</module>
+		<module>../../bundles/org.eclipse.emf.ecp.view.core.vaadin</module>
+		<module>../../bundles/org.eclipse.emf.ecp.view.custom.vaadin</module>
+		<module>../../bundles/org.eclipse.emf.ecp.view.group.vaadin</module>
+		<module>../../bundles/org.eclipse.emf.ecp.view.horizontal.vaadin</module>
+		<module>../../bundles/org.eclipse.emf.ecp.view.label.vaadin</module>
+		<module>../../bundles/org.eclipse.emf.ecp.view.table.vaadin</module>
+		<module>../../bundles/org.eclipse.emf.ecp.view.vaadin</module>
+		<module>../../bundles/org.eclipse.emf.ecp.view.vertical.vaadin</module>
+	</modules>
+
+</project>
