@@ -16,9 +16,10 @@ import org.eclipse.core.databinding.observable.list.IObservableList;
 import org.eclipse.core.databinding.observable.list.ListChangeEvent;
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.databinding.EMFDataBindingContext;
-import org.eclipse.emf.databinding.EMFProperties;
 import org.eclipse.emf.databinding.EMFUpdateValueStrategy;
+import org.eclipse.emf.databinding.edit.EMFEditProperties;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EStructuralFeature.Setting;
 import org.eclipse.emf.ecp.view.core.vaadin.TableListDiffVisitor;
 import org.eclipse.emf.ecp.view.core.vaadin.VaadinWidgetFactory;
 import org.eclipse.emf.ecp.view.core.vaadin.converter.SelectionConverter;
@@ -67,7 +68,8 @@ public class ReferenceListVaadinRenderer extends AbstractVaadinList {
 	}
 
 	private void bindTable() {
-		final IObservableList targetValue = VaadinObservables.observeContainerItemSetContents(getTable(), getSetting()
+		final Setting setting = getSetting();
+		final IObservableList targetValue = VaadinObservables.observeContainerItemSetContents(getTable(), setting
 			.getEObject().getClass());
 		targetValue.addListChangeListener(new IListChangeListener() {
 
@@ -76,8 +78,10 @@ public class ReferenceListVaadinRenderer extends AbstractVaadinList {
 				event.diff.accept(new TableListDiffVisitor(ReferenceListVaadinRenderer.this.getTable()));
 			}
 		});
-		final IObservableList modelValue = EMFProperties.list(getSetting().getEStructuralFeature()).observe(
-			getSetting().getEObject());
+		final IObservableList modelValue = EMFEditProperties.list(getEditingDomain(setting),
+			setting.getEStructuralFeature())
+			.observe(
+				setting.getEObject());
 		final EMFDataBindingContext dataBindingContext = new EMFDataBindingContext();
 		dataBindingContext.bindList(targetValue, modelValue);
 		final EMFUpdateValueStrategy emfUpdateValueStrategy = new EMFUpdateValueStrategy();
@@ -133,7 +137,7 @@ public class ReferenceListVaadinRenderer extends AbstractVaadinList {
 
 	/**
 	 * {@inheritDoc}
-	 * 
+	 *
 	 * @see org.eclipse.emf.ecp.controls.vaadin.AbstractVaadinSimpleControlRenderer#getUnsetLabel()
 	 */
 	@Override

@@ -20,8 +20,8 @@ import org.eclipse.core.databinding.observable.list.IListChangeListener;
 import org.eclipse.core.databinding.observable.list.IObservableList;
 import org.eclipse.core.databinding.observable.list.ListChangeEvent;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
-import org.eclipse.emf.databinding.EMFProperties;
 import org.eclipse.emf.databinding.EMFUpdateValueStrategy;
+import org.eclipse.emf.databinding.edit.EMFEditProperties;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
@@ -35,6 +35,8 @@ import org.eclipse.emf.ecp.view.core.vaadin.VaadinWidgetFactory;
 import org.eclipse.emf.ecp.view.core.vaadin.converter.SelectionConverter;
 import org.eclipse.emf.ecp.view.spi.context.ViewModelContext;
 import org.eclipse.emf.ecp.view.spi.table.model.VTableControl;
+import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
+import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.lunifera.runtime.web.vaadin.databinding.VaadinObservables;
 
@@ -159,9 +161,14 @@ public class TableRendererVaadin extends AbstractControlRendererVaadin<VTableCon
 			}
 		});
 
-		final IObservableList modelValue = EMFProperties.list(setting.getEStructuralFeature()).observe(
-			setting.getEObject());
+		final IObservableList modelValue = EMFEditProperties.list(getEditingDomain(setting),
+			setting.getEStructuralFeature()).observe(
+				setting.getEObject());
 		getBindingContext().bindList(targetValue, modelValue);
+	}
+
+	protected EditingDomain getEditingDomain(Setting setting) {
+		return AdapterFactoryEditingDomain.getEditingDomainFor(setting.getEObject());
 	}
 
 	private Table createTable() {

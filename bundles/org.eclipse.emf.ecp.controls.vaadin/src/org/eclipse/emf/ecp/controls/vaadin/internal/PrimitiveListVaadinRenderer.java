@@ -20,13 +20,14 @@ import org.eclipse.core.databinding.observable.list.IObservableList;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.databinding.observable.value.IValueChangeListener;
 import org.eclipse.core.databinding.observable.value.ValueDiff;
-import org.eclipse.emf.databinding.EMFProperties;
 import org.eclipse.emf.databinding.EMFUpdateValueStrategy;
+import org.eclipse.emf.databinding.edit.EMFEditProperties;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EStructuralFeature.Setting;
 import org.eclipse.emf.ecp.view.core.vaadin.VaadinRendererUtil;
 import org.eclipse.emf.ecp.view.core.vaadin.VaadinWidgetFactory;
+import org.eclipse.emf.ecp.view.core.vaadin.converter.ErrorMessageComponentConverter;
 import org.eclipse.emf.ecp.view.core.vaadin.converter.SelectionConverter;
 import org.eclipse.emf.ecp.view.core.vaadin.converter.StringToVaadinConverter;
 import org.eclipse.emf.ecp.view.core.vaadin.converter.VaadinConverterToString;
@@ -70,7 +71,8 @@ public class PrimitiveListVaadinRenderer extends AbstractVaadinList {
 	private Class<? extends EObject> bindTable(EStructuralFeature eStructuralFeature, Class<? extends EObject> clazz) {
 		getTable().addItems(getSetting().getEObject().eGet(eStructuralFeature));
 		final IObservableList targetValue = VaadinObservables.observeContainerItemSetContents(getTable(), clazz);
-		final IObservableList modelValue = EMFProperties.list(eStructuralFeature).observe(getSetting().getEObject());
+		final IObservableList modelValue = EMFEditProperties.list(getEditingDomain(getSetting()), eStructuralFeature)
+			.observe(getSetting().getEObject());
 		bindModelToTarget(targetValue, modelValue);
 		return clazz;
 	}
@@ -83,6 +85,19 @@ public class PrimitiveListVaadinRenderer extends AbstractVaadinList {
 		bindAddTextfield(getSetting(), textField, converter);
 		bindTextfieldFocus(clazz, textField);
 		bindVisibleAddButton(clazz, add);
+		bindEnableAddButton(textField, add);
+
+	}
+
+	private void bindEnableAddButton(final TextField textField, final Button add) {
+		if (textField.getConverter() == null) {
+			return;
+		}
+		final IObservableValue model = VaadinObservables.observeValue(textField);
+		final IObservableValue target = VaadinObservables.observeEnabled(add);
+		final UpdateValueStrategy emfUpdateValueStrategy = new EMFUpdateValueStrategy();
+		emfUpdateValueStrategy.setConverter(new ErrorMessageComponentConverter(textField));
+		bindModelToTarget(target, model, null, emfUpdateValueStrategy);
 	}
 
 	private void bindVisibleAddButton(Class<? extends EObject> clazz, final Button add) {
