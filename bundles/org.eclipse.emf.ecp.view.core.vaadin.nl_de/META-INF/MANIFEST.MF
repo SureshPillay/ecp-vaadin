@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Nl_de
+Bundle-SymbolicName: org.eclipse.emf.ecp.view.core.vaadin.nl_de
+Bundle-Version: 1.0.0.qualifier
+Fragment-Host: org.eclipse.emf.ecp.view.core.vaadin
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
