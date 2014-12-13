@@ -19,7 +19,7 @@ import com.vaadin.ui.Panel;
  */
 @StyleSheet({ "default.css" })
 /**
- * The Panel for the parent layout with teh default css.
+ * The Panel for the parent layout with the default css.
  * @author Dennis Melzer
  *
  */

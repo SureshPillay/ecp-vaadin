@@ -11,16 +11,18 @@
  ******************************************************************************/
 package org.eclipse.emf.ecp.view.core.vaadin;
 
-import java.util.Collection;
 import java.util.List;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature.Setting;
-import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecp.view.core.vaadin.dialog.EditDialog;
 import org.eclipse.emf.ecp.view.spi.model.VView;
+import org.eclipse.emf.edit.command.AddCommand;
+import org.eclipse.emf.edit.command.RemoveCommand;
+import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
+import org.eclipse.emf.edit.domain.EditingDomain;
 
 import com.vaadin.data.util.converter.Converter;
 import com.vaadin.ui.AbstractSelect;
@@ -59,13 +61,24 @@ public final class VaadinWidgetFactory {
 			@Override
 			public void buttonClick(ClickEvent event) {
 				final EObject addItem = createItem(setting);
-				getItems(setting).add(addItem);
+				addItem(setting, addItem);
 				if (table.isSelectable()) {
 					table.select(addItem);
 				}
 			}
+
 		});
 		return add;
+	}
+
+	public static EditingDomain getEditingDomain(Setting setting) {
+		return AdapterFactoryEditingDomain.getEditingDomainFor(setting.getEObject());
+	}
+
+	private static void addItem(final Setting setting, final Object addItem) {
+		final EditingDomain editingDomain = getEditingDomain(setting);
+		editingDomain.getCommandStack().execute(
+			AddCommand.create(editingDomain, setting.getEObject(), setting.getEStructuralFeature(), addItem));
 	}
 
 	/**
@@ -125,7 +138,7 @@ public final class VaadinWidgetFactory {
 			@Override
 			public void buttonClick(ClickEvent event) {
 				try {
-					getItems(setting).add(textField.getConvertedValue());
+					addItem(setting, textField.getConvertedValue());
 				} catch (final Converter.ConversionException e) {
 					return;
 				}
@@ -209,21 +222,9 @@ public final class VaadinWidgetFactory {
 			return;
 		}
 
-		if (deleteObject instanceof Collection) {
-			final Collection<?> deleteCollection = (Collection<?>) deleteObject;
-			for (final Object object : deleteCollection) {
-				deleteObjectItems(setting, object);
-			}
-			return;
-		}
-		deleteObjectItems(setting, deleteObject);
-	}
-
-	private static void deleteObjectItems(Setting setting, Object deleteObject) {
-		if (deleteObject instanceof EObject) {
-			EcoreUtil.delete((EObject) deleteObject);
-		}
-		getItems(setting).remove(deleteObject);
+		final EditingDomain editingDomain = getEditingDomain(setting);
+		editingDomain.getCommandStack().execute(
+			RemoveCommand.create(editingDomain, setting.getEObject(), setting.getEStructuralFeature(), deleteObject));
 	}
 
 	private static EObject createItem(Setting setting) {
