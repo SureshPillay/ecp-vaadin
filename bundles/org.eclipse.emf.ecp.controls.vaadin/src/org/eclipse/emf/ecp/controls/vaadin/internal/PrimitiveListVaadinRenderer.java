@@ -25,6 +25,7 @@ import org.eclipse.emf.databinding.EMFUpdateValueStrategy;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EStructuralFeature.Setting;
+import org.eclipse.emf.ecp.view.core.vaadin.VaadinRendererUtil;
 import org.eclipse.emf.ecp.view.core.vaadin.VaadinWidgetFactory;
 import org.eclipse.emf.ecp.view.core.vaadin.converter.SelectionConverter;
 import org.eclipse.emf.ecp.view.core.vaadin.converter.StringToVaadinConverter;
@@ -56,10 +57,8 @@ public class PrimitiveListVaadinRenderer extends AbstractVaadinList {
 
 	@Override
 	public void renderList(VerticalLayout layout) {
-		final Class<?> instanceClass = getSetting().getEStructuralFeature().getEType().getInstanceClass();
-
 		final TextField textField = createTextfield();
-		final Converter<String, Object> converter = createConverter(instanceClass, getTable(), textField);
+		final Converter<String, Object> converter = createConverter(getSetting(), getTable(), textField);
 
 		final Button add = createAddButton(getSetting(), textField);
 		layout.addComponent(getTable());
@@ -176,10 +175,13 @@ public class PrimitiveListVaadinRenderer extends AbstractVaadinList {
 		}
 	}
 
-	private Converter<String, Object> createConverter(final Class<?> instanceClass, final Table table,
+	private Converter<String, Object> createConverter(Setting setting, final Table table,
 		final TextField textField) {
-		if (Number.class.isAssignableFrom(instanceClass)) {
-			textField.setConverter(instanceClass);
+		VaadinRendererUtil.setConverterToTextField(setting.getEStructuralFeature(), textField, getVElement(),
+			getViewModelContext());
+
+		if (textField.getConverter() == null) {
+			return null;
 		}
 		final Converter<String, Object> converter = textField.getConverter();
 		table.addGeneratedColumn(VALUE_COLUMN, new ColumnGenerator() {
