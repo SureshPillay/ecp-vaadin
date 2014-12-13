@@ -11,7 +11,7 @@
  ******************************************************************************/
 package org.eclipse.emf.ecp.controls.vaadin.internal;
 
-import java.util.List;
+import java.util.Arrays;
 import java.util.Locale;
 
 import org.apache.commons.lang3.StringUtils;
@@ -29,6 +29,8 @@ import org.eclipse.emf.ecp.view.core.vaadin.VaadinWidgetFactory;
 import org.eclipse.emf.ecp.view.core.vaadin.converter.SelectionConverter;
 import org.eclipse.emf.ecp.view.core.vaadin.converter.StringToVaadinConverter;
 import org.eclipse.emf.ecp.view.core.vaadin.converter.VaadinConverterToString;
+import org.eclipse.emf.edit.command.ReplaceCommand;
+import org.eclipse.emf.edit.domain.EditingDomain;
 import org.lunifera.runtime.web.vaadin.databinding.VaadinObservables;
 
 import com.vaadin.data.util.IndexedContainer;
@@ -115,19 +117,17 @@ public class PrimitiveListVaadinRenderer extends AbstractVaadinList {
 			public void handleValueChange(org.eclipse.core.databinding.observable.value.ValueChangeEvent event) {
 				try {
 					final Object fieldValue = getConvertedValue(textField);
-					// TODO FIXME: Better solution for changing String and primitive types in List?
 					final ValueDiff diff = event.diff;
+					final EditingDomain editingDomain = getEditingDomain(setting);
+
 					if (PrimitiveListVaadinRenderer.this.getTable().getValue() != null
 						&& !PrimitiveListVaadinRenderer.this.getTable().getValue().equals(fieldValue)
 						&& diff.getOldValue() != diff.getNewValue()) {
-						final List<Object> items = (List<Object>) setting.get(true);
 						final Object convertedValue = getConvertedValue(diff.getOldValue(), converter);
-						final int index = items.indexOf(convertedValue);
-						if (index != -1) {
-							items.remove(PrimitiveListVaadinRenderer.this.getTable().getValue());
-							final Object convertToModel = getConvertedValue(diff.getNewValue(), converter);
-							items.add(index, convertToModel);
-						}
+						final Object convertToModel = getConvertedValue(diff.getNewValue(), converter);
+						editingDomain.getCommandStack().execute(
+							ReplaceCommand.create(editingDomain, setting.getEObject(), setting.getEStructuralFeature(),
+								convertedValue, Arrays.asList(convertToModel)));
 					}
 				} catch (final com.vaadin.data.util.converter.Converter.ConversionException e) {
 					return;

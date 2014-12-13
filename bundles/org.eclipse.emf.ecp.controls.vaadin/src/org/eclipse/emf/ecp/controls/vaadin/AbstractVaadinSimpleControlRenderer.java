@@ -216,7 +216,7 @@ public abstract class AbstractVaadinSimpleControlRenderer extends AbstractContro
 		}
 	}
 
-	private EditingDomain getEditingDomain(Setting setting) {
+	protected EditingDomain getEditingDomain(Setting setting) {
 		return AdapterFactoryEditingDomain.getEditingDomainFor(setting.getEObject());
 	}
 
