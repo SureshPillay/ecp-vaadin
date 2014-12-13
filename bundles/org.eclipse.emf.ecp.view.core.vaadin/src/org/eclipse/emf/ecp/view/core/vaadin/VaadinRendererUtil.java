@@ -31,6 +31,7 @@ import org.eclipse.emf.ecp.view.template.style.mandatory.model.VTMandatoryStyleP
 import org.eclipse.emf.edit.provider.AdapterFactoryItemDelegator;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
+import org.eclipse.osgi.util.NLS;
 
 import com.vaadin.ui.AbstractTextField;
 
@@ -145,7 +146,8 @@ public final class VaadinRendererUtil {
 		if (!Number.class.isAssignableFrom(instanceClass)) {
 			return;
 		}
-
+		component.setConversionError(NLS.bind(VaadinRendererMessages.ConversionError,
+			instanceClass.getSimpleName()));
 		component.setConverter(instanceClass);
 		// TODO: Test change to new style property
 		final VTMandatoryStyleProperty mandatoryStyleProperty = VaadinStyleTemplateUtil.getVTStyleProperty(
