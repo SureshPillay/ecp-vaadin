@@ -32,6 +32,7 @@ import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Component;
+import com.vaadin.ui.Label;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
@@ -95,6 +96,11 @@ public class EditDialog extends Window {
 
 	private void initUi() {
 		VaadinObservables.activateRealm(UI.getCurrent());
+		final VView view = getView();
+		if (view == null) {
+			setContent(new Label("No View found"));
+			return;
+		}
 		ecpVaadinView = ECPVaadinViewRenderer.INSTANCE.render(selection, getView());
 		setContent(getContentLayout(ecpVaadinView));
 	}
