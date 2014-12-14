@@ -12,7 +12,7 @@
       <renderer
             renderer="org.eclipse.emf.ecp.controls.vaadin.internal.XMLDateControlVaadinRenderer">
          <dynamicTest
-               testClass="org.eclipse.emf.ecp.view.model.common.XMLDateControlRendererTester">
+               testClass="org.eclipse.emf.ecp.controls.vaadin.XMLVaadinDateControlRendererTester">
          </dynamicTest>
       </renderer>
       <renderer
