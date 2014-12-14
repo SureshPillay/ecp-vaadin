@@ -12,6 +12,7 @@
 package org.eclipse.emf.ecp.view.core.vaadin.internal;
 
 import org.eclipse.emf.ecp.view.core.vaadin.ECPVaadinView;
+import org.eclipse.emf.ecp.view.core.vaadin.VaadinRendererFactory;
 import org.eclipse.emf.ecp.view.spi.context.ViewModelContext;
 
 import com.vaadin.ui.Component;
@@ -26,6 +27,7 @@ public class ECPVaadinViewImpl implements ECPVaadinView {
 
 	private final Component component;
 	private final ViewModelContext viewModelContext;
+	private final VaadinRendererFactory factory;
 
 	/**
 	 * Constructor.
@@ -33,9 +35,10 @@ public class ECPVaadinViewImpl implements ECPVaadinView {
 	 * @param component the vaadin component
 	 * @param viewModelContext the context
 	 */
-	public ECPVaadinViewImpl(Component component, ViewModelContext viewModelContext) {
+	public ECPVaadinViewImpl(Component component, ViewModelContext viewModelContext, VaadinRendererFactory factory) {
 		this.component = component;
 		this.viewModelContext = viewModelContext;
+		this.factory = factory;
 	}
 
 	@Override
@@ -45,8 +48,7 @@ public class ECPVaadinViewImpl implements ECPVaadinView {
 
 	@Override
 	public void dispose() {
-		// TODO Auto-generated method stub
-
+		factory.getVaadinComponentRenderer(viewModelContext.getViewModel(), viewModelContext).dispose();
 	}
 
 	@Override

@@ -72,7 +72,8 @@ public abstract class AbstractControlRendererVaadin<T extends VControl> extends 
 	}
 
 	@Override
-	protected void dispose() {
+	public void dispose() {
+		super.dispose();
 		if (getVElement().getDomainModelReference() != null) {
 			getVElement().getDomainModelReference().getChangeListener().remove(this.domainModelReferenceChangeListener);
 		}

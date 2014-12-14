@@ -153,9 +153,9 @@ public abstract class AbstractVaadinRenderer<T extends VElement> extends Abstrac
 	}
 
 	@Override
-	protected void dispose() {
+	public void dispose() {
+		getViewModelContext().unregisterViewChangeListener(this.modelChangeListener);
 		super.dispose();
-		getViewModelContext().registerViewChangeListener(this.modelChangeListener);
 	}
 
 	/**

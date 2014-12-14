@@ -28,12 +28,15 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EStructuralFeature.Setting;
 import org.eclipse.emf.ecore.InternalEObject;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecp.view.core.vaadin.AbstractControlRendererVaadin;
 import org.eclipse.emf.ecp.view.core.vaadin.TableListDiffVisitor;
 import org.eclipse.emf.ecp.view.core.vaadin.VaadinRendererUtil;
 import org.eclipse.emf.ecp.view.core.vaadin.VaadinWidgetFactory;
 import org.eclipse.emf.ecp.view.core.vaadin.converter.SelectionConverter;
 import org.eclipse.emf.ecp.view.spi.context.ViewModelContext;
+import org.eclipse.emf.ecp.view.spi.model.VView;
+import org.eclipse.emf.ecp.view.spi.provider.ViewProviderHelper;
 import org.eclipse.emf.ecp.view.spi.table.model.VTableControl;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.emf.edit.domain.EditingDomain;
@@ -43,7 +46,6 @@ import org.lunifera.runtime.web.vaadin.databinding.VaadinObservables;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
-import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.Table.ColumnGenerator;
@@ -59,15 +61,15 @@ import com.vaadin.ui.VerticalLayout;
 public class TableRendererVaadin extends AbstractControlRendererVaadin<VTableControl> {
 
 	private static final String TABLE_BUTTON_TOOLBAR = "table-button-toolbar"; //$NON-NLS-1$
-	private Setting setting;
-	private Table table;
+	protected Setting setting;
+	protected Table table;
 
 	private InternalEObject getInstanceOf(EClass clazz) {
 		return InternalEObject.class.cast(clazz.getEPackage().getEFactoryInstance().create(clazz));
 	}
 
 	@Override
-	protected Component render() {
+	protected VerticalLayout render() {
 		final VTableControl control = getVElement();
 		final ViewModelContext viewContext = getViewModelContext();
 		final Iterator<Setting> iterator = control.getDomainModelReference().getIterator();
@@ -89,42 +91,24 @@ public class TableRendererVaadin extends AbstractControlRendererVaadin<VTableCon
 			return layout;
 		}
 
-		final HorizontalLayout horizontalLayout = createDetailEditing(control);
+		final HorizontalLayout horizontalLayout = createButtonBar();
 
 		layout.addComponent(horizontalLayout);
 		layout.setComponentAlignment(horizontalLayout, Alignment.TOP_RIGHT);
 		layout.addComponent(table);
+
 		return layout;
 	}
 
-	private HorizontalLayout createDetailEditing(VTableControl control) {
+	protected HorizontalLayout createButtonBar() {
 		final HorizontalLayout horizontalLayout = new HorizontalLayout();
-		addTableToolbarStyle(control, horizontalLayout);
+		addTableToolbarStyle(horizontalLayout);
 
-		if (!control.isAddRemoveDisabled()) {
+		if (!getVElement().isAddRemoveDisabled()) {
 			createAddRemoveButton(horizontalLayout);
 		}
 
-		switch (control.getDetailEditing()) {
-		case WITH_DIALOG:
-			createEditButton(control, horizontalLayout);
-			break;
-		case WITH_PANEL:
-			// TODO Master/Detail Panel
-			throw new UnsupportedOperationException("WITH_PANEL is not implmented yet"); //$NON-NLS-1$
-		default:
-			break;
-		}
 		return horizontalLayout;
-	}
-
-	private void createEditButton(VTableControl control, HorizontalLayout horizontalLayout) {
-		final EMFUpdateValueStrategy emfUpdateValueStrategy = new EMFUpdateValueStrategy();
-		emfUpdateValueStrategy.setConverter(new SelectionConverter());
-		final Button edit = VaadinWidgetFactory.createTableEditButton(table, control.getDetailView());
-		edit.setEnabled(control.getDetailView() != null);
-		horizontalLayout.addComponent(edit);
-		bindButtonEnable(edit);
 	}
 
 	private void createAddRemoveButton(HorizontalLayout horizontalLayout) {
@@ -135,7 +119,7 @@ public class TableRendererVaadin extends AbstractControlRendererVaadin<VTableCon
 		bindButtonEnable(remove);
 	}
 
-	private void bindButtonEnable(Button button) {
+	protected void bindButtonEnable(Button button) {
 		final EMFUpdateValueStrategy strategy = new EMFUpdateValueStrategy();
 		strategy.setConverter(new SelectionConverter());
 		final IObservableValue observeSingleSelection = VaadinObservables.observeSingleSelection(table,
@@ -143,7 +127,7 @@ public class TableRendererVaadin extends AbstractControlRendererVaadin<VTableCon
 		getBindingContext().bindValue(VaadinObservables.observeEnabled(button), observeSingleSelection, null, strategy);
 	}
 
-	private void addTableToolbarStyle(VTableControl control, HorizontalLayout horizontalLayout) {
+	private void addTableToolbarStyle(HorizontalLayout horizontalLayout) {
 		if (hasCaption()) {
 			horizontalLayout.addStyleName(TABLE_BUTTON_TOOLBAR);
 		}
@@ -163,7 +147,7 @@ public class TableRendererVaadin extends AbstractControlRendererVaadin<VTableCon
 
 		final IObservableList modelValue = EMFEditProperties.list(getEditingDomain(setting),
 			setting.getEStructuralFeature()).observe(
-				setting.getEObject());
+			setting.getEObject());
 		getBindingContext().bindList(targetValue, modelValue);
 	}
 
@@ -224,6 +208,14 @@ public class TableRendererVaadin extends AbstractControlRendererVaadin<VTableCon
 
 	private List<Object> getItems(final Setting setting) {
 		return (List<Object>) setting.getEObject().eGet(setting.getEStructuralFeature());
+	}
+
+	public VView getView() {
+		VView detailView = getVElement().getDetailView();
+		if (detailView == null) {
+			detailView = ViewProviderHelper.getView((EObject) table.getValue(), null);
+		}
+		return EcoreUtil.copy(detailView);
 	}
 
 }

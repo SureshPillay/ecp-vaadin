@@ -79,7 +79,8 @@ public class LabelRendererVaadin extends AbstractVaadinRenderer<VLabel> {
 	}
 
 	@Override
-	protected void dispose() {
+	public void dispose() {
+		super.dispose();
 		if (value != null) {
 			value.dispose();
 		}

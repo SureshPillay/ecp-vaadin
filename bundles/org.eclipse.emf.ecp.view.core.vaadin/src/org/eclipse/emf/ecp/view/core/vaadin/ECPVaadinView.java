@@ -32,13 +32,13 @@ public interface ECPVaadinView {
 	Component getComponent();
 
 	/**
-	 * TODO. Used for?
+	 * Dispose Databining
 	 */
 	void dispose();
 
 	/**
 	 * Return the {@link ViewModelContext}.
-	 * 
+	 *
 	 * @return the context
 	 */
 	ViewModelContext getViewModelContext();

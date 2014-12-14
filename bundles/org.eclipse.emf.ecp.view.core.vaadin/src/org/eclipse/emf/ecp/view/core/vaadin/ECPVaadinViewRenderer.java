@@ -12,7 +12,7 @@
 package org.eclipse.emf.ecp.view.core.vaadin;
 
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecp.view.core.vaadin.internal.ECPFVaadinViewRendererImpl;
+import org.eclipse.emf.ecp.view.core.vaadin.internal.ECPVaadinViewRendererImpl;
 import org.eclipse.emf.ecp.view.spi.context.ViewModelContext;
 import org.eclipse.emf.ecp.view.spi.model.VView;
 
@@ -23,12 +23,12 @@ import org.eclipse.emf.ecp.view.spi.model.VView;
  * @noimplement This interface is not intended to be implemented by clients.
  * @noextend This interface is not intended to be extended by clients.
  */
-public interface ECPFVaadinViewRenderer {
+public interface ECPVaadinViewRenderer {
 
 	/**
-	 * The {@link ECPFVaadinViewRendererImpl} instance.
+	 * The {@link ECPVaadinViewRendererImpl} instance.
 	 */
-	ECPFVaadinViewRenderer INSTANCE = new ECPFVaadinViewRendererImpl();
+	ECPVaadinViewRenderer INSTANCE = new ECPVaadinViewRendererImpl();
 
 	/**
 	 * Creates a view with the attributes of the domain object. The layout of the view can either be describes by a

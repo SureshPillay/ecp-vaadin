@@ -53,7 +53,8 @@ public abstract class AbstractVaadinSimpleControlRenderer extends AbstractContro
 	private final WritableValue value = new WritableValue();
 
 	@Override
-	protected void dispose() {
+	public void dispose() {
+		super.dispose();
 		if (value != null) {
 			value.dispose();
 		}

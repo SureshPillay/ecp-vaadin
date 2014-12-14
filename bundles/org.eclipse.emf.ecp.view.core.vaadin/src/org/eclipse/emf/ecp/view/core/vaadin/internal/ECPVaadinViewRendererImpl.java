@@ -12,8 +12,8 @@
 package org.eclipse.emf.ecp.view.core.vaadin.internal;
 
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecp.view.core.vaadin.ECPFVaadinViewRenderer;
 import org.eclipse.emf.ecp.view.core.vaadin.ECPVaadinView;
+import org.eclipse.emf.ecp.view.core.vaadin.ECPVaadinViewRenderer;
 import org.eclipse.emf.ecp.view.core.vaadin.VaadinRendererFactory;
 import org.eclipse.emf.ecp.view.spi.context.ViewModelContext;
 import org.eclipse.emf.ecp.view.spi.context.ViewModelContextFactory;
@@ -25,12 +25,12 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 
 /**
- * The implementation for the {@link ECPFVaadinViewRenderer}.
+ * The implementation for the {@link ECPVaadinViewRenderer}.
  *
  * @author Dennis Melzer
  *
  */
-public class ECPFVaadinViewRendererImpl implements ECPFVaadinViewRenderer {
+public class ECPVaadinViewRendererImpl implements ECPVaadinViewRenderer {
 
 	private final VaadinRendererFactory factory = new VaadinRendererFactoryImpl();
 
@@ -53,9 +53,9 @@ public class ECPFVaadinViewRendererImpl implements ECPFVaadinViewRenderer {
 			final Label label = new Label();
 			label.setCaption("Rendering went wrong!"); //$NON-NLS-1$
 			final VerticalLayout verticalLayout = new VerticalLayout(new com.vaadin.ui.Label());
-			return new ECPVaadinViewImpl(verticalLayout, viewModelContext);
+			return new ECPVaadinViewImpl(verticalLayout, viewModelContext, factory);
 		}
-		return new ECPVaadinViewImpl(resultSet, viewModelContext);
+		return new ECPVaadinViewImpl(resultSet, viewModelContext, factory);
 	}
 
 }

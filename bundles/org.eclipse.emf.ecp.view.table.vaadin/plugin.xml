@@ -5,10 +5,21 @@
          point="org.eclipse.emf.ecp.view.model.vaadin.renderer">
       <renderer
             renderer="org.eclipse.emf.ecp.view.table.vaadin.TableRendererVaadin">
-         <staticTest
-               element="org.eclipse.emf.ecp.view.spi.table.model.VTableControl"
-               priority="1">
-         </staticTest>
+         <dynamicTest
+               testClass="org.eclipse.emf.ecp.view.table.vaadin.internal.TableControlRendererTester">
+         </dynamicTest>
+      </renderer>
+      <renderer
+            renderer="org.eclipse.emf.ecp.view.table.vaadin.TableDetailDialogVaadinRenderer">
+         <dynamicTest
+               testClass="org.eclipse.emf.ecp.view.table.vaadin.internal.TableControlDetailDialogRendererTester">
+         </dynamicTest>
+      </renderer>
+      <renderer
+            renderer="org.eclipse.emf.ecp.view.table.vaadin.TableControlDetailPanelRenderer">
+         <dynamicTest
+               testClass="org.eclipse.emf.ecp.view.table.vaadin.internal.TableControlDetailPanelRendererTester">
+         </dynamicTest>
       </renderer>
    </extension>
 

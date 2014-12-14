@@ -16,8 +16,9 @@ import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecp.view.core.vaadin.ECPFVaadinViewRenderer;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecp.view.core.vaadin.ECPVaadinView;
+import org.eclipse.emf.ecp.view.core.vaadin.ECPVaadinViewRenderer;
 import org.eclipse.emf.ecp.view.core.vaadin.internal.Messages;
 import org.eclipse.emf.ecp.view.spi.model.VView;
 import org.eclipse.emf.ecp.view.spi.provider.ViewProviderHelper;
@@ -49,6 +50,7 @@ public class EditDialog extends Window {
 	private final AdapterFactoryItemDelegator adapterFactoryItemDelegator;
 	private VView view;
 	private Button okButton;
+	private ECPVaadinView ecpVaadinView;
 
 	/**
 	 * Constructor.
@@ -74,6 +76,7 @@ public class EditDialog extends Window {
 			}
 
 		};
+
 		selection.eAdapters().add(objectChangeAdapter);
 		initUi();
 		setResizable(true);
@@ -92,7 +95,7 @@ public class EditDialog extends Window {
 
 	private void initUi() {
 		VaadinObservables.activateRealm(UI.getCurrent());
-		final ECPVaadinView ecpVaadinView = ECPFVaadinViewRenderer.INSTANCE.render(selection, getView());
+		ecpVaadinView = ECPVaadinViewRenderer.INSTANCE.render(selection, getView());
 		setContent(getContentLayout(ecpVaadinView));
 	}
 
@@ -128,7 +131,7 @@ public class EditDialog extends Window {
 		}
 
 		view = ViewProviderHelper.getView(selection, null);
-		return view;
+		return EcoreUtil.copy(view);
 	}
 
 	@Override
@@ -140,6 +143,7 @@ public class EditDialog extends Window {
 			composedAdapterFactory.dispose();
 		}
 		composedAdapterFactory = null;
+		ecpVaadinView.dispose();
 		super.close();
 	}
 

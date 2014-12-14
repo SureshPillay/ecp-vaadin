@@ -18,7 +18,6 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature.Setting;
 import org.eclipse.emf.ecp.view.core.vaadin.dialog.EditDialog;
-import org.eclipse.emf.ecp.view.spi.model.VView;
 import org.eclipse.emf.edit.command.AddCommand;
 import org.eclipse.emf.edit.command.RemoveCommand;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
@@ -100,27 +99,6 @@ public final class VaadinWidgetFactory {
 
 		});
 		return remove;
-	}
-
-	/**
-	 * Creates a edit button for a select element.
-	 *
-	 * @param abstractSelect the element
-	 * @param view the view which should be show
-	 * @return the button
-	 */
-	public static Button createTableEditButton(final AbstractSelect abstractSelect, final VView view) {
-		final Button edit = new Button();
-		edit.addStyleName("table-edit"); //$NON-NLS-1$
-		edit.addClickListener(new ClickListener() {
-
-			@Override
-			public void buttonClick(ClickEvent event) {
-				final EditDialog editDialog = new EditDialog((EObject) abstractSelect.getValue(), view);
-				UI.getCurrent().addWindow(editDialog);
-			}
-		});
-		return edit;
 	}
 
 	/**
