@@ -33,6 +33,7 @@ import org.lunifera.runtime.web.vaadin.databinding.VaadinObservables;
 
 import com.vaadin.data.Property.ValueChangeNotifier;
 import com.vaadin.server.Sizeable.Unit;
+import com.vaadin.ui.AbstractComponent;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
@@ -98,41 +99,41 @@ public abstract class AbstractVaadinSimpleControlRenderer extends AbstractContro
 	protected Component render() {
 		final Setting setting = getVElement().getDomainModelReference().getIterator().next();
 		final Component component = createControl();
-		final Label label = new Label();
-		createDatabinding(setting, component);
+		createDatabinding(setting, getBindingComponent(component));
 		component.setWidth(100, Unit.PERCENTAGE);
+		return createUnsetLayout(setting, component);
+	}
 
+	private Component getBindingComponent(Component component) {
+		if (!(component instanceof AbstractComponent)) {
+			return component;
+
+		}
+		final AbstractComponent abstractComponent = (AbstractComponent) component;
+		return (Component) (abstractComponent.getData() == null ? component : abstractComponent.getData());
+
+	}
+
+	private Component createUnsetLayout(final Setting setting, final Component component) {
 		if (setting.getEStructuralFeature().isUnsettable()) {
 			final HorizontalLayout horizontalLayout = new HorizontalLayout();
 			horizontalLayout.setWidth(100, Unit.PERCENTAGE);
-			final Button setButton = new Button();
-			setButton.setEnabled(getVElement().isEnabled());
-			setButton.setVisible(getVElement().isVisible());
-			setButton.setReadOnly(getVElement().isReadonly());
-
-			createSetOrUnsetComponent(component, horizontalLayout, setButton, setting, label);
-
-			setButton.addClickListener(new ClickListener() {
-
-				@Override
-				public void buttonClick(ClickEvent event) {
-					final Object value = setting.isSet() ? SetCommand.UNSET_VALUE : setting
-						.getEStructuralFeature().getDefaultValue();
-					final EditingDomain editingDomain = getEditingDomain(setting);
-					editingDomain.getCommandStack().execute(
-						SetCommand.create(editingDomain, setting.getEObject(), setting.getEStructuralFeature(), value));
-					createSetOrUnsetComponent(component, horizontalLayout, setButton, setting, label);
-
-				}
-			});
+			createSetOrUnsetComponent(component, horizontalLayout, setting);
 			return horizontalLayout;
 		}
-
 		return component;
 	}
 
-	private void createSetOrUnsetComponent(final Component component, final HorizontalLayout horizontalLayout,
-		final Button setButton, Setting setting, Label label) {
+	protected void createSetOrUnsetComponent(final Component component, final HorizontalLayout horizontalLayout,
+		final Setting setting) {
+		final Label label = new Label();
+		final Button setButton = new Button();
+		setButton.setEnabled(getVElement().isEnabled());
+		setButton.setVisible(getVElement().isVisible());
+		setButton.setReadOnly(getVElement().isReadonly());
+		// FIXME: SIZE
+		horizontalLayout.setHeight("62px");
+
 		horizontalLayout.removeAllComponents();
 		Component addComponent = component;
 		if (setting.isSet()) {
@@ -149,9 +150,24 @@ public abstract class AbstractVaadinSimpleControlRenderer extends AbstractContro
 		horizontalLayout.setExpandRatio(addComponent, 1f);
 		horizontalLayout.addComponent(setButton);
 		horizontalLayout.setComponentAlignment(setButton, Alignment.BOTTOM_RIGHT);
+
+		setButton.addClickListener(new ClickListener() {
+
+			@Override
+			public void buttonClick(ClickEvent event) {
+				final Object value = setting.isSet() ? SetCommand.UNSET_VALUE : setting
+					.getEStructuralFeature().getDefaultValue();
+				final EditingDomain editingDomain = getEditingDomain(setting);
+				editingDomain.getCommandStack().execute(
+					SetCommand.create(editingDomain, setting.getEObject(), setting.getEStructuralFeature(), value));
+				createSetOrUnsetComponent(component, horizontalLayout, setting);
+
+			}
+		});
+
 	}
 
-	private void createDatabinding(Setting setting, final Component component) {
+	protected void createDatabinding(Setting setting, final Component component) {
 		final IObservableValue targetValue = VaadinObservables.observeValue((ValueChangeNotifier) component);
 		final IObservableValue modelValue = getModelValue(setting);
 		bindModelToTarget(targetValue, modelValue, getTargetToModelStrategy(component),
