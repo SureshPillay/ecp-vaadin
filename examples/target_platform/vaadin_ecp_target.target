@@ -1,16 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?pde version="3.8"?><target name="vaadin_ecp_target" sequenceNumber="59">
+<?pde version="3.8"?><target name="vaadin_ecp_target" sequenceNumber="61">
 <locations>
-<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="slicer" includeSource="false" type="InstallableUnit">
-<unit id="org.eclipse.platform.sdk" version="4.4.1.M20140925-0400"/>
-<unit id="org.eclipse.sdk.ide" version="4.4.1.M20140925-0400"/>
-<repository location="http://download.eclipse.org/eclipse/updates/4.4"/>
-</location>
-<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="slicer" includeSource="false" type="InstallableUnit">
-<unit id="org.eclipse.emf.sdk.feature.group" version="2.10.1.v20140901-1055"/>
-<unit id="org.eclipse.equinox.sdk.feature.group" version="3.10.0.v20140909-1633"/>
-<repository location="http://download.eclipse.org/releases/luna/"/>
-</location>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="slicer" includeSource="false" type="InstallableUnit">
 <unit id="org.eclipse.emf.ecp.makeithappen.feature.feature.group" version="1.5.0.20141115-2220"/>
 <unit id="org.eclipse.emf.ecp.view.table.feature.feature.group" version="1.5.0.20141115-2220"/>
@@ -31,6 +21,20 @@
 <unit id="org.eclipse.emf.ecp.view.stack.feature.feature.group" version="1.5.0.20141115-2220"/>
 <repository location="http://download.eclipse.org/ecp/releases/releases_15/"/>
 </location>
-<location path="/Users/dme/git/ecp-vaadin/examples/target_platform/plugins" type="Directory"/>
+<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="slicer" includeSource="false" type="InstallableUnit">
+<unit id="org.eclipse.platform.sdk" version="4.4.1.M20140925-0400"/>
+<unit id="org.eclipse.sdk.ide" version="4.4.1.M20140925-0400"/>
+<repository location="http://download.eclipse.org/eclipse/updates/4.4"/>
+</location>
+<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="slicer" includeSource="false" type="InstallableUnit">
+<unit id="org.eclipse.emf.sdk.feature.group" version="2.10.1.v20140901-1055"/>
+<unit id="org.eclipse.equinox.sdk.feature.group" version="3.10.0.v20140909-1633"/>
+<repository location="http://download.eclipse.org/releases/luna/"/>
+</location>
+<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="slicer" includeSource="false" type="InstallableUnit">
+<unit id="org.eclipse.emf.ecp.view.vaadin.feature.feature.group" version="1.0.0.201412161248"/>
+<unit id="org.eclipse.emf.ecp.vaadin.releng.dependencies.feature.feature.group" version="1.0.0.201412161302"/>
+<repository location="http://sirwayne.github.io/ecp-vaadin-p2/"/>
+</location>
 </locations>
 </target>
