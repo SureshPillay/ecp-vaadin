@@ -1,2 +1,2 @@
 language: java
-script: mvn test -f releng/org.eclipse.emf.ecp.vaadin.releng/pom.xml
+script: mvn install -f releng/org.eclipse.emf.ecp.vaadin.releng/pom.xml
