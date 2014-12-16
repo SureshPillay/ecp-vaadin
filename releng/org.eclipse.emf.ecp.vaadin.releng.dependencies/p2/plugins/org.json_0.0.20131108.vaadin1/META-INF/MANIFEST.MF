@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Export-Package: org.json;version="0.0.20131108.vaadin1"
+Implementation-Version: 0.0.20131108.vaadin1
+Bundle-Name: json-android
+Created-By: 1.6.0_32-b05 (Sun Microsystems Inc.)
+Implementation-URL: http://developer.android.com/sdk
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Ant-Version: Apache Ant 1.8.4
+Implementation-Vendor: Google
+Bundle-Vendor: Google
+Bundle-Version: 0.0.20131108.vaadin1
+Bundle-ManifestVersion: 2
+Bundle-SymbolicName: org.json
+
