@@ -27,6 +27,13 @@
 		<module>../../bundles/org.eclipse.emf.ecp.view.table.vaadin</module>
 		<module>../../bundles/org.eclipse.emf.ecp.view.vaadin</module>
 		<module>../../bundles/org.eclipse.emf.ecp.view.vertical.vaadin</module>
+		
+		<!--NLS -->
+		<module>../../bundles/org.eclipse.emf.ecp.controls.vaadin.nl_de</module>
+		<module>../../bundles/org.eclipse.emf.ecp.view.core.vaadin.nl_de</module>
+		
+		<!--Feature -->
+		<module>../../bundles/org.eclipse.emf.ecp.view.vaadin.feature</module>
 	</modules>
 
 </project>
