@@ -31,8 +31,6 @@ import org.eclipse.emf.ecp.view.spi.custom.model.VCustomFactory;
 import org.eclipse.emf.ecp.view.spi.model.VControl;
 import org.eclipse.emf.ecp.view.spi.model.VView;
 import org.eclipse.emf.ecp.view.spi.model.VViewFactory;
-import org.eclipse.emf.ecp.view.spi.renderer.NoPropertyDescriptorFoundExeption;
-import org.eclipse.emf.ecp.view.spi.renderer.NoRendererFoundException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -105,8 +103,7 @@ public class CustomControlVaadinRendererTest {
 	}
 
 	@Test
-	public void testCustomControlinViewWithoutClass() throws NoRendererFoundException,
-		NoPropertyDescriptorFoundExeption {
+	public void testCustomControlinViewWithoutClass() {
 		final VView view = VViewFactory.eINSTANCE.createView();
 
 		final VCustomControl customControl = createCustomControl();

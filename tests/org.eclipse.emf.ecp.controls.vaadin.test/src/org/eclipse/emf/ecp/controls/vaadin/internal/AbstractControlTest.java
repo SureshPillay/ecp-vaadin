@@ -12,6 +12,7 @@
 package org.eclipse.emf.ecp.controls.vaadin.internal;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -22,9 +23,11 @@ import java.util.Map;
 import org.eclipse.emf.common.command.BasicCommandStack;
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EStructuralFeature.Setting;
+import org.eclipse.emf.ecore.EcoreFactory;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -36,8 +39,6 @@ import org.eclipse.emf.ecp.view.spi.model.DomainModelReferenceChangeListener;
 import org.eclipse.emf.ecp.view.spi.model.LabelAlignment;
 import org.eclipse.emf.ecp.view.spi.model.VControl;
 import org.eclipse.emf.ecp.view.spi.model.VDomainModelReference;
-import org.eclipse.emf.ecp.view.spi.renderer.NoPropertyDescriptorFoundExeption;
-import org.eclipse.emf.ecp.view.spi.renderer.NoRendererFoundException;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.junit.Test;
@@ -45,7 +46,11 @@ import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
+import com.vaadin.ui.AbstractComponent;
+import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
+import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Label;
 
 public abstract class AbstractControlTest {
 	private AbstractControlRendererVaadin<VControl> renderer;
@@ -81,6 +86,17 @@ public abstract class AbstractControlTest {
 		resource.getContents().add(eObject);
 
 		when(setting.getEObject()).thenReturn(eObject);
+
+		when(setting.isSet()).then(new Answer<Boolean>() {
+			int count = 0;
+
+			@Override
+			public Boolean answer(InvocationOnMock invocation) throws Throwable {
+				count++;
+				return count % 3 == 0;
+			}
+		});
+
 		when(setting.getEStructuralFeature()).thenReturn(eStructuralFeature);
 		when(domainModelReference.getIterator()).then(new Answer<Iterator<Setting>>() {
 			@Override
@@ -109,44 +125,89 @@ public abstract class AbstractControlTest {
 	protected void setup(AbstractControlRendererVaadin<VControl> renderer) {
 		this.renderer = renderer;
 		control = Mockito.mock(VControl.class);
+		Mockito.when(control.isEnabled()).thenReturn(true);
 		context = Mockito.mock(ViewModelContext.class);
 	}
 
 	@Test
 	public void testGridDescriptionLabelAlignmentNone() {
 		setMockLabelAlignment(LabelAlignment.NONE);
-		mockControl();
-		renderer.init(control, context);
-		final Component component = renderer.renderComponent();
-		// SWTGridDescription gridDescription =
-		// renderer.getGridDescription(GridDescriptionFactory.INSTANCE.createEmptyGridDescription());
-		assertEquals(null, component.getCaption());
-		// assertEquals(1, gridDescription.getRows());
+		renderControl();
+		assertEquals(null, renderer.getControlComponent().getCaption());
 	}
 
-	// @Test
-	// public void testGridDescriptionLabelAlignmentLeft() {
-	// setMockLabelAlignment(LabelAlignment.LEFT);
-	// mockControl();
-	// this.renderer.init(this.control, this.context);
-	// Component component = this.renderer.renderComponent();
-	// assertEquals("", component.getCaption());
-	// }
+	@Test
+	public void tetsRenderControlLabelAlignmentNone() {
+		setMockLabelAlignment(LabelAlignment.NONE);
+		final Component render = renderControl();
+		assertControl(render);
+	}
 
-	protected void renderLabel(String text) throws NoRendererFoundException, NoPropertyDescriptorFoundExeption {
+	@Test
+	public void testRenderControlLabelAlignmentLeft() {
 		setMockLabelAlignment(LabelAlignment.LEFT);
-		mockControl();
-		renderer.init(control, context);
-		final Component render = renderer.renderComponent();
-		assertEquals(text, render.getCaption());
+		final Component render = renderControl();
+
+		assertControl(render);
 	}
 
-	protected Component renderControl() throws NoRendererFoundException, NoPropertyDescriptorFoundExeption {
+	@Test
+	public void testRenderControlSettable() {
+		setMockLabelAlignment(LabelAlignment.LEFT);
+		final Component render = renderControlSettable();
+
+		assertControlSettable(render);
+	}
+
+	protected void renderLabel(String text) {
+		setMockLabelAlignment(LabelAlignment.LEFT);
+		renderControl();
+		// assertEquals(text, renderer.getControlComponent().getCaption());
+	}
+
+	protected Component assertControl(Component render) {
+		Component renderComponent = render;
+		if (render instanceof AbstractComponent) {
+			final Object o = ((AbstractComponent) render).getData();
+			renderComponent = (Component) (o == null ? render : o);
+		}
+		assertTrue(getComponentClass().isInstance(renderComponent));
+		return renderComponent;
+
+	}
+
+	protected void assertControlSettable(Component render) {
+		assertTrue(render instanceof HorizontalLayout);
+		final HorizontalLayout layout = (HorizontalLayout) render;
+		assertTrue(getComponentClass().isInstance(layout.getComponent(0)));
+		assertTrue(layout.getComponent(1) instanceof Button);
+		final Button button = (Button) layout.getComponent(1);
+		button.click();
+		assertTrue(layout.getComponent(0) instanceof Label);
+		assertTrue(layout.getComponent(1) instanceof Button);
+
+	}
+
+	protected void mockControlSettable() {
+		final EClass eObject = EcoreFactory.eINSTANCE.createEClass();
+		final EStructuralFeature eStructuralFeature = EcorePackage.eINSTANCE.getEClass_Interface();
+		eStructuralFeature.setUnsettable(true);
+		mockControl(eObject, eStructuralFeature);
+	}
+
+	protected Component renderControlSettable() {
+		mockControlSettable();
+		renderer.init(control, context);
+		return renderer.renderComponent();
+	}
+
+	protected Component renderControl() {
 		mockControl();
 		renderer.init(control, context);
-		final Component render = renderer.renderComponent();
-		return render;
+		return renderer.renderComponent();
 	}
 
 	protected abstract void mockControl();
+
+	protected abstract Class<?> getComponentClass();
 }

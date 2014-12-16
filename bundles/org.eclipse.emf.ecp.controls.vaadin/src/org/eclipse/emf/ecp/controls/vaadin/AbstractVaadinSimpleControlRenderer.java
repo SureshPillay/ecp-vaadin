@@ -52,6 +52,8 @@ public abstract class AbstractVaadinSimpleControlRenderer extends AbstractContro
 
 	private IObservableValue modelValue;
 	private final WritableValue value = new WritableValue();
+	private Label unsetLabel;
+	private Button unsetButton;
 
 	@Override
 	public void dispose() {
@@ -124,10 +126,38 @@ public abstract class AbstractVaadinSimpleControlRenderer extends AbstractContro
 		return component;
 	}
 
+	private Label getUnsetComponent() {
+		if (unsetLabel == null) {
+			unsetLabel = new Label();
+		}
+		return unsetLabel;
+	}
+
+	private Button getUnsetButton(final Component component, final HorizontalLayout horizontalLayout,
+		final Setting setting) {
+		if (unsetButton == null) {
+			unsetButton = new Button();
+			unsetButton.addClickListener(new ClickListener() {
+
+				@Override
+				public void buttonClick(ClickEvent event) {
+					final Object value = setting.isSet() ? SetCommand.UNSET_VALUE : setting
+						.getEStructuralFeature().getDefaultValue();
+					final EditingDomain editingDomain = getEditingDomain(setting);
+					editingDomain.getCommandStack().execute(
+						SetCommand.create(editingDomain, setting.getEObject(), setting.getEStructuralFeature(), value));
+					createSetOrUnsetComponent(component, horizontalLayout, setting);
+
+				}
+			});
+		}
+		return unsetButton;
+	}
+
 	protected void createSetOrUnsetComponent(final Component component, final HorizontalLayout horizontalLayout,
 		final Setting setting) {
-		final Label label = new Label();
-		final Button setButton = new Button();
+		final Label unsetLabel = getUnsetComponent();
+		final Button setButton = getUnsetButton(component, horizontalLayout, setting);
 		setButton.setEnabled(getVElement().isEnabled());
 		setButton.setVisible(getVElement().isVisible());
 		setButton.setReadOnly(getVElement().isReadonly());
@@ -138,8 +168,8 @@ public abstract class AbstractVaadinSimpleControlRenderer extends AbstractContro
 		Component addComponent = component;
 		if (setting.isSet()) {
 			setButton.setCaption(VaadinRendererMessages.AbstractVaadinSimpleControlRenderer_Set);
-			label.setCaption(getUnsetLabel());
-			addComponent = label;
+			unsetLabel.setCaption(getUnsetLabel());
+			addComponent = unsetLabel;
 
 		} else {
 			setButton.setCaption(VaadinRendererMessages.AbstractVaadinSimpleControlRenderer_Unset);
@@ -150,20 +180,6 @@ public abstract class AbstractVaadinSimpleControlRenderer extends AbstractContro
 		horizontalLayout.setExpandRatio(addComponent, 1f);
 		horizontalLayout.addComponent(setButton);
 		horizontalLayout.setComponentAlignment(setButton, Alignment.BOTTOM_RIGHT);
-
-		setButton.addClickListener(new ClickListener() {
-
-			@Override
-			public void buttonClick(ClickEvent event) {
-				final Object value = setting.isSet() ? SetCommand.UNSET_VALUE : setting
-					.getEStructuralFeature().getDefaultValue();
-				final EditingDomain editingDomain = getEditingDomain(setting);
-				editingDomain.getCommandStack().execute(
-					SetCommand.create(editingDomain, setting.getEObject(), setting.getEStructuralFeature(), value));
-				createSetOrUnsetComponent(component, horizontalLayout, setting);
-
-			}
-		});
 
 	}
 

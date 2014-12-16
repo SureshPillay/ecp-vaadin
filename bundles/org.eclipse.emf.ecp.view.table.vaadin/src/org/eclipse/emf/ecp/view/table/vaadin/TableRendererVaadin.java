@@ -206,10 +206,6 @@ public class TableRendererVaadin extends AbstractControlRendererVaadin<VTableCon
 		table.setColumnHeaders(visibleColumnsNames.toArray(new String[visibleColumnsNames.size()]));
 	}
 
-	private List<Object> getItems(final Setting setting) {
-		return (List<Object>) setting.getEObject().eGet(setting.getEStructuralFeature());
-	}
-
 	public VView getView() {
 		VView detailView = getVElement().getDetailView();
 		if (detailView == null) {

@@ -12,7 +12,6 @@
 package org.eclipse.emf.ecp.controls.vaadin.internal;
 
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcoreFactory;
@@ -25,7 +24,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import com.vaadin.ui.AbstractTextField;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.TextField;
 
@@ -57,9 +55,11 @@ public class NumberControlVaadinRendererTest extends AbstractControlTest {
 		renderLabel("Lower Bound");
 	}
 
-	private void assertControl(Component render) {
-		assertTrue(TextField.class.isInstance(render));
-		assertNull(((AbstractTextField) render).getConverter());
+	@Override
+	protected Component assertControl(Component render) {
+		final TextField field = (TextField) super.assertControl(render);
+		assertNull(field.getConverter());
+		return field;
 	}
 
 	@Override
@@ -67,6 +67,11 @@ public class NumberControlVaadinRendererTest extends AbstractControlTest {
 		final EStructuralFeature eObject = EcoreFactory.eINSTANCE.createEAttribute();
 		final EStructuralFeature eStructuralFeature = EcorePackage.eINSTANCE.getETypedElement_LowerBound();
 		super.mockControl(eObject, eStructuralFeature);
+	}
+
+	@Override
+	protected Class<?> getComponentClass() {
+		return TextField.class;
 	}
 
 }

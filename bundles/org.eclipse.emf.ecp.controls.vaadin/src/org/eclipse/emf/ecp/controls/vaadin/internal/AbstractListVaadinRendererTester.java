@@ -33,6 +33,7 @@ public abstract class AbstractListVaadinRendererTester implements ECPRendererTes
 		if (!VControl.class.isInstance(vElement)) {
 			return NOT_APPLICABLE;
 		}
+
 		final VControl vControl = (VControl) vElement;
 		final VDomainModelReference domainModelReference = vControl.getDomainModelReference();
 		if (domainModelReference == null) {
@@ -56,12 +57,12 @@ public abstract class AbstractListVaadinRendererTester implements ECPRendererTes
 		if (checkReference(feature)) {
 			return NOT_APPLICABLE;
 		}
-		return 5;
+		return 1;
 	}
 
 	/**
 	 * Checks the feature.
-	 * 
+	 *
 	 * @param feature the feature
 	 * @return is reference or not
 	 */

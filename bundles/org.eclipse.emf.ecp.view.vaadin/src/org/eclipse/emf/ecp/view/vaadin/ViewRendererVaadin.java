@@ -10,17 +10,13 @@
  * Dennis - initial API and implementation
  ******************************************************************************/
 
-package org.eclipse.emf.ecp.view.model.internal.vaadin;
+package org.eclipse.emf.ecp.view.vaadin;
 
 import org.eclipse.emf.ecp.view.core.vaadin.AbstractVaadinRenderer;
 import org.eclipse.emf.ecp.view.core.vaadin.ECPVaadinViewComponent;
 import org.eclipse.emf.ecp.view.core.vaadin.VaadinRendererFactory;
-import org.eclipse.emf.ecp.view.model.vaadin.ViewLayoutProvider;
 import org.eclipse.emf.ecp.view.spi.model.VContainedElement;
 import org.eclipse.emf.ecp.view.spi.model.VView;
-import org.osgi.framework.BundleContext;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.framework.ServiceReference;
 
 import com.vaadin.ui.AbstractOrderedLayout;
 import com.vaadin.ui.Component;
@@ -70,19 +66,19 @@ public class ViewRendererVaadin extends AbstractVaadinRenderer<VView> {
 	}
 
 	private AbstractOrderedLayout getLayout() {
-		final BundleContext bundleContext = FrameworkUtil.getBundle(getClass()).getBundleContext();
-		if (bundleContext == null) {
-			return new VerticalLayout();
-		}
-
-		final ServiceReference<ViewLayoutProvider> reference = bundleContext
-			.getServiceReference(ViewLayoutProvider.class);
-		if (reference == null) {
-			return new VerticalLayout();
-		}
-
-		final ViewLayoutProvider service = bundleContext.getService(reference);
-		return service == null ? new VerticalLayout() : service.getViewLayout();
+		// final BundleContext bundleContext = FrameworkUtil.getBundle(getClass()).getBundleContext();
+		// if (bundleContext == null) {
+		// return new VerticalLayout();
+		// }
+		//
+		// final ServiceReference<ViewLayoutProvider> reference = bundleContext
+		// .getServiceReference(ViewLayoutProvider.class);
+		// if (reference == null) {
+		// return new VerticalLayout();
+		// }
+		//
+		// final ViewLayoutProvider service = bundleContext.getService(reference);
+		return new VerticalLayout();
 	}
 
 }

@@ -42,6 +42,7 @@ public abstract class AbstractVaadinRenderer<T extends VElement> extends Abstrac
 	private ViewLocaleService viewLocaleService;
 	private TranslationService translationService;
 	private ModelChangeListener modelChangeListener;
+	private Component layoutComponent;
 
 	/**
 	 * Default constructor.
@@ -64,7 +65,7 @@ public abstract class AbstractVaadinRenderer<T extends VElement> extends Abstrac
 	 *
 	 * @return the controlComponent
 	 */
-	protected Component getControlComponent() {
+	public Component getControlComponent() {
 		return controlComponent;
 	}
 
@@ -93,18 +94,18 @@ public abstract class AbstractVaadinRenderer<T extends VElement> extends Abstrac
 	 */
 	public final Component renderComponent() {
 
-		final Component component = render();
-		if (component == null) {
+		layoutComponent = render();
+		if (layoutComponent == null) {
 			return null;
 		}
-		this.controlComponent = getCaptionControlComponent(component);
+		this.controlComponent = getCaptionControlComponent(layoutComponent);
 
 		applyVisible();
 		applyEnable();
 		applyValidation();
 		applyReadonly();
 		applyCaption();
-		return component;
+		return layoutComponent;
 	}
 
 	@Override

@@ -28,8 +28,13 @@
         <repository>
             <id>ecp</id>
             <layout>p2</layout>
-            <url> http://download.eclipse.org/ecp/releases/releases_15/</url>
+            <url>http://download.eclipse.org/ecp/releases/releases_15/</url>
         </repository>
+        <repository>
+			<id>dependencies</id>
+			<layout>p2</layout>
+			<url>file:///${basedir}/../../releng/org.eclipse.emf.ecp.vaadin.releng.dependencies/p2</url>
+		</repository>
     </repositories>
     
    
@@ -82,7 +87,7 @@
 	<modules>
 		<module>../../releng/org.eclipse.emf.ecp.vaadin.releng.bundles</module>
 		<module>../../releng/org.eclipse.emf.ecp.vaadin.releng.tests</module>
-		<module>../../releng/org.eclipse.emf.ecp.vaadin.releng.repository</module>
+		<!--  <module>../../releng/org.eclipse.emf.ecp.vaadin.releng.repository</module>-->
 	</modules>
 
 </project>

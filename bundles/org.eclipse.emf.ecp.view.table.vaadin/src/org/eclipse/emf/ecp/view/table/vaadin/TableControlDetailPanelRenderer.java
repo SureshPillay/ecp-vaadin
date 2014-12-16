@@ -11,6 +11,7 @@
  ******************************************************************************/
 package org.eclipse.emf.ecp.view.table.vaadin;
 
+import org.eclipse.core.databinding.observable.Realm;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecp.view.core.vaadin.ECPVaadinView;
 import org.eclipse.emf.ecp.view.core.vaadin.ECPVaadinViewRenderer;
@@ -43,7 +44,9 @@ public class TableControlDetailPanelRenderer extends TableRendererVaadin {
 				if (table.getValue() == null) {
 					return;
 				}
-				VaadinObservables.activateRealm(UI.getCurrent());
+				if (Realm.getDefault() == null) {
+					VaadinObservables.activateRealm(UI.getCurrent());
+				}
 				ecpVaadinView = ECPVaadinViewRenderer.INSTANCE.render(
 					(EObject) table.getValue(), getView());
 				layout.addComponent(ecpVaadinView.getComponent());

@@ -12,14 +12,12 @@
 package org.eclipse.emf.ecp.controls.vaadin.internal;
 
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcoreFactory;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecp.view.common.vaadin.test.VaadinDatabindingClassRunner;
-import org.eclipse.emf.ecp.view.spi.model.LabelAlignment;
 import org.eclipse.emf.ecp.view.spi.renderer.NoPropertyDescriptorFoundExeption;
 import org.eclipse.emf.ecp.view.spi.renderer.NoRendererFoundException;
 import org.junit.Before;
@@ -39,29 +37,15 @@ public class BooleanControlVaadinRendererTest extends AbstractControlTest {
 	}
 
 	@Test
-	public void renderControlLabelAlignmentNone() throws NoRendererFoundException, NoPropertyDescriptorFoundExeption {
-		setMockLabelAlignment(LabelAlignment.NONE);
-		final Component render = renderControl();
-		assertControl(render);
-	}
-
-	@Test
-	public void renderControlLabelAlignmentLeft() throws NoRendererFoundException, NoPropertyDescriptorFoundExeption {
-		setMockLabelAlignment(LabelAlignment.LEFT);
-		final Component render = renderControl();
-
-		assertControl(render);
-	}
-
-	@Test
 	public void renderLabel() throws NoRendererFoundException, NoPropertyDescriptorFoundExeption {
 		renderLabel("Interface");
 	}
 
-	private void assertControl(Component render) {
-		assertTrue(CheckBox.class.isInstance(render));
-		final CheckBox checkBox = (CheckBox) render;
+	@Override
+	protected Component assertControl(Component render) {
+		final CheckBox checkBox = (CheckBox) super.assertControl(render);
 		assertFalse(checkBox.getValue());
+		return checkBox;
 	}
 
 	@Override
@@ -69,6 +53,11 @@ public class BooleanControlVaadinRendererTest extends AbstractControlTest {
 		final EClass eObject = EcoreFactory.eINSTANCE.createEClass();
 		final EStructuralFeature eStructuralFeature = EcorePackage.eINSTANCE.getEClass_Interface();
 		super.mockControl(eObject, eStructuralFeature);
+	}
+
+	@Override
+	protected Class<?> getComponentClass() {
+		return CheckBox.class;
 	}
 
 }

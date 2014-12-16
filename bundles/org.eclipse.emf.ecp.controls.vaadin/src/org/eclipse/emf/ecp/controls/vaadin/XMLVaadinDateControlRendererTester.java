@@ -23,12 +23,6 @@ import org.eclipse.emf.ecp.view.model.common.XMLDateControlRendererTester;
  */
 public class XMLVaadinDateControlRendererTester extends XMLDateControlRendererTester {
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.emf.ecp.view.model.common.XMLDateControlRendererTester#checkFeatureETypeAnnotations(org.eclipse.emf.common.util.EList)
-	 */
-	@Override
 	protected boolean checkFeatureETypeAnnotations(EList<EAnnotation> eAnnotations) {
 		return true;
 	}

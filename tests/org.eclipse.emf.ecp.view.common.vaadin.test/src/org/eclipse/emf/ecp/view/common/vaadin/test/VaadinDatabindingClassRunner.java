@@ -33,21 +33,4 @@ public class VaadinDatabindingClassRunner extends BlockJUnit4ClassRunner {
 		});
 	}
 
-	private static class TestRealm extends Realm {
-
-		public TestRealm() {
-			setDefault(this);
-		}
-
-		@Override
-		public boolean isCurrent() {
-			return true;
-		}
-
-		@Override
-		public void exec(Runnable runnable) {
-			runnable.run();
-		}
-
-	}
 }

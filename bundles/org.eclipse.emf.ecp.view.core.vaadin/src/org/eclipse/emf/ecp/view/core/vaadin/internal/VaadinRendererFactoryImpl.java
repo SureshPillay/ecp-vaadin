@@ -214,7 +214,7 @@ public class VaadinRendererFactoryImpl implements VaadinRendererFactory {
 			// } else {
 			// bestCandidate = new EmptyVElementSWTRenderer();
 			// }
-			throw new RuntimeException("No Renderer for: " + vElement.getName());
+			throw new RuntimeException("No Renderer for: " + vElement.getName()); //$NON-NLS-1$
 		}
 
 		bestCandidate.init(vElement, viewContext);

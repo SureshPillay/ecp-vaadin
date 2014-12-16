@@ -24,7 +24,7 @@
 		<module>../../tests/org.eclipse.emf.ecp.view.horizontal.vaadin.test</module>
 		<module>../../tests/org.eclipse.emf.ecp.view.label.vaadin.test</module>
 		<module>../../tests/org.eclipse.emf.ecp.view.table.vaadin.test</module>
-		<module>../../tests/org.eclipse.emf.ecp.view.vaadin.test</module>
+<!-- 		<module>../../tests/org.eclipse.emf.ecp.view.vaadin.test</module> -->
 		<module>../../tests/org.eclipse.emf.ecp.view.vertical.vaadin.test</module>
 	</modules>
 

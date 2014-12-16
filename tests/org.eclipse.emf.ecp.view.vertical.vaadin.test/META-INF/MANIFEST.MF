@@ -8,4 +8,5 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Import-Package: org.eclipse.emf.ecp.view.common.vaadin.test;version="[1.0.0,2.0.0)",
  org.eclipse.emf.ecp.view.core.vaadin.test;version="1.0.0",
  org.eclipse.emf.ecp.view.spi.renderer;version="[1.0.0,2.0.0)"
-Require-Bundle: org.junit;bundle-version="[4.11.0,5.0.0)"
+Require-Bundle: org.junit;bundle-version="[4.11.0,5.0.0)",
+ org.eclipse.emf.ecp.controls.vaadin;bundle-version="[1.0.0,2.0.0)"

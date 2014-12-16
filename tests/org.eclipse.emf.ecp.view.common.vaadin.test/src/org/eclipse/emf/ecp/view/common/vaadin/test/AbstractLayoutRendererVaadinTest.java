@@ -14,6 +14,7 @@ package org.eclipse.emf.ecp.view.common.vaadin.test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EcoreFactory;
@@ -66,9 +67,7 @@ public abstract class AbstractLayoutRendererVaadinTest {
 	}
 
 	@Test
-	public void testVerticalWithTwoControlsAsChildren() throws NoRendererFoundException,
-		NoPropertyDescriptorFoundExeption {
-		// setup model
+	public void testVerticalWithTwoControlsAsChildren() {
 		final HierarchyViewModelHandle handle = createVerticalWithTwoControlsAsChildren();
 		final Component render = renderComponent(handle);
 		assertTrue(getUILayouClass().isInstance(render));
@@ -123,7 +122,9 @@ public abstract class AbstractLayoutRendererVaadinTest {
 		final VControl control = VViewFactory.eINSTANCE.createControl();
 		final VFeaturePathDomainModelReference domainModelReference = VViewFactory.eINSTANCE
 			.createFeaturePathDomainModelReference();
-		domainModelReference.setDomainModelEFeature(EcorePackage.eINSTANCE.getEClassifier_InstanceClassName());
+		final EAttribute eClassifier_InstanceClassName = EcorePackage.eINSTANCE.getEClassifier_InstanceClassName();
+		eClassifier_InstanceClassName.setUnsettable(false);
+		domainModelReference.setDomainModelEFeature(eClassifier_InstanceClassName);
 		control.setDomainModelReference(domainModelReference);
 		return control;
 	}

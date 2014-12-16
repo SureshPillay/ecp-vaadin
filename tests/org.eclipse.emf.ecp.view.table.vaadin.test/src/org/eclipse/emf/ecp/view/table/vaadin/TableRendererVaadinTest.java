@@ -19,15 +19,25 @@ import static org.junit.Assert.fail;
 
 import java.util.Set;
 
+import org.eclipse.core.databinding.observable.Realm;
+import org.eclipse.emf.common.command.BasicCommandStack;
+import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EStructuralFeature.Setting;
 import org.eclipse.emf.ecore.EcoreFactory;
 import org.eclipse.emf.ecore.EcorePackage;
-import org.eclipse.emf.ecp.common.spi.UniqueSetting;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.emf.ecp.common.UniqueSetting;
+import org.eclipse.emf.ecp.view.common.vaadin.test.TestRealm;
 import org.eclipse.emf.ecp.view.common.vaadin.test.VaadinDatabindingClassRunner;
+import org.eclipse.emf.ecp.view.core.vaadin.AbstractVaadinRenderer;
+import org.eclipse.emf.ecp.view.core.vaadin.ECPVaadinViewComponent;
 import org.eclipse.emf.ecp.view.core.vaadin.VaadinRendererFactory;
 import org.eclipse.emf.ecp.view.core.vaadin.test.VaadinTestHelper;
 import org.eclipse.emf.ecp.view.spi.context.ViewModelContext;
@@ -41,12 +51,13 @@ import org.eclipse.emf.ecp.view.spi.model.VView;
 import org.eclipse.emf.ecp.view.spi.model.VViewFactory;
 import org.eclipse.emf.ecp.view.spi.model.VViewPackage;
 import org.eclipse.emf.ecp.view.spi.model.util.ViewModelUtil;
-import org.eclipse.emf.ecp.view.spi.renderer.NoPropertyDescriptorFoundExeption;
-import org.eclipse.emf.ecp.view.spi.renderer.NoRendererFoundException;
 import org.eclipse.emf.ecp.view.spi.table.model.DetailEditing;
 import org.eclipse.emf.ecp.view.spi.table.model.VTableControl;
 import org.eclipse.emf.ecp.view.spi.table.model.VTableDomainModelReference;
 import org.eclipse.emf.ecp.view.spi.table.model.VTableFactory;
+import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
+import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
+import org.eclipse.emf.edit.provider.ReflectiveItemProviderAdapterFactory;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -68,11 +79,19 @@ public class TableRendererVaadinTest {
 		final EClass eClass = EcoreFactory.eINSTANCE.createEClass();
 		eClass.getESuperTypes().add(EcorePackage.eINSTANCE.getEClass());
 		domainElement = eClass;
+		final ResourceSet resourceSet = new ResourceSetImpl();
+		final AdapterFactoryEditingDomain domain = new AdapterFactoryEditingDomain(
+			new ComposedAdapterFactory(new AdapterFactory[] {
+				new ReflectiveItemProviderAdapterFactory(),
+				new ComposedAdapterFactory(ComposedAdapterFactory.Descriptor.Registry.INSTANCE) }),
+			new BasicCommandStack(), resourceSet);
+		resourceSet.eAdapters().add(new AdapterFactoryEditingDomain.EditingDomainProvider(domain));
+		final Resource resource = resourceSet.createResource(URI.createURI("VIRTUAL_URI_TEMP")); //$NON-NLS-1$
+		resource.getContents().add(domainElement);
 	}
 
 	@Test
-	public void testUninitializedTableWithoutColumns() throws NoRendererFoundException,
-	NoPropertyDescriptorFoundExeption {
+	public void testUninitializedTableWithoutColumns() {
 		final TableControlHandle handle = createUninitializedTableWithoutColumns();
 		final Component render = renderTableLayout(handle);
 
@@ -95,8 +114,8 @@ public class TableRendererVaadinTest {
 	}
 
 	@Test
-	public void testInitializedTableWithoutColumnsAndEmptyReference() throws NoRendererFoundException,
-	NoPropertyDescriptorFoundExeption {
+	public void testInitializedTableWithoutColumnsAndEmptyReference()
+	{
 		// setup model
 		final EClass createEClass = EcoreFactory.eINSTANCE.createEClass();
 		createEClass.eUnset(EcorePackage.eINSTANCE.getEClass_ESuperTypes());
@@ -114,8 +133,8 @@ public class TableRendererVaadinTest {
 
 	@Ignore
 	@Test
-	public void testInitializedTableWithoutColumnsSingleReference() throws NoRendererFoundException,
-	NoPropertyDescriptorFoundExeption {
+	public void testInitializedTableWithoutColumnsSingleReference()
+	{
 		// setup model
 		final VView view = VViewFactory.eINSTANCE.createView();
 		view.setRootEClass(VViewPackage.eINSTANCE.getView());
@@ -132,8 +151,8 @@ public class TableRendererVaadinTest {
 
 	@Ignore
 	@Test
-	public void testInitializedTableWithoutColumnsEmptySingleReference() throws NoRendererFoundException,
-	NoPropertyDescriptorFoundExeption {
+	public void testInitializedTableWithoutColumnsEmptySingleReference()
+	{
 		// setup model
 		final VView view = VViewFactory.eINSTANCE.createView();
 		domainElement = view;
@@ -162,7 +181,7 @@ public class TableRendererVaadinTest {
 
 		assertEquals(attributLength,
 			VTableDomainModelReference.class.cast(handle.getTableControl().getDomainModelReference())
-			.getColumnDomainModelReferences().size());
+				.getColumnDomainModelReferences().size());
 
 		final Component control = getTable((VerticalLayout) render);
 		assertTrue(control instanceof Table);
@@ -171,23 +190,57 @@ public class TableRendererVaadinTest {
 	}
 
 	@Test
-	public void testTableWithoutColumns() throws NoRendererFoundException, NoPropertyDescriptorFoundExeption {
-		// setup model
+	public void testTableWithoutColumns() {
 		final TableControlHandle handle = createInitializedTableWithoutTableColumns();
-		final Table table = assertTableWithService(handle, domainElement.eClass().getEAttributes().size());
-		assertEquals(2, table.getColumnHeaders().length);
+
+		final AbstractVaadinRenderer<VElement> tableRenderer = rendererFactory.getVaadinComponentRenderer(
+			handle.getTableControl(),
+			ViewModelContextFactory.INSTANCE.createViewModelContext(handle.getTableControl(), domainElement));
+		final VerticalLayout verticalLayout = assertTable(tableRenderer);
+
+		assertEquals(0,
+			VTableDomainModelReference.class.cast(handle.getTableControl().getDomainModelReference())
+			.getColumnDomainModelReferences().size());
+
+		assertTrue(verticalLayout.getComponent(1) instanceof Table);
+		final Table table = (Table) verticalLayout.getComponent(1);
+		assertEquals(0, table.getColumnHeaders().length);
+
 	}
 
 	@Test
-	public void testTableWithoutColumnsWithoutViewServices() throws NoRendererFoundException,
-	NoPropertyDescriptorFoundExeption {
+	public void testTableWithoutColumnsWithoutViewServices()
+	{
 		final TableControlHandle handle = createInitializedTableWithoutTableColumns();
-		final Table table = assertTableWithoutService(handle, 0);
+		final AbstractVaadinRenderer<VElement> tableRenderer = rendererFactory.getVaadinComponentRenderer(
+			handle.getTableControl(),
+			new ViewModelContextWithoutServices(handle.getTableControl()));
+
+		final VerticalLayout verticalLayout = assertTable(tableRenderer);
+
+		assertEquals(0, VTableDomainModelReference.class.cast(handle.getTableControl().getDomainModelReference())
+			.getColumnDomainModelReferences().size());
+
+		assertTrue(verticalLayout.getComponent(1) instanceof Table);
+		final Table table = (Table) verticalLayout.getComponent(1);
 		assertEquals(0, table.getColumnHeaders().length);
 	}
 
+	private VerticalLayout assertTable(final AbstractVaadinRenderer<VElement> tableRenderer) {
+		if (!TableRendererVaadin.class.isAssignableFrom(tableRenderer.getClass())) {
+			fail("No Table Renderer " + tableRenderer.getClass().getName());
+		}
+		final Component control = tableRenderer.renderComponent();
+		if (control == null) {
+			fail("No control was rendered");
+		}
+		assertTrue(control instanceof VerticalLayout);
+		final VerticalLayout verticalLayout = (VerticalLayout) control;
+		return verticalLayout;
+	}
+
 	@Test
-	public void testTableWithTwoColumns() throws NoRendererFoundException, NoPropertyDescriptorFoundExeption {
+	public void testTableWithTwoColumns() {
 		// setup model
 		final TableControlHandle handle = createTableWithTwoTableColumns();
 		final Component render = renderTableLayout(handle);
@@ -196,8 +249,8 @@ public class TableRendererVaadinTest {
 	}
 
 	@Test
-	public void testTableWithTwoColumnsWithoutViewServices() throws NoRendererFoundException,
-	NoPropertyDescriptorFoundExeption {
+	public void testTableWithTwoColumnsWithoutViewServices()
+	{
 		// setup model
 		final TableControlHandle handle = createTableWithTwoTableColumns();
 		final Table table = assertTableWithoutService(handle, 2);
@@ -206,7 +259,7 @@ public class TableRendererVaadinTest {
 	}
 
 	@Test
-	public void testTableWithTwoColumnsAdd() throws NoRendererFoundException, NoPropertyDescriptorFoundExeption {
+	public void testTableWithTwoColumnsAdd() {
 		final TableControlHandle handle = createTableWithTwoTableColumns();
 
 		final Table table = assertTableWithoutService(handle, 2);
@@ -221,7 +274,7 @@ public class TableRendererVaadinTest {
 	}
 
 	@Test
-	public void testTableWithTwoColumnsRemove() throws NoRendererFoundException, NoPropertyDescriptorFoundExeption {
+	public void testTableWithTwoColumnsRemove() {
 		final TableControlHandle handle = createTableWithTwoTableColumns();
 
 		final Table table = assertTableWithoutService(handle, 2);
@@ -233,7 +286,7 @@ public class TableRendererVaadinTest {
 	}
 
 	@Test
-	public void testTableAddRemoveButton() throws NoRendererFoundException, NoPropertyDescriptorFoundExeption {
+	public void testTableAddRemoveButton() {
 		final TableControlHandle handle = createTableWithTwoTableColumns();
 
 		final VerticalLayout layout = (VerticalLayout) renderTableLayoutWithoutServices(handle);
@@ -254,7 +307,7 @@ public class TableRendererVaadinTest {
 	}
 
 	@Test
-	public void testTableWithTwoColumnsClear() throws NoRendererFoundException, NoPropertyDescriptorFoundExeption {
+	public void testTableWithTwoColumnsClear() {
 		final EList<EClass> eSuperTypes = ((EClass) domainElement).getESuperTypes();
 		final TableControlHandle handle = createTableWithTwoTableColumns();
 		final Table table = assertTableWithoutService(handle, 2);
@@ -264,46 +317,67 @@ public class TableRendererVaadinTest {
 	}
 
 	@Test
-	public void testPanelTableWithTwoColumns() throws NoRendererFoundException, NoPropertyDescriptorFoundExeption {
+	public void testPanelTableWithTwoColumnsReadonly() {
+		testPanelTableWithTwoColumns(true);
+	}
+
+	@Test
+	public void testPanelTableWithTwoColumns() {
+		final Table table = testPanelTableWithTwoColumns(false);
+		final VerticalLayout layout = (VerticalLayout) table.getParent();
+
+		final TestRealm realm = new TestRealm();
+		Realm.runWithDefault(realm, new Runnable() {
+			@Override
+			public void run() {
+				table.select(table.getItemIds().iterator().next());
+			}
+		});
+
+		// single selection
+		assertNotNull(table.getValue());
+		assertTrue(layout.getComponent(2) instanceof ECPVaadinViewComponent);
+		final ECPVaadinViewComponent detailView = (ECPVaadinViewComponent) layout.getComponent(2);
+		assertTrue(detailView.getContent() instanceof VerticalLayout);
+		final VerticalLayout detailViewLayout = (VerticalLayout) detailView.getContent();
+		assertEquals(2, detailViewLayout.getComponentCount());
+
+		Realm.runWithDefault(realm, new Runnable() {
+			@Override
+			public void run() {
+				table.select(null);
+			}
+		});
+		assertNull(table.getValue());
+		assertEquals(2, layout.getComponentCount());
+	}
+
+	private Table testPanelTableWithTwoColumns(boolean readonly) {
 		final EClass eClass = EcoreFactory.eINSTANCE.createEClass();
 		((EClass) domainElement).getESuperTypes().add(eClass);
 		final TableControlHandle handle = createTableWithTwoTableColumns();
+		handle.getTableControl().setReadonly(readonly);
 		handle.getTableControl().setDetailEditing(DetailEditing.WITH_PANEL);
 		handle.getTableControl().setDetailView(createDetailView());
-		try {
-			assertTableWithoutService(handle, 2);
-			fail();
-		} catch (final RuntimeException e) {
+		final AbstractVaadinRenderer<VElement> tableRenderer = rendererFactory.getVaadinComponentRenderer(
+			handle.getTableControl(),
+			new ViewModelContextWithoutServices(handle.getTableControl()));
+		final VerticalLayout verticalLayout = assertTable(tableRenderer);
+		Table table = null;
+		if (readonly) {
+			assertTrue(verticalLayout.getComponent(0) instanceof Table);
+			table = (Table) verticalLayout.getComponent(0);
+		} else {
+			assertTrue(verticalLayout.getComponent(0) instanceof HorizontalLayout);
+			assertTrue(verticalLayout.getComponent(1) instanceof Table);
+			table = (Table) verticalLayout.getComponent(1);
 		}
-		// final Composite controlComposite = (Composite) ((Composite) control).getChildren()[1];
-		// final Composite tableComposite = (Composite) controlComposite.getChildren()[0];
-		// final Table table = (Table) tableComposite.getChildren()[0];
-		// final ScrolledComposite scrolledComposite = (ScrolledComposite) controlComposite.getChildren()[1];
-		// final Composite parentForECPView = (Composite) scrolledComposite.getChildren()[0];
-		// assertEquals(2, table.getItemCount());
-		// final TableViewer tableViewer = getTableViewerFromRenderer(tableRenderer);
-		//
-		// // no initial selection
-		// assertEquals(0, parentForECPView.getChildren().length);
-		//
-		// // single selection
-		// tableViewer.setSelection(new StructuredSelection(table.getItem(0).getData()));
-		// assertEquals(1, parentForECPView.getChildren().length);
-		// final Composite viewComposite = (Composite) parentForECPView.getChildren()[0];
-		// assertEquals(6, viewComposite.getChildren().length);
-		//
-		// // multi selection
-		// tableViewer.setSelection(new StructuredSelection(new Object[] { table.getItem(0).getData(),
-		// table.getItem(1).getData() }));
-		// assertEquals(0, parentForECPView.getChildren().length);
-		//
-		// // select again
-		// tableViewer.setSelection(new StructuredSelection(table.getItem(0).getData()));
-		// assertEquals(1, parentForECPView.getChildren().length);
-		//
-		// // no selection
-		// tableViewer.setSelection(new StructuredSelection());
-		// assertEquals(0, parentForECPView.getChildren().length);
+		assertEquals(2, table.getColumnHeaders().length);
+		// no initial selection
+		assertNull(table.getValue());
+
+		assertEquals(2, table.getItemIds().size());
+		return table;
 	}
 
 	private VView createDetailView() {

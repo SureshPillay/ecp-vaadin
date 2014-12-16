@@ -1,11 +1,11 @@
 /*******************************************************************************
  * Copyright (c) 2014 Dennis Melzer and others.
- * 
+ *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  * Dennis - initial API and implementation
  ******************************************************************************/
@@ -16,6 +16,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EcoreFactory;
 import org.eclipse.emf.ecore.EcorePackage;
@@ -36,7 +37,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import com.vaadin.ui.AbstractOrderedLayout;
+import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
+import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.TextField;
 
 @RunWith(VaadinDatabindingClassRunner.class)
@@ -84,10 +87,10 @@ public class VaadinGroupTest {
 		final VGroup group1 = createGroup();
 		view.getChildren().add(group1);
 		group1.getChildren().add(createControl());
-		group1.getChildren().add(createControl());
+		group1.getChildren().add(createControlUnSettable());
 		final VGroup group2 = createGroup();
 		view.getChildren().add(group2);
-		group2.getChildren().add(createControl());
+		group2.getChildren().add(createControlUnSettable());
 		group2.getChildren().add(createControl());
 		return view;
 	}
@@ -99,11 +102,24 @@ public class VaadinGroupTest {
 		return VGroupFactory.eINSTANCE.createGroup();
 	}
 
+	private static VControl createControlUnSettable() {
+		final VControl control = VViewFactory.eINSTANCE.createControl();
+		final VFeaturePathDomainModelReference modelReference = VViewFactory.eINSTANCE
+			.createFeaturePathDomainModelReference();
+		final EAttribute eClassifier_InstanceTypeName = EcorePackage.eINSTANCE.getEClassifier_InstanceTypeName();
+		eClassifier_InstanceTypeName.setUnsettable(true);
+		modelReference.setDomainModelEFeature(eClassifier_InstanceTypeName);
+		control.setDomainModelReference(modelReference);
+		return control;
+	}
+
 	private static VControl createControl() {
 		final VControl control = VViewFactory.eINSTANCE.createControl();
 		final VFeaturePathDomainModelReference modelReference = VViewFactory.eINSTANCE
-				.createFeaturePathDomainModelReference();
-		modelReference.setDomainModelEFeature(EcorePackage.eINSTANCE.getEClassifier_InstanceClassName());
+			.createFeaturePathDomainModelReference();
+		final EAttribute eClassifier_InstanceTypeName = EcorePackage.eINSTANCE.getEClassifier_InstanceClassName();
+		eClassifier_InstanceTypeName.setUnsettable(false);
+		modelReference.setDomainModelEFeature(eClassifier_InstanceTypeName);
 		control.setDomainModelReference(modelReference);
 		return control;
 	}
@@ -112,11 +128,11 @@ public class VaadinGroupTest {
 	public void testOneGroupinView() throws NoRendererFoundException, NoPropertyDescriptorFoundExeption {
 		final VView view = createViewWithOneGroup();
 		final org.eclipse.emf.ecp.view.spi.group.model.VGroup group = (org.eclipse.emf.ecp.view.spi.group.model.VGroup) view
-				.getChildren().get(0);
+			.getChildren().get(0);
 		group.setName(GROUP_NAME);
 
 		// setup ui
-		AbstractOrderedLayout viewLayout = getContentLayout(view);
+		final AbstractOrderedLayout viewLayout = getContentLayout(view);
 		final Component renderedControl = viewLayout.getComponent(0);
 		assertGroupControl(renderedControl, GROUP_NAME);
 		// assertEquals("Rendered Control and control returned by renderer are not the same", control, renderedControl);
@@ -124,23 +140,23 @@ public class VaadinGroupTest {
 
 	private void assertGroupControl(final Component renderedControl, String groupName) {
 		assertEquals("Rendered Control is not a Group", GroupLayoutRendererVaadin.GROUP_STYLE_NAME,
-				renderedControl.getStyleName());
+			renderedControl.getStyleName());
 		assertEquals("Rendered Group does not have correct name", groupName, renderedControl.getCaption());
 	}
 
 	private AbstractOrderedLayout getContentLayout(VView view) {
 		final ViewModelContext viewContext = ViewModelContextFactory.INSTANCE.createViewModelContext(view,
-				VViewFactory.eINSTANCE.createView());
+			VViewFactory.eINSTANCE.createView());
 
 		final ECPVaadinViewComponent control = (ECPVaadinViewComponent) VaadinTestHelper.getVaadinRendererFactory()
-				.render(view, viewContext);
+			.render(view, viewContext);
 		return (AbstractOrderedLayout) control.getContent();
 	}
 
 	private AbstractOrderedLayout getContentLayout(VView view, EObject eObject) {
 		final ViewModelContext viewContext = ViewModelContextFactory.INSTANCE.createViewModelContext(view, eObject);
 		final ECPVaadinViewComponent control = (ECPVaadinViewComponent) VaadinTestHelper.getVaadinRendererFactory()
-				.render(view, viewContext);
+			.render(view, viewContext);
 		return (AbstractOrderedLayout) control.getContent();
 	}
 
@@ -150,15 +166,15 @@ public class VaadinGroupTest {
 		// setup model
 		final VView view = createViewWithTwoGroups();
 		final org.eclipse.emf.ecp.view.spi.group.model.VGroup group = (org.eclipse.emf.ecp.view.spi.group.model.VGroup) view
-				.getChildren().get(0);
+			.getChildren().get(0);
 		group.setName(GROUP_NAME);
 
 		final org.eclipse.emf.ecp.view.spi.group.model.VGroup group2 = (org.eclipse.emf.ecp.view.spi.group.model.VGroup) view
-				.getChildren().get(1);
+			.getChildren().get(1);
 		group2.setName(GROUP_NAME2);
 
 		// setup ui
-		AbstractOrderedLayout viewLayout = getContentLayout(view);
+		final AbstractOrderedLayout viewLayout = getContentLayout(view);
 		final Component renderedControl1 = viewLayout.getComponent(0);
 		final Component renderedControl2 = viewLayout.getComponent(1);
 		assertGroupControl(renderedControl1, GROUP_NAME);
@@ -173,15 +189,15 @@ public class VaadinGroupTest {
 
 		final VView view = createViewWithTwoHierachicalGroups();
 		final org.eclipse.emf.ecp.view.spi.group.model.VGroup group = (org.eclipse.emf.ecp.view.spi.group.model.VGroup) view
-				.getChildren().get(0);
+			.getChildren().get(0);
 		final org.eclipse.emf.ecp.view.spi.group.model.VGroup subGroup = (org.eclipse.emf.ecp.view.spi.group.model.VGroup) group
-				.getChildren().get(0);
+			.getChildren().get(0);
 		group.setName(GROUP_NAME);
 
 		subGroup.setName(GROUP_NAME2);
 
 		// setup ui
-		AbstractOrderedLayout viewLayout = getContentLayout(view);
+		final AbstractOrderedLayout viewLayout = getContentLayout(view);
 		final AbstractOrderedLayout renderedControl1 = (AbstractOrderedLayout) viewLayout.getComponent(0);
 		final Component renderedControl2 = renderedControl1.getComponent(0);
 		assertGroupControl(renderedControl1, GROUP_NAME);
@@ -193,29 +209,34 @@ public class VaadinGroupTest {
 	public void testTwoGroupsWithTwoControlsInView() throws NoRendererFoundException, NoPropertyDescriptorFoundExeption {
 		final VView view = createViewWithTwoGroupsWithTwoControls();
 		final org.eclipse.emf.ecp.view.spi.group.model.VGroup group1 = (org.eclipse.emf.ecp.view.spi.group.model.VGroup) view
-				.getChildren().get(0);
+			.getChildren().get(0);
 		final org.eclipse.emf.ecp.view.spi.group.model.VGroup group2 = (org.eclipse.emf.ecp.view.spi.group.model.VGroup) view
-				.getChildren().get(1);
+			.getChildren().get(1);
 		group1.setName(GROUP_NAME);
 
 		group2.setName(GROUP_NAME2);
 
 		// setup ui
-		AbstractOrderedLayout viewLayout = getContentLayout(view, EcoreFactory.eINSTANCE.createEClass());
+		final AbstractOrderedLayout viewLayout = getContentLayout(view, EcoreFactory.eINSTANCE.createEClass());
 		final AbstractOrderedLayout renderedControl1 = (AbstractOrderedLayout) viewLayout.getComponent(0);
 		final AbstractOrderedLayout renderedControl2 = (AbstractOrderedLayout) viewLayout.getComponent(1);
 		assertGroupControl(renderedControl1, GROUP_NAME);
-		// assertEquals("Rendered Control and control returned by renderer are not the same", control, viewComposite);
 
-		// assertEquals("Rendered Control and control returned by renderer are not the same", control, viewComposite);
 		assertTrue(renderedControl1.getComponent(0) instanceof TextField);
-		assertTrue(renderedControl1.getComponent(1) instanceof TextField);
+		// HorizontalLayout = With Set/Unsetbutton
+		assertTrue(renderedControl1.getComponent(1) instanceof HorizontalLayout);
+		assertUnsettableComponent((AbstractOrderedLayout) renderedControl1.getComponent(1));
 
 		assertGroupControl(renderedControl2, GROUP_NAME2);
-
-		assertTrue(renderedControl2.getComponent(0) instanceof TextField);
+		assertTrue(renderedControl2.getComponent(0) instanceof HorizontalLayout);
+		assertUnsettableComponent((AbstractOrderedLayout) renderedControl2.getComponent(0));
 		assertTrue(renderedControl2.getComponent(1) instanceof TextField);
 
+	}
+
+	private void assertUnsettableComponent(final AbstractOrderedLayout renderedControl1) {
+		assertTrue(renderedControl1.getComponent(0) instanceof TextField);
+		assertTrue(renderedControl1.getComponent(1) instanceof Button);
 	}
 
 	@Test
@@ -226,7 +247,7 @@ public class VaadinGroupTest {
 
 		// setup ui
 		try {
-			AbstractOrderedLayout viewLayout = getContentLayout(view, EcoreFactory.eINSTANCE.createEClass());
+			final AbstractOrderedLayout viewLayout = getContentLayout(view, EcoreFactory.eINSTANCE.createEClass());
 			final Component renderedControl = viewLayout.getComponent(0);
 			assertNull(renderedControl.getCaption());
 		} catch (final IllegalArgumentException e) {
