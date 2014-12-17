@@ -44,6 +44,7 @@
 							<source>
 								<repository>
 									<url>${project.baseUri}/target/repository</url>
+									<layout>p2</layout>
 								</repository>
 							</source>
 							<publishArtifacts>true</publishArtifacts>
