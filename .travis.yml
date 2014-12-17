@@ -1,5 +1,8 @@
+language: java
 env:
   matrix:
     secure: S66owMHtx2IDIPXE4w530W+TYTbUEGTPaN3tgzzjsCdd2kP2YjeAnds/cMCTD9sS6UElI95Zm9WHztHpU0K2iYF4AO1DRx7CQwoyeU2B2nZZhuvFtm1/duiuuF04YP6ODQFT+kP5MApK3U1OMTV2t2MO68kh8z4CYfug05ppeD0=
-language: java
-script: mvn install -f releng/org.eclipse.emf.ecp.vaadin.releng/pom.xml -P deploy-update-site -X
+script: 
+  - git config --global user.email "melzer.dennis@gmail.com"
+  - git config --global user.name "SirWayne"
+  - mvn install -f releng/org.eclipse.emf.ecp.vaadin.releng/pom.xml -P deploy-update-site -X
