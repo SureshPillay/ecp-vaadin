@@ -78,9 +78,9 @@
 								<goals>
 									<goal>add</goal>
 								</goals>
+
 								<configuration>
 									<includes>**/*</includes>
-									<excludes>/*/.gitignore</excludes>
 								</configuration>
 							</execution>
 							<execution>
@@ -95,7 +95,7 @@
 							</execution>
 						</executions>
 						<configuration>
-							<basedir>target/repository</basedir>
+							<basedir>${update.site.dir}</basedir>
 							<developerConnectionUrl>${developerConnectionUrl}</developerConnectionUrl>
 							<username>${username}</username>
 							<password>${repo.password}</password>
