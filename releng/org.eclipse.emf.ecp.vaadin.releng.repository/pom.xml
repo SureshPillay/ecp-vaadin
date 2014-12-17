@@ -71,6 +71,9 @@
 								<goals>
 									<goal>checkout</goal>
 								</goals>
+								<configuration>
+									<scnVersion>master</scnVersion>
+								</configuration>
 							</execution>
 							<execution>
 								<id>add-all</id>
