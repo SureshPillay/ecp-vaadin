@@ -43,7 +43,7 @@
 							<!-- source repositories to mirror from -->
 							<source>
 								<repository>
-									<url>target/repository</url>
+									<url>/target/repository</url>
 									<layout>p2</layout>
 								</repository>
 							</source>
@@ -73,24 +73,11 @@
 								</goals>
 							</execution>
 							<execution>
-								<id>add-rest</id>
+								<id>add-p2</id>
 								<phase>verify</phase>
 								<goals>
 									<goal>add</goal>
 								</goals>
-								<configuration>
-									<excludes>plugins/**/*</excludes>
-								</configuration>
-							</execution>
-							<execution>
-								<id>add-plugins</id>
-								<phase>verify</phase>
-								<goals>
-									<goal>add</goal>
-								</goals>
-								<configuration>
-									<includes>plugins/**/*</includes>
-								</configuration>
 							</execution>
 							<execution>
 								<id>install</id>
@@ -104,7 +91,7 @@
 							</execution>
 						</executions>
 						<configuration>
-							<basedir>target/repository</basedir>
+							<basedir>/target/repository</basedir>
 							<developerConnectionUrl>${developerConnectionUrl}</developerConnectionUrl>
 							<username>${username}</username>
 							<password>${repo.password}</password>
