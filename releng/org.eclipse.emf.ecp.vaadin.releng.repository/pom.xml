@@ -43,7 +43,7 @@
 							<!-- source repositories to mirror from -->
 							<source>
 								<repository>
-									<url>/target/repository</url>
+									<url>${project.baseUri}/target/repository</url>
 									<layout>p2</layout>
 								</repository>
 							</source>
@@ -73,7 +73,7 @@
 								</goals>
 							</execution>
 							<execution>
-								<id>add-p2</id>
+								<id>add-all</id>
 								<phase>verify</phase>
 								<goals>
 									<goal>add</goal>
@@ -91,7 +91,7 @@
 							</execution>
 						</executions>
 						<configuration>
-							<basedir>/target/repository</basedir>
+							<basedir>${project.baseUri}/target/repository</basedir>
 							<developerConnectionUrl>${developerConnectionUrl}</developerConnectionUrl>
 							<username>${username}</username>
 							<password>${repo.password}</password>
