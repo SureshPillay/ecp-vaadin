@@ -63,7 +63,7 @@
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-scm-plugin</artifactId>
-						<version>1.7</version>
+						<version>1.9.2</version>
 						<executions>
 							<execution>
 								<id>checkout</id>
@@ -78,6 +78,10 @@
 								<goals>
 									<goal>add</goal>
 								</goals>
+								<configuration>
+									<includes>**/*</includes>
+									<excludes>/*/.gitignore</excludes>
+								</configuration>
 							</execution>
 							<execution>
 								<id>install</id>
