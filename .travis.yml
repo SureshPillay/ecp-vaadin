@@ -5,5 +5,8 @@ env:
 script: 
   - git config --global user.email "melzer.dennis@gmail.com"
   - git config --global user.name "SirWayne"
-  - git clone --quiet --branch master git@github.com:SirWayne/SirWayne.github.io.git
-  - mvn install -f releng/org.eclipse.emf.ecp.vaadin.releng/pom.xml -P deploy-update-site -X
+  - mvn install -f releng/org.eclipse.emf.ecp.vaadin.releng/pom.xml
+  - git clone --quiet git@github.com:SirWayne/SirWayne.github.io.git
+  - git add -f releng/org.eclipse.emf.ecp.vaadin.releng.repository/target/repository
+  - git commit -m " New updated update site via Script" 
+  - git push --repo=git:https://SirWayne:${repo_password}@github.com/SirWayne/SirWayne.github.io.git
