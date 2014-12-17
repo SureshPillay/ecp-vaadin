@@ -5,5 +5,5 @@ env:
 script: 
   - git config --global user.email "melzer.dennis@gmail.com"
   - git config --global user.name "SirWayne"
-  - git clone --quiet git@github.com:SirWayne/SirWayne.github.io.git
+  - git clone --quiet --branch master git@github.com:SirWayne/SirWayne.github.io.git
   - mvn install -f releng/org.eclipse.emf.ecp.vaadin.releng/pom.xml -P deploy-update-site -X
