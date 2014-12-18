@@ -10,6 +10,9 @@ cd p2-repo/ecp-vaadin-p2
 mkdir -p $REPO_NAME
 rm -rf $REPO_NAME/*
 cp -r ../../releng/org.eclipse.emf.ecp.vaadin.releng.repository/target/repository/* ./$REPO_NAME
+cp ../../releng/org.eclipse.emf.ecp.vaadin.releng.repository/background-style.html ./$REPO_NAME
+cp ../../releng/org.eclipse.emf.ecp.vaadin.releng.repository/background-style.js ./$REPO_NAME
+cp ../../releng/org.eclipse.emf.ecp.vaadin.releng.repository/background-style.css ./$REPO_NAME
 git add --all .
 git commit -m "Deployed to Github P2"
 echo Push
