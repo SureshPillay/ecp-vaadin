@@ -161,9 +161,7 @@ public abstract class AbstractVaadinSimpleControlRenderer extends AbstractContro
 		setButton.setEnabled(getVElement().isEnabled());
 		setButton.setVisible(getVElement().isVisible());
 		setButton.setReadOnly(getVElement().isReadonly());
-		// FIXME: SIZE
-		horizontalLayout.setHeight("62px");
-
+		horizontalLayout.addStyleName("textheight");
 		horizontalLayout.removeAllComponents();
 		Component addComponent = component;
 		if (setting.isSet()) {

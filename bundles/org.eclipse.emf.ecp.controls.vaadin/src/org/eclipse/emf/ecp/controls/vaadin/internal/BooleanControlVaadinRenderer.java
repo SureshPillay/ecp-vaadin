@@ -45,7 +45,7 @@ public class BooleanControlVaadinRenderer extends AbstractVaadinSimpleControlRen
 		horizontalLayout.addComponent(checkBox);
 		horizontalLayout.setComponentAlignment(checkBox, Alignment.MIDDLE_LEFT);
 		// TODO: Fix Size
-		horizontalLayout.setHeight("62px");
+		horizontalLayout.addStyleName("textheight");
 		if (setting.getEStructuralFeature().isUnsettable()) {
 			createSetOrUnsetComponent(checkBox, horizontalLayout, setting);
 		}

@@ -1,6 +1,10 @@
-.v-textfield-error,.v-datefield-error .v-textfield, .-v-filterselect-error v-filterselect-input, 
+.v-textfield-error,.v-datefield-error .v-textfield, .v-filterselect-error .v-filterselect-input, 
 .v-select-error .v-select-select, .v-table-error .v-table-body{
     border-color: #FF444B !important;
+}
+
+.textheight.v-horizontallayout-textheight{
+	height: 62px !important;
 }
 
 .group{
