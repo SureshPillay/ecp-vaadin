@@ -2,6 +2,3 @@ language: java
 script:
 - mvn install -f releng/org.eclipse.emf.ecp.vaadin.releng/pom.xml
 - ./releng/org.eclipse.emf.ecp.vaadin.releng.repository/deploy-p2.sh
-env:
-  global:
-    secure: jjNqzbhMAh6/xGZS+l6TIArOsDQf2EhiC0pBKIUApRvu3zfsN9rlG47fX/ODhJ5xjhP33ycYNJYt+C5pJZf8R2GmX8jHF04RBQlnA5cM7Z/s2AxB1WnS/KquqIMqr1P0/sOIP8rPoCLhakW1KJhAgIJfEvzDVNtJIknn2Sf9FPE=
