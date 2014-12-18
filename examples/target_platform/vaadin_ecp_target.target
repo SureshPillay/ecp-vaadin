@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?pde version="3.8"?><target name="vaadin_ecp_target" sequenceNumber="68">
+<?pde version="3.8"?><target name="vaadin_ecp_target" sequenceNumber="69">
 <locations>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="slicer" includeSource="false" type="InstallableUnit">
 <unit id="org.eclipse.emf.ecp.makeithappen.feature.feature.group" version="1.5.0.20141115-2220"/>
@@ -36,6 +36,5 @@
 <unit id="org.eclipse.emf.ecp.view.vaadin.feature.feature.group" version="1.0.0.201412181514"/>
 <repository location="http://sirwayne.github.io/ecp-vaadin-p2/1.0.0-SNAPSHOT/"/>
 </location>
-<location path="/Users/dme/git/ecp-vaadin/releng/org.eclipse.emf.ecp.vaadin.releng.dependencies/p2/plugins" type="Directory"/>
 </locations>
 </target>
