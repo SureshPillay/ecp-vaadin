@@ -87,6 +87,7 @@
 	<modules>
 		<module>../../releng/org.eclipse.emf.ecp.vaadin.releng.bundles</module>
 		<module>../../releng/org.eclipse.emf.ecp.vaadin.releng.tests</module>
+		<module>../../releng/org.eclipse.emf.ecp.vaadin.releng.examples</module>
 		<module>../../releng/org.eclipse.emf.ecp.vaadin.releng.dependencies.feature</module>
 		<module>../../releng/org.eclipse.emf.ecp.vaadin.releng.repository</module>
 	</modules>
