@@ -5,7 +5,7 @@ git config --global user.name ${GIT_USER}
 git config --global user.email ${GIT_EMAIL}
 rm -rf p2-repo
 git clone --quiet https://github.com/SirWayne/SirWayne.github.io.git p2-repo 
-echo cd p2-repo
+mkdir -p p2-repo/ecp-vaadin-p2
 cd p2-repo/ecp-vaadin-p2
 mkdir -p $REPO_NAME
 rm -rf $REPO_NAME/*
