@@ -1,6 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Wizards
-Bundle-SymbolicName: org.eclipse.emf.ecp.makeithappen.vaadin.wizards
+Bundle-SymbolicName: org.eclipse.emf.ecp.makeithappen.vaadin.wizards;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Require-Bundle: org.eclipse.emf.common.ui;bundle-version="[2.9.0,3.0.0)"

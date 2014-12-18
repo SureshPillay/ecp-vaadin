@@ -33,11 +33,14 @@
 							<outputDirectory>${basedir}/examples/</outputDirectory>
 							<resources>
 								<resource>
-									<directory>../org.eclipse.emf.ecp.makeithappen.vaadin.app</directory>
+									<directory>../</directory>
+									<includes>
+										<include>org.eclipse.emf.ecp.makeithappen.vaadin.app/**/*</include>
+									</includes>
 									<excludes>
-										<exclude>.settings/*</exclude>
+										<exclude>org.eclipse.emf.ecp.makeithappen.vaadin.app/.settings/**/*</exclude>
+										<exclude>org.eclipse.emf.ecp.makeithappen.vaadin.app/bin/**/*</exclude>
 									</excludes>
-									<filtering>true</filtering>
 								</resource>
 							</resources>
 						</configuration>
