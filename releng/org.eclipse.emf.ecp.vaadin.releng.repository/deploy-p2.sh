@@ -1,7 +1,7 @@
 #!/bin/bash
 echo "starting deploy..."
-git config user.name ${GIT_USER}
-git config user.email ${GIT_EMAIL}
+git config --global user.name ${GIT_USER}
+git config --global user.email ${GIT_EMAIL}
 rm -rf p2-repo
 git clone --quiet https://github.com/SirWayne/SirWayne.github.io.git p2-repo 
 echo cd p2-repo
