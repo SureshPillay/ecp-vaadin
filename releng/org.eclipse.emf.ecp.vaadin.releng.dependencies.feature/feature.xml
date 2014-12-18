@@ -22,20 +22,6 @@
          install-size="0"
          version="0.0.0"
          unpack="false"/>
-         
-   <plugin
-         id="guava"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-         
-   <plugin
-         id="streamhtmlparser-jsilver"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
 
    <plugin
          id="com.vaadin.client-compiled"
@@ -127,15 +113,15 @@
          install-size="0"
          version="0.0.0"
          unpack="false"/>
-         
-    <plugin
-         id="json-android"
+
+   <plugin
+         id="org.mockito.mockito-all"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
-         
-     <plugin
+
+   <plugin
          id="org.jsoup"
          download-size="0"
          install-size="0"
@@ -143,7 +129,14 @@
          unpack="false"/>
 
    <plugin
-         id="org.mockito.mockito-all"
+         id="com.google.gwt.thirdparty.streamhtmlparser"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="com.google.gwt.thirdparty.guava"
          download-size="0"
          install-size="0"
          version="0.0.0"
