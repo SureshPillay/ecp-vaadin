@@ -7,9 +7,7 @@ git clone --quiet https://github.com/SirWayne/SirWayne.github.io.git p2-repo
 echo cd p2-repo
 cd p2-repo
 rm -rf ecp-vaadin-p2/*
-echo `pwd'
 cd ecp-vaadin-p2
-echo `pwd`
 cp -r ../../releng/org.eclipse.emf.ecp.vaadin.releng.repository/target/repository/* .
 git add --all .
 git commit -m "Deployed to Github P2"
