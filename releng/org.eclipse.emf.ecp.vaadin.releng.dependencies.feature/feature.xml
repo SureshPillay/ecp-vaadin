@@ -22,6 +22,20 @@
          install-size="0"
          version="0.0.0"
          unpack="false"/>
+         
+   <plugin
+         id="guava"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+         
+   <plugin
+         id="streamhtmlparser-jsilver"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
 
    <plugin
          id="com.vaadin.client-compiled"
@@ -109,6 +123,20 @@
 
    <plugin
          id="org.json"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+         
+    <plugin
+         id="json-android"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+         
+     <plugin
+         id="org.jsoup"
          download-size="0"
          install-size="0"
          version="0.0.0"
