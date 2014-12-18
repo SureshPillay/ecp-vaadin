@@ -70,8 +70,10 @@ public class VaadinViewRendererTest {
 	@Test
 	public void testMultipleSimpleCompositeView() {
 		final BasicEList<VContainedElement> basicEList = new BasicEList<VContainedElement>();
-		final VContainedElement control1 = Mockito.mock(VVerticalLayout.class);
-		final VContainedElement control2 = Mockito.mock(VVerticalLayout.class);
+		final VVerticalLayout control1 = Mockito.mock(VVerticalLayout.class);
+		final VVerticalLayout control2 = Mockito.mock(VVerticalLayout.class);
+		Mockito.when(control1.getChildren()).thenReturn(new BasicEList<VContainedElement>());
+		Mockito.when(control2.getChildren()).thenReturn(new BasicEList<VContainedElement>());
 		basicEList.add(control1);
 		basicEList.add(control2);
 		Mockito.when(this.view.getChildren()).thenReturn(basicEList);
