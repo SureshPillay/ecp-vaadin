@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-    <feature id="org.eclipse.emf.ecp.view.vaadin.feature" version="1.0.0.qualifier">
+   <feature id="org.eclipse.emf.ecp.view.vaadin.feature" version="1.0.0.qualifier">
       <category name="ecp-vaadin"/>
    </feature>
-   <category-def name="ecp-vaadin" label="ECP Vaadin Renderer Bundles"/>
-   
    <feature id="org.eclipse.emf.ecp.vaadin.releng.dependencies.feature" version="1.0.0.qualifier">
       <category name="dependencies"/>
    </feature>
+   <feature url="features/org.eclipse.emf.ecp.vaadin.examples.feature_1.0.0.qualifier.jar" id="org.eclipse.emf.ecp.vaadin.examples.feature" version="1.0.0.qualifier">
+      <category name="examples"/>
+   </feature>
+   <category-def name="ecp-vaadin" label="ECP Vaadin Renderer Bundles"/>
    <category-def name="dependencies" label="Vaadin Bundles"/>
+   <category-def name="examples" label="Vaadin Examples"/>
 </site>
