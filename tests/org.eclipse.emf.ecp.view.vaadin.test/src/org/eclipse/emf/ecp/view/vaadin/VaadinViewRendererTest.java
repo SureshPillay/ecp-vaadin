@@ -14,14 +14,17 @@ package org.eclipse.emf.ecp.view.vaadin;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.ecp.view.common.vaadin.test.VaadinDatabindingClassRunner;
 import org.eclipse.emf.ecp.view.core.vaadin.AbstractVaadinRenderer;
 import org.eclipse.emf.ecp.view.core.vaadin.ECPVaadinViewComponent;
 import org.eclipse.emf.ecp.view.core.vaadin.VaadinRendererFactory;
 import org.eclipse.emf.ecp.view.core.vaadin.test.VaadinTestHelper;
 import org.eclipse.emf.ecp.view.spi.context.ViewModelContext;
+import org.eclipse.emf.ecp.view.spi.model.VContainedElement;
 import org.eclipse.emf.ecp.view.spi.model.VElement;
 import org.eclipse.emf.ecp.view.spi.model.VView;
+import org.eclipse.emf.ecp.view.spi.vertical.model.VVerticalLayout;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -59,25 +62,19 @@ public class VaadinViewRendererTest {
 
 	@Test
 	public void testEmptyView() {
-		// Mockito.when(this.view.getChildren()).thenReturn(new BasicEList<VContainedElement>());
-		// final Component render = this.viewRenderer.renderComponent();
-		// assertVaadinView(render, 0);
+		Mockito.when(this.view.getChildren()).thenReturn(new BasicEList<VContainedElement>());
+		final Component render = this.viewRenderer.renderComponent();
+		assertVaadinView(render, 0);
 	}
 
 	@Test
 	public void testMultipleSimpleCompositeView() {
-		// final BasicEList<VContainedElement> basicEList = new BasicEList<VContainedElement>();
-		// final VContainedElement control1 = Mockito.mock(VContainedElement.class);
-		// final VContainedElement control2 = Mockito.mock(VContainedElement.class);
-		// basicEList.add(control1);
-		// basicEList.add(control2);
-		// Mockito.when(this.view.getChildren()).thenReturn(basicEList);
-		//
-		// Mockito.when(this.rendererFactory.render(control1, this.context)).thenReturn(new VerticalLayout());
-		// Mockito.when(this.rendererFactory.render(control2, this.context)).thenReturn(new VerticalLayout());
-
-		// Mockito.when(this.factory.getVaadinComponentRenderer(control1, this.context)).thenReturn(mockRenderer1);
-		// Mockito.when(this.factory.getVaadinComponentRenderer(control2, this.context)).thenReturn(mockRenderer2);
+		final BasicEList<VContainedElement> basicEList = new BasicEList<VContainedElement>();
+		final VContainedElement control1 = Mockito.mock(VVerticalLayout.class);
+		final VContainedElement control2 = Mockito.mock(VVerticalLayout.class);
+		basicEList.add(control1);
+		basicEList.add(control2);
+		Mockito.when(this.view.getChildren()).thenReturn(basicEList);
 
 		final Component render = this.viewRenderer.renderComponent();
 		final AbstractOrderedLayout assertVaadinView = assertVaadinView(render, 2);
