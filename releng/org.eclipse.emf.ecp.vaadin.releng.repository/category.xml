@@ -6,7 +6,7 @@
    <feature id="org.eclipse.emf.ecp.vaadin.releng.dependencies.feature" version="1.0.0.qualifier">
       <category name="dependencies"/>
    </feature>
-   <feature url="features/org.eclipse.emf.ecp.vaadin.examples.feature" id="org.eclipse.emf.ecp.vaadin.examples.feature" version="1.0.0.qualifier">
+   <feature url="features/org.eclipse.emf.ecp.vaadin.sample.feature" id="org.eclipse.emf.ecp.vaadin.sample.feature" version="1.0.0.qualifier">
       <category name="examples"/>
    </feature>
    <category-def name="ecp-vaadin" label="ECP Vaadin Renderer Bundles"/>
