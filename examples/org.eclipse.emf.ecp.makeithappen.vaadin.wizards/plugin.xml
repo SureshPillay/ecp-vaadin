@@ -3,17 +3,17 @@
 <plugin>
    <extension
          point="org.eclipse.ui.newWizards">
+      <category
+            id="org.eclipse.emf.ecp.makeithappen.wizards.vaadin.EMFForms"
+            name="EMF Forms Vaadin"
+            parentCategory="org.eclipse.ui.Examples">
+      </category>
       <wizard
             category="org.eclipse.ui.Examples/org.eclipse.emf.ecp.makeithappen.wizards.vaadin.EMFForms"
             class="org.eclipse.emf.common.ui.wizard.ExampleInstallerWizard"
             id="org.eclipse.emf.ecp.makeithappen.wizards.vaadin.ExampleApplicationWizard"
             name="Make it happen: sample Vaadin application">
       </wizard>
-      <category
-            id="org.eclipse.emf.ecp.makeithappen.wizards.vaadin.EMFForms"
-            name="EMF Forms Vaadin"
-            parentCategory="org.eclipse.ui.Examples">
-      </category>
    </extension>
    <extension
          point="org.eclipse.emf.common.ui.examples">
@@ -23,7 +23,7 @@
          <projectDescriptor
                contentURI="examples/org.eclipse.emf.ecp.makeithappen.vaadin.app/"
                description="Make It Happen Vaadin Wizard application"
-               name="org.eclipse.emf.ecp.makeithappen.application.sample.vaadin">
+               name="org.eclipse.emf.ecp.makeithappen.vaadin.app">
          </projectDescriptor>
       </example>
    </extension>
