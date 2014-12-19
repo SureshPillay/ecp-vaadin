@@ -1,5 +1,5 @@
 #!/bin/bash
-REPO_NAME=1.0.0-SNAPSHOT
+REPO_NAME=1.0.0
 echo "starting deploy..."
 git config --global user.name ${GIT_USER}
 git config --global user.email ${GIT_EMAIL}

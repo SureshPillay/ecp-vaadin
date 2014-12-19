@@ -34,7 +34,7 @@
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="slicer" includeSource="false" type="InstallableUnit">
 <unit id="org.eclipse.emf.ecp.vaadin.releng.dependencies.feature.feature.group" version="1.0.0.201412191731"/>
 <unit id="org.eclipse.emf.ecp.view.vaadin.feature.feature.group" version="1.0.0.201412191731"/>
-<repository location="http://sirwayne.github.io/ecp-vaadin-p2/1.0.0-SNAPSHOT/"/>
+<repository location="http://sirwayne.github.io/ecp-vaadin-p2/1.0.0/"/>
 </location>
 </locations>
 </target>
