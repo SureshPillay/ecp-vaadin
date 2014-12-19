@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="org.eclipse.emf.ecp.vaadin.examples.feature"
+      id="org.eclipse.emf.ecp.vaadin.sample.feature"
       label="ECP Vaadin Example Bundles"
       version="1.0.0.qualifier">
 
