@@ -17,9 +17,9 @@
 
 
 	<modules>
-		<module>../../examples/org.eclipse.emf.ecp.makeithappen.vaadin.wizards</module>
+		<module>../../examples/org.eclipse.emf.ecp.makeithappen.vaadin.sample.wizards</module>
 		<!--Feature -->
-		<module>../../examples/org.eclipse.emf.ecp.vaadin.examples.feature</module>
+		<module>../../examples/org.eclipse.emf.ecp.vaadin.sample.feature</module>
 	</modules>
 
 </project>

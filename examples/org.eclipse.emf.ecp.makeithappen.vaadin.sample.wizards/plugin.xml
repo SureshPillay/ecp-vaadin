@@ -21,14 +21,14 @@
             id="org.eclipse.emf.ecp.makeithappen.wizards.vaadin.ExampleApplication"
             wizardID="org.eclipse.emf.ecp.makeithappen.wizards.vaadin.ExampleApplicationWizard">
          <projectDescriptor
-               contentURI="examples/org.eclipse.emf.ecp.makeithappen.vaadin.app/"
+               contentURI="examples/org.eclipse.emf.ecp.makeithappen.vaadin.sample.app/"
                description="Make It Happen Vaadin Wizard application"
-               name="org.eclipse.emf.ecp.makeithappen.vaadin.app">
+               name="org.eclipse.emf.ecp.makeithappen.vaadin.sample.app">
          </projectDescriptor>
                <projectDescriptor
-               contentURI="examples/target_platform_vaadin/"
+               contentURI="examples/org.eclipse.emf.ecp.makeithappen.vaadin.sample.target.platform/"
                description="Make It Happen Vaadin Wizard application"
-               name="target_platform_vaadin">
+               name="org.eclipse.emf.ecp.makeithappen.vaadin.sample.target.platform">
          </projectDescriptor>
       </example>
    </extension>

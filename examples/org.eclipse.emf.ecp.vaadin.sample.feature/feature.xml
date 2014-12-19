@@ -17,7 +17,7 @@
    </license>
 
    <plugin
-         id="org.eclipse.emf.ecp.makeithappen.vaadin.wizards"
+         id="org.eclipse.emf.ecp.makeithappen.vaadin.sample.wizards"
          download-size="0"
          install-size="0"
          version="0.0.0"

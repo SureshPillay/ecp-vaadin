@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: TranslationService
-Bundle-SymbolicName: org.eclipse.emf.ecp.makeithappen.vaadin.translation.example;singleton:=true
+Bundle-SymbolicName: org.eclipse.emf.ecp.makeithappen.vaadin.sample.translation.service;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
