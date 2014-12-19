@@ -36,6 +36,7 @@
 									<directory>../</directory>
 									<includes>
 										<include>org.eclipse.emf.ecp.makeithappen.vaadin.app/**/*</include>
+										<include>target_platform_vaadin/**/*</include>
 									</includes>
 									<excludes>
 										<exclude>org.eclipse.emf.ecp.makeithappen.vaadin.app/.settings/**/*</exclude>

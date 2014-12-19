@@ -25,6 +25,11 @@
                description="Make It Happen Vaadin Wizard application"
                name="org.eclipse.emf.ecp.makeithappen.vaadin.app">
          </projectDescriptor>
+               <projectDescriptor
+               contentURI="examples/target_platform_vaadin/"
+               description="Make It Happen Vaadin Wizard application"
+               name="target_platform_vaadin">
+         </projectDescriptor>
       </example>
    </extension>
 
