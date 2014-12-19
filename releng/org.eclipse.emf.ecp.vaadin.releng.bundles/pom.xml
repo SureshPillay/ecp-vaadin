@@ -19,6 +19,7 @@
 	<modules>
 		<module>../../bundles/org.eclipse.emf.ecp.controls.vaadin</module>
 		<module>../../bundles/org.eclipse.emf.ecp.translation.service</module>
+		<module>../../bundles/org.eclipse.emf.ecp.view.context.translation</module>
 		<module>../../bundles/org.eclipse.emf.ecp.view.core.vaadin</module>
 		<module>../../bundles/org.eclipse.emf.ecp.view.custom.vaadin</module>
 		<module>../../bundles/org.eclipse.emf.ecp.view.group.vaadin</module>
