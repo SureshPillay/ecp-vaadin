@@ -35,7 +35,7 @@
 								<resource>
 									<directory>../</directory>
 									<includes>
-										<include>org.eclipse.emf.ecp.makeithappen.vaadin.sample.wizards/**/*</include>
+										<include>org.eclipse.emf.ecp.makeithappen.vaadin.sample.app/**/*</include>
 										<include>org.eclipse.emf.ecp.makeithappen.vaadin.sample.target.platform/**/*</include>
 									</includes>
 									<excludes>
