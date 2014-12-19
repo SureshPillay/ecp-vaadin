@@ -4,16 +4,16 @@
       label="Vaadin Bundles"
       version="1.0.0.qualifier">
 
-   <description url="http://www.example.com/description">
-      [Enter Feature Description here.]
+   <description>
+      Contains Vaadin Libs and all Vaadin dependencies
    </description>
 
-   <copyright url="http://www.example.com/copyright">
-      [Enter Copyright Description here.]
+   <copyright url="%copyrightURL">
+      %copyright
    </copyright>
 
-   <license url="http://www.example.com/license">
-      [Enter License Description here.]
+   <license url="%licenseURL">
+      %licenseURL
    </license>
 
    <plugin

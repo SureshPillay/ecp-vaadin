@@ -10,6 +10,6 @@
       <category name="examples"/>
    </feature>
    <category-def name="ecp-vaadin" label="ECP Vaadin Renderer Bundles"/>
-   <category-def name="dependencies" label="Vaadin Bundles"/>
-   <category-def name="examples" label="Vaadin Examples"/>
+   <category-def name="dependencies" label="Vaadin Dependencies Bundles"/>
+   <category-def name="examples" label="Vaadin ECP Examples"/>
 </site>
