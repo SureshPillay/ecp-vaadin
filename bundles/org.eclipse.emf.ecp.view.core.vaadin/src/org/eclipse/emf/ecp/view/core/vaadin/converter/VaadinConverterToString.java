@@ -5,6 +5,7 @@ import java.util.Locale;
 import org.eclipse.core.databinding.conversion.IConverter;
 
 import com.vaadin.data.util.converter.Converter;
+import com.vaadin.ui.AbstractTextField;
 
 /**
  * Vaadin Converter to String.
@@ -15,14 +16,17 @@ import com.vaadin.data.util.converter.Converter;
 public class VaadinConverterToString implements IConverter {
 
 	private final Converter<String, Object> converter;
+	private final AbstractTextField component;
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param converter the vaadin converter
 	 */
-	public VaadinConverterToString(Converter<String, Object> converter) {
-		this.converter = converter;
+	public VaadinConverterToString(AbstractTextField component) {
+
+		this.component = component;
+		converter = component.getConverter();
 	}
 
 	@Override
@@ -38,7 +42,7 @@ public class VaadinConverterToString implements IConverter {
 	@Override
 	public Object convert(Object fromObject) {
 		if (fromObject == null) {
-			return null;
+			return component.getNullRepresentation();
 		}
 
 		return converter.convertToPresentation(fromObject, converter.getPresentationType(),

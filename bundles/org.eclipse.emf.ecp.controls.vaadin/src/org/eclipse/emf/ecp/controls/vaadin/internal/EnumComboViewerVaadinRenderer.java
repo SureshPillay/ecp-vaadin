@@ -18,7 +18,9 @@ import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EEnumLiteral;
 import org.eclipse.emf.ecore.EStructuralFeature.Setting;
 import org.eclipse.emf.ecp.controls.vaadin.AbstractVaadinSimpleControlRenderer;
+import org.eclipse.emf.edit.provider.IItemLabelProvider;
 
+import com.vaadin.ui.AbstractSelect.ItemCaptionMode;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Component;
 
@@ -33,7 +35,15 @@ public class EnumComboViewerVaadinRenderer extends AbstractVaadinSimpleControlRe
 	@Override
 	public Component createControl() {
 		final Setting setting = getVElement().getDomainModelReference().getIterator().next();
-		final ComboBox combobox = new ComboBox();
+		final IItemLabelProvider labelProvider = getItemPropertyDescriptor(setting).getLabelProvider(null);
+
+		final ComboBox combobox = new ComboBox() {
+			@Override
+			public String getItemCaption(Object itemId) {
+				return labelProvider.getText(itemId);
+			}
+		};
+		combobox.setItemCaptionMode(ItemCaptionMode.ITEM);
 		final List<Object> inputValues = new ArrayList<Object>();
 		for (final EEnumLiteral literal : EEnum.class.cast(setting.getEStructuralFeature().getEType())
 			.getELiterals()) {

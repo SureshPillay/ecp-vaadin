@@ -19,7 +19,7 @@ import org.eclipse.emf.ecp.controls.vaadin.AbstractVaadinSimpleControlRenderer;
 import org.eclipse.emf.ecp.view.core.vaadin.VaadinRendererUtil;
 import org.eclipse.emf.ecp.view.core.vaadin.converter.VaadinConverterToString;
 
-import com.vaadin.ui.AbstractField;
+import com.vaadin.ui.AbstractTextField;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.TextField;
 
@@ -44,8 +44,7 @@ public class NumberControlVaadinRenderer extends AbstractVaadinSimpleControlRend
 	@Override
 	protected UpdateValueStrategy getModelToTargetStrategy(Component component) {
 		final EMFUpdateValueStrategy emfUpdateValueStrategy = new EMFUpdateValueStrategy();
-		emfUpdateValueStrategy.setConverter(new VaadinConverterToString(((AbstractField<String>) component)
-			.getConverter()));
+		emfUpdateValueStrategy.setConverter(new VaadinConverterToString((AbstractTextField) component));
 
 		return emfUpdateValueStrategy;
 	}

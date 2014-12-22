@@ -123,7 +123,7 @@ public class PrimitiveListVaadinRenderer extends AbstractVaadinList {
 		final UpdateValueStrategy emfUpdateValueStrategyModel = new UpdateValueStrategy();
 		if (converter != null) {
 			emfUpdateValueStrategy.setConverter(new StringToVaadinConverter(converter));
-			emfUpdateValueStrategy.setConverter(new VaadinConverterToString(converter));
+			emfUpdateValueStrategy.setConverter(new VaadinConverterToString(textField));
 		}
 		targetValueList.addValueChangeListener(new IValueChangeListener() {
 
