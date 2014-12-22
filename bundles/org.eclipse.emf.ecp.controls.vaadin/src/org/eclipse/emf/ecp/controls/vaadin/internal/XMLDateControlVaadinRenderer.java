@@ -19,6 +19,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
 
 import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.emf.databinding.EMFUpdateValueStrategy;
+import org.eclipse.emf.ecore.EStructuralFeature.Setting;
 import org.eclipse.emf.ecp.controls.vaadin.AbstractVaadinSimpleControlRenderer;
 import org.eclipse.emf.ecp.controls.vaadin.ECPXMLDateFieldToModelUpdateValueStrategy;
 
@@ -52,7 +53,7 @@ public class XMLDateControlVaadinRenderer extends AbstractVaadinSimpleControlRen
 	}
 
 	@Override
-	protected UpdateValueStrategy getTargetToModelStrategy(Component component) {
+	protected UpdateValueStrategy getTargetToModelStrategy(Component component, Setting setting) {
 		return new ECPXMLDateFieldToModelUpdateValueStrategy();
 	}
 

@@ -15,6 +15,7 @@ import java.util.Iterator;
 
 import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.UpdateValueStrategy;
+import org.eclipse.core.databinding.conversion.IConverter;
 import org.eclipse.core.databinding.observable.list.IObservableList;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.databinding.observable.value.WritableValue;
@@ -184,7 +185,7 @@ public abstract class AbstractVaadinSimpleControlRenderer extends AbstractContro
 	protected void createDatabinding(Setting setting, final Component component) {
 		final IObservableValue targetValue = VaadinObservables.observeValue((ValueChangeNotifier) component);
 		final IObservableValue modelValue = getModelValue(setting);
-		bindModelToTarget(targetValue, modelValue, getTargetToModelStrategy(component),
+		bindModelToTarget(targetValue, modelValue, getTargetToModelStrategy(component, setting),
 			getModelToTargetStrategy(component));
 	}
 
@@ -204,8 +205,30 @@ public abstract class AbstractVaadinSimpleControlRenderer extends AbstractContro
 	 * @param component the Vaadin component
 	 * @return the strategy
 	 */
-	protected UpdateValueStrategy getTargetToModelStrategy(Component component) {
-		return new EMFUpdateValueStrategy();
+	protected UpdateValueStrategy getTargetToModelStrategy(Component component, final Setting setting) {
+		final EMFUpdateValueStrategy emfUpdateValueStrategy = new EMFUpdateValueStrategy();
+		emfUpdateValueStrategy.setConverter(new IConverter() {
+
+			@Override
+			public Object getToType() {
+				return Object.class;
+			}
+
+			@Override
+			public Object getFromType() {
+				return Object.class;
+			}
+
+			@Override
+			public Object convert(Object fromObject) {
+				final Object defaultValue = setting.getEStructuralFeature().getDefaultValue();
+				if (fromObject == null && defaultValue != null) {
+					return defaultValue;
+				}
+				return fromObject;
+			}
+		});
+		return emfUpdateValueStrategy;
 	}
 
 	@Override

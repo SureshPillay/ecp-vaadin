@@ -21,7 +21,7 @@ public class VaadinConverterToString implements IConverter {
 	/**
 	 * Constructor.
 	 *
-	 * @param converter the vaadin converter
+	 * @param component the vaadin component
 	 */
 	public VaadinConverterToString(AbstractTextField component) {
 
@@ -42,7 +42,7 @@ public class VaadinConverterToString implements IConverter {
 	@Override
 	public Object convert(Object fromObject) {
 		if (fromObject == null) {
-			return component.getNullRepresentation();
+			return null;
 		}
 
 		return converter.convertToPresentation(fromObject, converter.getPresentationType(),
