@@ -16,6 +16,7 @@ import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.emf.ecore.EStructuralFeature.Setting;
 import org.eclipse.emf.ecp.controls.vaadin.AbstractVaadinSimpleControlRenderer;
 import org.eclipse.emf.ecp.controls.vaadin.ECPTextFieldToModelUpdateValueStrategy;
+import org.eclipse.emf.ecp.controls.vaadin.ECPTextFieldToTargetUpdateValueStrategy;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 
 import com.vaadin.ui.Component;
@@ -30,10 +31,10 @@ import com.vaadin.ui.TextField;
  */
 public class TextControlVaadinRenderer extends AbstractVaadinSimpleControlRenderer {
 
-	// @Override
-	// protected UpdateValueStrategy getTargetToModelStrategy(Component component) {
-	// return new ECPTextFieldToTargetUpdateValueStrategy();
-	// }
+	@Override
+	protected UpdateValueStrategy getTargetToModelStrategy(Component component, Setting setting) {
+		return new ECPTextFieldToTargetUpdateValueStrategy();
+	}
 
 	@Override
 	protected UpdateValueStrategy getModelToTargetStrategy(Component component) {
