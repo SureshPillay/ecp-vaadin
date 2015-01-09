@@ -1,7 +1,7 @@
 package makeithappen.vaadin.app.internal;
 
-import org.eclipse.emf.ecp.makeithappen.model.aufgabe.Benutzer;
-import org.eclipse.emf.ecp.makeithappen.model.aufgabe.TaskFactory;
+import org.eclipse.emf.ecp.makeithappen.model.task.TaskFactory;
+import org.eclipse.emf.ecp.makeithappen.model.task.User;
 import org.eclipse.emf.ecp.view.core.vaadin.ECPVaadinView;
 import org.eclipse.emf.ecp.view.core.vaadin.ECPVaadinViewRenderer;
 import org.lunifera.runtime.web.vaadin.databinding.VaadinObservables;
@@ -24,7 +24,7 @@ import com.vaadin.ui.themes.ValoTheme;
 public class VaadinMainUI extends UI {
 
 	private static final long serialVersionUID = 1L;
-	final static Benutzer USER = TaskFactory.eINSTANCE.createBenutzer();
+	final static User USER = TaskFactory.eINSTANCE.createUser();
 
 	@Override
 	protected void init(VaadinRequest request) {
