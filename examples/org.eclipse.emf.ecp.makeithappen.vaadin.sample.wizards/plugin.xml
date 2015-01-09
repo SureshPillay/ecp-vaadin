@@ -30,6 +30,21 @@
                description="Make It Happen Vaadin Wizard application"
                name="org.eclipse.emf.ecp.makeithappen.vaadin.sample.target.platform">
          </projectDescriptor>
+         <projectDescriptor
+               contentURI="examples/org.eclipse.emf.ecp.makeithappen.model.viewmodel/"
+               description="Make It Happen viewmodel"
+               name="org.eclipse.emf.ecp.makeithappen.model.viewmodel">
+         </projectDescriptor>
+         <projectDescriptor
+               contentURI="examples/org.eclipse.emf.ecp.makeithappen.model/"
+               description="Make It Happen model"
+               name="org.eclipse.emf.ecp.makeithappen.model">
+         </projectDescriptor>
+         <projectDescriptor
+               contentURI="examples/org.eclipse.emf.ecp.makeithappen.model.edit/"
+               description="Make It Happen model edit"
+               name="org.eclipse.emf.ecp.makeithappen.model.edit">
+         </projectDescriptor>
       </example>
    </extension>
 
