@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="ASCII"?>
+<org.eclipse.emf.ecp.view.model:View xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:org.eclipse.emf.ecp.view.group.model="http://org/eclipse/emf/ecp/view/group/model" xmlns:org.eclipse.emf.ecp.view.horizontal.model="http://org/eclipse/emf/ecp/view/horizontal/model" xmlns:org.eclipse.emf.ecp.view.model="http://org/eclipse/emf/ecp/view/model" ecorePath="/org.eclipse.emf.ecp.makeithappen.model/model/task.ecore">
+  <rootEClass href="http://eclipse/org/emf/ecp/makeithappen/model/task#//User"/>
+  <children xsi:type="org.eclipse.emf.ecp.view.horizontal.model:HorizontalLayout">
+    <children xsi:type="org.eclipse.emf.ecp.view.group.model:Group" name="Primary">
+      <children xsi:type="org.eclipse.emf.ecp.view.model:Control" name="Control firstName">
+        <domainModelReference xsi:type="org.eclipse.emf.ecp.view.model:FeaturePathDomainModelReference">
+          <domainModelEFeature xsi:type="ecore:EAttribute" href="http://eclipse/org/emf/ecp/makeithappen/model/task#//User/firstName"/>
+        </domainModelReference>
+      </children>
+      <children xsi:type="org.eclipse.emf.ecp.view.model:Control" name="Control lastName">
+        <domainModelReference xsi:type="org.eclipse.emf.ecp.view.model:FeaturePathDomainModelReference">
+          <domainModelEFeature xsi:type="ecore:EAttribute" href="http://eclipse/org/emf/ecp/makeithappen/model/task#//User/lastName"/>
+        </domainModelReference>
+      </children>
+      <children xsi:type="org.eclipse.emf.ecp.view.model:Control" name="Control email">
+        <domainModelReference xsi:type="org.eclipse.emf.ecp.view.model:FeaturePathDomainModelReference">
+          <domainModelEFeature xsi:type="ecore:EAttribute" href="http://eclipse/org/emf/ecp/makeithappen/model/task#//User/email"/>
+        </domainModelReference>
+      </children>
+      <children xsi:type="org.eclipse.emf.ecp.view.model:Control" name="Control dateOfBirth">
+        <domainModelReference xsi:type="org.eclipse.emf.ecp.view.model:FeaturePathDomainModelReference">
+          <domainModelEFeature xsi:type="ecore:EAttribute" href="http://eclipse/org/emf/ecp/makeithappen/model/task#//User/dateOfBirth"/>
+        </domainModelReference>
+      </children>
+      <children xsi:type="org.eclipse.emf.ecp.view.model:Control" name="Control gender">
+        <domainModelReference xsi:type="org.eclipse.emf.ecp.view.model:FeaturePathDomainModelReference">
+          <domainModelEFeature xsi:type="ecore:EAttribute" href="http://eclipse/org/emf/ecp/makeithappen/model/task#//User/gender"/>
+        </domainModelReference>
+      </children>
+    </children>
+    <children xsi:type="org.eclipse.emf.ecp.view.group.model:Group" name="Secondary">
+      <children xsi:type="org.eclipse.emf.ecp.view.model:Control" name="Control weight">
+        <domainModelReference xsi:type="org.eclipse.emf.ecp.view.model:FeaturePathDomainModelReference">
+          <domainModelEFeature xsi:type="ecore:EAttribute" href="http://eclipse/org/emf/ecp/makeithappen/model/task#//User/weight"/>
+        </domainModelReference>
+      </children>
+      <children xsi:type="org.eclipse.emf.ecp.view.model:Control" name="Control heigth">
+        <domainModelReference xsi:type="org.eclipse.emf.ecp.view.model:FeaturePathDomainModelReference">
+          <domainModelEFeature xsi:type="ecore:EAttribute" href="http://eclipse/org/emf/ecp/makeithappen/model/task#//User/heigth"/>
+        </domainModelReference>
+      </children>
+      <children xsi:type="org.eclipse.emf.ecp.view.model:Control" name="Control active">
+        <domainModelReference xsi:type="org.eclipse.emf.ecp.view.model:FeaturePathDomainModelReference">
+          <domainModelEFeature xsi:type="ecore:EAttribute" href="http://eclipse/org/emf/ecp/makeithappen/model/task#//User/active"/>
+        </domainModelReference>
+      </children>
+      <children xsi:type="org.eclipse.emf.ecp.view.model:Control" name="Control timeOfRegistration">
+        <domainModelReference xsi:type="org.eclipse.emf.ecp.view.model:FeaturePathDomainModelReference">
+          <domainModelEFeature xsi:type="ecore:EAttribute" href="http://eclipse/org/emf/ecp/makeithappen/model/task#//User/timeOfRegistration"/>
+        </domainModelReference>
+      </children>
+      <children xsi:type="org.eclipse.emf.ecp.view.model:Control" name="Control nationality">
+        <domainModelReference xsi:type="org.eclipse.emf.ecp.view.model:FeaturePathDomainModelReference">
+          <domainModelEFeature xsi:type="ecore:EAttribute" href="http://eclipse/org/emf/ecp/makeithappen/model/task#//User/nationality"/>
+        </domainModelReference>
+      </children>
+    </children>
+  </children>
+  <children xsi:type="org.eclipse.emf.ecp.view.model:Control" name="Control tasks">
+    <domainModelReference xsi:type="org.eclipse.emf.ecp.view.model:FeaturePathDomainModelReference">
+      <domainModelEFeature xsi:type="ecore:EReference" href="http://eclipse/org/emf/ecp/makeithappen/model/task#//User/tasks"/>
+    </domainModelReference>
+  </children>
+</org.eclipse.emf.ecp.view.model:View>
