@@ -12,19 +12,21 @@ import com.vaadin.server.VaadinRequest;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.themes.ValoTheme;
 
+/**
+ * Render the eObject.
+ *
+ * @author Dennis Melzer
+ *
+ */
 // @PreserveOnRefresh
 @Theme(ValoTheme.THEME_NAME)
 // @Theme(Reindeer.THEME_NAME)
 @Push
-/**
- * Render the eObject.
- * @author Dennis Melzer
- *
- */
 public class VaadinMainUI extends UI {
 
 	private static final long serialVersionUID = 1L;
-	final static User USER = TaskFactory.eINSTANCE.createUser();
+	/** User Modell. */
+	private static final User USER = TaskFactory.eINSTANCE.createUser();
 
 	@Override
 	protected void init(VaadinRequest request) {

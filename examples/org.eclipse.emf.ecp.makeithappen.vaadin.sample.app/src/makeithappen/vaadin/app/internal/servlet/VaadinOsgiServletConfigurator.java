@@ -23,7 +23,7 @@ import org.osgi.service.http.NamespaceException;
 import com.vaadin.server.Constants;
 
 /**
- * Servlet Configuration
+ * Servlet Configuration.
  *
  * @author Dennis Melzer
  *
@@ -45,7 +45,7 @@ public class VaadinOsgiServletConfigurator {
 	}
 
 	/**
-	 * Set {@link HttpService} by ds
+	 * Set {@link HttpService} by ds.
 	 *
 	 * @param httpService the service
 	 */

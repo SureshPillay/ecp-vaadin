@@ -39,7 +39,6 @@
 										<include>org.eclipse.emf.ecp.makeithappen.vaadin.sample.target.platform/**/*</include>
 									</includes>
 									<excludes>
-										<exclude>org.eclipse.emf.ecp.makeithappen.vaadin.app/.settings/**/*</exclude>
 										<exclude>org.eclipse.emf.ecp.makeithappen.vaadin.app/bin/**/*</exclude>
 									</excludes>
 								</resource>

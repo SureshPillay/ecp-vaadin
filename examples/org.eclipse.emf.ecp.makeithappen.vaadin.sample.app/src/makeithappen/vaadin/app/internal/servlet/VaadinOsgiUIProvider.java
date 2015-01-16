@@ -21,8 +21,8 @@ import com.vaadin.server.WrappedSession;
 import com.vaadin.ui.UI;
 
 /**
- * The Vaadin UI provider
- * 
+ * The Vaadin UI provider.
+ *
  * @author Dennis Melzer
  *
  */

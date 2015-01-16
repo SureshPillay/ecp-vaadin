@@ -28,8 +28,8 @@ import org.osgi.framework.FrameworkUtil;
 import org.osgi.service.http.HttpContext;
 
 /**
- * The vaadin resource provider
- * 
+ * The vaadin resource provider.
+ *
  * @author Dennis Melzer
  *
  */

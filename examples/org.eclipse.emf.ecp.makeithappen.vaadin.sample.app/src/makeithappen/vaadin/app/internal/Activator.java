@@ -6,8 +6,8 @@ import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
 /**
- * Activator
- * 
+ * Activator.
+ *
  * @author Dennis Melzer
  *
  */

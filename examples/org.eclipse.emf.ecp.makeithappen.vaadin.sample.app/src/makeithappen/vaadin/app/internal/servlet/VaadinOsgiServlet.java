@@ -19,12 +19,13 @@ import com.vaadin.server.ServiceException;
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.server.VaadinServletService;
 
-@VaadinServletConfiguration(ui = VaadinMainUI.class, productionMode = false)
 /**
- * Vaadin Servlet for OSGi integration
+ * Vaadin Servlet for OSGi integration.
+ *
  * @author Dennis Melzer
  *
  */
+@VaadinServletConfiguration(ui = VaadinMainUI.class, productionMode = false)
 public class VaadinOsgiServlet extends VaadinServlet {
 
 	private static final long serialVersionUID = 1L;

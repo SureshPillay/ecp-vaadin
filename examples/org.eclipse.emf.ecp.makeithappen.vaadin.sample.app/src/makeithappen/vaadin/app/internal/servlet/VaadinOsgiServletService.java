@@ -21,7 +21,7 @@ import com.vaadin.server.VaadinServletService;
 import com.vaadin.server.VaadinSession;
 
 /**
- * Servlet Service
+ * Servlet Service.
  *
  * @author Dennis Melzer
  *
@@ -31,7 +31,7 @@ public class VaadinOsgiServletService extends VaadinServletService implements Se
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * Constructor
+	 * Constructor.
 	 *
 	 * @param servlet the servlet
 	 * @param deploymentConfiguration the config
