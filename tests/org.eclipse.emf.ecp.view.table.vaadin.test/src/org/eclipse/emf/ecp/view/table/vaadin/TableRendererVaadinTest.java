@@ -33,7 +33,7 @@ import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-import org.eclipse.emf.ecp.common.UniqueSetting;
+import org.eclipse.emf.ecp.common.spi.UniqueSetting;
 import org.eclipse.emf.ecp.view.common.vaadin.test.TestRealm;
 import org.eclipse.emf.ecp.view.common.vaadin.test.VaadinDatabindingClassRunner;
 import org.eclipse.emf.ecp.view.core.vaadin.AbstractVaadinRenderer;
@@ -84,7 +84,7 @@ public class TableRendererVaadinTest {
 			new ComposedAdapterFactory(new AdapterFactory[] {
 				new ReflectiveItemProviderAdapterFactory(),
 				new ComposedAdapterFactory(ComposedAdapterFactory.Descriptor.Registry.INSTANCE) }),
-			new BasicCommandStack(), resourceSet);
+				new BasicCommandStack(), resourceSet);
 		resourceSet.eAdapters().add(new AdapterFactoryEditingDomain.EditingDomainProvider(domain));
 		final Resource resource = resourceSet.createResource(URI.createURI("VIRTUAL_URI_TEMP")); //$NON-NLS-1$
 		resource.getContents().add(domainElement);
@@ -181,7 +181,7 @@ public class TableRendererVaadinTest {
 
 		assertEquals(attributLength,
 			VTableDomainModelReference.class.cast(handle.getTableControl().getDomainModelReference())
-				.getColumnDomainModelReferences().size());
+			.getColumnDomainModelReferences().size());
 
 		final Component control = getTable((VerticalLayout) render);
 		assertTrue(control instanceof Table);
@@ -200,7 +200,7 @@ public class TableRendererVaadinTest {
 
 		assertEquals(0,
 			VTableDomainModelReference.class.cast(handle.getTableControl().getDomainModelReference())
-			.getColumnDomainModelReferences().size());
+				.getColumnDomainModelReferences().size());
 
 		assertTrue(verticalLayout.getComponent(1) instanceof Table);
 		final Table table = (Table) verticalLayout.getComponent(1);
@@ -561,7 +561,6 @@ public class TableRendererVaadinTest {
 		/**
 		 * {@inheritDoc}
 		 *
-		 * @see org.eclipse.emf.ecp.view.spi.context.ViewModelContext#getControlsFor(org.eclipse.emf.ecp.common.UniqueSetting)
 		 */
 		@Override
 		public Set<VControl> getControlsFor(UniqueSetting setting) {
