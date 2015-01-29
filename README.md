@@ -1,2 +1,2 @@
-# ecp-vaadin
-Proof of Concept for a Vaadin Renderer for the ECP Project (see http://www.eclipse.org/ecp/index.html)
+# Tutorial available
+Tutorial is available under the  [EMF Forms Page] (http://eclipsesource.com/blogs/tutorials/emf-forms-renderer/#vaadin) 
