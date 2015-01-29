@@ -41,7 +41,9 @@ import org.eclipse.emf.ecp.view.core.vaadin.ECPVaadinViewComponent;
 import org.eclipse.emf.ecp.view.core.vaadin.VaadinRendererFactory;
 import org.eclipse.emf.ecp.view.core.vaadin.test.VaadinTestHelper;
 import org.eclipse.emf.ecp.view.spi.context.ViewModelContext;
+import org.eclipse.emf.ecp.view.spi.context.ViewModelContextDisposeListener;
 import org.eclipse.emf.ecp.view.spi.context.ViewModelContextFactory;
+import org.eclipse.emf.ecp.view.spi.context.ViewModelService;
 import org.eclipse.emf.ecp.view.spi.model.ModelChangeListener;
 import org.eclipse.emf.ecp.view.spi.model.VControl;
 import org.eclipse.emf.ecp.view.spi.model.VDomainModelReference;
@@ -84,7 +86,7 @@ public class TableRendererVaadinTest {
 			new ComposedAdapterFactory(new AdapterFactory[] {
 				new ReflectiveItemProviderAdapterFactory(),
 				new ComposedAdapterFactory(ComposedAdapterFactory.Descriptor.Registry.INSTANCE) }),
-				new BasicCommandStack(), resourceSet);
+			new BasicCommandStack(), resourceSet);
 		resourceSet.eAdapters().add(new AdapterFactoryEditingDomain.EditingDomainProvider(domain));
 		final Resource resource = resourceSet.createResource(URI.createURI("VIRTUAL_URI_TEMP")); //$NON-NLS-1$
 		resource.getContents().add(domainElement);
@@ -181,7 +183,7 @@ public class TableRendererVaadinTest {
 
 		assertEquals(attributLength,
 			VTableDomainModelReference.class.cast(handle.getTableControl().getDomainModelReference())
-			.getColumnDomainModelReferences().size());
+				.getColumnDomainModelReferences().size());
 
 		final Component control = getTable((VerticalLayout) render);
 		assertTrue(control instanceof Table);
@@ -200,7 +202,7 @@ public class TableRendererVaadinTest {
 
 		assertEquals(0,
 			VTableDomainModelReference.class.cast(handle.getTableControl().getDomainModelReference())
-				.getColumnDomainModelReferences().size());
+			.getColumnDomainModelReferences().size());
 
 		assertTrue(verticalLayout.getComponent(1) instanceof Table);
 		final Table table = (Table) verticalLayout.getComponent(1);
@@ -561,15 +563,6 @@ public class TableRendererVaadinTest {
 		/**
 		 * {@inheritDoc}
 		 *
-		 */
-		@Override
-		public Set<VControl> getControlsFor(UniqueSetting setting) {
-			return null;
-		}
-
-		/**
-		 * {@inheritDoc}
-		 *
 		 * @see org.eclipse.emf.ecp.view.spi.context.ViewModelContext#getContextValue(java.lang.String)
 		 */
 		@Override
@@ -586,6 +579,63 @@ public class TableRendererVaadinTest {
 		@Override
 		public void putContextValue(String key, Object value) {
 
+		}
+
+		/**
+		 * {@inheritDoc}
+		 * 
+		 * @see org.eclipse.emf.ecp.view.spi.context.ViewModelContext#addContextUser(java.lang.Object)
+		 */
+		@Override
+		public void addContextUser(Object arg0) {
+			// TODO Auto-generated method stub
+
+		}
+
+		/**
+		 * {@inheritDoc}
+		 * 
+		 * @see org.eclipse.emf.ecp.view.spi.context.ViewModelContext#getChildContext(org.eclipse.emf.ecore.EObject,
+		 *      org.eclipse.emf.ecp.view.spi.model.VElement, org.eclipse.emf.ecp.view.spi.model.VView,
+		 *      org.eclipse.emf.ecp.view.spi.context.ViewModelService[])
+		 */
+		@Override
+		public ViewModelContext getChildContext(EObject arg0, VElement arg1, VView arg2, ViewModelService... arg3) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 * 
+		 * @see org.eclipse.emf.ecp.view.spi.context.ViewModelContext#registerDisposeListener(org.eclipse.emf.ecp.view.spi.context.ViewModelContextDisposeListener)
+		 */
+		@Override
+		public void registerDisposeListener(ViewModelContextDisposeListener arg0) {
+			// TODO Auto-generated method stub
+
+		}
+
+		/**
+		 * {@inheritDoc}
+		 * 
+		 * @see org.eclipse.emf.ecp.view.spi.context.ViewModelContext#removeContextUser(java.lang.Object)
+		 */
+		@Override
+		public void removeContextUser(Object arg0) {
+			// TODO Auto-generated method stub
+
+		}
+
+		/**
+		 * {@inheritDoc}
+		 * 
+		 * @see org.eclipse.emf.ecp.view.spi.context.ViewModelContext#getControlsFor(org.eclipse.emf.ecp.common.spi.UniqueSetting)
+		 */
+		@Override
+		public Set<VElement> getControlsFor(UniqueSetting arg0) {
+			// TODO Auto-generated method stub
+			return null;
 		}
 
 	}
