@@ -52,7 +52,7 @@ public class ECPVaadinViewRendererImpl implements ECPVaadinViewRenderer {
 		if (resultSet == null) {
 			final Label label = new Label();
 			label.setCaption("Rendering went wrong!"); //$NON-NLS-1$
-			final VerticalLayout verticalLayout = new VerticalLayout(new com.vaadin.ui.Label());
+			final VerticalLayout verticalLayout = new VerticalLayout(label);
 			return new ECPVaadinViewImpl(verticalLayout, viewModelContext, factory);
 		}
 		return new ECPVaadinViewImpl(resultSet, viewModelContext, factory);
