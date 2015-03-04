@@ -17,7 +17,7 @@ import com.vaadin.ui.Panel;
 /**
  * The Style sheet.
  */
-@StyleSheet({ "default.css" })
+@StyleSheet({ "ecp_vaadin_default.css" })
 /**
  * The Panel for the parent layout with the default css.
  * @author Dennis Melzer
