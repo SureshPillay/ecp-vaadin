@@ -82,7 +82,7 @@ public class GroupLayoutRendererVaadin extends AbstractContainerRendererVaadin<V
 			mainLayout.addComponent(orderedLayout);
 			orderedLayout.setMargin(true);
 			orderedLayout.setSpacing(true);
-			orderedLayout.setVisible(getVElement().isCollapsed());
+			orderedLayout.setVisible(!getVElement().isCollapsed());
 			setCollapseStyle(collapseButton, getVElement().isCollapsed());
 			mainLayout.addStyleName(GROUP_STYLE_NAME);
 			return mainLayout;
