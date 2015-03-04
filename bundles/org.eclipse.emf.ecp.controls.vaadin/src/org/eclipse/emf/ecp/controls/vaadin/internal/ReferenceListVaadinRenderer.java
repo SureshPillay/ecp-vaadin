@@ -15,7 +15,6 @@ import org.eclipse.core.databinding.observable.list.IListChangeListener;
 import org.eclipse.core.databinding.observable.list.IObservableList;
 import org.eclipse.core.databinding.observable.list.ListChangeEvent;
 import org.eclipse.emf.common.notify.AdapterFactory;
-import org.eclipse.emf.databinding.EMFDataBindingContext;
 import org.eclipse.emf.databinding.EMFUpdateValueStrategy;
 import org.eclipse.emf.databinding.edit.EMFEditProperties;
 import org.eclipse.emf.ecore.EObject;
@@ -82,8 +81,9 @@ public class ReferenceListVaadinRenderer extends AbstractVaadinList {
 			setting.getEStructuralFeature())
 			.observe(
 				setting.getEObject());
-		final EMFDataBindingContext dataBindingContext = new EMFDataBindingContext();
-		dataBindingContext.bindList(targetValue, modelValue);
+
+		// final EMFDataBindingContext dataBindingContext = new EMFDataBindingContext();
+		getBindingContext().bindList(targetValue, modelValue);
 		final EMFUpdateValueStrategy emfUpdateValueStrategy = new EMFUpdateValueStrategy();
 		emfUpdateValueStrategy.setConverter(new SelectionConverter());
 	}
@@ -135,14 +135,4 @@ public class ReferenceListVaadinRenderer extends AbstractVaadinList {
 
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.emf.ecp.controls.vaadin.AbstractVaadinSimpleControlRenderer#getUnsetLabel()
-	 */
-	@Override
-	protected String getUnsetLabel() {
-		// TODO Auto-generated method stub
-		return super.getUnsetLabel();
-	}
 }

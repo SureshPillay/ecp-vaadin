@@ -59,7 +59,7 @@ public class PrimitiveListVaadinRenderer extends AbstractVaadinList {
 	@Override
 	public void renderList(VerticalLayout layout) {
 		final TextField textField = createTextfield();
-		final Converter<String, Object> converter = createConverter(getSetting(), getTable(), textField);
+		final Converter<String, Object> converter = createConverter(getSetting(), textField);
 
 		final Button add = createAddButton(getSetting(), textField);
 		layout.addComponent(getTable());
@@ -190,16 +190,13 @@ public class PrimitiveListVaadinRenderer extends AbstractVaadinList {
 		}
 	}
 
-	private Converter<String, Object> createConverter(Setting setting, final Table table,
+	private Converter<String, Object> createConverter(Setting setting,
 		final TextField textField) {
 		VaadinRendererUtil.setConverterToTextField(setting.getEStructuralFeature(), textField, getVElement(),
 			getViewModelContext());
 
-		if (textField.getConverter() == null) {
-			return null;
-		}
 		final Converter<String, Object> converter = textField.getConverter();
-		table.addGeneratedColumn(VALUE_COLUMN, new ColumnGenerator() {
+		getTable().addGeneratedColumn(VALUE_COLUMN, new ColumnGenerator() {
 
 			@Override
 			public Object generateCell(Table source, Object itemId, Object columnId) {
@@ -214,7 +211,7 @@ public class PrimitiveListVaadinRenderer extends AbstractVaadinList {
 
 	@Override
 	protected void createContainerProperty(IndexedContainer container) {
-		container.addContainerProperty(VALUE_COLUMN, String.class, null);
+		container.addContainerProperty(VALUE_COLUMN, Object.class, null);
 		container.addContainerProperty(REMOVE_COLUMN, Button.class, null);
 	}
 
