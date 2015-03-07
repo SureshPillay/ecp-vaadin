@@ -730,6 +730,7 @@ public interface TaskPackage extends EPackage
 	 * @return the meta object for data type '<em>Date Of Birth</em>'.
 	 * @see javax.xml.datatype.XMLGregorianCalendar
 	 * @model instanceClass="javax.xml.datatype.XMLGregorianCalendar"
+	 *        extendedMetaData="baseType='http://www.eclipse.org/emf/2003/XMLType#date'"
 	 * @generated
 	 */
 	EDataType getDateOfBirth();

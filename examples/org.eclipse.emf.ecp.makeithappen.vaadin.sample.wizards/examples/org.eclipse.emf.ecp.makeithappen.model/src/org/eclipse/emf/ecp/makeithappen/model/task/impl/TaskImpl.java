@@ -347,7 +347,7 @@ public class TaskImpl extends MinimalEObjectImpl.Container implements Task {
 		if (getName() == null || getName().equals("")) { //$NON-NLS-1$
 			if (chain != null) {
 				chain.add
-				(new BasicDiagnostic
+					(new BasicDiagnostic
 					(Diagnostic.ERROR,
 						TaskValidator.DIAGNOSTIC_SOURCE,
 						TaskValidator.TASK__HAS_NAME, "Task needs to have a name", //$NON-NLS-1$

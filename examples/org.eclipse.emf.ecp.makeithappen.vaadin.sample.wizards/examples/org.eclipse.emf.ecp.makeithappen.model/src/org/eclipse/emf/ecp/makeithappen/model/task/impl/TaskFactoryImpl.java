@@ -19,6 +19,8 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.impl.EFactoryImpl;
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
+import org.eclipse.emf.ecore.xml.type.XMLTypeFactory;
+import org.eclipse.emf.ecore.xml.type.XMLTypePackage;
 import org.eclipse.emf.ecp.makeithappen.model.task.Gender;
 import org.eclipse.emf.ecp.makeithappen.model.task.Nationality;
 import org.eclipse.emf.ecp.makeithappen.model.task.Task;
@@ -241,7 +243,8 @@ public class TaskFactoryImpl extends EFactoryImpl implements TaskFactory
 	 */
 	public XMLGregorianCalendar createDateOfBirthFromString(EDataType eDataType, String initialValue)
 	{
-		return (XMLGregorianCalendar) super.createFromString(eDataType, initialValue);
+		return (XMLGregorianCalendar) XMLTypeFactory.eINSTANCE.createFromString(XMLTypePackage.Literals.DATE,
+			initialValue);
 	}
 
 	/**
@@ -252,7 +255,7 @@ public class TaskFactoryImpl extends EFactoryImpl implements TaskFactory
 	 */
 	public String convertDateOfBirthToString(EDataType eDataType, Object instanceValue)
 	{
-		return super.convertToString(eDataType, instanceValue);
+		return XMLTypeFactory.eINSTANCE.convertToString(XMLTypePackage.Literals.DATE, instanceValue);
 	}
 
 	/**
