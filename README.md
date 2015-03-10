@@ -6,7 +6,7 @@ Tutorial is available under the  [EMF Forms Page] (http://eclipsesource.com/blog
 The provided [CSS] (https://github.com/SirWayne/ecp-vaadin/blob/master/bundles/org.eclipse.emf.ecp.view.core.vaadin/APP/PUBLISHED/ecp_vaadin_default.css) is optimized for the Vaadin Valo Theme. If you want to use it with other themes, you need to adapt the styling.
 
 ######  Example for reindeer:
-```
+```css
   .table-edit.table-edit.v-button,
   .table-remove.table-remove.v-button,
   .table-add.table-add.v-button {
