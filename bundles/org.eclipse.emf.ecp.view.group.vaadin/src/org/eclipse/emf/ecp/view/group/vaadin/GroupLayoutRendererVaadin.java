@@ -71,9 +71,8 @@ public class GroupLayoutRendererVaadin extends AbstractContainerRendererVaadin<V
 
 				@Override
 				public void buttonClick(ClickEvent event) {
-					final boolean switchVisible = !orderedLayout.isVisible();
-					setCollapseStyle(event.getButton(), switchVisible);
-					orderedLayout.setVisible(switchVisible);
+					setCollapseStyle(event.getButton(), orderedLayout.isVisible());
+					orderedLayout.setVisible(!orderedLayout.isVisible());
 				}
 
 			});
@@ -94,11 +93,11 @@ public class GroupLayoutRendererVaadin extends AbstractContainerRendererVaadin<V
 		final String styleExpand = COLLAPSIBLE_PANEL_EXPAND;
 		final String styleCollapsed = COLLAPSIBLE_PANEL_COLLAPSED;
 		if (collapse) {
-			collapseButton.addStyleName(styleExpand);
-			collapseButton.removeStyleName(styleCollapsed);
-		} else {
 			collapseButton.addStyleName(styleCollapsed);
 			collapseButton.removeStyleName(styleExpand);
+		} else {
+			collapseButton.addStyleName(styleExpand);
+			collapseButton.removeStyleName(styleCollapsed);
 		}
 	}
 

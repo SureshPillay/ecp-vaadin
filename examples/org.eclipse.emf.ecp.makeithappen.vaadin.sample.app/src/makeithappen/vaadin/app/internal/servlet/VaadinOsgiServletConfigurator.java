@@ -30,7 +30,7 @@ import com.vaadin.server.Constants;
  */
 public class VaadinOsgiServletConfigurator {
 
-	private static final String ROOT_PATH = "/ECP"; //$NON-NLS-1$
+	private static final String ROOT_PATH = "/"; //$NON-NLS-1$
 	private static final String VAADIN_RESOURCE_PATH = "/VAADIN"; //$NON-NLS-1$
 	private static final String APP_PUBLISHED_RESOURCE_PATH = "/APP/PUBLISHED"; //$NON-NLS-1$
 	private HttpContext resourceProvider;
@@ -67,7 +67,8 @@ public class VaadinOsgiServletConfigurator {
 
 			httpService.registerServlet(ROOT_PATH, osgiServlet, dict, null);
 			httpService.registerResources(VAADIN_RESOURCE_PATH, VAADIN_RESOURCE_PATH, resourceProvider);
-			httpService.registerResources(APP_PUBLISHED_RESOURCE_PATH, APP_PUBLISHED_RESOURCE_PATH, resourceProvider);
+			httpService.registerResources(APP_PUBLISHED_RESOURCE_PATH, APP_PUBLISHED_RESOURCE_PATH,
+				resourceProvider);
 
 		} catch (final ServletException e) {
 			e.printStackTrace();

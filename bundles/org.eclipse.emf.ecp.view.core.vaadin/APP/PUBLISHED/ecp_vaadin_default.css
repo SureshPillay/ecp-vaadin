@@ -21,13 +21,13 @@
 .collapsible-panel-expand.v-nativebutton-collapsible-panel-expand{
 	border-radius: 3px 3px 0px 0px;
 	color: #FCFCFC;
-	background: #3FA9FA url("/VAADIN/icons/menu_active.png") calc(100% - 16px) center no-repeat;
+	background: #3FA9FA url("icons/menu_active.png") calc(100% - 16px) center no-repeat;
 }
 
 .collapsible-panel-collapsed.v-nativebutton-collapsible-panel-collapsed {
 	border-radius: 3px;
 	color: #E8E8E8;
-	background: #2C89D0 url("/VAADIN/icons/menu_deactive.png") calc(100% - 16px) center no-repeat;
+	background: #2C89D0 url("icons/menu_deactive.png") calc(100% - 16px) center no-repeat;
 }
 
 .collapsible-panel-expand.v-nativebutton-collapsible-panel-expand, .collapsible-panel-collapsed.v-nativebutton-collapsible-panel-collapsed {
@@ -68,25 +68,25 @@ border: none;
 }
 
 .table-add.v-button,.v-disabled.table-add.v-button, .v-disabled.table-add.v-button:hover, .v-disabled.table-add.v-button:active, .list-add.v-button, .v-disabled.list-add.v-button, .v-disabled.list-add.v-button:hover, .v-disabled.list-add.v-button:active{
-	background: url("/VAADIN/icons/plus_normal.png") center center no-repeat;
+	background: url("icons/plus_normal.png") center center no-repeat;
 }
 
 .table-add.v-button:active, .table-add.v-button:hover, .list-add.v-button:active, .list-add.v-button:hover{
-	background: url("/VAADIN/icons/plus_active.png") center center no-repeat;
+	background: url("icons/plus_active.png") center center no-repeat;
 }
 
 .table-remove.v-button, .v-disabled.table-remove.v-button, .v-disabled.table-remove.v-button:hover, .v-disabled.table-remove.v-button:active, .list-remove.v-button, .v-disabled.list-remove.v-button:hover, .v-disabled.list-remove.v-button:active{
-	background: url("/VAADIN/icons/minus_normal.png") center center no-repeat;
+	background: url("icons/minus_normal.png") center center no-repeat;
 }
 
 .table-remove.v-button:active, .table-remove.v-button:hover, .list-remove.v-button:active, .list-remove.v-button:hover{
-	background: url("/VAADIN/icons/minus_active.png") center center no-repeat;
+	background: url("icons/minus_active.png") center center no-repeat;
 }
 
 .table-edit.v-button, .v-disabled.table-edit.v-button, .v-disabled.table-edit.v-button:hover, .v-disabled.table-edit.v-button:active{
-	background: url("/VAADIN/icons/edit_normal.png") center center no-repeat;
+	background: url("icons/edit_normal.png") center center no-repeat;
 }
 
 .table-edit.v-button:active, .table-edit.v-button:hover{
-	background: url("/VAADIN/icons/edit_active.png") center center no-repeat;
+	background: url("icons/edit_active.png") center center no-repeat;
 }

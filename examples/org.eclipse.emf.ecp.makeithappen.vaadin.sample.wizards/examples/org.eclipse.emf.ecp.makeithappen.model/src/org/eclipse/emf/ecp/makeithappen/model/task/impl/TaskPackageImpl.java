@@ -702,6 +702,27 @@ public class TaskPackageImpl extends EPackageImpl implements TaskPackage
 
 		// Create resource
 		createResource(eNS_URI);
+
+		// Create annotations
+		// http:///org/eclipse/emf/ecore/util/ExtendedMetaData
+		createExtendedMetaDataAnnotations();
+	}
+
+	/**
+	 * Initializes the annotations for <b>http:///org/eclipse/emf/ecore/util/ExtendedMetaData</b>.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 *
+	 * @generated
+	 */
+	protected void createExtendedMetaDataAnnotations()
+	{
+		final String source = "http:///org/eclipse/emf/ecore/util/ExtendedMetaData"; //$NON-NLS-1$
+		addAnnotation(dateOfBirthEDataType,
+			source,
+			new String[]
+			{ "baseType", "http://www.eclipse.org/emf/2003/XMLType#date" //$NON-NLS-1$ //$NON-NLS-2$
+			});
 	}
 
 } // TaskPackageImpl
