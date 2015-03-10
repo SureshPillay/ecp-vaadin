@@ -47,11 +47,11 @@
 	height: 0px;
 }
 
-.valo .reference-list .v-table-row .v-table-cell-content, .valo .reference-list .v-table-row-odd .v-table-cell-content {
+.reference-list .v-table-row .v-table-cell-content, .reference-list .v-table-row-odd .v-table-cell-content {
 border: none;
 }
 
-.valo .reference-list .v-table-row-odd {
+.reference-list .v-table-row-odd {
  background-color: white;
 }
 
