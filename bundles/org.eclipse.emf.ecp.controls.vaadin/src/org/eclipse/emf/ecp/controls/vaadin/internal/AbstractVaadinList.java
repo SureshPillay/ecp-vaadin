@@ -16,9 +16,11 @@ import org.eclipse.emf.ecp.controls.vaadin.AbstractVaadinSimpleControlRenderer;
 import org.eclipse.emf.ecp.view.core.vaadin.VaadinWidgetFactory;
 
 import com.vaadin.data.util.IndexedContainer;
+import com.vaadin.server.Sizeable.Unit;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Table;
+import com.vaadin.ui.Table.Align;
 import com.vaadin.ui.Table.ColumnGenerator;
 import com.vaadin.ui.Table.ColumnHeaderMode;
 import com.vaadin.ui.VerticalLayout;
@@ -34,6 +36,7 @@ public abstract class AbstractVaadinList extends AbstractVaadinSimpleControlRend
 	/** The remove column. */
 	protected static final String REMOVE_COLUMN = "remove"; //$NON-NLS-1$
 	private static final String REFERENCE_LIST = "reference-list"; //$NON-NLS-1$
+	private static final int TABLE_HEIGHT = 120;
 	private Table table;
 	private Setting setting;
 	private HorizontalLayout toolbar;
@@ -59,11 +62,14 @@ public abstract class AbstractVaadinList extends AbstractVaadinSimpleControlRend
 	private void createRemoveColumn(final Setting setting) {
 		table.addGeneratedColumn(REMOVE_COLUMN, new ColumnGenerator() {
 
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			public Object generateCell(Table source, Object itemId, Object columnId) {
 				return VaadinWidgetFactory.createTableRemoveButtonFlat(setting, itemId);
 			}
 		});
+		table.setColumnAlignment(REMOVE_COLUMN, Align.RIGHT);
 		table.setColumnWidth(REMOVE_COLUMN, 40);
 	}
 
@@ -76,7 +82,8 @@ public abstract class AbstractVaadinList extends AbstractVaadinSimpleControlRend
 	private Table createTable() {
 		final Table table = new Table();
 		table.setColumnHeaderMode(ColumnHeaderMode.HIDDEN);
-		table.setSizeFull();
+		table.setWidth(100, Unit.PERCENTAGE);
+		table.setHeight(TABLE_HEIGHT, Unit.PIXELS);
 		table.setSelectable(true);
 		table.addStyleName(REFERENCE_LIST);
 		final IndexedContainer container = createContainer();

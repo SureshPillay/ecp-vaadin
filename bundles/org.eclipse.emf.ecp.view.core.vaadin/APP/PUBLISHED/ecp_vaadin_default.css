@@ -68,25 +68,25 @@ border: none;
 }
 
 .table-add.v-button,.v-disabled.table-add.v-button, .v-disabled.table-add.v-button:hover, .v-disabled.table-add.v-button:active, .list-add.v-button, .v-disabled.list-add.v-button, .v-disabled.list-add.v-button:hover, .v-disabled.list-add.v-button:active{
-	background: url("icons/plus_normal.png") center center no-repeat;
+	background: #fcfcfc url("icons/plus_normal.png") center center no-repeat;
 }
 
 .table-add.v-button:active, .table-add.v-button:hover, .list-add.v-button:active, .list-add.v-button:hover{
-	background: url("icons/plus_active.png") center center no-repeat;
+	background: #fcfcfc url("icons/plus_active.png") center center no-repeat;
 }
 
 .table-remove.v-button, .v-disabled.table-remove.v-button, .v-disabled.table-remove.v-button:hover, .v-disabled.table-remove.v-button:active, .list-remove.v-button, .v-disabled.list-remove.v-button:hover, .v-disabled.list-remove.v-button:active{
-	background: url("icons/minus_normal.png") center center no-repeat;
+	background: #fcfcfc url("icons/minus_normal.png") center center no-repeat;
 }
 
 .table-remove.v-button:active, .table-remove.v-button:hover, .list-remove.v-button:active, .list-remove.v-button:hover{
-	background: url("icons/minus_active.png") center center no-repeat;
+	background: #fcfcfc url("icons/minus_active.png") center center no-repeat;
 }
 
 .table-edit.v-button, .v-disabled.table-edit.v-button, .v-disabled.table-edit.v-button:hover, .v-disabled.table-edit.v-button:active{
-	background: url("icons/edit_normal.png") center center no-repeat;
+	background: #fcfcfc url("icons/edit_normal.png") center center no-repeat;
 }
 
 .table-edit.v-button:active, .table-edit.v-button:hover{
-	background: url("icons/edit_active.png") center center no-repeat;
+	background: #fcfcfc url("icons/edit_active.png") center center no-repeat;
 }
