@@ -131,7 +131,6 @@ public class ReferenceListVaadinRenderer extends AbstractVaadinList {
 	@Override
 	protected void createContainerProperty(IndexedContainer container) {
 		container.addContainerProperty(LINK_COLUMN, Button.class, null);
-		container.addContainerProperty(REMOVE_COLUMN, Button.class, null);
 
 	}
 

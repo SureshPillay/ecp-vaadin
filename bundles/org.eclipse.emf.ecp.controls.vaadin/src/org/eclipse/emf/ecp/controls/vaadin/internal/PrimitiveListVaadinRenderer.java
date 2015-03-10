@@ -212,7 +212,6 @@ public class PrimitiveListVaadinRenderer extends AbstractVaadinList {
 	@Override
 	protected void createContainerProperty(IndexedContainer container) {
 		container.addContainerProperty(VALUE_COLUMN, Object.class, null);
-		container.addContainerProperty(REMOVE_COLUMN, Button.class, null);
 	}
 
 	@Override
