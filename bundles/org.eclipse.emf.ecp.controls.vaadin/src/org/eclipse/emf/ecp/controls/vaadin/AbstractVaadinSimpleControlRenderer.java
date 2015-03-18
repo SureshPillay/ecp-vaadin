@@ -155,6 +155,10 @@ public abstract class AbstractVaadinSimpleControlRenderer extends AbstractContro
 		return unsetButton;
 	}
 
+	protected WritableValue getValue() {
+		return value;
+	}
+
 	protected void createSetOrUnsetComponent(final Component component, final HorizontalLayout horizontalLayout,
 		final Setting setting) {
 		final Label unsetLabel = getUnsetComponent();
@@ -252,7 +256,7 @@ public abstract class AbstractVaadinSimpleControlRenderer extends AbstractContro
 		return descriptor;
 	}
 
-	private IObservableValue getModelValue(final Setting setting) {
+	protected IObservableValue getModelValue(final Setting setting) {
 		if (modelValue == null) {
 
 			modelValue = EMFEditProperties.value(getEditingDomain(setting), setting.getEStructuralFeature())
