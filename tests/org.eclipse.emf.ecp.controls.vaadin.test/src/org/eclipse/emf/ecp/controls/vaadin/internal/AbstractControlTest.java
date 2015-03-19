@@ -16,18 +16,19 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.Map;
 
+import javax.xml.datatype.XMLGregorianCalendar;
+
 import org.eclipse.emf.common.command.BasicCommandStack;
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EStructuralFeature.Setting;
-import org.eclipse.emf.ecore.EcoreFactory;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -47,6 +48,7 @@ import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
 import com.vaadin.ui.AbstractComponent;
+import com.vaadin.ui.AbstractField;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
@@ -113,6 +115,7 @@ public abstract class AbstractControlTest {
 		final BasicEList<DomainModelReferenceChangeListener> changeListener = new BasicEList<DomainModelReferenceChangeListener>();
 		when(domainModelReference.getChangeListener()).thenReturn(changeListener);
 		Mockito.when(control.getDomainModelReference()).thenReturn(domainModelReference);
+		Mockito.when(context.getDomainModel()).thenReturn(eObject);
 	}
 
 	protected void setMockLabelAlignment(LabelAlignment labelAlignment) {
@@ -161,8 +164,9 @@ public abstract class AbstractControlTest {
 
 	protected void renderLabel(String text) {
 		setMockLabelAlignment(LabelAlignment.LEFT);
+		// Mockito.when(control.getName()).thenReturn(text);
 		renderControl();
-		// assertEquals(text, renderer.getControlComponent().getCaption());
+		assertEquals(text, renderer.getControlComponent().getCaption());
 	}
 
 	protected Component assertControl(Component render) {
@@ -171,9 +175,27 @@ public abstract class AbstractControlTest {
 			final Object o = ((AbstractComponent) render).getData();
 			renderComponent = (Component) (o == null ? render : o);
 		}
+		if (renderComponent instanceof AbstractField) {
+			final Object value = context.getDomainModel().eGet(
+				control.getDomainModelReference().getEStructuralFeatureIterator().next());
+			if (value instanceof XMLGregorianCalendar) {
+				final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+				assertEquals(sdf.format(((AbstractField<?>) renderComponent).getValue()),
+					sdf.format(((XMLGregorianCalendar) value).toGregorianCalendar().getTime()));
+
+			} else {
+				assertComponentValue(renderComponent, value);
+			}
+
+		}
+
 		assertTrue(getComponentClass().isInstance(renderComponent));
 		return renderComponent;
 
+	}
+
+	protected void assertComponentValue(Component renderComponent, final Object value) {
+		assertEquals(((AbstractField<?>) renderComponent).getValue(), value);
 	}
 
 	protected void assertControlSettable(Component render) {
@@ -188,15 +210,9 @@ public abstract class AbstractControlTest {
 
 	}
 
-	protected void mockControlSettable() {
-		final EClass eObject = EcoreFactory.eINSTANCE.createEClass();
-		final EStructuralFeature eStructuralFeature = EcorePackage.eINSTANCE.getEClass_Interface();
-		eStructuralFeature.setUnsettable(true);
-		mockControl(eObject, eStructuralFeature);
-	}
-
 	protected Component renderControlSettable() {
-		mockControlSettable();
+		mockControl();
+		control.getDomainModelReference().getEStructuralFeatureIterator().next().setUnsettable(true);
 		renderer.init(control, context);
 		return renderer.renderComponent();
 	}

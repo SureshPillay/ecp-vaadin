@@ -17,6 +17,7 @@
 
 
 	<modules>
+		<module>../../tests/org.eclipse.emf.ecp.controls.vaadin.test.model</module>
 		<module>../../tests/org.eclipse.emf.ecp.controls.vaadin.test</module>
 		<module>../../tests/org.eclipse.emf.ecp.view.common.vaadin.test</module>
 		<module>../../tests/org.eclipse.emf.ecp.view.custom.vaadin.test</module>

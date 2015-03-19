@@ -14,8 +14,6 @@ package org.eclipse.emf.ecp.controls.vaadin.internal;
 import static org.junit.Assert.assertNull;
 
 import org.eclipse.emf.ecore.EStructuralFeature;
-import org.eclipse.emf.ecore.EcoreFactory;
-import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecp.view.common.vaadin.test.VaadinDatabindingClassRunner;
 import org.eclipse.emf.ecp.view.spi.model.LabelAlignment;
 import org.eclipse.emf.ecp.view.spi.renderer.NoPropertyDescriptorFoundExeption;
@@ -23,6 +21,10 @@ import org.eclipse.emf.ecp.view.spi.renderer.NoRendererFoundException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import test.TestFactory;
+import test.TestPackage;
+import test.User;
 
 import com.vaadin.ui.Component;
 import com.vaadin.ui.TextField;
@@ -52,7 +54,7 @@ public class NumberControlVaadinRendererTest extends AbstractControlTest {
 
 	@Test
 	public void renderLabel() throws NoRendererFoundException, NoPropertyDescriptorFoundExeption {
-		renderLabel("Lower Bound");
+		renderLabel("Heigth");
 	}
 
 	@Override
@@ -63,9 +65,15 @@ public class NumberControlVaadinRendererTest extends AbstractControlTest {
 	}
 
 	@Override
+	protected void assertComponentValue(Component renderComponent, Object value) {
+		super.assertComponentValue(renderComponent, value.toString());
+	}
+
+	@Override
 	protected void mockControl() {
-		final EStructuralFeature eObject = EcoreFactory.eINSTANCE.createEAttribute();
-		final EStructuralFeature eStructuralFeature = EcorePackage.eINSTANCE.getETypedElement_LowerBound();
+		final User eObject = TestFactory.eINSTANCE.createUser();
+		final EStructuralFeature eStructuralFeature = TestPackage.eINSTANCE.getUser_Heigth();
+		eObject.setHeigth(3);
 		super.mockControl(eObject, eStructuralFeature);
 	}
 

@@ -11,15 +11,26 @@
  ******************************************************************************/
 package org.eclipse.emf.ecp.controls.vaadin.internal;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.GregorianCalendar;
+
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
+
 import org.eclipse.emf.ecore.EStructuralFeature;
-import org.eclipse.emf.ecore.EcoreFactory;
-import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecp.view.common.vaadin.test.VaadinDatabindingClassRunner;
 import org.eclipse.emf.ecp.view.spi.renderer.NoPropertyDescriptorFoundExeption;
 import org.eclipse.emf.ecp.view.spi.renderer.NoRendererFoundException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import test.TestFactory;
+import test.TestPackage;
+import test.User;
 
 import com.vaadin.ui.DateField;
 
@@ -33,14 +44,26 @@ public class XMLDateControlVaadinRendererTest extends AbstractControlTest {
 
 	@Test
 	public void renderLabel() throws NoRendererFoundException, NoPropertyDescriptorFoundExeption {
-		renderLabel("Name");
+		renderLabel("Date Of Birth");
 	}
 
 	@Override
 	protected void mockControl() {
-		final EStructuralFeature eObject = EcoreFactory.eINSTANCE.createEAttribute();
-		final EStructuralFeature eStructuralFeature = EcorePackage.eINSTANCE.getENamedElement_Name();
-		super.mockControl(eObject, eStructuralFeature);
+		final User eObject = TestFactory.eINSTANCE.createUser();
+		final EStructuralFeature eStructuralFeature = TestPackage.eINSTANCE.getUser_DateOfBirth();
+
+		final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		Date d;
+		try {
+			d = sdf.parse("21/12/2012");
+			final GregorianCalendar c = new GregorianCalendar();
+			c.setTime(d);
+			final XMLGregorianCalendar date2 = DatatypeFactory.newInstance().newXMLGregorianCalendar(c);
+			eObject.setDateOfBirth(date2);
+			super.mockControl(eObject, eStructuralFeature);
+		} catch (ParseException | DatatypeConfigurationException ex) {
+			ex.printStackTrace();
+		}
 	}
 
 	@Override

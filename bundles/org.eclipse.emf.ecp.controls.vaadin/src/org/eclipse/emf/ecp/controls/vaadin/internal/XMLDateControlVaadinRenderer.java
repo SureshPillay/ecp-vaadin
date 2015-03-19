@@ -47,7 +47,7 @@ public class XMLDateControlVaadinRenderer extends AbstractVaadinSimpleControlRen
 				final XMLGregorianCalendar gregorianCalendar = (XMLGregorianCalendar) value;
 				final Date date = gregorianCalendar.toGregorianCalendar().getTime();
 
-				return dateInstance.format(date);
+				return date;
 			}
 		};
 	}

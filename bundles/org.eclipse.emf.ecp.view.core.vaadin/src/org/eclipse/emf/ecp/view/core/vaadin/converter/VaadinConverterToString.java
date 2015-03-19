@@ -45,6 +45,10 @@ public class VaadinConverterToString implements IConverter {
 			return null;
 		}
 
+		if (converter == null) {
+			return String.valueOf(fromObject);
+		}
+
 		return converter.convertToPresentation(fromObject, converter.getPresentationType(),
 			Locale.getDefault());
 	}

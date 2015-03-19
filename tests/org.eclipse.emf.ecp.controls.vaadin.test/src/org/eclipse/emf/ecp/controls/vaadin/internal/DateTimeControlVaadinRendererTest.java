@@ -11,12 +11,21 @@
  ******************************************************************************/
 package org.eclipse.emf.ecp.controls.vaadin.internal;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import org.eclipse.emf.ecore.EStructuralFeature;
-import org.eclipse.emf.ecore.EcoreFactory;
-import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecp.view.common.vaadin.test.VaadinDatabindingClassRunner;
+import org.eclipse.emf.ecp.view.spi.renderer.NoPropertyDescriptorFoundExeption;
+import org.eclipse.emf.ecp.view.spi.renderer.NoRendererFoundException;
 import org.junit.Before;
+import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import test.TestFactory;
+import test.TestPackage;
+import test.User;
 
 import com.vaadin.ui.DateField;
 
@@ -28,10 +37,24 @@ public class DateTimeControlVaadinRendererTest extends AbstractControlTest {
 		setup(new DateTimeControlVaadinRenderer());
 	}
 
+	@Test
+	public void renderLabel() throws NoRendererFoundException, NoPropertyDescriptorFoundExeption {
+		renderLabel("Time Of Registration");
+	}
+
 	@Override
 	protected void mockControl() {
-		final EStructuralFeature eObject = EcoreFactory.eINSTANCE.createEAttribute();
-		final EStructuralFeature eStructuralFeature = EcorePackage.eINSTANCE.getENamedElement_Name();
+		final User eObject = TestFactory.eINSTANCE.createUser();
+		final EStructuralFeature eStructuralFeature = TestPackage.eINSTANCE.getUser_TimeOfRegistration();
+
+		final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		try {
+			final Date d = sdf.parse("21/12/2012");
+			eObject.setTimeOfRegistration(d);
+		} catch (final ParseException ex) {
+			ex.printStackTrace();
+		}
+
 		super.mockControl(eObject, eStructuralFeature);
 	}
 

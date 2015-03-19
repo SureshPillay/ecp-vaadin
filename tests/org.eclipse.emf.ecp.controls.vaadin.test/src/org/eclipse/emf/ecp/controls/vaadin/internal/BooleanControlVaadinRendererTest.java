@@ -11,12 +11,7 @@
  ******************************************************************************/
 package org.eclipse.emf.ecp.controls.vaadin.internal;
 
-import static org.junit.Assert.assertFalse;
-
-import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EStructuralFeature;
-import org.eclipse.emf.ecore.EcoreFactory;
-import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecp.view.common.vaadin.test.VaadinDatabindingClassRunner;
 import org.eclipse.emf.ecp.view.spi.renderer.NoPropertyDescriptorFoundExeption;
 import org.eclipse.emf.ecp.view.spi.renderer.NoRendererFoundException;
@@ -24,8 +19,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import test.TestFactory;
+import test.TestPackage;
+import test.User;
+
 import com.vaadin.ui.CheckBox;
-import com.vaadin.ui.Component;
 
 @RunWith(VaadinDatabindingClassRunner.class)
 public class BooleanControlVaadinRendererTest extends AbstractControlTest {
@@ -38,20 +36,14 @@ public class BooleanControlVaadinRendererTest extends AbstractControlTest {
 
 	@Test
 	public void renderLabel() throws NoRendererFoundException, NoPropertyDescriptorFoundExeption {
-		renderLabel("Interface");
-	}
-
-	@Override
-	protected Component assertControl(Component render) {
-		final CheckBox checkBox = (CheckBox) super.assertControl(render);
-		assertFalse(checkBox.getValue());
-		return checkBox;
+		renderLabel("Active");
 	}
 
 	@Override
 	protected void mockControl() {
-		final EClass eObject = EcoreFactory.eINSTANCE.createEClass();
-		final EStructuralFeature eStructuralFeature = EcorePackage.eINSTANCE.getEClass_Interface();
+		final User eObject = TestFactory.eINSTANCE.createUser();
+		final EStructuralFeature eStructuralFeature = TestPackage.eINSTANCE.getUser_Active();
+		eObject.eSet(eStructuralFeature, Boolean.TRUE);
 		super.mockControl(eObject, eStructuralFeature);
 	}
 

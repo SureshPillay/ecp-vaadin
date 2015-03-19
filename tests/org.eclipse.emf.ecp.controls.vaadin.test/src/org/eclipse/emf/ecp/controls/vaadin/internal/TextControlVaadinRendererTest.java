@@ -40,6 +40,7 @@ public class TextControlVaadinRendererTest extends AbstractControlTest {
 	protected void mockControl() {
 		final EStructuralFeature eObject = EcoreFactory.eINSTANCE.createEAttribute();
 		final EStructuralFeature eStructuralFeature = EcorePackage.eINSTANCE.getENamedElement_Name();
+		eObject.eSet(eStructuralFeature, "Hallo");
 		super.mockControl(eObject, eStructuralFeature);
 	}
 
