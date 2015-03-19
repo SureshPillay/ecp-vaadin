@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/org.eclipse.emf.ecp.controls.vaadin.test.model/src"
+    editDirectory="/org.eclipse.emf.ecp.controls.vaadin.test.model/src" modelPluginID="org.eclipse.emf.ecp.controls.vaadin.test"
+    modelName="Test" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
+    importerID="org.eclipse.emf.importer.ecore" complianceLevel="7.0" copyrightFields="false"
+    operationReflection="true" importOrganizing="true">
+  <foreignModel>test.ecore</foreignModel>
+  <genPackages prefix="Test" disposableProviderFactory="true" ecorePackage="test.ecore#/">
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="test.ecore#//Gender">
+      <genEnumLiterals ecoreEnumLiteral="test.ecore#//Gender/Male"/>
+      <genEnumLiterals ecoreEnumLiteral="test.ecore#//Gender/Female"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="test.ecore#//Nationality">
+      <genEnumLiterals ecoreEnumLiteral="test.ecore#//Nationality/German"/>
+      <genEnumLiterals ecoreEnumLiteral="test.ecore#//Nationality/French"/>
+      <genEnumLiterals ecoreEnumLiteral="test.ecore#//Nationality/UK"/>
+      <genEnumLiterals ecoreEnumLiteral="test.ecore#//Nationality/US"/>
+      <genEnumLiterals ecoreEnumLiteral="test.ecore#//Nationality/Spanish"/>
+      <genEnumLiterals ecoreEnumLiteral="test.ecore#//Nationality/Italian"/>
+      <genEnumLiterals ecoreEnumLiteral="test.ecore#//Nationality/Russian"/>
+    </genEnums>
+    <genDataTypes ecoreDataType="test.ecore#//DateOfBirth"/>
+    <genClasses ecoreClass="test.ecore#//User">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute test.ecore#//User/firstName"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute test.ecore#//User/lastName"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute test.ecore#//User/gender"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute test.ecore#//User/active"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute test.ecore#//User/timeOfRegistration"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute test.ecore#//User/weight"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute test.ecore#//User/heigth"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute test.ecore#//User/nationality"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute test.ecore#//User/dateOfBirth"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute test.ecore#//User/email"/>
+    </genClasses>
+  </genPackages>
+</genmodel:GenModel>
