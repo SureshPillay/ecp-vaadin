@@ -16,7 +16,6 @@ import com.vaadin.ui.AbstractTextField;
 public class VaadinConverterToString implements IConverter {
 
 	private final Converter<String, Object> converter;
-	private final AbstractTextField component;
 
 	/**
 	 * Constructor.
@@ -25,7 +24,6 @@ public class VaadinConverterToString implements IConverter {
 	 */
 	public VaadinConverterToString(AbstractTextField component) {
 
-		this.component = component;
 		converter = component.getConverter();
 	}
 
@@ -43,10 +41,6 @@ public class VaadinConverterToString implements IConverter {
 	public Object convert(Object fromObject) {
 		if (fromObject == null) {
 			return null;
-		}
-
-		if (converter == null) {
-			return String.valueOf(fromObject);
 		}
 
 		return converter.convertToPresentation(fromObject, converter.getPresentationType(),

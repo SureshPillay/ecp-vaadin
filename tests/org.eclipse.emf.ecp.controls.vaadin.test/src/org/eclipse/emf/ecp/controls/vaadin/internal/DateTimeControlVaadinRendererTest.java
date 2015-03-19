@@ -11,8 +11,8 @@
  ******************************************************************************/
 package org.eclipse.emf.ecp.controls.vaadin.internal;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import static org.junit.Assert.assertEquals;
+
 import java.util.Date;
 
 import org.eclipse.emf.ecore.EStructuralFeature;
@@ -47,15 +47,21 @@ public class DateTimeControlVaadinRendererTest extends AbstractControlTest {
 		final User eObject = TestFactory.eINSTANCE.createUser();
 		final EStructuralFeature eStructuralFeature = TestPackage.eINSTANCE.getUser_TimeOfRegistration();
 
-		final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-		try {
-			final Date d = sdf.parse("21/12/2012");
-			eObject.setTimeOfRegistration(d);
-		} catch (final ParseException ex) {
-			ex.printStackTrace();
-		}
-
+		eObject.setTimeOfRegistration(createDate("21/12/2012"));
 		super.mockControl(eObject, eStructuralFeature);
+	}
+
+	@Test
+	public void testDatabining() {
+		mockControl();
+		final DateField dateField = (DateField) renderControl();
+		final User user = (User) context.getDomainModel();
+		Date date = createDate("22/12/2015");
+		dateField.setValue(date);
+		assertEquals(date, user.getTimeOfRegistration());
+		date = createDate("23/12/2015");
+		user.setTimeOfRegistration(date);
+		assertEquals(date, dateField.getValue());
 	}
 
 	@Override

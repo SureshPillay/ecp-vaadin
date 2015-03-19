@@ -16,8 +16,10 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Collections;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -55,7 +57,8 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 
 public abstract class AbstractControlTest {
-	private AbstractControlRendererVaadin<VControl> renderer;
+	protected AbstractControlRendererVaadin<VControl> renderer;
+	protected final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
 	/**
 	 * Gets the renderer
@@ -122,8 +125,8 @@ public abstract class AbstractControlTest {
 		Mockito.when(control.getLabelAlignment()).thenReturn(labelAlignment);
 	}
 
-	private ViewModelContext context;
-	private VControl control;
+	protected ViewModelContext context;
+	protected VControl control;
 
 	protected void setup(AbstractControlRendererVaadin<VControl> renderer) {
 		this.renderer = renderer;
@@ -221,6 +224,15 @@ public abstract class AbstractControlTest {
 		mockControl();
 		renderer.init(control, context);
 		return renderer.renderComponent();
+	}
+
+	protected Date createDate(String date) {
+		try {
+			return simpleDateFormat.parse(date);
+		} catch (final ParseException ex) {
+			ex.printStackTrace();
+		}
+		return null;
 	}
 
 	protected abstract void mockControl();

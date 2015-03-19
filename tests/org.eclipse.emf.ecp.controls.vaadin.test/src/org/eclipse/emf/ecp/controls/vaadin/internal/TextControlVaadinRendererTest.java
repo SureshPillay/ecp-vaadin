@@ -11,6 +11,9 @@
  ******************************************************************************/
 package org.eclipse.emf.ecp.controls.vaadin.internal;
 
+import static org.junit.Assert.assertEquals;
+
+import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcoreFactory;
 import org.eclipse.emf.ecore.EcorePackage;
@@ -42,6 +45,22 @@ public class TextControlVaadinRendererTest extends AbstractControlTest {
 		final EStructuralFeature eStructuralFeature = EcorePackage.eINSTANCE.getENamedElement_Name();
 		eObject.eSet(eStructuralFeature, "Hallo");
 		super.mockControl(eObject, eStructuralFeature);
+	}
+
+	@Test
+	public void testDatabining() {
+		mockControl();
+		final TextField textField = (TextField) renderControl();
+		textField.setValue("5");
+		final EAttribute user = (EAttribute) context.getDomainModel();
+		assertEquals("" + 5, user.getName());
+		user.setName("" + 8);
+		assertEquals("" + 8, textField.getValue());
+
+		textField.setValue("5ABC");
+		assertEquals("5ABC", textField.getValue());
+		assertEquals("5ABC", user.getName());
+
 	}
 
 	@Override

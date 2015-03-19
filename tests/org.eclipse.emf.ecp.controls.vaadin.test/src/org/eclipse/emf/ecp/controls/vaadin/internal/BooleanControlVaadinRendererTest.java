@@ -11,6 +11,9 @@
  ******************************************************************************/
 package org.eclipse.emf.ecp.controls.vaadin.internal;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecp.view.common.vaadin.test.VaadinDatabindingClassRunner;
 import org.eclipse.emf.ecp.view.spi.renderer.NoPropertyDescriptorFoundExeption;
@@ -45,6 +48,18 @@ public class BooleanControlVaadinRendererTest extends AbstractControlTest {
 		final EStructuralFeature eStructuralFeature = TestPackage.eINSTANCE.getUser_Active();
 		eObject.eSet(eStructuralFeature, Boolean.TRUE);
 		super.mockControl(eObject, eStructuralFeature);
+	}
+
+	@Test
+	public void testDatabining() {
+		mockControl();
+		renderControl();
+		final CheckBox checkBox = (CheckBox) renderer.getControlComponent();
+		checkBox.setValue(Boolean.TRUE);
+		final User user = (User) context.getDomainModel();
+		assertTrue(user.isActive());
+		user.setActive(false);
+		assertFalse(user.isActive());
 	}
 
 	@Override

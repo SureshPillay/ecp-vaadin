@@ -11,6 +11,8 @@
  ******************************************************************************/
 package org.eclipse.emf.ecp.controls.vaadin.internal;
 
+import static org.junit.Assert.assertEquals;
+
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecp.view.common.vaadin.test.VaadinDatabindingClassRunner;
 import org.eclipse.emf.ecp.view.spi.renderer.NoPropertyDescriptorFoundExeption;
@@ -46,6 +48,19 @@ public class ComboBoxControlVaadinRendererTest extends AbstractControlTest {
 
 		eObject.setNationality(Nationality.GERMAN);
 		super.mockControl(eObject, eStructuralFeature);
+	}
+
+	@Test
+	public void testDatabining() {
+		mockControl();
+		final ComboBox comboBox = (ComboBox) renderControl();
+		assertEquals(Nationality.GERMAN, comboBox.getValue());
+		comboBox.select(Nationality.FRENCH);
+		assertEquals(Nationality.FRENCH, comboBox.getValue());
+		final User user = (User) context.getDomainModel();
+		assertEquals(Nationality.FRENCH, user.getNationality());
+		user.setNationality(Nationality.RUSSIAN);
+		assertEquals(Nationality.RUSSIAN, user.getNationality());
 	}
 
 	@Override

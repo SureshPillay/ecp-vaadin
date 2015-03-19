@@ -11,8 +11,8 @@
  ******************************************************************************/
 package org.eclipse.emf.ecp.controls.vaadin.internal;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import static org.junit.Assert.assertEquals;
+
 import java.util.Date;
 import java.util.GregorianCalendar;
 
@@ -51,19 +51,36 @@ public class XMLDateControlVaadinRendererTest extends AbstractControlTest {
 	protected void mockControl() {
 		final User eObject = TestFactory.eINSTANCE.createUser();
 		final EStructuralFeature eStructuralFeature = TestPackage.eINSTANCE.getUser_DateOfBirth();
+		eObject.setDateOfBirth(createXMLGregorianCalender("21/12/2012"));
+		super.mockControl(eObject, eStructuralFeature);
+	}
 
-		final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-		Date d;
+	private XMLGregorianCalendar createXMLGregorianCalender(String date) {
 		try {
-			d = sdf.parse("21/12/2012");
-			final GregorianCalendar c = new GregorianCalendar();
-			c.setTime(d);
-			final XMLGregorianCalendar date2 = DatatypeFactory.newInstance().newXMLGregorianCalendar(c);
-			eObject.setDateOfBirth(date2);
-			super.mockControl(eObject, eStructuralFeature);
-		} catch (ParseException | DatatypeConfigurationException ex) {
+			final GregorianCalendar gregorianCalendar = new GregorianCalendar();
+			gregorianCalendar.setTime(createDate(date));
+			final XMLGregorianCalendar xmlGregorianCalendar = DatatypeFactory.newInstance().newXMLGregorianCalendar(
+				gregorianCalendar);
+			return xmlGregorianCalendar;
+		} catch (final DatatypeConfigurationException ex) {
 			ex.printStackTrace();
 		}
+		return null;
+	}
+
+	@Test
+	public void testDatabining() {
+		mockControl();
+		final DateField dateField = (DateField) renderControl();
+		final User user = (User) context.getDomainModel();
+		final Date date = createDate("22/12/2015");
+		dateField.setValue(date);
+		assertEquals(simpleDateFormat.format(date),
+			simpleDateFormat.format(user.getDateOfBirth().toGregorianCalendar().getTime()));
+		final XMLGregorianCalendar xmlGregorianCalendar = createXMLGregorianCalender("23/12/2015");
+		user.setDateOfBirth(xmlGregorianCalendar);
+		assertEquals(simpleDateFormat.format(xmlGregorianCalendar.toGregorianCalendar().getTime()),
+			simpleDateFormat.format(dateField.getValue()));
 	}
 
 	@Override
