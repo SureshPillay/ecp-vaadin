@@ -36,9 +36,9 @@ Now Tables and Lists can be ordered, if the EStructualFeature ordered attribute 
 Thanks [Matthias Juchmes] (https://github.com/NeoDobby) 
 
 ###### Table
-![Ordered Table](http://sirwayne.github.io/ordererTable.png)
+![Ordered Table](http://sirwayne.github.io/table.png)
 
 ###### List
-![Ordered List](http://sirwayne.github.io/orderedList.png)
+![Ordered List](http://sirwayne.github.io/list.png)
 
 
