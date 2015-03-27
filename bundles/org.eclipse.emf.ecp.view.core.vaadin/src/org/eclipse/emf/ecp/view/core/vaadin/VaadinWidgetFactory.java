@@ -210,23 +210,7 @@ public final class VaadinWidgetFactory {
 	 * @return the button
 	 */
 	public static Button createTableMoveUpButtonIconOnly(final Setting setting, final Object move, final int index) {
-		final Button moveUp = new NativeButton();
-		final Command command = createMoveCommand(setting, move, index);
-		if (command.canExecute()) {
-			moveUp.addStyleName(ACTION_BUTTON);
-			moveUp.addStyleName("table-move-up"); //$NON-NLS-1$
-			moveUp.addClickListener(new ClickListener() {
-
-				@Override
-				public void buttonClick(ClickEvent event) {
-					getEditingDomain(setting).getCommandStack().execute(command);
-				}
-
-			});
-		} else {
-			moveUp.setVisible(false);
-		}
-		return moveUp;
+		return createMoveButton(setting, move, index, "table-move-up"); //$NON-NLS-1$
 	}
 
 	/**
@@ -238,12 +222,16 @@ public final class VaadinWidgetFactory {
 	 * @return the button
 	 */
 	public static Button createTableMoveDownButtonIconOnly(final Setting setting, final Object move, final int index) {
-		final Button moveDown = new NativeButton();
+		return createMoveButton(setting, move, index, "table-move-down"); //$NON-NLS-1$
+	}
+
+	private static Button createMoveButton(final Setting setting, final Object move, final int index, String styleName) {
+		final Button moveButton = new NativeButton();
 		final Command command = createMoveCommand(setting, move, index);
 		if (command.canExecute()) {
-			moveDown.addStyleName(ACTION_BUTTON);
-			moveDown.addStyleName("table-move-down"); //$NON-NLS-1$
-			moveDown.addClickListener(new ClickListener() {
+			moveButton.addStyleName(ACTION_BUTTON);
+			moveButton.addStyleName(styleName);
+			moveButton.addClickListener(new ClickListener() {
 
 				@Override
 				public void buttonClick(ClickEvent event) {
@@ -252,9 +240,9 @@ public final class VaadinWidgetFactory {
 
 			});
 		} else {
-			moveDown.setVisible(false);
+			moveButton.setVisible(false);
 		}
-		return moveDown;
+		return moveButton;
 	}
 
 	private static void removeItems(Setting setting, Object deleteObject) {
