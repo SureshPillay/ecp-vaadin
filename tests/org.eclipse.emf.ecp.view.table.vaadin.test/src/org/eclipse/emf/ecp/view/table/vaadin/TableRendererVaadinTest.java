@@ -374,7 +374,12 @@ public class TableRendererVaadinTest {
 			assertTrue(verticalLayout.getComponent(1) instanceof Table);
 			table = (Table) verticalLayout.getComponent(1);
 		}
-		assertEquals(2, table.getColumnHeaders().length - 1);
+		if (readonly) {
+			assertEquals(2, table.getColumnHeaders().length);
+		} else {
+			assertEquals(2, table.getColumnHeaders().length - 1);
+		}
+
 		// no initial selection
 		assertNull(table.getValue());
 
