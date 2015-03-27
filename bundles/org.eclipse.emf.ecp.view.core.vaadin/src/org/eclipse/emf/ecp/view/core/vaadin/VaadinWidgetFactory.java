@@ -13,12 +13,14 @@ package org.eclipse.emf.ecp.view.core.vaadin;
 
 import java.util.List;
 
+import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature.Setting;
 import org.eclipse.emf.ecp.view.core.vaadin.dialog.EditDialog;
 import org.eclipse.emf.edit.command.AddCommand;
+import org.eclipse.emf.edit.command.MoveCommand;
 import org.eclipse.emf.edit.command.RemoveCommand;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.emf.edit.domain.EditingDomain;
@@ -28,6 +30,7 @@ import com.vaadin.ui.AbstractSelect;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
+import com.vaadin.ui.NativeButton;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
@@ -40,6 +43,8 @@ import com.vaadin.ui.themes.BaseTheme;
  *
  */
 public final class VaadinWidgetFactory {
+
+	private static final String ACTION_BUTTON = "action-button"; //$NON-NLS-1$
 
 	private VaadinWidgetFactory() {
 
@@ -175,14 +180,15 @@ public final class VaadinWidgetFactory {
 	}
 
 	/**
-	 * Creates a remove button in flat look.
+	 * Creates a remove button in icon-only look.
 	 *
 	 * @param setting the setting
 	 * @param delete the selection
 	 * @return the button
 	 */
-	public static Button createTableRemoveButtonFlat(final Setting setting, final Object delete) {
-		final Button remove = new Button();
+	public static Button createTableRemoveButtonIconOnly(final Setting setting, final Object delete) {
+		final Button remove = new NativeButton();
+		remove.addStyleName(ACTION_BUTTON);
 		remove.addStyleName("table-remove"); //$NON-NLS-1$
 		remove.addClickListener(new ClickListener() {
 
@@ -195,6 +201,62 @@ public final class VaadinWidgetFactory {
 		return remove;
 	}
 
+	/**
+	 * Creates a move-up button in icon-only look.
+	 *
+	 * @param setting the setting
+	 * @param move the object to move
+	 * @param index the index to which the object is moved
+	 * @return the button
+	 */
+	public static Button createTableMoveUpButtonIconOnly(final Setting setting, final Object move, final int index) {
+		final Button moveUp = new NativeButton();
+		final Command command = createMoveCommand(setting, move, index);
+		if (command.canExecute()) {
+			moveUp.addStyleName(ACTION_BUTTON);
+			moveUp.addStyleName("table-move-up"); //$NON-NLS-1$
+			moveUp.addClickListener(new ClickListener() {
+
+				@Override
+				public void buttonClick(ClickEvent event) {
+					getEditingDomain(setting).getCommandStack().execute(command);
+				}
+
+			});
+		} else {
+			moveUp.setVisible(false);
+		}
+		return moveUp;
+	}
+
+	/**
+	 * Creates a move-down button in icon-only look.
+	 *
+	 * @param setting the setting
+	 * @param move the object to move
+	 * @param index the index to which the object is moved
+	 * @return the button
+	 */
+	public static Button createTableMoveDownButtonIconOnly(final Setting setting, final Object move, final int index) {
+		final Button moveDown = new NativeButton();
+		final Command command = createMoveCommand(setting, move, index);
+		if (command.canExecute()) {
+			moveDown.addStyleName(ACTION_BUTTON);
+			moveDown.addStyleName("table-move-down"); //$NON-NLS-1$
+			moveDown.addClickListener(new ClickListener() {
+
+				@Override
+				public void buttonClick(ClickEvent event) {
+					getEditingDomain(setting).getCommandStack().execute(command);
+				}
+
+			});
+		} else {
+			moveDown.setVisible(false);
+		}
+		return moveDown;
+	}
+
 	private static void removeItems(Setting setting, Object deleteObject) {
 		if (deleteObject == null) {
 			return;
@@ -203,6 +265,13 @@ public final class VaadinWidgetFactory {
 		final EditingDomain editingDomain = getEditingDomain(setting);
 		editingDomain.getCommandStack().execute(
 			RemoveCommand.create(editingDomain, setting.getEObject(), setting.getEStructuralFeature(), deleteObject));
+	}
+
+	private static Command createMoveCommand(Setting setting, Object moveObject, int index) {
+
+		final EditingDomain editingDomain = getEditingDomain(setting);
+		return MoveCommand.create(editingDomain, setting.getEObject(), setting.getEStructuralFeature(), moveObject,
+			index);
 	}
 
 	private static EObject createItem(Setting setting) {

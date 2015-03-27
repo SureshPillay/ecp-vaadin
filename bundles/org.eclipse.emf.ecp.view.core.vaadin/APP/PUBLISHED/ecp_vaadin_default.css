@@ -1,92 +1,149 @@
-.v-textfield-error,.v-datefield-error .v-textfield, .v-filterselect-error .v-filterselect-input, 
-.v-select-error .v-select-select, .v-table-error .v-table-body{
+.v-textfield-error, .v-datefield-error .v-textfield, .v-filterselect-error .v-filterselect-input,
+.v-select-error .v-select-select, .v-table-error .v-table-body {
     border-color: #FF444B !important;
 }
 
-.textheight.v-horizontallayout-textheight{
-	height: 62px !important;
+.textheight.v-horizontallayout-textheight {
+    height: 62px !important;
 }
 
-.group{
-	background-color: #e8e8e8;
-	border-color: #d4d4d4;
-	box-shadow: 0 0 5px rgba(51,51,51,0.5);
-	border-radius: 3px;
+.group {
+    background-color: #e8e8e8;
+    border-color: #d4d4d4;
+    box-shadow: 0 0 5px rgba(51, 51, 51, 0.5);
+    border-radius: 3px;
 }
 
-.link.v-button:focus{
+.link.v-button:focus {
     box-shadow: none;
 }
 
-.collapsible-panel-expand.v-nativebutton-collapsible-panel-expand{
-	border-radius: 3px 3px 0px 0px;
-	color: #FCFCFC;
-	background: #3FA9FA url("icons/menu_active.png") calc(100% - 16px) center no-repeat;
+.collapsible-panel-expand.v-nativebutton-collapsible-panel-expand {
+    border-radius: 3px 3px 0px 0px;
+    color: #FCFCFC;
+    background: #3FA9FA url("icons/menu_active.png") calc(100% - 16px) center no-repeat;
 }
 
 .collapsible-panel-collapsed.v-nativebutton-collapsible-panel-collapsed {
-	border-radius: 3px;
-	color: #E8E8E8;
-	background: #2C89D0 url("icons/menu_deactive.png") calc(100% - 16px) center no-repeat;
+    border-radius: 3px;
+    color: #E8E8E8;
+    background: #2C89D0 url("icons/menu_deactive.png") calc(100% - 16px) center no-repeat;
 }
 
 .collapsible-panel-expand.v-nativebutton-collapsible-panel-expand, .collapsible-panel-collapsed.v-nativebutton-collapsible-panel-collapsed {
-	margin: 0;
-	border: 0;
-	box-shadow: 0 0 5px rgba(51,51,51,0.5);
-	height: 40px;
-	padding-left: 16px;
-	cursor: pointer;
+    margin: 0;
+    border: 0;
+    box-shadow: 0 0 5px rgba(51, 51, 51, 0.5);
+    height: 40px;
+    padding-left: 16px;
+    cursor: pointer;
 }
 
-.collapsible-panel-expand.v-nativebutton-collapsible-panel-expand:focus, .collapsible-panel-collapsed.v-nativebutton-collapsible-panel-collapsed:focus{
-   outline: none !important;
+.collapsible-panel-expand.v-nativebutton-collapsible-panel-expand:focus, .collapsible-panel-collapsed.v-nativebutton-collapsible-panel-collapsed:focus {
+    outline: none !important;
 }
 
-.table-button-toolbar, .v-slot-table-button-toolbar{
-	height: 0px;
+.table-button-toolbar, .v-slot-table-button-toolbar {
+    height: 0px;
 }
 
 .reference-list .v-table-row .v-table-cell-content, .reference-list .v-table-row-odd .v-table-cell-content {
-border: none;
+    border: none;
 }
 
 .reference-list .v-table-row-odd {
- background-color: white;
+    background-color: white;
 }
 
-.table-button-toolbar > .v-slot{
-	margin-top: -2px;
+.table-button-toolbar > .v-slot {
+    margin-top: -2px;
 }
 
-.table-add.v-button, .table-remove.v-button,.table-edit.v-button{
-	height: 26px;
+.table-add.v-button, .table-remove.v-button, .table-edit.v-button {
+    height: 26px;
 }
 
-.reference-list td:last-child{
-	border-left: none;
+.reference-list td:last-child {
+    border-left: none;
 }
 
-.table-add.v-button,.v-disabled.table-add.v-button, .v-disabled.table-add.v-button:hover, .v-disabled.table-add.v-button:active, .list-add.v-button, .v-disabled.list-add.v-button, .v-disabled.list-add.v-button:hover, .v-disabled.list-add.v-button:active{
-	background: #fcfcfc url("icons/plus_normal.png") center center no-repeat;
+.action-button:active, .action-button:focus, .action-button {
+    background-image: none;
+    background-color: transparent;
+    background-repeat: no-repeat;
+    background-position: center;
+    cursor: pointer;
+    border: none;
+    height: 24px;
+    width: 24px;
+    margin-left: 4px;
 }
 
-.table-add.v-button:active, .table-add.v-button:hover, .list-add.v-button:active, .list-add.v-button:hover{
-	background: #fcfcfc url("icons/plus_active.png") center center no-repeat;
+.action-button.v-button-wrap:active, .action-button.v-button-wrap:focus, .action-button.v-button-wrap {
+    background-image: none;
 }
 
-.table-remove.v-button, .v-disabled.table-remove.v-button, .v-disabled.table-remove.v-button:hover, .v-disabled.table-remove.v-button:active, .list-remove.v-button, .v-disabled.list-remove.v-button:hover, .v-disabled.list-remove.v-button:active{
-	background: #fcfcfc url("icons/minus_normal.png") center center no-repeat;
+.table-remove, .v-disabled.table-remove, .v-disabled.table-remove:hover, .v-disabled.table-remove:active, .list-remove.v-button {
+    background: url("icons/minus_normal.png") center center no-repeat;
 }
 
-.table-remove.v-button:active, .table-remove.v-button:hover, .list-remove.v-button:active, .list-remove.v-button:hover{
-	background: #fcfcfc url("icons/minus_active.png") center center no-repeat;
+.table-remove:active, .table-remove:hover {
+    background: url("icons/minus_active.png") center center no-repeat;
 }
 
-.table-edit.v-button, .v-disabled.table-edit.v-button, .v-disabled.table-edit.v-button:hover, .v-disabled.table-edit.v-button:active{
-	background: #fcfcfc url("icons/edit_normal.png") center center no-repeat;
+.table-move-up, .v-disabled.table-move-up, .v-disabled.table-move-up:hover, .v-disabled.table-move-up:active {
+    background: url("icons/jump-one_24x24.png") center center no-repeat;
 }
 
-.table-edit.v-button:active, .table-edit.v-button:hover{
-	background: #fcfcfc url("icons/edit_active.png") center center no-repeat;
+.table-move-up:active, .table-move-up:hover {
+    background: url("icons/jump-one_24x24.png") center center no-repeat;
+}
+
+.table-move-down, .v-disabled.table-move-down, .v-disabled.table-move-down:hover, .v-disabled.table-move-down:active {
+    background: url("icons/jump-one_24x24.png") center center no-repeat;
+    -webkit-transform: rotate(180deg);
+    -moz-transform: rotate(180deg);
+    -ms-transform: rotate(180deg);
+    -o-transform: rotate(180deg);
+    transform: rotate(180deg);
+}
+
+.table-move-down:active, .table-move-down:hover {
+    background: url("icons/jump-one_24x24.png") center center no-repeat;
+}
+
+.table-add.v-button, .v-disabled.table-add.v-button, .v-disabled.table-add.v-button:hover, .v-disabled.table-add.v-button:active, .list-add.v-button, .v-disabled.list-add.v-button, .v-disabled.list-add.v-button:hover, .v-disabled.list-add.v-button:active {
+    background: #fcfcfc url("icons/plus_normal.png") center center no-repeat;
+}
+
+.table-add.v-button:active, .table-add.v-button:hover, .list-add.v-button:active, .list-add.v-button:hover {
+    background: #fcfcfc url("icons/plus_active.png") center center no-repeat;
+}
+
+.v-disabled.list-remove.v-button:hover, .v-disabled.list-remove.v-button:active {
+    background: #fcfcfc url("icons/minus_normal.png") center center no-repeat;
+}
+
+.list-remove.v-button:active, .list-remove.v-button:hover {
+    background: #fcfcfc url("icons/minus_active.png") center center no-repeat;
+}
+
+.table-edit.v-button, .v-disabled.table-edit.v-button, .v-disabled.table-edit.v-button:hover, .v-disabled.table-edit.v-button:active {
+    background: #fcfcfc url("icons/edit_normal.png") center center no-repeat;
+}
+
+.table-edit.v-button:active, .table-edit.v-button:hover {
+    background: #fcfcfc url("icons/edit_active.png") center center no-repeat;
+}
+
+.action-buttons {
+    visibility: hidden;
+    margin-top: -10px !important;
+    position: absolute;
+    right: 10px;
+}
+
+tr:hover .action-buttons {
+    visibility: visible;
+    z-index: 10;
 }
