@@ -103,10 +103,11 @@ public class TableRendererVaadin extends AbstractControlRendererVaadin<VTableCon
 	protected HorizontalLayout createButtonBar() {
 		final HorizontalLayout horizontalLayout = new HorizontalLayout();
 		addTableToolbarStyle(horizontalLayout);
-
-		if (!getVElement().isAddRemoveDisabled()) {
+		final boolean addRemoveDisable = !getVElement().isAddRemoveDisabled();
+		if (addRemoveDisable) {
 			createAddRemoveButton(horizontalLayout);
 		}
+		VaadinWidgetFactory.createTableActionColumn(setting, table, addRemoveDisable);
 
 		return horizontalLayout;
 	}
@@ -114,9 +115,6 @@ public class TableRendererVaadin extends AbstractControlRendererVaadin<VTableCon
 	private void createAddRemoveButton(HorizontalLayout horizontalLayout) {
 		final Button add = VaadinWidgetFactory.createTableAddButton(setting, table);
 		horizontalLayout.addComponent(add);
-		final Button remove = VaadinWidgetFactory.createTableRemoveButton(setting, table);
-		horizontalLayout.addComponent(remove);
-		bindButtonEnable(remove);
 	}
 
 	protected void bindButtonEnable(Button button) {
@@ -147,7 +145,7 @@ public class TableRendererVaadin extends AbstractControlRendererVaadin<VTableCon
 
 		final IObservableList modelValue = EMFEditProperties.list(getEditingDomain(setting),
 			setting.getEStructuralFeature()).observe(
-			setting.getEObject());
+				setting.getEObject());
 		getBindingContext().bindList(targetValue, modelValue);
 	}
 

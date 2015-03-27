@@ -17,13 +17,9 @@ import org.eclipse.emf.ecp.view.core.vaadin.VaadinWidgetFactory;
 
 import com.vaadin.data.util.IndexedContainer;
 import com.vaadin.server.Sizeable.Unit;
-import com.vaadin.ui.Alignment;
-import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Table;
-import com.vaadin.ui.Table.Align;
-import com.vaadin.ui.Table.ColumnGenerator;
 import com.vaadin.ui.Table.ColumnHeaderMode;
 import com.vaadin.ui.VerticalLayout;
 
@@ -34,12 +30,6 @@ import com.vaadin.ui.VerticalLayout;
  *
  */
 public abstract class AbstractVaadinList extends AbstractVaadinSimpleControlRenderer {
-
-	/** The action column id. */
-	protected static final String ACTION_COLUMN = "actions"; //$NON-NLS-1$
-
-	/** The style name for the action button layout. */
-	private static final String ACTION_BUTTONS = "action-buttons"; //$NON-NLS-1$
 
 	/** The style name for the table. */
 	private static final String REFERENCE_LIST = "reference-list"; //$NON-NLS-1$
@@ -54,51 +44,17 @@ public abstract class AbstractVaadinList extends AbstractVaadinSimpleControlRend
 		return null;
 	}
 
-	private boolean isOrdered() {
-		return getSetting().getEStructuralFeature().isOrdered();
-	}
-
 	@Override
 	public VerticalLayout render() {
 		setting = getVElement().getDomainModelReference().getIterator().next();
 		final VerticalLayout layout = new VerticalLayout();
 		layout.setSizeFull();
 		table = createTable();
-		createActionColumn(setting);
+		VaadinWidgetFactory.createTableActionColumn(setting, table);
 
 		toolbar = createToolbar();
 		renderList(layout);
 		return layout;
-	}
-
-	private void createActionColumn(final Setting setting) {
-		table.addGeneratedColumn(ACTION_COLUMN, new ColumnGenerator() {
-
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public Object generateCell(Table source, Object itemId, Object columnId) {
-				final int index = container.getItemIds().indexOf(itemId);
-				final HorizontalLayout buttons = new HorizontalLayout();
-				buttons.setStyleName(ACTION_BUTTONS);
-				if (isOrdered()) {
-					final Button moveUp = VaadinWidgetFactory
-						.createTableMoveUpButtonOverlay(setting, itemId, index - 1);
-					buttons.addComponent(moveUp);
-					buttons.setComponentAlignment(moveUp, Alignment.MIDDLE_RIGHT);
-					final Button moveDown = VaadinWidgetFactory.createTableMoveDownButtonOverlay(setting, itemId,
-						index + 1);
-					buttons.addComponent(moveDown);
-					buttons.setComponentAlignment(moveDown, Alignment.MIDDLE_RIGHT);
-				}
-				final Button remove = VaadinWidgetFactory.createTableRemoveButtonOverlay(setting, itemId);
-				buttons.addComponent(remove);
-				buttons.setComponentAlignment(remove, Alignment.MIDDLE_RIGHT);
-				return buttons;
-			}
-		});
-		table.setColumnAlignment(ACTION_COLUMN, Align.RIGHT);
-		table.setColumnWidth(ACTION_COLUMN, 0);
 	}
 
 	private IndexedContainer createContainer() {

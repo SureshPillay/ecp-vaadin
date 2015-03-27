@@ -143,6 +143,12 @@
     right: 10px;
 }
 
+.table-action-buttons .v-table-header-cell:last-child .v-table-caption-container {
+  text-indent: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+ }
+
 tr:hover .action-buttons {
     visibility: visible;
     z-index: 10;

@@ -11,6 +11,7 @@
  ******************************************************************************/
 package org.eclipse.emf.ecp.view.core.vaadin;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.eclipse.emf.common.command.Command;
@@ -26,12 +27,15 @@ import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.emf.edit.domain.EditingDomain;
 
 import com.vaadin.data.util.converter.Converter;
-import com.vaadin.ui.AbstractSelect;
+import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
+import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.NativeButton;
 import com.vaadin.ui.Table;
+import com.vaadin.ui.Table.Align;
+import com.vaadin.ui.Table.ColumnGenerator;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.themes.BaseTheme;
@@ -44,7 +48,10 @@ import com.vaadin.ui.themes.BaseTheme;
  */
 public final class VaadinWidgetFactory {
 
+	private static final String ACTION_COLUMN = "actions"; //$NON-NLS-1$
 	private static final String ACTION_BUTTON = "action-button"; //$NON-NLS-1$
+	private static final String ACTION_BUTTONS = "action-buttons"; //$NON-NLS-1$
+	private static final String TABLE_ACTION_BUTTONS = "table-action-buttons"; //$NON-NLS-1$
 
 	private VaadinWidgetFactory() {
 
@@ -83,27 +90,6 @@ public final class VaadinWidgetFactory {
 		final EditingDomain editingDomain = getEditingDomain(setting);
 		editingDomain.getCommandStack().execute(
 			AddCommand.create(editingDomain, setting.getEObject(), setting.getEStructuralFeature(), addItem));
-	}
-
-	/**
-	 * Creates a remove button for a select element.
-	 *
-	 * @param setting the setting
-	 * @param abstractSelect the table
-	 * @return the button
-	 */
-	public static Button createTableRemoveButton(final Setting setting, final AbstractSelect abstractSelect) {
-		final Button remove = new Button();
-		remove.addStyleName("table-remove"); //$NON-NLS-1$
-		remove.addClickListener(new ClickListener() {
-
-			@Override
-			public void buttonClick(ClickEvent event) {
-				removeItems(setting, abstractSelect.getValue());
-			}
-
-		});
-		return remove;
 	}
 
 	/**
@@ -184,7 +170,7 @@ public final class VaadinWidgetFactory {
 	 * @return the button
 	 */
 	public static Button createTableMoveUpButtonOverlay(final Setting setting, final Object move, final int index) {
-		return createMoveButton(setting, move, index, "table-move-up-overlay"); //$NON-NLS-1$
+		return createMoveButton(setting, move, index - 1, "table-move-up-overlay"); //$NON-NLS-1$
 	}
 
 	/**
@@ -196,7 +182,7 @@ public final class VaadinWidgetFactory {
 	 * @return the button
 	 */
 	public static Button createTableMoveDownButtonOverlay(final Setting setting, final Object move, final int index) {
-		return createMoveButton(setting, move, index, "table-move-down-overlay"); //$NON-NLS-1$
+		return createMoveButton(setting, move, index + 1, "table-move-down-overlay"); //$NON-NLS-1$
 	}
 
 	private static Button createMoveButton(final Setting setting, final Object move, final int index, String styleName) {
@@ -217,6 +203,44 @@ public final class VaadinWidgetFactory {
 			moveButton.setVisible(false);
 		}
 		return moveButton;
+	}
+
+	public static void createTableActionColumn(final Setting setting, final Table table, final boolean enableRemove) {
+		table.addStyleName(TABLE_ACTION_BUTTONS);
+		table.addGeneratedColumn(ACTION_COLUMN, new ColumnGenerator() {
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public Object generateCell(Table source, Object itemId, Object columnId) {
+				final Collection<?> items = table.getContainerDataSource().getItemIds();
+				final HorizontalLayout buttons = new HorizontalLayout();
+				buttons.setStyleName(ACTION_BUTTONS);
+				if (items instanceof List && setting.getEStructuralFeature().isOrdered()) {
+					final int index = ((List<?>) items).indexOf(itemId);
+					final Button moveUp = createTableMoveUpButtonOverlay(setting, itemId, index);
+					buttons.addComponent(moveUp);
+					buttons.setComponentAlignment(moveUp, Alignment.MIDDLE_RIGHT);
+					final Button moveDown = createTableMoveDownButtonOverlay(setting, itemId, index);
+					buttons.addComponent(moveDown);
+					buttons.setComponentAlignment(moveDown, Alignment.MIDDLE_RIGHT);
+				}
+
+				if (enableRemove) {
+					final Button remove = createTableRemoveButtonOverlay(setting, itemId);
+					buttons.addComponent(remove);
+					buttons.setComponentAlignment(remove, Alignment.MIDDLE_RIGHT);
+
+				}
+				return buttons;
+			}
+		});
+		table.setColumnAlignment(ACTION_COLUMN, Align.RIGHT);
+		table.setColumnWidth(ACTION_COLUMN, 0);
+	}
+
+	public static void createTableActionColumn(final Setting setting, final Table table) {
+		createTableActionColumn(setting, table, true);
 	}
 
 	private static void removeItems(Setting setting, Object deleteObject) {
