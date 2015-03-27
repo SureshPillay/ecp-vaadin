@@ -83,23 +83,23 @@
     background-image: none;
 }
 
-.table-remove, .v-disabled.table-remove, .v-disabled.table-remove:hover, .v-disabled.table-remove:active, .list-remove.v-button {
+.table-remove-overlay, .v-disabled.table-remove-overlay, .v-disabled.table-remove-overlay:hover, .v-disabled.table-remove-overlay:active, .list-remove-overlay.v-button {
     background: url("icons/minus_normal.png") center center no-repeat;
 }
 
-.table-remove:active, .table-remove:hover {
+.table-remove-overlay:active, .table-remove-overlay:hover {
     background: url("icons/minus_active.png") center center no-repeat;
 }
 
-.table-move-up, .v-disabled.table-move-up, .v-disabled.table-move-up:hover, .v-disabled.table-move-up:active {
+.table-move-up-overlay, .v-disabled.table-move-up-overlay, .v-disabled.table-move-up-overlay:hover, .v-disabled.table-move-up-overlay:active {
     background: url("icons/jump-one_24x24.png") center center no-repeat;
 }
 
-.table-move-up:active, .table-move-up:hover {
+.table-move-up-overlay:active, .table-move-up-overlay:hover {
     background: url("icons/jump-one_24x24.png") center center no-repeat;
 }
 
-.table-move-down, .v-disabled.table-move-down, .v-disabled.table-move-down:hover, .v-disabled.table-move-down:active {
+.table-move-down-overlay, .v-disabled.table-move-down-overlay, .v-disabled.table-move-down-overlay:hover, .v-disabled.table-move-down-overlay:active {
     background: url("icons/jump-one_24x24.png") center center no-repeat;
     -webkit-transform: rotate(180deg);
     -moz-transform: rotate(180deg);
@@ -108,7 +108,7 @@
     transform: rotate(180deg);
 }
 
-.table-move-down:active, .table-move-down:hover {
+.table-move-down-overlay:active, .table-move-down-overlay:hover {
     background: url("icons/jump-one_24x24.png") center center no-repeat;
 }
 
@@ -120,11 +120,11 @@
     background: #fcfcfc url("icons/plus_active.png") center center no-repeat;
 }
 
-.v-disabled.list-remove.v-button:hover, .v-disabled.list-remove.v-button:active {
+.table-remove.v-button, .v-disabled.table-remove.v-button, .v-disabled.table-remove.v-button:hover, .v-disabled.table-remove.v-button:active, .list-remove.v-button, .v-disabled.list-remove.v-button:hover, .v-disabled.list-remove.v-button:active {
     background: #fcfcfc url("icons/minus_normal.png") center center no-repeat;
 }
 
-.list-remove.v-button:active, .list-remove.v-button:hover {
+.table-remove.v-button:active, .table-remove.v-button:hover, .list-remove.v-button:active, .list-remove.v-button:hover {
     background: #fcfcfc url("icons/minus_active.png") center center no-repeat;
 }
 

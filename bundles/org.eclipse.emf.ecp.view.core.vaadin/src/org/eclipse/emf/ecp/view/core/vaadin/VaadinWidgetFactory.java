@@ -154,16 +154,16 @@ public final class VaadinWidgetFactory {
 	}
 
 	/**
-	 * Creates a remove button in icon-only look.
+	 * Creates a remove button for overlays.
 	 *
 	 * @param setting the setting
 	 * @param delete the selection
 	 * @return the button
 	 */
-	public static Button createTableRemoveButtonIconOnly(final Setting setting, final Object delete) {
+	public static Button createTableRemoveButtonOverlay(final Setting setting, final Object delete) {
 		final Button remove = new NativeButton();
 		remove.addStyleName(ACTION_BUTTON);
-		remove.addStyleName("table-remove"); //$NON-NLS-1$
+		remove.addStyleName("table-remove-overlay"); //$NON-NLS-1$
 		remove.addClickListener(new ClickListener() {
 
 			@Override
@@ -176,27 +176,27 @@ public final class VaadinWidgetFactory {
 	}
 
 	/**
-	 * Creates a move-up button in icon-only look.
+	 * Creates a move-up button for overlays.
 	 *
 	 * @param setting the setting
 	 * @param move the object to move
 	 * @param index the index to which the object is moved
 	 * @return the button
 	 */
-	public static Button createTableMoveUpButtonIconOnly(final Setting setting, final Object move, final int index) {
-		return createMoveButton(setting, move, index, "table-move-up"); //$NON-NLS-1$
+	public static Button createTableMoveUpButtonOverlay(final Setting setting, final Object move, final int index) {
+		return createMoveButton(setting, move, index, "table-move-up-overlay"); //$NON-NLS-1$
 	}
 
 	/**
-	 * Creates a move-down button in icon-only look.
+	 * Creates a move-down button for overlays.
 	 *
 	 * @param setting the setting
 	 * @param move the object to move
 	 * @param index the index to which the object is moved
 	 * @return the button
 	 */
-	public static Button createTableMoveDownButtonIconOnly(final Setting setting, final Object move, final int index) {
-		return createMoveButton(setting, move, index, "table-move-down"); //$NON-NLS-1$
+	public static Button createTableMoveDownButtonOverlay(final Setting setting, final Object move, final int index) {
+		return createMoveButton(setting, move, index, "table-move-down-overlay"); //$NON-NLS-1$
 	}
 
 	private static Button createMoveButton(final Setting setting, final Object move, final int index, String styleName) {

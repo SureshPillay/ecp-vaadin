@@ -83,15 +83,15 @@ public abstract class AbstractVaadinList extends AbstractVaadinSimpleControlRend
 				buttons.setStyleName(ACTION_BUTTONS);
 				if (isOrdered()) {
 					final Button moveUp = VaadinWidgetFactory
-						.createTableMoveUpButtonIconOnly(setting, itemId, index - 1);
+						.createTableMoveUpButtonOverlay(setting, itemId, index - 1);
 					buttons.addComponent(moveUp);
 					buttons.setComponentAlignment(moveUp, Alignment.MIDDLE_RIGHT);
-					final Button moveDown = VaadinWidgetFactory.createTableMoveDownButtonIconOnly(setting, itemId,
+					final Button moveDown = VaadinWidgetFactory.createTableMoveDownButtonOverlay(setting, itemId,
 						index + 1);
 					buttons.addComponent(moveDown);
 					buttons.setComponentAlignment(moveDown, Alignment.MIDDLE_RIGHT);
 				}
-				final Button remove = VaadinWidgetFactory.createTableRemoveButtonIconOnly(setting, itemId);
+				final Button remove = VaadinWidgetFactory.createTableRemoveButtonOverlay(setting, itemId);
 				buttons.addComponent(remove);
 				buttons.setComponentAlignment(remove, Alignment.MIDDLE_RIGHT);
 				return buttons;
