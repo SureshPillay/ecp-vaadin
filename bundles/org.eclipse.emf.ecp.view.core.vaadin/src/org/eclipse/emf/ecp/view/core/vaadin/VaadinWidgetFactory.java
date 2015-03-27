@@ -133,32 +133,6 @@ public final class VaadinWidgetFactory {
 	}
 
 	/**
-	 * Creates a remove button for a list.
-	 *
-	 * @param setting the seeting
-	 * @param abstractSelect the select element
-	 * @param textField the textfield
-	 * @return the button
-	 */
-	public static Button createListRemoveButton(final Setting setting, final AbstractSelect abstractSelect,
-		final TextField textField) {
-		final Button remove = new Button();
-		remove.addStyleName("list-remove"); //$NON-NLS-1$
-
-		remove.addClickListener(new ClickListener() {
-
-			@Override
-			public void buttonClick(ClickEvent event) {
-				removeItems(setting, abstractSelect.getValue());
-				abstractSelect.select(0);
-				textField.focus();
-			}
-		});
-
-		return remove;
-	}
-
-	/**
 	 * Creates a edit link.
 	 *
 	 * @param selection the selection
