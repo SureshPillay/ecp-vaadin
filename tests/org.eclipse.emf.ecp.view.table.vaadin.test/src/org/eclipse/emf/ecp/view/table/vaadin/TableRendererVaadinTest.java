@@ -86,7 +86,7 @@ public class TableRendererVaadinTest {
 			new ComposedAdapterFactory(new AdapterFactory[] {
 				new ReflectiveItemProviderAdapterFactory(),
 				new ComposedAdapterFactory(ComposedAdapterFactory.Descriptor.Registry.INSTANCE) }),
-			new BasicCommandStack(), resourceSet);
+				new BasicCommandStack(), resourceSet);
 		resourceSet.eAdapters().add(new AdapterFactoryEditingDomain.EditingDomainProvider(domain));
 		final Resource resource = resourceSet.createResource(URI.createURI("VIRTUAL_URI_TEMP")); //$NON-NLS-1$
 		resource.getContents().add(domainElement);
@@ -183,7 +183,7 @@ public class TableRendererVaadinTest {
 
 		assertEquals(attributLength,
 			VTableDomainModelReference.class.cast(handle.getTableControl().getDomainModelReference())
-				.getColumnDomainModelReferences().size());
+			.getColumnDomainModelReferences().size());
 
 		final Component control = getTable((VerticalLayout) render);
 		assertTrue(control instanceof Table);
@@ -202,11 +202,11 @@ public class TableRendererVaadinTest {
 
 		assertEquals(0,
 			VTableDomainModelReference.class.cast(handle.getTableControl().getDomainModelReference())
-			.getColumnDomainModelReferences().size());
+				.getColumnDomainModelReferences().size());
 
 		assertTrue(verticalLayout.getComponent(1) instanceof Table);
 		final Table table = (Table) verticalLayout.getComponent(1);
-		assertEquals(0, table.getColumnHeaders().length);
+		assertEquals(0, table.getColumnHeaders().length - 1);
 
 	}
 
@@ -225,7 +225,7 @@ public class TableRendererVaadinTest {
 
 		assertTrue(verticalLayout.getComponent(1) instanceof Table);
 		final Table table = (Table) verticalLayout.getComponent(1);
-		assertEquals(0, table.getColumnHeaders().length);
+		assertEquals(0, table.getColumnHeaders().length - 1);
 	}
 
 	private VerticalLayout assertTable(final AbstractVaadinRenderer<VElement> tableRenderer) {
@@ -247,7 +247,7 @@ public class TableRendererVaadinTest {
 		final TableControlHandle handle = createTableWithTwoTableColumns();
 		final Component render = renderTableLayout(handle);
 		final Table table = assertTable(render, handle, 2);
-		assertEquals(2, table.getColumnHeaders().length);
+		assertEquals(2, table.getColumnHeaders().length - 1);
 	}
 
 	@Test
@@ -256,7 +256,7 @@ public class TableRendererVaadinTest {
 		// setup model
 		final TableControlHandle handle = createTableWithTwoTableColumns();
 		final Table table = assertTableWithoutService(handle, 2);
-		assertEquals(2, table.getColumnHeaders().length);
+		assertEquals(2, table.getColumnHeaders().length - 1);
 
 	}
 
@@ -374,7 +374,7 @@ public class TableRendererVaadinTest {
 			assertTrue(verticalLayout.getComponent(1) instanceof Table);
 			table = (Table) verticalLayout.getComponent(1);
 		}
-		assertEquals(2, table.getColumnHeaders().length);
+		assertEquals(2, table.getColumnHeaders().length - 1);
 		// no initial selection
 		assertNull(table.getValue());
 
@@ -583,7 +583,7 @@ public class TableRendererVaadinTest {
 
 		/**
 		 * {@inheritDoc}
-		 * 
+		 *
 		 * @see org.eclipse.emf.ecp.view.spi.context.ViewModelContext#addContextUser(java.lang.Object)
 		 */
 		@Override
@@ -594,7 +594,7 @@ public class TableRendererVaadinTest {
 
 		/**
 		 * {@inheritDoc}
-		 * 
+		 *
 		 * @see org.eclipse.emf.ecp.view.spi.context.ViewModelContext#getChildContext(org.eclipse.emf.ecore.EObject,
 		 *      org.eclipse.emf.ecp.view.spi.model.VElement, org.eclipse.emf.ecp.view.spi.model.VView,
 		 *      org.eclipse.emf.ecp.view.spi.context.ViewModelService[])
@@ -607,7 +607,7 @@ public class TableRendererVaadinTest {
 
 		/**
 		 * {@inheritDoc}
-		 * 
+		 *
 		 * @see org.eclipse.emf.ecp.view.spi.context.ViewModelContext#registerDisposeListener(org.eclipse.emf.ecp.view.spi.context.ViewModelContextDisposeListener)
 		 */
 		@Override
@@ -618,7 +618,7 @@ public class TableRendererVaadinTest {
 
 		/**
 		 * {@inheritDoc}
-		 * 
+		 *
 		 * @see org.eclipse.emf.ecp.view.spi.context.ViewModelContext#removeContextUser(java.lang.Object)
 		 */
 		@Override
@@ -629,7 +629,7 @@ public class TableRendererVaadinTest {
 
 		/**
 		 * {@inheritDoc}
-		 * 
+		 *
 		 * @see org.eclipse.emf.ecp.view.spi.context.ViewModelContext#getControlsFor(org.eclipse.emf.ecp.common.spi.UniqueSetting)
 		 */
 		@Override
