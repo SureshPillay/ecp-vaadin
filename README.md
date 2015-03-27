@@ -4,6 +4,7 @@ Tutorial is available under the  [EMF Forms Page] (http://eclipsesource.com/blog
 
 ### Theme
 The provided [CSS] (https://github.com/SirWayne/ecp-vaadin/blob/master/bundles/org.eclipse.emf.ecp.view.core.vaadin/APP/PUBLISHED/ecp_vaadin_default.css) is optimized for the Vaadin Valo Theme. If you want to use it with other themes, you need to adapt the styling.
+Thanks [Marita Klein] (https://github.com/riddy) 
 
 ######  Example for reindeer:
 ```css
@@ -28,3 +29,13 @@ The provided [CSS] (https://github.com/SirWayne/ecp-vaadin/blob/master/bundles/o
     text-align: left !important;
   }
 ```
+
+### New Feature
+
+Now Tables and Lists can be ordered, if the EStructualFeature ordered attribute is true.
+Thanks [Matthias Juchmes] (https://github.com/NeoDobby) 
+
+![Ordered Table](http://sirwayne.github.io/ordererTable.png)
+![Ordered List](http://sirwayne.github.io/orderedList.png)
+
+
