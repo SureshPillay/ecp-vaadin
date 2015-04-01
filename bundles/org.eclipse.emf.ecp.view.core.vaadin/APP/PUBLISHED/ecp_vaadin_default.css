@@ -99,6 +99,15 @@
     background: url("icons/jump-one_hover_24x24.png") center center no-repeat;
 }
 
+.table-edit-overlay, .v-disabled.table-edit-overlay, .v-disabled.table-edit-overlay:hover, .v-disabled.table-edit-overlay:active {
+    background: url("icons/edit_24x24.png") center center no-repeat;
+}
+
+.table-edit-overlay:active, .table-edit-overlay:hover {
+    background: url("icons/edit_hover_24x24.png") center center no-repeat;
+}
+
+
 .table-move-down-overlay, .v-disabled.table-move-down-overlay, .v-disabled.table-move-down-overlay:hover, .v-disabled.table-move-down-overlay:active {
     background: url("icons/jump-one_24x24.png") center center no-repeat;
     -webkit-transform: rotate(180deg);

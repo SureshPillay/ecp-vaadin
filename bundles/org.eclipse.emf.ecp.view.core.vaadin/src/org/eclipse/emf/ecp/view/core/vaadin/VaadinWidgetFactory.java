@@ -26,6 +26,8 @@ import org.eclipse.emf.edit.command.RemoveCommand;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.emf.edit.domain.EditingDomain;
 
+import com.vaadin.data.Property.ValueChangeEvent;
+import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.data.util.converter.Converter;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
@@ -205,7 +207,37 @@ public final class VaadinWidgetFactory {
 		return moveButton;
 	}
 
+	public static Button createTableEditButton(final Table table, final Object itemId) {
+		final Button editButton = new NativeButton();
+		editButton.addStyleName(ACTION_BUTTON);
+		editButton.addStyleName("table-edit-overlay");
+		editButton.addClickListener(new ClickListener() {
+
+			@Override
+			public void buttonClick(ClickEvent event) {
+				table.setValue(itemId);
+				table.setEditable(true);
+			}
+
+		});
+
+		table.addValueChangeListener(new ValueChangeListener() {
+
+			@Override
+			public void valueChange(ValueChangeEvent event) {
+				table.setEditable(false);
+			}
+		});
+
+		return editButton;
+	}
+
 	public static void createTableActionColumn(final Setting setting, final Table table, final boolean enableRemove) {
+		createTableActionColumn(setting, table, enableRemove, true);
+	}
+
+	public static void createTableActionColumn(final Setting setting, final Table table, final boolean enableRemove,
+		final boolean enableEdit) {
 		table.addStyleName(TABLE_ACTION_BUTTONS);
 		table.addGeneratedColumn(ACTION_COLUMN, new ColumnGenerator() {
 
@@ -216,6 +248,14 @@ public final class VaadinWidgetFactory {
 				final Collection<?> items = table.getContainerDataSource().getItemIds();
 				final HorizontalLayout buttons = new HorizontalLayout();
 				buttons.setStyleName(ACTION_BUTTONS);
+
+				if (enableEdit) {
+					final Button edit = createTableEditButton(table, itemId);
+					buttons.addComponent(edit);
+					buttons.setComponentAlignment(edit, Alignment.MIDDLE_RIGHT);
+
+				}
+
 				if (items instanceof List && setting.getEStructuralFeature().isOrdered()) {
 					final int index = ((List<?>) items).indexOf(itemId);
 					final Button moveUp = createTableMoveUpButtonOverlay(setting, itemId, index);

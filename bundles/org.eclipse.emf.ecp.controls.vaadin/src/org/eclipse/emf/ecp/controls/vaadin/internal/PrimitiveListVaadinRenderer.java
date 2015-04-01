@@ -31,16 +31,16 @@ import org.eclipse.emf.ecp.view.core.vaadin.VaadinWidgetFactory;
 import org.eclipse.emf.ecp.view.core.vaadin.converter.ErrorMessageComponentConverter;
 import org.lunifera.runtime.web.vaadin.databinding.VaadinObservables;
 
+import com.vaadin.data.Container;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.data.util.IndexedContainer;
-import com.vaadin.event.ShortcutAction.KeyCode;
-import com.vaadin.event.ShortcutListener;
 import com.vaadin.server.Sizeable.Unit;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.Component;
+import com.vaadin.ui.Field;
 import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Table;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 
@@ -64,32 +64,51 @@ public class PrimitiveListVaadinRenderer extends AbstractVaadinList {
 		layout.addComponent(getToolbar());
 		bindControls(textField, add);
 
-		getTable().addShortcutListener(new ShortcutListener("Edit item", KeyCode.ENTER, null) {
-			private static final long serialVersionUID = 1L;
-
+		getTable().setTableFieldFactory(new SingleRowFieldFactory() {
 			@Override
-			public void handleAction(Object sender, Object target) {
-				if (target instanceof Table) {
-					((Table) target).setEditable(true);
+			public Field<?> createField(final Container container, final Object itemId, final Object propertyId,
+				Component uiContext) {
+				final Field<?> field = super.createField(container, itemId, propertyId, uiContext);
+				if (field == null) {
+					return null;
 				}
-			}
-		});
-		getTable().addShortcutListener(new ShortcutListener("Stop item editing", KeyCode.ESCAPE, null) {
-			private static final long serialVersionUID = 1L;
 
-			@Override
-			public void handleAction(Object sender, Object target) {
-				getTable().setEditable(false);
-			}
-		});
-		getTable().addValueChangeListener(new ValueChangeListener() {
+				field.addValueChangeListener(new ValueChangeListener() {
 
-			@Override
-			public void valueChange(ValueChangeEvent event) {
-				getTable().setEditable(false);
+					private Object oldValue;
+
+					@Override
+					public void valueChange(ValueChangeEvent event) {
+						final Object newValue = event.getProperty().getValue();
+
+						if (newValue == null) {
+							return;
+						}
+
+						if (oldValue == null) {
+							oldValue = itemId;
+						}
+
+						if (oldValue.equals(newValue)) {
+							return;
+						}
+
+						if (container instanceof Container.Indexed) {
+							final Container.Indexed indexedContainer = (Container.Indexed) container;
+							final int index = indexedContainer.indexOfId(oldValue);
+							indexedContainer.removeItem(oldValue);
+							indexedContainer.addItemAt(index, newValue);
+
+						} else {
+							container.removeItem(oldValue);
+							container.addItem(newValue);
+						}
+					}
+				});
+
+				return field;
 			}
 		});
-		getTable().setTableFieldFactory(new SingleRowFieldFactory());
 		getTable().setImmediate(true);
 	}
 

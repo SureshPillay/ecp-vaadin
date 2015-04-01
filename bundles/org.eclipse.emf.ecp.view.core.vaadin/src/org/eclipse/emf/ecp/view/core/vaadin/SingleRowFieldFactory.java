@@ -14,6 +14,11 @@ package org.eclipse.emf.ecp.view.core.vaadin;
 import org.apache.commons.lang3.StringUtils;
 
 import com.vaadin.data.Container;
+import com.vaadin.event.FieldEvents.FocusEvent;
+import com.vaadin.event.FieldEvents.FocusListener;
+import com.vaadin.event.ShortcutAction.KeyCode;
+import com.vaadin.event.ShortcutListener;
+import com.vaadin.ui.AbstractComponent;
 import com.vaadin.ui.AbstractTextField;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.DefaultFieldFactory;
@@ -46,7 +51,34 @@ public class SingleRowFieldFactory extends DefaultFieldFactory {
 		}
 		final Field<?> field = super.createField(container, itemId, propertyId, uiContext);
 		if (field instanceof AbstractTextField) {
-			((AbstractTextField) field).setNullRepresentation(StringUtils.EMPTY);
+			final AbstractTextField textField = (AbstractTextField) field;
+			textField.setNullRepresentation(StringUtils.EMPTY);
+			textField.addFocusListener(new FocusListener() {
+
+				@Override
+				public void focus(FocusEvent event) {
+					((AbstractTextField) event.getComponent()).selectAll();
+				}
+			});
+
+			final Object firstColumnId = table.getVisibleColumns()[0];
+			if (propertyId != null && propertyId.equals(firstColumnId)) {
+				textField.focus();
+			}
+
+		}
+
+		if (field instanceof AbstractComponent) {
+			((AbstractComponent) field).setImmediate(true);
+			((AbstractComponent) field).addShortcutListener(new ShortcutListener("Enter", KeyCode.ENTER, null) {
+
+				@Override
+				public void handleAction(Object sender, Object target) {
+					table.setEditable(false);
+					table.setValue(null);
+				}
+			});
+
 		}
 
 		return field;

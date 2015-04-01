@@ -39,6 +39,9 @@ public class TableContentUpdateAdaper extends AdapterImpl {
 
 	@Override
 	public void notifyChanged(Notification msg) {
+		if (table.isEditable()) {
+			return;
+		}
 		final UI ui = table.getUI();
 		if (ui == null) {
 			return;

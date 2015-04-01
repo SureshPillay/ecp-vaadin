@@ -43,11 +43,7 @@ import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.lunifera.runtime.web.vaadin.databinding.VaadinObservables;
 
-import com.vaadin.data.Property.ValueChangeEvent;
-import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.data.util.BeanItemContainer;
-import com.vaadin.event.ShortcutAction.KeyCode;
-import com.vaadin.event.ShortcutListener;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.HorizontalLayout;
@@ -92,32 +88,6 @@ public class TableRendererVaadin extends AbstractControlRendererVaadin<VTableCon
 			layout.addComponent(table);
 			return layout;
 		}
-
-		table.addShortcutListener(new ShortcutListener("Edit item", KeyCode.ENTER, null) {
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public void handleAction(Object sender, Object target) {
-				if (target instanceof Table) {
-					((Table) target).setEditable(true);
-				}
-			}
-		});
-		table.addShortcutListener(new ShortcutListener("Stop item editing", KeyCode.ESCAPE, null) {
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public void handleAction(Object sender, Object target) {
-				table.setEditable(false);
-			}
-		});
-		table.addValueChangeListener(new ValueChangeListener() {
-
-			@Override
-			public void valueChange(ValueChangeEvent event) {
-				table.setEditable(false);
-			}
-		});
 
 		table.setImmediate(true);
 		table.setTableFieldFactory(new SingleRowFieldFactory());
@@ -175,7 +145,7 @@ public class TableRendererVaadin extends AbstractControlRendererVaadin<VTableCon
 
 		final IObservableList modelValue = EMFEditProperties.list(getEditingDomain(setting),
 			setting.getEStructuralFeature()).observe(
-			setting.getEObject());
+				setting.getEObject());
 		getBindingContext().bindList(targetValue, modelValue);
 	}
 
