@@ -50,6 +50,12 @@ public abstract class AbstractVaadinList extends AbstractVaadinSimpleControlRend
 		final VerticalLayout layout = new VerticalLayout();
 		layout.setSizeFull();
 		table = createTable();
+		if (getVElement().isReadonly()) {
+			layout.addComponent(getTable());
+			layout.setData(getTable());
+			return layout;
+		}
+
 		VaadinWidgetFactory.createTableActionColumn(setting, table);
 
 		toolbar = createToolbar();

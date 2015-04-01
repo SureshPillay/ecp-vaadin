@@ -49,7 +49,9 @@ public class StringToVaadinConverter implements IConverter {
 
 	@Override
 	public Object convert(Object fromObject) {
-		if (fromObject == null) {
+
+		if (fromObject == null)
+		{
 			return null;
 		}
 

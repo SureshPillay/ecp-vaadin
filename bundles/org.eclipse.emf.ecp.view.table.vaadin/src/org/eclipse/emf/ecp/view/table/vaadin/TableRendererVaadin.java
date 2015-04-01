@@ -14,7 +14,6 @@ package org.eclipse.emf.ecp.view.table.vaadin;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Locale;
 
 import org.eclipse.core.databinding.observable.list.IListChangeListener;
 import org.eclipse.core.databinding.observable.list.IObservableList;
@@ -30,6 +29,7 @@ import org.eclipse.emf.ecore.EStructuralFeature.Setting;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecp.view.core.vaadin.AbstractControlRendererVaadin;
+import org.eclipse.emf.ecp.view.core.vaadin.SingleRowFieldFactory;
 import org.eclipse.emf.ecp.view.core.vaadin.TableListDiffVisitor;
 import org.eclipse.emf.ecp.view.core.vaadin.VaadinRendererUtil;
 import org.eclipse.emf.ecp.view.core.vaadin.VaadinWidgetFactory;
@@ -43,13 +43,15 @@ import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.lunifera.runtime.web.vaadin.databinding.VaadinObservables;
 
+import com.vaadin.data.Property.ValueChangeEvent;
+import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.data.util.BeanItemContainer;
+import com.vaadin.event.ShortcutAction.KeyCode;
+import com.vaadin.event.ShortcutListener;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Table;
-import com.vaadin.ui.Table.ColumnGenerator;
-import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 
 /**
@@ -91,6 +93,35 @@ public class TableRendererVaadin extends AbstractControlRendererVaadin<VTableCon
 			return layout;
 		}
 
+		table.addShortcutListener(new ShortcutListener("Edit item", KeyCode.ENTER, null) {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void handleAction(Object sender, Object target) {
+				if (target instanceof Table) {
+					((Table) target).setEditable(true);
+				}
+			}
+		});
+		table.addShortcutListener(new ShortcutListener("Stop item editing", KeyCode.ESCAPE, null) {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void handleAction(Object sender, Object target) {
+				table.setEditable(false);
+			}
+		});
+		table.addValueChangeListener(new ValueChangeListener() {
+
+			@Override
+			public void valueChange(ValueChangeEvent event) {
+				table.setEditable(false);
+			}
+		});
+
+		table.setImmediate(true);
+		table.setTableFieldFactory(new SingleRowFieldFactory());
+
 		final HorizontalLayout horizontalLayout = createButtonBar();
 
 		layout.addComponent(horizontalLayout);
@@ -105,14 +136,13 @@ public class TableRendererVaadin extends AbstractControlRendererVaadin<VTableCon
 		addTableToolbarStyle(horizontalLayout);
 		final boolean addRemoveDisable = !getVElement().isAddRemoveDisabled();
 		if (addRemoveDisable) {
-			createAddRemoveButton(horizontalLayout);
+			createAddButton(horizontalLayout);
 		}
 		VaadinWidgetFactory.createTableActionColumn(setting, table, addRemoveDisable);
-
 		return horizontalLayout;
 	}
 
-	private void createAddRemoveButton(HorizontalLayout horizontalLayout) {
+	private void createAddButton(HorizontalLayout horizontalLayout) {
 		final Button add = VaadinWidgetFactory.createTableAddButton(setting, table);
 		horizontalLayout.addComponent(add);
 	}
@@ -145,7 +175,7 @@ public class TableRendererVaadin extends AbstractControlRendererVaadin<VTableCon
 
 		final IObservableList modelValue = EMFEditProperties.list(getEditingDomain(setting),
 			setting.getEStructuralFeature()).observe(
-				setting.getEObject());
+			setting.getEObject());
 		getBindingContext().bindList(targetValue, modelValue);
 	}
 
@@ -185,18 +215,6 @@ public class TableRendererVaadin extends AbstractControlRendererVaadin<VTableCon
 			}
 			visibleColumnsNames.add(displayName);
 			visibleColumnsId.add(eStructuralFeature.getName());
-			final TextField converter = new TextField();
-			VaadinRendererUtil.setConverterToTextField(eStructuralFeature, converter, control, viewContext);
-			if (converter.getConverter() != null) {
-				table.addGeneratedColumn(eStructuralFeature.getName(), new ColumnGenerator() {
-					@Override
-					public Object generateCell(Table source, Object itemId, Object columnId) {
-						final EObject eObject = (EObject) itemId;
-						return converter.getConverter().convertToPresentation(eObject.eGet(eStructuralFeature),
-							String.class, Locale.getDefault());
-					}
-				});
-			}
 
 		}
 		// TODO: FIXME 2 gleiche coloumns?

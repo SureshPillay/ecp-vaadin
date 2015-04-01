@@ -11,38 +11,36 @@
  ******************************************************************************/
 package org.eclipse.emf.ecp.controls.vaadin.internal;
 
-import java.util.Arrays;
-import java.util.Locale;
-
+import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.core.databinding.UpdateValueStrategy;
+import org.eclipse.core.databinding.observable.list.IListChangeListener;
 import org.eclipse.core.databinding.observable.list.IObservableList;
+import org.eclipse.core.databinding.observable.list.ListChangeEvent;
+import org.eclipse.core.databinding.observable.list.ListDiffVisitor;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
-import org.eclipse.core.databinding.observable.value.IValueChangeListener;
-import org.eclipse.core.databinding.observable.value.ValueDiff;
 import org.eclipse.emf.databinding.EMFUpdateValueStrategy;
 import org.eclipse.emf.databinding.edit.EMFEditProperties;
+import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EStructuralFeature.Setting;
+import org.eclipse.emf.ecp.view.core.vaadin.SingleRowFieldFactory;
 import org.eclipse.emf.ecp.view.core.vaadin.VaadinRendererUtil;
 import org.eclipse.emf.ecp.view.core.vaadin.VaadinWidgetFactory;
 import org.eclipse.emf.ecp.view.core.vaadin.converter.ErrorMessageComponentConverter;
-import org.eclipse.emf.ecp.view.core.vaadin.converter.SelectionConverter;
-import org.eclipse.emf.ecp.view.core.vaadin.converter.StringToVaadinConverter;
-import org.eclipse.emf.ecp.view.core.vaadin.converter.VaadinConverterToString;
-import org.eclipse.emf.edit.command.ReplaceCommand;
-import org.eclipse.emf.edit.domain.EditingDomain;
 import org.lunifera.runtime.web.vaadin.databinding.VaadinObservables;
 
+import com.vaadin.data.Property.ValueChangeEvent;
+import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.data.util.IndexedContainer;
-import com.vaadin.data.util.converter.Converter;
+import com.vaadin.event.ShortcutAction.KeyCode;
+import com.vaadin.event.ShortcutListener;
 import com.vaadin.server.Sizeable.Unit;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Table;
-import com.vaadin.ui.Table.ColumnGenerator;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 
@@ -59,32 +57,94 @@ public class PrimitiveListVaadinRenderer extends AbstractVaadinList {
 	@Override
 	public void renderList(VerticalLayout layout) {
 		final TextField textField = createTextfield();
-		final Converter<String, Object> converter = createConverter(getSetting(), textField);
 
 		final Button add = createAddButton(getSetting(), textField);
 		layout.addComponent(getTable());
 		layout.setData(getTable());
 		layout.addComponent(getToolbar());
-		bindControls(textField, converter, add);
+		bindControls(textField, add);
+
+		getTable().addShortcutListener(new ShortcutListener("Edit item", KeyCode.ENTER, null) {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void handleAction(Object sender, Object target) {
+				if (target instanceof Table) {
+					((Table) target).setEditable(true);
+				}
+			}
+		});
+		getTable().addShortcutListener(new ShortcutListener("Stop item editing", KeyCode.ESCAPE, null) {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void handleAction(Object sender, Object target) {
+				getTable().setEditable(false);
+			}
+		});
+		getTable().addValueChangeListener(new ValueChangeListener() {
+
+			@Override
+			public void valueChange(ValueChangeEvent event) {
+				getTable().setEditable(false);
+			}
+		});
+		getTable().setTableFieldFactory(new SingleRowFieldFactory());
+		getTable().setImmediate(true);
 	}
 
 	private Class<? extends EObject> bindTable(EStructuralFeature eStructuralFeature, Class<? extends EObject> clazz) {
 		getTable().addItems(getSetting().getEObject().eGet(eStructuralFeature));
-		final IObservableList targetValue = VaadinObservables.observeContainerItemSetContents(getTable(), clazz);
-		final IObservableList modelValue = EMFEditProperties.list(getEditingDomain(getSetting()), eStructuralFeature)
-			.observe(getSetting().getEObject());
-		bindModelToTarget(targetValue, modelValue);
+		// final IObservableList targetValue = VaadinObservables.observeContainerItemSetContents(getTable(), clazz);
+		// targetValue.addListChangeListener(new IListChangeListener() {
+		//
+		// @Override
+		// public void handleListChange(ListChangeEvent event) {
+		// event.diff.accept(new TableListDiffVisitor(getTable()));
+		// }
+		// });
+		// final IObservableList modelValue = EMFEditProperties.list(getEditingDomain(getSetting()), eStructuralFeature)
+		// .observe(getSetting().getEObject());
+		// bindModelToTarget(targetValue, modelValue);
+		final IObservableList targetValue = VaadinObservables.observeContainerItemSetContents(getTable(), getSetting()
+			.getEObject()
+			.getClass());
+		targetValue.addListChangeListener(new IListChangeListener() {
+
+			@Override
+			public void handleListChange(ListChangeEvent event) {
+				// event.diff.accept(new TableListDiffVisitor(getTable()));
+				event.diff.accept(new ListDiffVisitor() {
+
+					@Override
+					public void handleRemove(int index, Object element) {
+
+					}
+
+					@SuppressWarnings("unchecked")
+					@Override
+					public void handleAdd(int index, Object element) {
+						getTable().getContainerDataSource().getItem(element).getItemProperty(VALUE_COLUMN)
+						.setValue(element);
+
+					}
+				});
+
+			}
+		});
+
+		final IObservableList modelValue = EMFEditProperties.list(getEditingDomain(getSetting()),
+			getSetting().getEStructuralFeature()).observe(
+				getSetting().getEObject());
+		getBindingContext().bindList(targetValue, modelValue);
+
 		return clazz;
 	}
 
-	private void bindControls(final TextField textField,
-		final Converter<String, Object> converter, final Button add) {
+	private void bindControls(final TextField textField, final Button add) {
 		final Class<? extends EObject> clazz = getSetting().getEObject().getClass();
 		final EStructuralFeature eStructuralFeature = getSetting().getEStructuralFeature();
 		bindTable(eStructuralFeature, clazz);
-		bindAddTextfield(getSetting(), textField, converter);
-		bindTextfieldFocus(clazz, textField);
-		bindVisibleAddButton(clazz, add);
 		bindEnableAddButton(textField, add);
 
 	}
@@ -100,60 +160,6 @@ public class PrimitiveListVaadinRenderer extends AbstractVaadinList {
 		bindModelToTarget(target, model, null, emfUpdateValueStrategy);
 	}
 
-	private void bindVisibleAddButton(Class<? extends EObject> clazz, final Button add) {
-		final IObservableValue observeSingleSelection = VaadinObservables.observeSingleSelection(getTable(), clazz);
-		final UpdateValueStrategy emfUpdateValueStrategy = new EMFUpdateValueStrategy();
-		emfUpdateValueStrategy.setConverter(new SelectionConverter(false));
-		getBindingContext().bindValue(VaadinObservables.observeVisible(add), observeSingleSelection, null,
-			emfUpdateValueStrategy);
-	}
-
-	private void bindTextfieldFocus(Class<? extends EObject> clazz, final TextField textField) {
-		final IObservableValue observeSingleSelection = VaadinObservables.observeSingleSelection(getTable(), clazz);
-		final UpdateValueStrategy emfUpdateValueStrategy = new EMFUpdateValueStrategy();
-		emfUpdateValueStrategy.setConverter(new SelectionConverter());
-		getBindingContext().bindValue(VaadinObservables.observeFocus(textField), observeSingleSelection, null,
-			emfUpdateValueStrategy);
-	}
-
-	private void bindAddTextfield(final Setting setting, final TextField textField,
-		final Converter<String, Object> converter) {
-		final IObservableValue targetValueList = VaadinObservables.observeValue(textField);
-		final UpdateValueStrategy emfUpdateValueStrategy = new UpdateValueStrategy();
-		final UpdateValueStrategy emfUpdateValueStrategyModel = new UpdateValueStrategy();
-		if (converter != null) {
-			emfUpdateValueStrategy.setConverter(new VaadinConverterToString(textField));
-			emfUpdateValueStrategyModel.setConverter(new StringToVaadinConverter(converter));
-		}
-		targetValueList.addValueChangeListener(new IValueChangeListener() {
-
-			@Override
-			public void handleValueChange(org.eclipse.core.databinding.observable.value.ValueChangeEvent event) {
-				try {
-					final Object fieldValue = getConvertedValue(textField);
-					final ValueDiff diff = event.diff;
-					final EditingDomain editingDomain = getEditingDomain(setting);
-
-					if (PrimitiveListVaadinRenderer.this.getTable().getValue() != null
-						&& !PrimitiveListVaadinRenderer.this.getTable().getValue().equals(fieldValue)
-						&& diff.getOldValue() != diff.getNewValue()) {
-						final Object convertedValue = getConvertedValue(diff.getOldValue(), converter);
-						final Object convertToModel = getConvertedValue(diff.getNewValue(), converter);
-						editingDomain.getCommandStack().execute(
-							ReplaceCommand.create(editingDomain, setting.getEObject(), setting.getEStructuralFeature(),
-								convertedValue, Arrays.asList(convertToModel)));
-					}
-				} catch (final com.vaadin.data.util.converter.Converter.ConversionException e) {
-					return;
-				}
-
-			}
-		});
-
-		final IObservableValue modelValueList = VaadinObservables.observeValue(getTable());
-		bindModelToTarget(modelValueList, targetValueList, emfUpdateValueStrategy, emfUpdateValueStrategyModel);
-	}
-
 	private Button createAddButton(final Setting setting, final TextField textField) {
 		final Button add = VaadinWidgetFactory.createListAddButton(setting, textField);
 		getToolbar().addComponent(add);
@@ -167,51 +173,21 @@ public class PrimitiveListVaadinRenderer extends AbstractVaadinList {
 		textField.setWidth(100, Unit.PERCENTAGE);
 		getToolbar().addComponent(textField);
 		getToolbar().setExpandRatio(textField, 1.0f);
-		return textField;
-	}
-
-	private Object getConvertedValue(TextField textField) {
-		final Converter<String, Object> converter = textField.getConverter();
-		if (converter == null) {
-			return textField.getValue();
-		}
-
-		return textField.getConvertedValue();
-	}
-
-	private Object getConvertedValue(Object value, Converter<String, Object> converter) {
-		if (converter == null) {
-			return value;
-		}
-		try {
-			return converter.convertToModel(String.valueOf(value), converter.getModelType(), Locale.getDefault());
-		} catch (final com.vaadin.data.util.converter.Converter.ConversionException exception) {
-			return null;
-		}
-	}
-
-	private Converter<String, Object> createConverter(Setting setting,
-		final TextField textField) {
-		VaadinRendererUtil.setConverterToTextField(setting.getEStructuralFeature(), textField, getVElement(),
+		VaadinRendererUtil.setConverterToTextField(getSetting().getEStructuralFeature(), textField, getVElement(),
 			getViewModelContext());
-
-		final Converter<String, Object> converter = textField.getConverter();
-		getTable().addGeneratedColumn(VALUE_COLUMN, new ColumnGenerator() {
-
-			@Override
-			public Object generateCell(Table source, Object itemId, Object columnId) {
-				if (converter == null) {
-					return itemId;
-				}
-				return converter.convertToPresentation(itemId, String.class, Locale.getDefault());
-			}
-		});
-		return converter;
+		return textField;
 	}
 
 	@Override
 	protected void createContainerProperty(IndexedContainer container) {
-		container.addContainerProperty(VALUE_COLUMN, Object.class, null);
+		Class<?> clazz = ((EAttribute) getSetting().getEStructuralFeature()).getEAttributeType()
+			.getInstanceClass();
+
+		if (clazz.isPrimitive()) {
+			clazz = ClassUtils.primitiveToWrapper(clazz);
+		}
+
+		container.addContainerProperty(VALUE_COLUMN, clazz, null);
 	}
 
 	@Override
