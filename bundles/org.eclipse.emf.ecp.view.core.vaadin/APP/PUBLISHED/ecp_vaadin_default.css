@@ -158,7 +158,17 @@
   overflow: hidden;
  }
 
-tr:hover .action-buttons {
+tr.v-table-row:hover .action-buttons, tr.v-table-row-odd:hover .action-buttons {
     visibility: visible;
     z-index: 10;
+}
+
+.caption-left .v-formlayout-captioncell span {
+    white-space: normal;
+}
+
+.caption-left .v-formlayout-captioncell {
+    width: 96px;
+    min-width: 96px;
+    vertical-align: top;
 }

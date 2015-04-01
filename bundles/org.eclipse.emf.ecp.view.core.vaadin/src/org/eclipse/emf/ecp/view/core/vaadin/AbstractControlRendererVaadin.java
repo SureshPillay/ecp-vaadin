@@ -31,6 +31,7 @@ import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 
 import com.vaadin.server.UserError;
 import com.vaadin.ui.AbstractComponent;
+import com.vaadin.ui.AbstractField;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.UI;
 
@@ -49,6 +50,7 @@ public abstract class AbstractControlRendererVaadin<T extends VControl> extends 
 	private ComposedAdapterFactory composedAdapterFactory;
 	private DomainModelReferenceChangeListener domainModelReferenceChangeListener;
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	protected void applyCaption() {
 		final Setting setting = getVElement().getDomainModelReference().getIterator().next();
@@ -63,12 +65,22 @@ public abstract class AbstractControlRendererVaadin<T extends VControl> extends 
 		String extra = StringUtils.EMPTY;
 
 		extra = getMandatoryText(setting, extra);
-		controlComponent.setCaption(itemPropertyDescriptor.getDisplayName(setting.getEObject()) + extra);
+		controlComponent.setCaption(itemPropertyDescriptor.getDisplayName(setting.getEObject()));
 
+		if (controlComponent instanceof AbstractField) {
+			if (setting.getEStructuralFeature().getLowerBound() > 0) {
+				((AbstractField) controlComponent).setRequired(true);
+			}
+		}
 		final String description = itemPropertyDescriptor.getDescription(setting.getEObject());
 		if (controlComponent instanceof AbstractComponent && !StringUtils.isEmpty(description)) {
 			((AbstractComponent) controlComponent).setDescription(description);
 		}
+	}
+
+	@Override
+	protected boolean wrapInFormLayout() {
+		return hasCaption();
 	}
 
 	@Override

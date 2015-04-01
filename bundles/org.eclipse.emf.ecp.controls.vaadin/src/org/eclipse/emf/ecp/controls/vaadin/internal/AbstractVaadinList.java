@@ -17,7 +17,9 @@ import org.eclipse.emf.ecp.view.core.vaadin.VaadinWidgetFactory;
 
 import com.vaadin.data.util.IndexedContainer;
 import com.vaadin.server.Sizeable.Unit;
+import com.vaadin.ui.AbstractField;
 import com.vaadin.ui.Component;
+import com.vaadin.ui.CustomField;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.Table.ColumnHeaderMode;
@@ -45,7 +47,7 @@ public abstract class AbstractVaadinList extends AbstractVaadinSimpleControlRend
 	}
 
 	@Override
-	public VerticalLayout render() {
+	public Component render() {
 		setting = getVElement().getDomainModelReference().getIterator().next();
 		final VerticalLayout layout = new VerticalLayout();
 		layout.setSizeFull();
@@ -60,7 +62,19 @@ public abstract class AbstractVaadinList extends AbstractVaadinSimpleControlRend
 
 		toolbar = createToolbar();
 		renderList(layout);
-		return layout;
+		final AbstractField<Object> customField = new CustomField<Object>() {
+
+			@Override
+			protected Component initContent() {
+				return layout;
+			}
+
+			@Override
+			public Class<? extends Object> getType() {
+				return null;
+			}
+		};
+		return customField;
 	}
 
 	private IndexedContainer createContainer() {
