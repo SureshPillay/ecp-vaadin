@@ -74,7 +74,9 @@ public class SingleRowFieldFactory extends DefaultFieldFactory {
 
 				@Override
 				public void handleAction(Object sender, Object target) {
-					table.setEditable(false);
+					if (table.isEditable()) {
+						table.setEditable(false);
+					}
 					table.setValue(null);
 				}
 			});

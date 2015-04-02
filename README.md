@@ -4,7 +4,7 @@ Tutorial is available under the  [EMF Forms Page] (http://eclipsesource.com/blog
 
 ### Theme
 The provided [CSS] (https://github.com/SirWayne/ecp-vaadin/blob/master/bundles/org.eclipse.emf.ecp.view.core.vaadin/APP/PUBLISHED/ecp_vaadin_default.css) is optimized for the Vaadin Valo Theme. If you want to use it with other themes, you need to adapt the styling.
-Thanks [Marita Klein] (https://github.com/riddy) 
+Thanks [riddy] (https://github.com/riddy) 
 
 ######  Example for reindeer:
 ```css
@@ -30,9 +30,9 @@ Thanks [Marita Klein] (https://github.com/riddy)
   }
 ```
 
-### New Feature
+### New Feature :: Ordered Lists & Tables
 
-Now Tables and Lists can be ordered, if the EStructualFeature ordered attribute is true.
+Now Tables and Lists can be ordered, if the EStructualFeature *ordered* attribute is true.
 Thanks [Matthias Juchmes] (https://github.com/NeoDobby) 
 
 ###### Table
@@ -42,3 +42,13 @@ Thanks [Matthias Juchmes] (https://github.com/NeoDobby)
 ![Ordered List](http://sirwayne.github.io/list.png)
 
 
+### New Feature :: Editing mode for Lists & Tables
+
+Now Tables and Lists can be edited if the component is not readonly. 
+A click on the edit-button will switch the corresponding line into the edit mode (see [Book of Vaadin] (https://vaadin.com/book/vaadin7/-/page/components.table.html#components.table.editing)). After the user has made his changes he can click outside the editable row or submit his changes via *enter* to apply them.
+
+###### List
+![Edit Button in List](http://sirwayne.github.io/list_edit.png)
+
+###### Table
+![Edit Mode in Table](http://sirwayne.github.io/table_edit.png)
