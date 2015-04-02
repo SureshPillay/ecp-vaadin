@@ -3,6 +3,9 @@
 <plugin>
    <extension
          point="org.eclipse.emf.ecp.view.model.provider.xmi.file">
+      <file 
+            filePath="viewmodels/Task.view">
+      </file>
       <file
             filePath="viewmodels/User.view">
       </file>
