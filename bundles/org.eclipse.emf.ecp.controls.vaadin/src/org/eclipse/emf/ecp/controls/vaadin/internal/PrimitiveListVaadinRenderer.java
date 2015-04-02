@@ -80,7 +80,7 @@ public class PrimitiveListVaadinRenderer extends AbstractVaadinList {
 					@Override
 					public void valueChange(ValueChangeEvent event) {
 						final Object newValue = event.getProperty().getValue();
-
+						System.out.println("Value Changed");
 						if (newValue == null) {
 							return;
 						}
@@ -144,7 +144,7 @@ public class PrimitiveListVaadinRenderer extends AbstractVaadinList {
 					@Override
 					public void handleAdd(int index, Object element) {
 						getTable().getContainerDataSource().getItem(element).getItemProperty(VALUE_COLUMN)
-						.setValue(element);
+							.setValue(element);
 
 					}
 				});
@@ -154,7 +154,7 @@ public class PrimitiveListVaadinRenderer extends AbstractVaadinList {
 
 		final IObservableList modelValue = EMFEditProperties.list(getEditingDomain(getSetting()),
 			getSetting().getEStructuralFeature()).observe(
-				getSetting().getEObject());
+			getSetting().getEObject());
 		getBindingContext().bindList(targetValue, modelValue);
 
 		return clazz;

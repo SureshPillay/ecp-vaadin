@@ -90,6 +90,7 @@ public final class VaadinWidgetFactory {
 
 	private static void addItem(final Setting setting, final Object addItem) {
 		final EditingDomain editingDomain = getEditingDomain(setting);
+		System.out.println("Add Item");
 		editingDomain.getCommandStack().execute(
 			AddCommand.create(editingDomain, setting.getEObject(), setting.getEStructuralFeature(), addItem));
 	}
@@ -216,7 +217,9 @@ public final class VaadinWidgetFactory {
 			@Override
 			public void buttonClick(ClickEvent event) {
 				table.setValue(itemId);
-				table.setEditable(true);
+				if (!table.isEditable()) {
+					table.setEditable(true);
+				}
 			}
 
 		});
@@ -225,7 +228,9 @@ public final class VaadinWidgetFactory {
 
 			@Override
 			public void valueChange(ValueChangeEvent event) {
-				table.setEditable(false);
+				if (table.isEditable()) {
+					table.setEditable(false);
+				}
 			}
 		});
 
@@ -253,7 +258,6 @@ public final class VaadinWidgetFactory {
 					final Button edit = createTableEditButton(table, itemId);
 					buttons.addComponent(edit);
 					buttons.setComponentAlignment(edit, Alignment.MIDDLE_RIGHT);
-
 				}
 
 				if (items instanceof List && setting.getEStructuralFeature().isOrdered()) {
