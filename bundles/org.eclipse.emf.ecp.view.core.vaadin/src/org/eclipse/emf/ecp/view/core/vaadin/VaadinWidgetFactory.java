@@ -90,7 +90,6 @@ public final class VaadinWidgetFactory {
 
 	private static void addItem(final Setting setting, final Object addItem) {
 		final EditingDomain editingDomain = getEditingDomain(setting);
-		System.out.println("Add Item");
 		editingDomain.getCommandStack().execute(
 			AddCommand.create(editingDomain, setting.getEObject(), setting.getEStructuralFeature(), addItem));
 	}
