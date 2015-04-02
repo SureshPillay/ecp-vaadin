@@ -185,7 +185,7 @@ public final class VaadinWidgetFactory {
 	 * @return the button
 	 */
 	public static Button createTableMoveDownButtonOverlay(final Setting setting, final Object move, final int index) {
-		return createMoveButton(setting, move, index + 1, "table-move-down-overlay"); //$NON-NLS-1$
+		return createMoveButton(setting, move, index - 1, "table-move-down-overlay"); //$NON-NLS-1$
 	}
 
 	private static Button createMoveButton(final Setting setting, final Object move, final int index, String styleName) {
@@ -262,12 +262,18 @@ public final class VaadinWidgetFactory {
 
 				if (items instanceof List && setting.getEStructuralFeature().isOrdered()) {
 					final int index = ((List<?>) items).indexOf(itemId);
+
 					final Button moveUp = createTableMoveUpButtonOverlay(setting, itemId, index);
 					buttons.addComponent(moveUp);
 					buttons.setComponentAlignment(moveUp, Alignment.MIDDLE_RIGHT);
-					final Button moveDown = createTableMoveDownButtonOverlay(setting, itemId, index);
-					buttons.addComponent(moveDown);
-					buttons.setComponentAlignment(moveDown, Alignment.MIDDLE_RIGHT);
+
+					final int indexDown = index + 1;
+					if (items.size() > indexDown) {
+						final Object itemIdDown = ((List<?>) items).get(indexDown);
+						final Button moveDown = createTableMoveDownButtonOverlay(setting, itemIdDown, indexDown);
+						buttons.addComponent(moveDown);
+						buttons.setComponentAlignment(moveDown, Alignment.MIDDLE_RIGHT);
+					}
 				}
 
 				if (enableRemove) {
