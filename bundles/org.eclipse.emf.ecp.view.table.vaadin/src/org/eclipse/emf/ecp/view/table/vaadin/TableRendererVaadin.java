@@ -44,8 +44,11 @@ import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.lunifera.runtime.web.vaadin.databinding.VaadinObservables;
 
 import com.vaadin.data.util.BeanItemContainer;
+import com.vaadin.ui.AbstractField;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.Component;
+import com.vaadin.ui.CustomField;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.VerticalLayout;
@@ -61,13 +64,14 @@ public class TableRendererVaadin extends AbstractControlRendererVaadin<VTableCon
 	private static final String TABLE_BUTTON_TOOLBAR = "table-button-toolbar"; //$NON-NLS-1$
 	protected Setting setting;
 	protected Table table;
+	protected VerticalLayout layout;
 
 	private InternalEObject getInstanceOf(EClass clazz) {
 		return InternalEObject.class.cast(clazz.getEPackage().getEFactoryInstance().create(clazz));
 	}
 
 	@Override
-	protected VerticalLayout render() {
+	protected Component render() {
 		final VTableControl control = getVElement();
 		final ViewModelContext viewContext = getViewModelContext();
 		final Iterator<Setting> iterator = control.getDomainModelReference().getIterator();
@@ -76,7 +80,7 @@ public class TableRendererVaadin extends AbstractControlRendererVaadin<VTableCon
 		}
 		setting = iterator.next();
 
-		final VerticalLayout layout = new VerticalLayout();
+		layout = new VerticalLayout();
 		table = createTable();
 		layout.setData(table);
 
@@ -98,7 +102,19 @@ public class TableRendererVaadin extends AbstractControlRendererVaadin<VTableCon
 		layout.setComponentAlignment(horizontalLayout, Alignment.TOP_RIGHT);
 		layout.addComponent(table);
 
-		return layout;
+		final AbstractField<Object> customField = new CustomField<Object>() {
+
+			@Override
+			protected Component initContent() {
+				return layout;
+			}
+
+			@Override
+			public Class<? extends Object> getType() {
+				return null;
+			}
+		};
+		return customField;
 	}
 
 	protected HorizontalLayout createButtonBar() {
