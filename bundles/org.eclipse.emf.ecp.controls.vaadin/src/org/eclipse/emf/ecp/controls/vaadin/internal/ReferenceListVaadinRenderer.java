@@ -23,8 +23,6 @@ import org.eclipse.emf.ecp.view.core.vaadin.TableListDiffVisitor;
 import org.eclipse.emf.ecp.view.core.vaadin.VaadinWidgetFactory;
 import org.eclipse.emf.ecp.view.core.vaadin.converter.SelectionConverter;
 import org.eclipse.emf.ecp.view.model.common.edit.provider.CustomReflectiveItemProviderAdapterFactory;
-import org.eclipse.emf.ecp.view.spi.model.VView;
-import org.eclipse.emf.ecp.view.spi.provider.ViewProviderHelper;
 import org.eclipse.emf.edit.provider.AdapterFactoryItemDelegator;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.lunifera.runtime.web.vaadin.databinding.VaadinObservables;
@@ -47,7 +45,7 @@ public class ReferenceListVaadinRenderer extends AbstractVaadinList {
 
 	private static final String TABLE_BUTTON_TOOLBAR_STYLE = "table-button-toolbar"; //$NON-NLS-1$
 
-	private static final String LINK_COLUMN = "link"; //$NON-NLS-1$
+	private static final String VALUE_COLUMN = "value"; //$NON-NLS-1$
 
 	private ComposedAdapterFactory composedAdapterFactory;
 	private AdapterFactoryItemDelegator adapterFactoryItemDelegator;
@@ -89,20 +87,14 @@ public class ReferenceListVaadinRenderer extends AbstractVaadinList {
 	}
 
 	private void createLinkColumn() {
-		getTable().addGeneratedColumn(LINK_COLUMN, new ColumnGenerator() {
+		getTable().addGeneratedColumn(VALUE_COLUMN, new ColumnGenerator() {
 
 			@Override
 			public Object generateCell(Table source, Object itemId, Object columnId) {
 				if (!(itemId instanceof EObject)) {
 					return null;
 				}
-				final VView view = ViewProviderHelper.getView((EObject) itemId, null);
-				final String text = adapterFactoryItemDelegator.getText(itemId);
-				if (view == null) {
-					return text;
-				}
-
-				return VaadinWidgetFactory.createEditLink((EObject) itemId, text);
+				return adapterFactoryItemDelegator.getText(itemId);
 			}
 		});
 	}
@@ -130,7 +122,7 @@ public class ReferenceListVaadinRenderer extends AbstractVaadinList {
 
 	@Override
 	protected void createContainerProperty(IndexedContainer container) {
-		container.addContainerProperty(LINK_COLUMN, Button.class, null);
+		container.addContainerProperty(VALUE_COLUMN, String.class, null);
 
 	}
 

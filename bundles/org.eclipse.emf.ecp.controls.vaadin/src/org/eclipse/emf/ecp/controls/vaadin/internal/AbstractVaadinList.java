@@ -11,6 +11,7 @@
  ******************************************************************************/
 package org.eclipse.emf.ecp.controls.vaadin.internal;
 
+import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EStructuralFeature.Setting;
 import org.eclipse.emf.ecp.controls.vaadin.AbstractVaadinSimpleControlRenderer;
 import org.eclipse.emf.ecp.view.core.vaadin.VaadinWidgetFactory;
@@ -58,7 +59,7 @@ public abstract class AbstractVaadinList extends AbstractVaadinSimpleControlRend
 			return layout;
 		}
 
-		VaadinWidgetFactory.createTableActionColumn(setting, table);
+		VaadinWidgetFactory.createTableActionColumn(setting, table, true, isEditable());
 
 		toolbar = createToolbar();
 		renderList(layout);
@@ -75,6 +76,10 @@ public abstract class AbstractVaadinList extends AbstractVaadinSimpleControlRend
 			}
 		};
 		return customField;
+	}
+
+	private boolean isEditable() {
+		return EAttribute.class.isInstance(setting.getEStructuralFeature());
 	}
 
 	private IndexedContainer createContainer() {

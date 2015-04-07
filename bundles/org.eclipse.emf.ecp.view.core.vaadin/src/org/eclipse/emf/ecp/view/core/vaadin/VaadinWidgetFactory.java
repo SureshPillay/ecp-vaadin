@@ -18,8 +18,10 @@ import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EStructuralFeature.Setting;
 import org.eclipse.emf.ecp.view.core.vaadin.dialog.EditDialog;
+import org.eclipse.emf.ecp.view.spi.provider.ViewProviderHelper;
 import org.eclipse.emf.edit.command.AddCommand;
 import org.eclipse.emf.edit.command.MoveCommand;
 import org.eclipse.emf.edit.command.RemoveCommand;
@@ -40,7 +42,6 @@ import com.vaadin.ui.Table.Align;
 import com.vaadin.ui.Table.ColumnGenerator;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
-import com.vaadin.ui.themes.BaseTheme;
 
 /**
  * A Factory for vaadin controls.
@@ -121,27 +122,6 @@ public final class VaadinWidgetFactory {
 	}
 
 	/**
-	 * Creates a edit link.
-	 *
-	 * @param selection the selection
-	 * @param caption the caption
-	 * @return the button
-	 */
-	public static Button createEditLink(final EObject selection, String caption) {
-		final Button edit = new Button(caption);
-		edit.addStyleName(BaseTheme.BUTTON_LINK);
-		edit.addClickListener(new ClickListener() {
-
-			@Override
-			public void buttonClick(ClickEvent event) {
-				final EditDialog editDialog = new EditDialog(selection);
-				UI.getCurrent().addWindow(editDialog);
-			}
-		});
-		return edit;
-	}
-
-	/**
 	 * Creates a remove button for overlays.
 	 *
 	 * @param setting the setting
@@ -207,37 +187,13 @@ public final class VaadinWidgetFactory {
 		return moveButton;
 	}
 
-	public static Button createTableEditButton(final Table table, final Object itemId) {
+	public static Button createTableEditButton(HorizontalLayout horizontalLayout) {
 		final Button editButton = new NativeButton();
 		editButton.addStyleName(ACTION_BUTTON);
 		editButton.addStyleName("table-edit-overlay");
-		editButton.addClickListener(new ClickListener() {
-
-			@Override
-			public void buttonClick(ClickEvent event) {
-				table.setValue(itemId);
-				if (!table.isEditable()) {
-					table.setEditable(true);
-				}
-			}
-
-		});
-
-		table.addValueChangeListener(new ValueChangeListener() {
-
-			@Override
-			public void valueChange(ValueChangeEvent event) {
-				if (table.isEditable()) {
-					table.setEditable(false);
-				}
-			}
-		});
-
+		horizontalLayout.addComponent(editButton);
+		horizontalLayout.setComponentAlignment(editButton, Alignment.MIDDLE_RIGHT);
 		return editButton;
-	}
-
-	public static void createTableActionColumn(final Setting setting, final Table table, final boolean enableRemove) {
-		createTableActionColumn(setting, table, enableRemove, true);
 	}
 
 	public static void createTableActionColumn(final Setting setting, final Table table, final boolean enableRemove,
@@ -248,18 +204,51 @@ public final class VaadinWidgetFactory {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public Object generateCell(Table source, Object itemId, Object columnId) {
+			public Object generateCell(Table source, final Object itemId, Object columnId) {
 				final Collection<?> items = table.getContainerDataSource().getItemIds();
 				final HorizontalLayout buttons = new HorizontalLayout();
 				buttons.setStyleName(ACTION_BUTTONS);
+				final EStructuralFeature eStructuralFeature = setting.getEStructuralFeature();
 
 				if (enableEdit) {
-					final Button edit = createTableEditButton(table, itemId);
-					buttons.addComponent(edit);
-					buttons.setComponentAlignment(edit, Alignment.MIDDLE_RIGHT);
+					final Button editButton = createTableEditButton(buttons);
+					editButton.addClickListener(new ClickListener() {
+
+						@Override
+						public void buttonClick(ClickEvent event) {
+							table.setValue(itemId);
+							if (!table.isEditable()) {
+								table.setEditable(true);
+							}
+						}
+
+					});
+
+					table.addValueChangeListener(new ValueChangeListener() {
+
+						@Override
+						public void valueChange(ValueChangeEvent event) {
+							if (table.isEditable()) {
+								table.setEditable(false);
+							}
+						}
+					});
+
+				} else if (ViewProviderHelper.getView((EObject) itemId, null) != null) {
+					final Button editButton = createTableEditButton(buttons);
+					editButton.addClickListener(new ClickListener() {
+
+						@Override
+						public void buttonClick(ClickEvent event) {
+							final EditDialog editDialog = new EditDialog((EObject) table.getValue());
+							UI.getCurrent().addWindow(editDialog);
+						}
+
+					});
+
 				}
 
-				if (items instanceof List && setting.getEStructuralFeature().isOrdered()) {
+				if (items instanceof List && eStructuralFeature.isOrdered()) {
 					final int index = ((List<?>) items).indexOf(itemId);
 
 					final Button moveUp = createTableMoveUpButtonOverlay(setting, itemId, index);
@@ -288,8 +277,8 @@ public final class VaadinWidgetFactory {
 		table.setColumnWidth(ACTION_COLUMN, 0);
 	}
 
-	public static void createTableActionColumn(final Setting setting, final Table table) {
-		createTableActionColumn(setting, table, true);
+	public static void createTableActionColumn(final Setting setting, final Table table, boolean enableRemove) {
+		createTableActionColumn(setting, table, enableRemove, true);
 	}
 
 	private static void removeItems(Setting setting, Object deleteObject) {
