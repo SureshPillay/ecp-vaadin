@@ -74,6 +74,8 @@ public abstract class AbstractControlRendererVaadin<T extends VControl> extends 
 
 	@Override
 	public boolean wrapInFormLayout() {
+		// TODO: check label alignment option when ticket is resolved:
+		// https://bugs.eclipse.org/bugs/show_bug.cgi?id=464010
 		return hasCaption();
 	}
 

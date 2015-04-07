@@ -108,6 +108,11 @@ public abstract class AbstractVaadinRenderer<T extends VElement> extends Abstrac
 		return layoutComponent;
 	}
 
+	/**
+	 * Override to wrap this component in a form layout when rendering.
+	 *
+	 * @return <code>false</code> by default, <code>true</code> to wrap in formlayout
+	 */
 	public boolean wrapInFormLayout() {
 		return false;
 	}
