@@ -53,6 +53,7 @@ import com.vaadin.ui.VerticalLayout;
 public class PrimitiveListVaadinRenderer extends AbstractVaadinList {
 
 	private static final String VALUE_COLUMN = "value"; //$NON-NLS-1$
+	private static final String REFERENCE_LIST_INPUT = "reference-list-input"; //$NON-NLS-1$
 
 	@Override
 	public void renderList(VerticalLayout layout) {
@@ -188,6 +189,7 @@ public class PrimitiveListVaadinRenderer extends AbstractVaadinList {
 		final TextField textField = new TextField();
 		textField.setNullRepresentation(StringUtils.EMPTY);
 		textField.setWidth(100, Unit.PERCENTAGE);
+		textField.addStyleName(REFERENCE_LIST_INPUT);
 		getToolbar().addComponent(textField);
 		getToolbar().setExpandRatio(textField, 1.0f);
 		VaadinRendererUtil.setConverterToTextField(getSetting().getEStructuralFeature(), textField, getVElement(),
