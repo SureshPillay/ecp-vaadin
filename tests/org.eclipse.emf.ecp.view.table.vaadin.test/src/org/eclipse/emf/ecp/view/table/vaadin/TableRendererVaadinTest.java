@@ -87,7 +87,7 @@ public class TableRendererVaadinTest {
 			new ComposedAdapterFactory(new AdapterFactory[] {
 				new ReflectiveItemProviderAdapterFactory(),
 				new ComposedAdapterFactory(ComposedAdapterFactory.Descriptor.Registry.INSTANCE) }),
-			new BasicCommandStack(), resourceSet);
+				new BasicCommandStack(), resourceSet);
 		resourceSet.eAdapters().add(new AdapterFactoryEditingDomain.EditingDomainProvider(domain));
 		final Resource resource = resourceSet.createResource(URI.createURI("VIRTUAL_URI_TEMP")); //$NON-NLS-1$
 		resource.getContents().add(domainElement);
@@ -179,14 +179,18 @@ public class TableRendererVaadinTest {
 		return assertTable(render, handle, attributLength);
 	}
 
+	@SuppressWarnings("rawtypes")
 	private Table assertTable(Component render, TableControlHandle handle, int attributLength) {
-		assertTrue(render instanceof VerticalLayout);
+		assertTrue(render instanceof CustomField);
+		final CustomField field = (CustomField) render;
+		final Component controlComponent = (VerticalLayout) field.iterator().next();
+		assertTrue(controlComponent instanceof VerticalLayout);
 
 		assertEquals(attributLength,
 			VTableDomainModelReference.class.cast(handle.getTableControl().getDomainModelReference())
-				.getColumnDomainModelReferences().size());
+			.getColumnDomainModelReferences().size());
 
-		final Component control = getTable((VerticalLayout) render);
+		final Component control = getTable((VerticalLayout) controlComponent);
 		assertTrue(control instanceof Table);
 		return (Table) control;
 
@@ -203,7 +207,7 @@ public class TableRendererVaadinTest {
 
 		assertEquals(0,
 			VTableDomainModelReference.class.cast(handle.getTableControl().getDomainModelReference())
-				.getColumnDomainModelReferences().size());
+			.getColumnDomainModelReferences().size());
 
 		assertTrue(verticalLayout.getComponent(1) instanceof Table);
 		final Table table = (Table) verticalLayout.getComponent(1);
