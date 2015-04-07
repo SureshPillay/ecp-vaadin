@@ -88,18 +88,16 @@ public class TableRendererVaadin extends AbstractControlRendererVaadin<VTableCon
 
 		bindTable(setting, table);
 
-		if (control.isReadonly()) {
-			layout.addComponent(table);
-			return layout;
+		if (!control.isReadonly()) {
+
+			table.setImmediate(true);
+			table.setTableFieldFactory(new SingleRowFieldFactory());
+
+			final HorizontalLayout horizontalLayout = createButtonBar();
+
+			layout.addComponent(horizontalLayout);
+			layout.setComponentAlignment(horizontalLayout, Alignment.TOP_RIGHT);
 		}
-
-		table.setImmediate(true);
-		table.setTableFieldFactory(new SingleRowFieldFactory());
-
-		final HorizontalLayout horizontalLayout = createButtonBar();
-
-		layout.addComponent(horizontalLayout);
-		layout.setComponentAlignment(horizontalLayout, Alignment.TOP_RIGHT);
 		layout.addComponent(table);
 
 		final AbstractField<Object> customField = new CustomField<Object>() {
@@ -163,7 +161,7 @@ public class TableRendererVaadin extends AbstractControlRendererVaadin<VTableCon
 
 		final IObservableList modelValue = EMFEditProperties.list(getEditingDomain(setting),
 			setting.getEStructuralFeature()).observe(
-				setting.getEObject());
+			setting.getEObject());
 		getBindingContext().bindList(targetValue, modelValue);
 	}
 
