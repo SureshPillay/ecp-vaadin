@@ -67,6 +67,7 @@ import org.junit.runner.RunWith;
 
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
+import com.vaadin.ui.CustomField;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.VerticalLayout;
@@ -86,7 +87,7 @@ public class TableRendererVaadinTest {
 			new ComposedAdapterFactory(new AdapterFactory[] {
 				new ReflectiveItemProviderAdapterFactory(),
 				new ComposedAdapterFactory(ComposedAdapterFactory.Descriptor.Registry.INSTANCE) }),
-			new BasicCommandStack(), resourceSet);
+				new BasicCommandStack(), resourceSet);
 		resourceSet.eAdapters().add(new AdapterFactoryEditingDomain.EditingDomainProvider(domain));
 		final Resource resource = resourceSet.createResource(URI.createURI("VIRTUAL_URI_TEMP")); //$NON-NLS-1$
 		resource.getContents().add(domainElement);
@@ -183,7 +184,7 @@ public class TableRendererVaadinTest {
 
 		assertEquals(attributLength,
 			VTableDomainModelReference.class.cast(handle.getTableControl().getDomainModelReference())
-				.getColumnDomainModelReferences().size());
+			.getColumnDomainModelReferences().size());
 
 		final Component control = getTable((VerticalLayout) render);
 		assertTrue(control instanceof Table);
@@ -228,6 +229,7 @@ public class TableRendererVaadinTest {
 		assertEquals(0, table.getColumnHeaders().length - 1);
 	}
 
+	@SuppressWarnings("rawtypes")
 	private VerticalLayout assertTable(final AbstractVaadinRenderer<VElement> tableRenderer) {
 		if (!TableRendererVaadin.class.isAssignableFrom(tableRenderer.getClass())) {
 			fail("No Table Renderer " + tableRenderer.getClass().getName());
@@ -236,7 +238,10 @@ public class TableRendererVaadinTest {
 		if (control == null) {
 			fail("No control was rendered");
 		}
-		assertTrue(control instanceof VerticalLayout);
+		assertTrue(control instanceof CustomField);
+		final CustomField field = (CustomField) control;
+		final Component controlComponent = (VerticalLayout) field.iterator().next();
+		assertTrue(controlComponent instanceof VerticalLayout);
 		final VerticalLayout verticalLayout = (VerticalLayout) control;
 		return verticalLayout;
 	}
@@ -287,11 +292,13 @@ public class TableRendererVaadinTest {
 		assertEquals(eSuperTypes.size(), getItemCountByTable(table));
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Test
 	public void testTableAddRemoveButton() {
 		final TableControlHandle handle = createTableWithTwoTableColumns();
 
-		final VerticalLayout layout = (VerticalLayout) renderTableLayoutWithoutServices(handle);
+		final CustomField field = (CustomField) renderTableLayoutWithoutServices(handle);
+		final VerticalLayout layout = (VerticalLayout) field.iterator().next();
 		final HorizontalLayout horizontalLayout = (HorizontalLayout) layout.getComponent(0);
 		final Button addButton = (Button) horizontalLayout.getComponent(0);
 		final Table table = getTable(layout);

@@ -257,7 +257,7 @@ public class VaadinRendererFactoryImpl implements VaadinRendererFactory {
 		final AbstractVaadinRenderer<VElement> vaadinComponentRenderer = getVaadinComponentRenderer(renderable,
 			viewContext);
 		Component renderComponent = vaadinComponentRenderer.renderComponent();
-		if (vaadinComponentRenderer.wrapInFormLayout()) {
+		if (renderComponent != null && vaadinComponentRenderer.wrapInFormLayout()) {
 			final FormLayout formLayout = new FormLayout(renderComponent);
 			formLayout.addStyleName("caption-left"); //$NON-NLS-1$
 			formLayout.setMargin(false);
