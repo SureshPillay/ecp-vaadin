@@ -23,8 +23,6 @@ import org.eclipse.emf.ecp.view.spi.model.DomainModelReferenceChangeListener;
 import org.eclipse.emf.ecp.view.spi.model.LabelAlignment;
 import org.eclipse.emf.ecp.view.spi.model.VControl;
 import org.eclipse.emf.ecp.view.spi.model.VDomainModelReference;
-import org.eclipse.emf.ecp.view.template.style.mandatory.model.VTMandatoryPackage;
-import org.eclipse.emf.ecp.view.template.style.mandatory.model.VTMandatoryStyleProperty;
 import org.eclipse.emf.edit.provider.AdapterFactoryItemDelegator;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
@@ -44,7 +42,6 @@ import com.vaadin.ui.UI;
  */
 public abstract class AbstractControlRendererVaadin<T extends VControl> extends AbstractVaadinRenderer<T> {
 
-	private static final String DEFAULT_MANADORY_MARKER = "*"; //$NON-NLS-1$
 	private DataBindingContext bindingContext;
 	private AdapterFactoryItemDelegator adapterFactoryItemDelegator;
 	private ComposedAdapterFactory composedAdapterFactory;
@@ -62,9 +59,6 @@ public abstract class AbstractControlRendererVaadin<T extends VControl> extends 
 			return;
 		}
 
-		String extra = StringUtils.EMPTY;
-
-		extra = getMandatoryText(setting, extra);
 		controlComponent.setCaption(itemPropertyDescriptor.getDisplayName(setting.getEObject()));
 
 		if (controlComponent instanceof AbstractField) {
@@ -134,20 +128,6 @@ public abstract class AbstractControlRendererVaadin<T extends VControl> extends 
 			}
 		};
 		domainModelReference.getChangeListener().add(this.domainModelReferenceChangeListener);
-	}
-
-	private String getMandatoryText(Setting setting, String extra) {
-		if (setting.getEStructuralFeature().getLowerBound() > 0) {
-			final VTMandatoryStyleProperty styleProperty = VaadinStyleTemplateUtil.getVTStyleProperty(
-				VTMandatoryPackage.Literals.MANDATORY_STYLE_PROPERTY, getVElement(), getViewModelContext());
-			if (styleProperty == null) {
-				extra = DEFAULT_MANADORY_MARKER;
-			} else {
-				extra = styleProperty.getMandatoryMarker();
-			}
-
-		}
-		return extra;
 	}
 
 	/**
