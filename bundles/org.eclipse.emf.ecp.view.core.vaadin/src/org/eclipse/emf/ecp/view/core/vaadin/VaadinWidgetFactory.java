@@ -240,7 +240,7 @@ public final class VaadinWidgetFactory {
 
 						@Override
 						public void buttonClick(ClickEvent event) {
-							final EditDialog editDialog = new EditDialog((EObject) table.getValue());
+							final EditDialog editDialog = new EditDialog((EObject) itemId);
 							UI.getCurrent().addWindow(editDialog);
 						}
 
