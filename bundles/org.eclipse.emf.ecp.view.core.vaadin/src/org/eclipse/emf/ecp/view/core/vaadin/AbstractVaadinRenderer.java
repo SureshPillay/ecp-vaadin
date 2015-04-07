@@ -26,7 +26,6 @@ import org.eclipse.emf.ecp.view.spi.model.VViewPackage;
 
 import com.vaadin.ui.AbstractComponent;
 import com.vaadin.ui.Component;
-import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.UI;
 
 /**
@@ -106,16 +105,10 @@ public abstract class AbstractVaadinRenderer<T extends VElement> extends Abstrac
 		applyValidation();
 		applyReadonly();
 		applyCaption();
-		if (wrapInFormLayout()) {
-			final FormLayout formLayout = new FormLayout(layoutComponent);
-			formLayout.addStyleName("caption-left"); //$NON-NLS-1$
-			formLayout.setMargin(false);
-			layoutComponent = formLayout;
-		}
 		return layoutComponent;
 	}
 
-	protected boolean wrapInFormLayout() {
+	public boolean wrapInFormLayout() {
 		return false;
 	}
 

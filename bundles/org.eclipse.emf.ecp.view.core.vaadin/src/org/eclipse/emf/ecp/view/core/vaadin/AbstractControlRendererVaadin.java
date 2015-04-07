@@ -73,7 +73,7 @@ public abstract class AbstractControlRendererVaadin<T extends VControl> extends 
 	}
 
 	@Override
-	protected boolean wrapInFormLayout() {
+	public boolean wrapInFormLayout() {
 		return hasCaption();
 	}
 
