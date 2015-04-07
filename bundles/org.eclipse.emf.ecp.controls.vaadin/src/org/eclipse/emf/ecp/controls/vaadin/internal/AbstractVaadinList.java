@@ -65,6 +65,8 @@ public abstract class AbstractVaadinList extends AbstractVaadinSimpleControlRend
 		renderList(layout);
 		final AbstractField<Object> customField = new CustomField<Object>() {
 
+			private static final long serialVersionUID = 7233527336146620279L;
+
 			@Override
 			protected Component initContent() {
 				return layout;
@@ -72,7 +74,7 @@ public abstract class AbstractVaadinList extends AbstractVaadinSimpleControlRend
 
 			@Override
 			public Class<? extends Object> getType() {
-				return null;
+				return Object.class;
 			}
 		};
 		return customField;

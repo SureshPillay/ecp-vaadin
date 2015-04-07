@@ -104,6 +104,8 @@ public class TableRendererVaadin extends AbstractControlRendererVaadin<VTableCon
 
 		final AbstractField<Object> customField = new CustomField<Object>() {
 
+			private static final long serialVersionUID = 3108541513496899657L;
+
 			@Override
 			protected Component initContent() {
 				return layout;
@@ -111,7 +113,7 @@ public class TableRendererVaadin extends AbstractControlRendererVaadin<VTableCon
 
 			@Override
 			public Class<? extends Object> getType() {
-				return null;
+				return Object.class;
 			}
 		};
 		return customField;
