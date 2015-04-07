@@ -19,8 +19,8 @@ import org.lunifera.runtime.web.vaadin.databinding.VaadinObservables;
 
 import com.vaadin.data.Property;
 import com.vaadin.data.Property.ValueChangeEvent;
+import com.vaadin.ui.Component;
 import com.vaadin.ui.UI;
-import com.vaadin.ui.VerticalLayout;
 
 /**
  * Render for a {@link org.eclipse.emf.ecp.view.spi.table.model.VTableControl VTableControl} with a detail editing
@@ -31,11 +31,10 @@ import com.vaadin.ui.VerticalLayout;
 public class TableControlDetailPanelRenderer extends TableRendererVaadin {
 
 	private ECPVaadinView ecpVaadinView;
-	VerticalLayout layout;
 
 	@Override
-	protected VerticalLayout render() {
-		layout = super.render();
+	protected Component render() {
+		final Component component = super.render();
 		table.addValueChangeListener(new Property.ValueChangeListener() {
 
 			@Override
@@ -53,7 +52,7 @@ public class TableControlDetailPanelRenderer extends TableRendererVaadin {
 			}
 
 		});
-		return layout;
+		return component;
 	}
 
 	@Override

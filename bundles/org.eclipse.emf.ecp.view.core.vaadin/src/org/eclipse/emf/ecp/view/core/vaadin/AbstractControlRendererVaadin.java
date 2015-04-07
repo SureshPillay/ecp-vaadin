@@ -23,14 +23,13 @@ import org.eclipse.emf.ecp.view.spi.model.DomainModelReferenceChangeListener;
 import org.eclipse.emf.ecp.view.spi.model.LabelAlignment;
 import org.eclipse.emf.ecp.view.spi.model.VControl;
 import org.eclipse.emf.ecp.view.spi.model.VDomainModelReference;
-import org.eclipse.emf.ecp.view.template.style.mandatory.model.VTMandatoryPackage;
-import org.eclipse.emf.ecp.view.template.style.mandatory.model.VTMandatoryStyleProperty;
 import org.eclipse.emf.edit.provider.AdapterFactoryItemDelegator;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 
 import com.vaadin.server.UserError;
 import com.vaadin.ui.AbstractComponent;
+import com.vaadin.ui.AbstractField;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.UI;
 
@@ -43,12 +42,12 @@ import com.vaadin.ui.UI;
  */
 public abstract class AbstractControlRendererVaadin<T extends VControl> extends AbstractVaadinRenderer<T> {
 
-	private static final String DEFAULT_MANADORY_MARKER = "*"; //$NON-NLS-1$
 	private DataBindingContext bindingContext;
 	private AdapterFactoryItemDelegator adapterFactoryItemDelegator;
 	private ComposedAdapterFactory composedAdapterFactory;
 	private DomainModelReferenceChangeListener domainModelReferenceChangeListener;
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	protected void applyCaption() {
 		final Setting setting = getVElement().getDomainModelReference().getIterator().next();
@@ -60,15 +59,24 @@ public abstract class AbstractControlRendererVaadin<T extends VControl> extends 
 			return;
 		}
 
-		String extra = StringUtils.EMPTY;
+		controlComponent.setCaption(itemPropertyDescriptor.getDisplayName(setting.getEObject()));
 
-		extra = getMandatoryText(setting, extra);
-		controlComponent.setCaption(itemPropertyDescriptor.getDisplayName(setting.getEObject()) + extra);
-
+		if (controlComponent instanceof AbstractField) {
+			if (setting.getEStructuralFeature().getLowerBound() > 0) {
+				((AbstractField) controlComponent).setRequired(true);
+			}
+		}
 		final String description = itemPropertyDescriptor.getDescription(setting.getEObject());
 		if (controlComponent instanceof AbstractComponent && !StringUtils.isEmpty(description)) {
 			((AbstractComponent) controlComponent).setDescription(description);
 		}
+	}
+
+	@Override
+	public boolean wrapInFormLayout() {
+		// TODO: check label alignment option when ticket is resolved:
+		// https://bugs.eclipse.org/bugs/show_bug.cgi?id=464010
+		return hasCaption();
 	}
 
 	@Override
@@ -122,20 +130,6 @@ public abstract class AbstractControlRendererVaadin<T extends VControl> extends 
 			}
 		};
 		domainModelReference.getChangeListener().add(this.domainModelReferenceChangeListener);
-	}
-
-	private String getMandatoryText(Setting setting, String extra) {
-		if (setting.getEStructuralFeature().getLowerBound() > 0) {
-			final VTMandatoryStyleProperty styleProperty = VaadinStyleTemplateUtil.getVTStyleProperty(
-				VTMandatoryPackage.Literals.MANDATORY_STYLE_PROPERTY, getVElement(), getViewModelContext());
-			if (styleProperty == null) {
-				extra = DEFAULT_MANADORY_MARKER;
-			} else {
-				extra = styleProperty.getMandatoryMarker();
-			}
-
-		}
-		return extra;
 	}
 
 	/**

@@ -30,6 +30,7 @@ import org.eclipse.emf.ecp.view.spi.model.reporting.AbstractReport;
 import org.osgi.framework.Bundle;
 
 import com.vaadin.ui.Component;
+import com.vaadin.ui.FormLayout;
 
 /**
  * The implementation for the {@link VaadinRendererFactory}.
@@ -252,7 +253,17 @@ public class VaadinRendererFactoryImpl implements VaadinRendererFactory {
 
 	@Override
 	public Component render(VElement renderable, ViewModelContext viewContext) {
-		return getVaadinComponentRenderer(renderable, viewContext).renderComponent();
+
+		final AbstractVaadinRenderer<VElement> vaadinComponentRenderer = getVaadinComponentRenderer(renderable,
+			viewContext);
+		Component renderComponent = vaadinComponentRenderer.renderComponent();
+		if (renderComponent != null && vaadinComponentRenderer.wrapInFormLayout()) {
+			final FormLayout formLayout = new FormLayout(renderComponent);
+			formLayout.addStyleName("caption-left"); //$NON-NLS-1$
+			formLayout.setMargin(false);
+			renderComponent = formLayout;
+		}
+		return renderComponent;
 	}
 
 }
