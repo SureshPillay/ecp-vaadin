@@ -14,6 +14,7 @@ package org.eclipse.emf.ecp.view.core.vaadin;
 import java.util.Collection;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
@@ -102,13 +103,16 @@ public final class VaadinWidgetFactory {
 	 * @param textField the textfield
 	 * @return the button
 	 */
-	public static Button createListAddButton(final Setting setting, final TextField textField) {
+	public static Button createListAddButton(final Setting setting, final TextField textField, final boolean addEmpty) {
 		final Button add = new Button();
 		add.addStyleName("list-add"); //$NON-NLS-1$
 		add.addClickListener(new ClickListener() {
 
 			@Override
 			public void buttonClick(ClickEvent event) {
+				if (!addEmpty && StringUtils.isEmpty(textField.getValue())) {
+					return;
+				}
 				try {
 					addItem(setting, textField.getConvertedValue());
 				} catch (final Converter.ConversionException e) {
