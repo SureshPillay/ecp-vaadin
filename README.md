@@ -30,7 +30,7 @@ Thanks [riddy] (https://github.com/riddy)
   }
 ```
 ### Mandatory marker:
-The Vaadin Framework does not allow one to define a custom mandatory marker. Therefore we decided to stay with the Vaadin mandatory marker but provide you an example on how to change the marker if necessary (```VTMandatoryStyleProperty.getMandatoryMarker``` is not interpreted). You can this simply with some css code:
+The Vaadin Framework does not allow one to define a custom mandatory marker. Therefore we decided to stay with the Vaadin mandatory marker but provide you an example on how to change the marker if necessary (```VTMandatoryStyleProperty.getMandatoryMarker``` is not interpreted). You can archieve this simply with some css code:
 
 ```css
     .v-required-field-indicator {
