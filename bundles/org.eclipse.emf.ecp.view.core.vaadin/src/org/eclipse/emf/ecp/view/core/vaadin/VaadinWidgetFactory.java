@@ -32,6 +32,9 @@ import org.eclipse.emf.edit.domain.EditingDomain;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.data.util.converter.Converter;
+import com.vaadin.event.FieldEvents.TextChangeEvent;
+import com.vaadin.event.FieldEvents.TextChangeListener;
+import com.vaadin.ui.AbstractTextField.TextChangeEventMode;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
@@ -106,23 +109,31 @@ public final class VaadinWidgetFactory {
 	public static Button createListAddButton(final Setting setting, final TextField textField, final boolean addEmpty) {
 		final Button add = new Button();
 		add.addStyleName("list-add"); //$NON-NLS-1$
+		add.setEnabled(false);
 		add.addClickListener(new ClickListener() {
 
 			@Override
 			public void buttonClick(ClickEvent event) {
-				if (!addEmpty && StringUtils.isEmpty(textField.getValue())) {
-					textField.focus();
-					return;
-				}
 				try {
 					addItem(setting, textField.getConvertedValue());
 				} catch (final Converter.ConversionException e) {
 					return;
 				}
 				textField.setValue(""); //$NON-NLS-1$
+				add.setEnabled(false);
 				textField.focus();
 			}
 		});
+		if (!addEmpty) {
+			textField.addTextChangeListener(new TextChangeListener() {
+
+				@Override
+				public void textChange(TextChangeEvent event) {
+					add.setEnabled(StringUtils.isNotEmpty(event.getText()));
+				}
+			});
+			textField.setTextChangeEventMode(TextChangeEventMode.EAGER);
+		}
 		return add;
 	}
 
