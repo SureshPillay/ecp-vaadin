@@ -111,6 +111,7 @@ public final class VaadinWidgetFactory {
 			@Override
 			public void buttonClick(ClickEvent event) {
 				if (!addEmpty && StringUtils.isEmpty(textField.getValue())) {
+					textField.focus();
 					return;
 				}
 				try {
