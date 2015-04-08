@@ -44,6 +44,7 @@ import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.lunifera.runtime.web.vaadin.databinding.VaadinObservables;
 
 import com.vaadin.data.util.BeanItemContainer;
+import com.vaadin.server.Sizeable.Unit;
 import com.vaadin.ui.AbstractField;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
@@ -61,6 +62,7 @@ import com.vaadin.ui.VerticalLayout;
  */
 public class TableRendererVaadin extends AbstractControlRendererVaadin<VTableControl> {
 
+	private static final int VISIBLE_TABLE_ROWS = 5;
 	private static final String TABLE_BUTTON_TOOLBAR = "table-button-toolbar"; //$NON-NLS-1$
 	protected Setting setting;
 	protected Table table;
@@ -161,7 +163,7 @@ public class TableRendererVaadin extends AbstractControlRendererVaadin<VTableCon
 
 		final IObservableList modelValue = EMFEditProperties.list(getEditingDomain(setting),
 			setting.getEStructuralFeature()).observe(
-			setting.getEObject());
+				setting.getEObject());
 		getBindingContext().bindList(targetValue, modelValue);
 	}
 
@@ -172,7 +174,8 @@ public class TableRendererVaadin extends AbstractControlRendererVaadin<VTableCon
 	private Table createTable() {
 		final Table table = new Table();
 		table.setSelectable(true);
-		table.setSizeFull();
+		table.setWidth(100, Unit.PERCENTAGE);
+		table.setPageLength(VISIBLE_TABLE_ROWS);
 
 		final EClass clazz = getReferenceType();
 		final BeanItemContainer<Object> indexedContainer = new BeanItemContainer(clazz.getInstanceClass());

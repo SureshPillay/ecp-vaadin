@@ -36,7 +36,7 @@ public abstract class AbstractVaadinList extends AbstractVaadinSimpleControlRend
 
 	/** The style name for the table. */
 	private static final String REFERENCE_LIST = "reference-list"; //$NON-NLS-1$
-	private static final int TABLE_HEIGHT = 120;
+	private static final int VISIBLE_TABLE_ROWS = 5;
 	private Table table;
 	private Setting setting;
 	private HorizontalLayout toolbar;
@@ -94,7 +94,7 @@ public abstract class AbstractVaadinList extends AbstractVaadinSimpleControlRend
 		final Table table = new Table();
 		table.setColumnHeaderMode(ColumnHeaderMode.HIDDEN);
 		table.setWidth(100, Unit.PERCENTAGE);
-		table.setHeight(TABLE_HEIGHT, Unit.PIXELS);
+		table.setPageLength(VISIBLE_TABLE_ROWS);
 		table.setSelectable(true);
 		table.addStyleName(REFERENCE_LIST);
 		final IndexedContainer container = createContainer();
