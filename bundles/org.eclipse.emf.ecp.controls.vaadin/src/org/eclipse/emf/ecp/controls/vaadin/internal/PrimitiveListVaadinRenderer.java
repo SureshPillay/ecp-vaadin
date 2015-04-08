@@ -143,7 +143,7 @@ public class PrimitiveListVaadinRenderer extends AbstractVaadinList {
 					@Override
 					public void handleAdd(int index, Object element) {
 						getTable().getContainerDataSource().getItem(element).getItemProperty(VALUE_COLUMN)
-						.setValue(element);
+							.setValue(element);
 
 					}
 				});
@@ -153,7 +153,7 @@ public class PrimitiveListVaadinRenderer extends AbstractVaadinList {
 
 		final IObservableList modelValue = EMFEditProperties.list(getEditingDomain(getSetting()),
 			getSetting().getEStructuralFeature()).observe(
-				getSetting().getEObject());
+			getSetting().getEObject());
 		getBindingContext().bindList(targetValue, modelValue);
 
 		return clazz;
@@ -179,7 +179,7 @@ public class PrimitiveListVaadinRenderer extends AbstractVaadinList {
 	}
 
 	private Button createAddButton(final Setting setting, final TextField textField) {
-		final Button add = VaadinWidgetFactory.createListAddButton(setting, textField);
+		final Button add = VaadinWidgetFactory.createListAddButton(setting, textField, false);
 		getToolbar().addComponent(add);
 		getToolbar().setComponentAlignment(add, Alignment.TOP_RIGHT);
 		return add;
