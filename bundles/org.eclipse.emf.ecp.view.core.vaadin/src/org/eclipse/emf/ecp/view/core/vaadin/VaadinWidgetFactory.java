@@ -131,11 +131,13 @@ public final class VaadinWidgetFactory {
 			textField.setTextChangeEventMode(TextChangeEventMode.EAGER);
 			textField.addShortcutListener(new ShortcutListener("AddOnEnter", KeyCode.ENTER, null) { //$NON-NLS-1$
 
-					@Override
-					public void handleAction(Object sender, Object target) {
+				@Override
+				public void handleAction(Object sender, Object target) {
+					if (add.isEnabled()) {
 						addItemClicked(setting, textField, add);
 					}
-				});
+				}
+			});
 		}
 		return add;
 	}
