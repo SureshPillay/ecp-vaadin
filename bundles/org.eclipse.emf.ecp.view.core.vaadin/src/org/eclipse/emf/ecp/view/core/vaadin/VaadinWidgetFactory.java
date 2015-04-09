@@ -34,6 +34,8 @@ import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.data.util.converter.Converter;
 import com.vaadin.event.FieldEvents.TextChangeEvent;
 import com.vaadin.event.FieldEvents.TextChangeListener;
+import com.vaadin.event.ShortcutAction.KeyCode;
+import com.vaadin.event.ShortcutListener;
 import com.vaadin.ui.AbstractTextField.TextChangeEventMode;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
@@ -114,15 +116,9 @@ public final class VaadinWidgetFactory {
 
 			@Override
 			public void buttonClick(ClickEvent event) {
-				try {
-					addItem(setting, textField.getConvertedValue());
-				} catch (final Converter.ConversionException e) {
-					return;
-				}
-				textField.setValue(""); //$NON-NLS-1$
-				add.setEnabled(false);
-				textField.focus();
+				addItemClicked(setting, textField, add);
 			}
+
 		});
 		if (!addEmpty) {
 			textField.addTextChangeListener(new TextChangeListener() {
@@ -133,8 +129,26 @@ public final class VaadinWidgetFactory {
 				}
 			});
 			textField.setTextChangeEventMode(TextChangeEventMode.EAGER);
+			textField.addShortcutListener(new ShortcutListener("AddOnEnter", KeyCode.ENTER, null) { //$NON-NLS-1$
+
+					@Override
+					public void handleAction(Object sender, Object target) {
+						addItemClicked(setting, textField, add);
+					}
+				});
 		}
 		return add;
+	}
+
+	private static void addItemClicked(final Setting setting, final TextField textField, final Button add) {
+		try {
+			addItem(setting, textField.getConvertedValue());
+		} catch (final Converter.ConversionException e) {
+			return;
+		}
+		textField.setValue(StringUtils.EMPTY);
+		add.setEnabled(false);
+		textField.focus();
 	}
 
 	/**
