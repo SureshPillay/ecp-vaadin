@@ -34,6 +34,8 @@ import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.data.util.converter.Converter;
 import com.vaadin.event.FieldEvents.TextChangeEvent;
 import com.vaadin.event.FieldEvents.TextChangeListener;
+import com.vaadin.event.ShortcutAction.KeyCode;
+import com.vaadin.event.ShortcutListener;
 import com.vaadin.ui.AbstractTextField.TextChangeEventMode;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
@@ -53,6 +55,7 @@ import com.vaadin.ui.UI;
  * @author Dennis Melzer
  *
  */
+@SuppressWarnings("serial")
 public final class VaadinWidgetFactory {
 
 	private static final String ACTION_COLUMN = "actions"; //$NON-NLS-1$
@@ -114,14 +117,17 @@ public final class VaadinWidgetFactory {
 
 			@Override
 			public void buttonClick(ClickEvent event) {
-				try {
-					addItem(setting, textField.getConvertedValue());
-				} catch (final Converter.ConversionException e) {
-					return;
+				addItemClicked(setting, textField, add);
+			}
+
+		});
+		textField.addShortcutListener(new ShortcutListener("AddOnEnter", KeyCode.ENTER, null) { //$NON-NLS-1$
+
+			@Override
+			public void handleAction(Object sender, Object target) {
+				if (add.isEnabled()) {
+					addItemClicked(setting, textField, add);
 				}
-				textField.setValue(""); //$NON-NLS-1$
-				add.setEnabled(false);
-				textField.focus();
 			}
 		});
 		if (!addEmpty) {
@@ -135,6 +141,17 @@ public final class VaadinWidgetFactory {
 			textField.setTextChangeEventMode(TextChangeEventMode.EAGER);
 		}
 		return add;
+	}
+
+	private static void addItemClicked(final Setting setting, final TextField textField, final Button add) {
+		try {
+			addItem(setting, textField.getConvertedValue());
+		} catch (final Converter.ConversionException e) {
+			return;
+		}
+		textField.setValue(StringUtils.EMPTY);
+		add.setEnabled(false);
+		textField.focus();
 	}
 
 	/**
@@ -206,7 +223,7 @@ public final class VaadinWidgetFactory {
 	public static Button createTableEditButton(HorizontalLayout horizontalLayout) {
 		final Button editButton = new NativeButton();
 		editButton.addStyleName(ACTION_BUTTON);
-		editButton.addStyleName("table-edit-overlay");
+		editButton.addStyleName("table-edit-overlay"); //$NON-NLS-1$
 		horizontalLayout.addComponent(editButton);
 		horizontalLayout.setComponentAlignment(editButton, Alignment.MIDDLE_RIGHT);
 		return editButton;
@@ -319,9 +336,4 @@ public final class VaadinWidgetFactory {
 		final EObject instance = clazz.getEPackage().getEFactoryInstance().create(clazz);
 		return instance;
 	}
-
-	private static List<Object> getItems(final Setting setting) {
-		return (List<Object>) setting.getEObject().eGet(setting.getEStructuralFeature());
-	}
-
 }
