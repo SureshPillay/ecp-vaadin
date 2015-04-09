@@ -14,10 +14,7 @@ package org.eclipse.emf.ecp.controls.vaadin.internal;
 import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.core.databinding.UpdateValueStrategy;
-import org.eclipse.core.databinding.observable.list.IListChangeListener;
 import org.eclipse.core.databinding.observable.list.IObservableList;
-import org.eclipse.core.databinding.observable.list.ListChangeEvent;
-import org.eclipse.core.databinding.observable.list.ListDiffVisitor;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.emf.databinding.EMFUpdateValueStrategy;
 import org.eclipse.emf.databinding.edit.EMFEditProperties;
@@ -32,6 +29,9 @@ import org.eclipse.emf.ecp.view.core.vaadin.converter.ErrorMessageComponentConve
 import org.lunifera.runtime.web.vaadin.databinding.VaadinObservables;
 
 import com.vaadin.data.Container;
+import com.vaadin.data.Container.ItemSetChangeEvent;
+import com.vaadin.data.Container.ItemSetChangeListener;
+import com.vaadin.data.Item;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.data.util.IndexedContainer;
@@ -113,47 +113,16 @@ public class PrimitiveListVaadinRenderer extends AbstractVaadinList {
 	}
 
 	private Class<? extends EObject> bindTable(EStructuralFeature eStructuralFeature, Class<? extends EObject> clazz) {
-		getTable().addItems(getSetting().getEObject().eGet(eStructuralFeature));
-		// final IObservableList targetValue = VaadinObservables.observeContainerItemSetContents(getTable(), clazz);
-		// targetValue.addListChangeListener(new IListChangeListener() {
-		//
-		// @Override
-		// public void handleListChange(ListChangeEvent event) {
-		// event.diff.accept(new TableListDiffVisitor(getTable()));
+		// final Object object = getSetting().getEObject().eGet(eStructuralFeature);
+		// if (object instanceof Collection && !((Collection) object).isEmpty()) {
+		// getTable().addItems(object);
 		// }
-		// });
-		// final IObservableList modelValue = EMFEditProperties.list(getEditingDomain(getSetting()), eStructuralFeature)
-		// .observe(getSetting().getEObject());
-		// bindModelToTarget(targetValue, modelValue);
 		final IObservableList targetValue = VaadinObservables.observeContainerItemSetContents(getTable(), getSetting()
 			.getEObject()
 			.getClass());
-		targetValue.addListChangeListener(new IListChangeListener() {
-
-			@Override
-			public void handleListChange(ListChangeEvent event) {
-				// event.diff.accept(new TableListDiffVisitor(getTable()));
-				event.diff.accept(new ListDiffVisitor() {
-
-					@Override
-					public void handleRemove(int index, Object element) {
-					}
-
-					@SuppressWarnings("unchecked")
-					@Override
-					public void handleAdd(int index, Object element) {
-						getTable().getContainerDataSource().getItem(element).getItemProperty(VALUE_COLUMN)
-							.setValue(element);
-
-					}
-				});
-
-			}
-		});
-
 		final IObservableList modelValue = EMFEditProperties.list(getEditingDomain(getSetting()),
 			getSetting().getEStructuralFeature()).observe(
-			getSetting().getEObject());
+				getSetting().getEObject());
 		getBindingContext().bindList(targetValue, modelValue);
 
 		return clazz;
@@ -201,6 +170,20 @@ public class PrimitiveListVaadinRenderer extends AbstractVaadinList {
 	protected void createContainerProperty(IndexedContainer container) {
 		Class<?> clazz = ((EAttribute) getSetting().getEStructuralFeature()).getEAttributeType()
 			.getInstanceClass();
+
+		container.addItemSetChangeListener(new ItemSetChangeListener() {
+
+			@SuppressWarnings("unchecked")
+			@Override
+			public void containerItemSetChange(ItemSetChangeEvent event) {
+				for (final Object id : getTable().getItemIds()) {
+					final Item item = getTable().getContainerDataSource().getItem(id);
+					if (item != null) {
+						item.getItemProperty(VALUE_COLUMN).setValue(id);
+					}
+				}
+			}
+		});
 
 		if (clazz.isPrimitive()) {
 			clazz = ClassUtils.primitiveToWrapper(clazz);
