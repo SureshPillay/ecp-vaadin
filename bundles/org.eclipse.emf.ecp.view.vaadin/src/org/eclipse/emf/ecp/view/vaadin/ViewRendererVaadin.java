@@ -16,8 +16,11 @@ import org.eclipse.emf.ecp.view.core.vaadin.AbstractVaadinRenderer;
 import org.eclipse.emf.ecp.view.core.vaadin.ECPVaadinViewComponent;
 import org.eclipse.emf.ecp.view.core.vaadin.VaadinRendererFactory;
 import org.eclipse.emf.ecp.view.spi.model.VContainedElement;
+import org.eclipse.emf.ecp.view.spi.model.VElement;
 import org.eclipse.emf.ecp.view.spi.model.VView;
 
+import com.vaadin.server.ClientConnector.DetachEvent;
+import com.vaadin.server.ClientConnector.DetachListener;
 import com.vaadin.ui.AbstractOrderedLayout;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.VerticalLayout;
@@ -62,6 +65,19 @@ public class ViewRendererVaadin extends AbstractVaadinRenderer<VView> {
 		final ECPVaadinViewComponent ecpVaadinViewComponent = new ECPVaadinViewComponent();
 		ecpVaadinViewComponent.addStyleName(BORDERLESS);
 		ecpVaadinViewComponent.setContent(layout);
+		ecpVaadinViewComponent.addDetachListener(new DetachListener() {
+
+			@Override
+			public void detach(DetachEvent event) {
+				for (final VContainedElement composite : getVElement().getChildren()) {
+					final AbstractVaadinRenderer<VElement> renderer = getRendererFactory().getVaadinComponentRenderer(
+						composite, getViewModelContext());
+					renderer.dispose();
+
+				}
+				dispose();
+			}
+		});
 		return ecpVaadinViewComponent;
 	}
 
