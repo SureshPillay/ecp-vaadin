@@ -43,10 +43,6 @@
     outline: none !important;
 }
 
-.table-button-toolbar, .v-slot-table-button-toolbar {
-    height: 0px;
-}
-
 .reference-list .v-table-row .v-table-cell-content, .reference-list .v-table-row-odd .v-table-cell-content {
     border: none;
 }
@@ -170,4 +166,9 @@ tr.v-table-row:hover .action-buttons, tr.v-table-row-odd:hover .action-buttons {
     width: 96px;
     min-width: 96px;
     vertical-align: top;
+}
+
+.caption-left .v-formlayout-errorcell {
+    vertical-align: top;
+    padding-top: 6px !important;
 }
