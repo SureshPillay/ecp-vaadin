@@ -12,12 +12,10 @@
 
 package org.eclipse.emf.ecp.view.vaadin;
 
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecp.view.core.vaadin.AbstractVaadinRenderer;
 import org.eclipse.emf.ecp.view.core.vaadin.ECPVaadinViewComponent;
 import org.eclipse.emf.ecp.view.core.vaadin.VaadinRendererFactory;
 import org.eclipse.emf.ecp.view.spi.model.VContainedElement;
-import org.eclipse.emf.ecp.view.spi.model.VContainer;
 import org.eclipse.emf.ecp.view.spi.model.VElement;
 import org.eclipse.emf.ecp.view.spi.model.VView;
 
@@ -93,25 +91,14 @@ public class ViewRendererVaadin extends AbstractVaadinRenderer<VView> implements
 	protected void applyCaption() {
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see com.vaadin.server.ClientConnector.DetachListener#detach(com.vaadin.server.ClientConnector.DetachEvent)
-	 */
 	@Override
 	public void detach(DetachEvent event) {
-		detacheRecursive(getVElement().getChildren());
+		for (final VContainedElement composite : getVElement().getChildren()) {
+			final AbstractVaadinRenderer<VElement> renderer = getRendererFactory().getVaadinComponentRenderer(
+				composite, getViewModelContext());
+			renderer.dispose();
+		}
 		dispose();
 	}
 
-	private void detacheRecursive(EList<VContainedElement> eList) {
-		for (final VContainedElement composite : eList) {
-			final AbstractVaadinRenderer<VElement> renderer = getRendererFactory().getVaadinComponentRenderer(
-				composite, getViewModelContext());
-			if (composite instanceof VContainer) {
-				detacheRecursive(((VContainer) composite).getChildren());
-			}
-			renderer.dispose();
-		}
-	}
 }
