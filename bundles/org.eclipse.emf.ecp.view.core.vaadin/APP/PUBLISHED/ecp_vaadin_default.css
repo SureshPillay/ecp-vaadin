@@ -102,7 +102,6 @@
     background: url("icons/edit_hover_24x24.png") center center no-repeat;
 }
 
-
 .table-move-down-overlay, .v-disabled.table-move-down-overlay, .v-disabled.table-move-down-overlay:hover, .v-disabled.table-move-down-overlay:active {
     background: url("icons/jump-one_24x24.png") center center no-repeat;
     -webkit-transform: rotate(180deg);
@@ -142,20 +141,32 @@
 
 .action-buttons {
     visibility: hidden;
-    margin-top: -10px !important;
+    margin-top: -18px !important;
     position: absolute;
     right: 10px;
+    height: 37px !important;
+    background-color: white;
+    padding-left: 4px;
 }
 
 .table-action-buttons .v-table-header-cell:last-child .v-table-caption-container {
-  text-indent: 100%;
-  white-space: nowrap;
-  overflow: hidden;
- }
+    text-indent: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+}
 
 tr.v-table-row:hover .action-buttons, tr.v-table-row-odd:hover .action-buttons {
     visibility: visible;
     z-index: 10;
+}
+
+.table-action-buttons tr.v-selected .action-buttons {
+    background-color: #197de1;
+    background: -webkit-linear-gradient(top, #1b87e3 2%, #166ed5 98%);
+    background: -moz-linear-gradient(top, #1b87e3 2%, #166ed5 98%);
+    background: -o-linear-gradient(top, #1b87e3 2%, #166ed5 98%);
+    background: -ms-linear-gradient(top, #1b87e3 2%, #166ed5 98%);
+    background: linear-gradient(to bottom, #1b87e3 2%, #166ed5 98%);
 }
 
 .caption-left .v-formlayout-captioncell span {
