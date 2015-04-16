@@ -13,7 +13,6 @@ package org.eclipse.emf.ecp.view.core.vaadin;
 
 import org.eclipse.emf.ecp.view.spi.model.VContainedElement;
 import org.eclipse.emf.ecp.view.spi.model.VContainer;
-import org.eclipse.emf.ecp.view.spi.model.VElement;
 
 import com.vaadin.server.Sizeable.Unit;
 import com.vaadin.ui.AbstractOrderedLayout;
@@ -52,16 +51,6 @@ public abstract class AbstractContainerRendererVaadin<T extends VContainer> exte
 		if (shouldShowCaption()) {
 			super.applyCaption();
 		}
-	}
-
-	@Override
-	public void dispose() {
-		for (final VContainedElement composite : getVElement().getChildren()) {
-			final AbstractVaadinRenderer<VElement> renderer = getRendererFactory().getVaadinComponentRenderer(
-				composite, getViewModelContext());
-			renderer.dispose();
-		}
-		super.dispose();
 	}
 
 	/**

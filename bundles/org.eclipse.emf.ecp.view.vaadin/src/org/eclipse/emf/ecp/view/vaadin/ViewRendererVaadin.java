@@ -16,11 +16,8 @@ import org.eclipse.emf.ecp.view.core.vaadin.AbstractVaadinRenderer;
 import org.eclipse.emf.ecp.view.core.vaadin.ECPVaadinViewComponent;
 import org.eclipse.emf.ecp.view.core.vaadin.VaadinRendererFactory;
 import org.eclipse.emf.ecp.view.spi.model.VContainedElement;
-import org.eclipse.emf.ecp.view.spi.model.VElement;
 import org.eclipse.emf.ecp.view.spi.model.VView;
 
-import com.vaadin.server.ClientConnector.DetachEvent;
-import com.vaadin.server.ClientConnector.DetachListener;
 import com.vaadin.ui.AbstractOrderedLayout;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.VerticalLayout;
@@ -31,7 +28,7 @@ import com.vaadin.ui.VerticalLayout;
  * @author Dennis Melzer
  *
  */
-public class ViewRendererVaadin extends AbstractVaadinRenderer<VView> implements DetachListener {
+public class ViewRendererVaadin extends AbstractVaadinRenderer<VView> {
 
 	private static final String BORDERLESS = "borderless"; //$NON-NLS-1$
 
@@ -65,9 +62,6 @@ public class ViewRendererVaadin extends AbstractVaadinRenderer<VView> implements
 		final ECPVaadinViewComponent ecpVaadinViewComponent = new ECPVaadinViewComponent();
 		ecpVaadinViewComponent.addStyleName(BORDERLESS);
 		ecpVaadinViewComponent.setContent(layout);
-
-		ecpVaadinViewComponent.addDetachListener(this);
-
 		return ecpVaadinViewComponent;
 	}
 
@@ -89,16 +83,6 @@ public class ViewRendererVaadin extends AbstractVaadinRenderer<VView> implements
 
 	@Override
 	protected void applyCaption() {
-	}
-
-	@Override
-	public void detach(DetachEvent event) {
-		for (final VContainedElement composite : getVElement().getChildren()) {
-			final AbstractVaadinRenderer<VElement> renderer = getRendererFactory().getVaadinComponentRenderer(
-				composite, getViewModelContext());
-			renderer.dispose();
-		}
-		dispose();
 	}
 
 }

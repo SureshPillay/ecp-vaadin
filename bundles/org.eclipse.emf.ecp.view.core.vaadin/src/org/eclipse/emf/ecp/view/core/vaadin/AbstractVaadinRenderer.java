@@ -24,6 +24,8 @@ import org.eclipse.emf.ecp.view.spi.model.ModelChangeNotification;
 import org.eclipse.emf.ecp.view.spi.model.VElement;
 import org.eclipse.emf.ecp.view.spi.model.VViewPackage;
 
+import com.vaadin.server.ClientConnector.DetachEvent;
+import com.vaadin.server.ClientConnector.DetachListener;
 import com.vaadin.ui.AbstractComponent;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.UI;
@@ -98,6 +100,15 @@ public abstract class AbstractVaadinRenderer<T extends VElement> extends Abstrac
 		if (layoutComponent == null) {
 			return null;
 		}
+		layoutComponent.addDetachListener(new DetachListener() {
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void detach(DetachEvent event) {
+				dispose();
+			}
+		});
 		this.controlComponent = getCaptionControlComponent(layoutComponent);
 
 		applyVisible();
