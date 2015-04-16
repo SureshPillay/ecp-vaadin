@@ -158,16 +158,6 @@ public abstract class AbstractVaadinRenderer<T extends VElement> extends Abstrac
 
 		};
 		getViewModelContext().registerViewChangeListener(this.modelChangeListener);
-
-		// UI.getCurrent().addDetachListener(new DetachListener() {
-		//
-		// private static final long serialVersionUID = 1L;
-		//
-		// @Override
-		// public void detach(DetachEvent event) {
-		// dispose();
-		// }
-		// });
 	}
 
 	private void updateUI(final Component controlComponent, ModelChangeNotification notification) {

@@ -125,6 +125,7 @@ public abstract class AbstractControlRendererVaadin<T extends VControl> extends 
 						applyValidation();
 					}
 				});
+
 			}
 		};
 		domainModelReference.getChangeListener().add(this.domainModelReferenceChangeListener);
