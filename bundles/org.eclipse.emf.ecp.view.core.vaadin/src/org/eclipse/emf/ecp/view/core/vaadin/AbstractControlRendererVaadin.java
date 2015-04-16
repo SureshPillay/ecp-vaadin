@@ -27,8 +27,6 @@ import org.eclipse.emf.edit.provider.AdapterFactoryItemDelegator;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 
-import com.vaadin.server.ClientConnector.DetachEvent;
-import com.vaadin.server.ClientConnector.DetachListener;
 import com.vaadin.server.UserError;
 import com.vaadin.ui.AbstractComponent;
 import com.vaadin.ui.AbstractField;
@@ -83,7 +81,6 @@ public abstract class AbstractControlRendererVaadin<T extends VControl> extends 
 
 	@Override
 	public void dispose() {
-		super.dispose();
 		if (getVElement().getDomainModelReference() != null) {
 			getVElement().getDomainModelReference().getChangeListener().remove(this.domainModelReferenceChangeListener);
 		}
@@ -131,16 +128,6 @@ public abstract class AbstractControlRendererVaadin<T extends VControl> extends 
 			}
 		};
 		domainModelReference.getChangeListener().add(this.domainModelReferenceChangeListener);
-
-		UI.getCurrent().addDetachListener(new DetachListener() {
-
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public void detach(DetachEvent event) {
-				dispose();
-			}
-		});
 	}
 
 	/**

@@ -58,7 +58,6 @@ public abstract class AbstractVaadinSimpleControlRenderer extends AbstractContro
 
 	@Override
 	public void dispose() {
-		super.dispose();
 		if (value != null) {
 			value.dispose();
 		}
