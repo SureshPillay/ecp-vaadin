@@ -11,12 +11,11 @@
  ******************************************************************************/
 package org.eclipse.emf.ecp.view.core.vaadin.converter;
 
-import java.util.Locale;
-
 import org.eclipse.core.databinding.conversion.IConverter;
 
 import com.vaadin.data.util.converter.Converter;
 import com.vaadin.data.util.converter.Converter.ConversionException;
+import com.vaadin.ui.UI;
 
 /**
  * String to Object Converter for a Vaadin Converter.
@@ -57,7 +56,7 @@ public class StringToVaadinConverter implements IConverter {
 
 		try {
 			return converter.convertToModel((String) fromObject, converter.getModelType(),
-				Locale.getDefault());
+				UI.getCurrent().getLocale());
 		} catch (final ConversionException e) {
 			return null;
 		}
