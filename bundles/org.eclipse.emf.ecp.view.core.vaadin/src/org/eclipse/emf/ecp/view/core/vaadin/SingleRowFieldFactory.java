@@ -14,6 +14,8 @@ package org.eclipse.emf.ecp.view.core.vaadin;
 import org.apache.commons.lang3.StringUtils;
 
 import com.vaadin.data.Container;
+import com.vaadin.event.FieldEvents.BlurEvent;
+import com.vaadin.event.FieldEvents.BlurListener;
 import com.vaadin.event.FieldEvents.FocusEvent;
 import com.vaadin.event.FieldEvents.FocusListener;
 import com.vaadin.event.ShortcutAction.KeyCode;
@@ -61,11 +63,22 @@ public class SingleRowFieldFactory extends DefaultFieldFactory {
 				}
 			});
 
+			if (table.getContainerPropertyIds().size() == 1) {
+				textField.addBlurListener(new BlurListener() {
+
+					@Override
+					public void blur(BlurEvent event) {
+						if (table.isEditable()) {
+							table.setEditable(false);
+						}
+					}
+				});
+			}
+
 			final Object firstColumnId = table.getVisibleColumns()[0];
 			if (propertyId != null && propertyId.equals(firstColumnId)) {
 				textField.focus();
 			}
-
 		}
 
 		if (field instanceof AbstractComponent) {
