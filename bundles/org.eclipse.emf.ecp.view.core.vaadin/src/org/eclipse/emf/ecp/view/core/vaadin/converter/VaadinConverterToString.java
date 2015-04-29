@@ -1,11 +1,10 @@
 package org.eclipse.emf.ecp.view.core.vaadin.converter;
 
-import java.util.Locale;
-
 import org.eclipse.core.databinding.conversion.IConverter;
 
 import com.vaadin.data.util.converter.Converter;
 import com.vaadin.ui.AbstractTextField;
+import com.vaadin.ui.UI;
 
 /**
  * Vaadin Converter to String.
@@ -44,6 +43,6 @@ public class VaadinConverterToString implements IConverter {
 		}
 
 		return converter.convertToPresentation(fromObject, converter.getPresentationType(),
-			Locale.getDefault());
+			UI.getCurrent().getLocale());
 	}
 }

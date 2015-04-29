@@ -14,6 +14,8 @@ package org.eclipse.emf.ecp.controls.vaadin.internal;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+import java.util.Locale;
+
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecp.view.common.vaadin.test.VaadinDatabindingClassRunner;
 import org.eclipse.emf.ecp.view.spi.model.LabelAlignment;
@@ -32,6 +34,7 @@ import com.vaadin.data.util.converter.DefaultConverterFactory;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.TextField;
+import com.vaadin.ui.UI;
 
 @RunWith(VaadinDatabindingClassRunner.class)
 public class NumberControlVaadinRendererTest extends AbstractControlTest {
@@ -74,6 +77,9 @@ public class NumberControlVaadinRendererTest extends AbstractControlTest {
 		final VaadinSession vaadinSession = Mockito.mock(VaadinSession.class);
 		Mockito.when(vaadinSession.getConverterFactory()).thenReturn(new DefaultConverterFactory());
 		VaadinSession.setCurrent(vaadinSession);
+		final UI ui = Mockito.mock(UI.class);
+		Mockito.when(ui.getLocale()).thenReturn(Locale.getDefault());
+		UI.setCurrent(ui);
 		super.mockControl(eObject, eStructuralFeature);
 	}
 
